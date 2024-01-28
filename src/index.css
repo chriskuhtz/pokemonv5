@@ -11,9 +11,16 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	/* z indexes */
 	--PLAYER_CANVAS_INDEX: 2;
 	--OVERWORLD_CANVAS_INDEX: 1;
-	--BUTTONS_INDEX: 3;
+	--MODAL_INDEX: 3;
+	--BUTTONS_INDEX: 4;
+	/* colors */
+	--main-bg-color: rgb(28, 30, 30);
+	--main-color: aliceblue;
+	/* borders */
+	--rounded: 8px;
 }
 body {
 	padding: 0;

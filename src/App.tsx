@@ -23,7 +23,11 @@ export const App = () => {
 				modalContent={
 					<Pill
 						center={currentDialogue[0]}
-						style={{ margin: '0 2rem' }}
+						style={{
+							margin: '0 2rem',
+							padding: '1rem 2rem',
+							fontSize: 'larger',
+						}}
 						onClick={() => dispatch(continueDialogue())}
 					/>
 				}
