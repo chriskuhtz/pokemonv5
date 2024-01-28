@@ -1,11 +1,11 @@
 import './App.css';
-import { MovementButtons } from './components/MovementButtons/MovementButtons';
+import { MovementButtonGroup } from './components/MovementButtonGroup/MovementButtonGroup';
 import { OverworldCanvas } from './components/OverworldCanvas/OverworldCanvas';
 
 export const App = () => {
 	return (
 		<>
-			<MovementButtons />
+			<MovementButtonGroup />
 			<OverworldCanvas />
 		</>
 	);

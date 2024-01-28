@@ -8,16 +8,16 @@ import {
 } from '../../../store/slices/PlayerCharacterSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { drawCharacter } from '../functions/drawCharacter';
-import { useAnimationFrame } from './useAnimationFrame';
 
-export const useDrawCanvas = () => {
+export const useDrawPlayerCanvas = () => {
 	const orientation = useAppSelector(selectOrientation);
 	const nextOrientation = useAppSelector(selectNextOrientation);
 	const forwardFoot = useAppSelector(selectForwardFoot);
 	const dispatch = useAppDispatch();
 
-	const main = useCallback(() => {
-		const canvas: HTMLCanvasElement | null = document.querySelector('#canvas');
+	return useCallback(() => {
+		const canvas: HTMLCanvasElement | null =
+			document.querySelector('#playerCanvas');
 		// Initialize the GL context
 		if (canvas) {
 			const ctx = canvas.getContext('2d');
@@ -50,6 +50,4 @@ export const useDrawCanvas = () => {
 			dispatch(incrementForwardFoot());
 		}
 	}, [dispatch, forwardFoot, nextOrientation, orientation]);
-
-	useAnimationFrame(main, 500);
 };

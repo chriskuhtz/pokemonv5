@@ -1,5 +1,6 @@
 import { ForwardFootEnum } from '../../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../../interfaces/Orientation';
+import { size } from '../../../main';
 
 export interface DrawCharacterProps {
 	context: CanvasRenderingContext2D;
@@ -18,20 +19,19 @@ export const drawCharacter = ({
 	x,
 	y,
 }: DrawCharacterProps): void => {
-	const rectangleSize = 64;
-	const selectionOffsetX = rectangleSize * forwardFoot;
-	const selectionOffsetY = rectangleSize * orientation;
+	const selectionOffsetX = size * forwardFoot;
+	const selectionOffsetY = size * orientation;
 
-	context.clearRect(x, y, rectangleSize, rectangleSize);
+	context.clearRect(x, y, size, size);
 	context.drawImage(
 		img,
 		selectionOffsetX,
 		selectionOffsetY,
-		rectangleSize,
-		rectangleSize,
+		size,
+		size,
 		x,
 		y,
-		rectangleSize,
-		rectangleSize
+		size,
+		size
 	);
 };
