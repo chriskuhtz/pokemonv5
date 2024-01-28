@@ -29,8 +29,8 @@ export const drawCharacter = ({
 		selectionOffsetY,
 		64,
 		64,
-		0,
-		0,
+		x * size,
+		y * size,
 		size,
 		size * 1.5
 	);

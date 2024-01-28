@@ -1,7 +1,8 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { ForwardFootEnum } from '../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { RootState } from '../store';
+import { selectMap, selectOccupants } from './MapSlice';
 
 export interface CharacterPosition {
 	orientation: OrientationEnum;
@@ -81,5 +82,30 @@ export const selectIsWalking = (state: RootState) =>
 	state.playerCharacter.walking;
 export const selectPosition = (state: RootState) =>
 	state.playerCharacter.position;
+
+export const selectNextCoordinates = createSelector(
+	[selectMap, selectOrientation, selectPosition],
+	({ height, width }, orientation, position) => {
+		if (orientation === 0 && position.y < height - 1) {
+			return { x: position.x, y: position.y + 1 };
+		}
+		if (orientation === 1 && position.x > 0) {
+			return { x: position.x - 1, y: position.y };
+		}
+		if (orientation === 2 && position.x < width - 1) {
+			return { x: position.x + 1, y: position.y };
+		}
+		if (orientation === 3 && position.y > 0) {
+			return { x: position.x, y: position.y - 1 };
+		}
+		return { x: position.x, y: position.y };
+	}
+);
+export const selectOccupantAtNextCoordinates = createSelector(
+	[selectNextCoordinates, selectOccupants],
+	({ x, y }, occupants) => {
+		return occupants.find((o) => o.position.x === x && o.position.y === y);
+	}
+);
 
 export default playerCharacterSlice.reducer;

@@ -1,0 +1,35 @@
+.cardWithImage {
+	border: 1px solid;
+	border-top-left-radius: 1rem;
+	border-top-right-radius: 1rem;
+	width: 12rem;
+	display: flex;
+	flex-direction: column;
+
+	.image {
+		margin: -3rem;
+	}
+
+	.title {
+		border-top: 1px solid;
+		background-color: rgba(255, 255, 255, 0.1);
+		padding: 0.5rem;
+	}
+	.subtitle {
+		background-color: rgba(255, 255, 255, 0.1);
+		padding: 0 0.5rem 0.5rem 0.5rem;
+		flex-grow: 1;
+	}
+}
+
+.cardWithImage:hover {
+	outline: 5px solid;
+	.image {
+		margin: -4rem;
+	}
+	.title,
+	.subtitle {
+		background-color: white !important;
+		color: var(--main-bg-color) !important;
+	}
+}

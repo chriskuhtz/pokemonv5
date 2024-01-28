@@ -1,0 +1,23 @@
+.pill {
+	padding: 0.5rem;
+	border-radius: var(--rounded);
+	border: solid 1px;
+	display: grid;
+	grid-template-columns: 1fr 5fr 1fr;
+	color: var(--main-color);
+	background-color: var(--main-bg-color);
+}
+
+.disabled {
+	opacity: 0.5;
+}
+.selected {
+	border-color: green;
+	background-color: rgba(55, 223, 17, 0.7);
+}
+
+.pill > * {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
