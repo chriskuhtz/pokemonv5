@@ -27,10 +27,10 @@ export const drawCharacter = ({
 		img,
 		selectionOffsetX,
 		selectionOffsetY,
-		size,
-		size,
-		x,
-		y,
+		64,
+		64,
+		0,
+		0,
 		size,
 		size
 	);
