@@ -2,7 +2,7 @@ import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { ForwardFootEnum } from '../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { RootState } from '../store';
-import { selectMap } from './MapSlice';
+import { selectMap, selectOccupants } from './MapSlice';
 
 export interface CharacterPosition {
 	orientation: OrientationEnum;
@@ -99,6 +99,12 @@ export const selectNextCoordinates = createSelector(
 			return { x: position.x, y: position.y - 1 };
 		}
 		return { x: position.x, y: position.y };
+	}
+);
+export const selectOccupantAtNextCoordinates = createSelector(
+	[selectNextCoordinates, selectOccupants],
+	({ x, y }, occupants) => {
+		return occupants.find((o) => o.position.x === x && o.position.y === y);
 	}
 );
 

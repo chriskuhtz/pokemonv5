@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { selectOccupants } from '../../../store/slices/MapSlice';
 import {
 	selectNextCoordinates,
 	selectNextOrientation,
+	selectOccupantAtNextCoordinates,
 	selectPosition,
 	updatePosition,
 } from '../../../store/slices/PlayerCharacterSlice';
@@ -13,7 +13,7 @@ export const useUpdatePosition = () => {
 	const position = useSelector(selectPosition);
 	const dispatch = useAppDispatch();
 	const nextOrientation = useAppSelector(selectNextOrientation);
-	const occupants = useAppSelector(selectOccupants);
+	const occupied = useAppSelector(selectOccupantAtNextCoordinates);
 	const { x, y } = useAppSelector(selectNextCoordinates);
 
 	return useCallback(() => {
@@ -25,7 +25,7 @@ export const useUpdatePosition = () => {
 			return;
 		}
 
-		if (occupants.some((o) => o.position.x === x && o.position.y === y)) {
+		if (occupied) {
 			dispatch(
 				updatePosition({
 					...position,
@@ -40,5 +40,5 @@ export const useUpdatePosition = () => {
 				y,
 			})
 		);
-	}, [dispatch, nextOrientation, occupants, position, x, y]);
+	}, [dispatch, nextOrientation, occupied, position, x, y]);
 };
