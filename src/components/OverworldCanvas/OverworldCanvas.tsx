@@ -31,7 +31,7 @@ export const OverworldCanvas = (): JSX.Element => {
 				} as CSSProperties
 			}
 		>
-			<canvas id={playerCanvas} width={size} height={size} />
+			<canvas id={playerCanvas} width={size} height={size * 2} />
 			<canvas
 				id={overworldCanvas}
 				width={size * width}
