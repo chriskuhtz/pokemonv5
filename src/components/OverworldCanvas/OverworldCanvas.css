@@ -1,15 +1,12 @@
 #playerCanvas {
 	position: absolute;
-	border: 1px solid red;
 	top: calc(var(--SIZE) * 4px);
 	left: calc(var(--SIZE) * 8px);
 	z-index: var(--PLAYER_CANVAS_INDEX);
 }
 #overworldCanvas {
 	position: absolute;
-	border: 1px solid blue;
-	top: calc(var(--SIZE) * var(--OFFSET_TOP) * 1px);
-	left: calc(var(--SIZE) * var(--OFFSET_LEFT) * 1px);
+	top: calc(var(--SIZE) * 4px + (var(--SIZE) * var(--OFFSET_TOP) * 1px));
+	left: calc(var(--SIZE) * 8px + (var(--SIZE) * var(--OFFSET_LEFT) * 1px));
 	z-index: var(--OVERWORLD_CANVAS_INDEX);
-	background-color: aqua;
 }

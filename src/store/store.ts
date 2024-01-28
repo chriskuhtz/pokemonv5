@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { mapSlice } from './slices/MapSlice';
 import { playerCharacterSlice } from './slices/PlayerCharacterSlice';
 // ...
 
 export const store = configureStore({
 	reducer: {
 		playerCharacter: playerCharacterSlice.reducer,
+		map: mapSlice.reducer,
 	},
 });
 

@@ -7,6 +7,7 @@ import {
 	selectOrientation,
 } from '../../../store/slices/PlayerCharacterSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
+import { playerCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 
 export const useDrawPlayerCanvas = () => {
@@ -16,8 +17,9 @@ export const useDrawPlayerCanvas = () => {
 	const dispatch = useAppDispatch();
 
 	return useCallback(() => {
-		const canvas: HTMLCanvasElement | null =
-			document.querySelector('#playerCanvas');
+		const canvas: HTMLCanvasElement | null = document.querySelector(
+			`#${playerCanvas}`
+		);
 		// Initialize the GL context
 		if (canvas) {
 			const ctx = canvas.getContext('2d');
@@ -38,7 +40,7 @@ export const useDrawPlayerCanvas = () => {
 					x: 0,
 					y: 0,
 					orientation,
-					forwardFoot,
+					forwardFoot: forwardFoot ?? 0,
 				});
 			};
 			img.src = 'npcs/NPC_001.png';
