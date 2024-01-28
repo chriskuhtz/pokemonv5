@@ -1,13 +1,22 @@
-import { useCallback, useEffect } from 'react';
-import { selectOrientation } from '../../../store/slices/PlayerCharacterSlice';
-import { useAppSelector } from '../../../store/storeHooks';
+import { useCallback } from 'react';
+import {
+	acceptNextOrientation,
+	incrementForwardFoot,
+	selectForwardFoot,
+	selectNextOrientation,
+	selectOrientation,
+} from '../../../store/slices/PlayerCharacterSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { drawCharacter } from '../functions/drawCharacter';
+import { useAnimationFrame } from './useAnimationFrame';
 
 export const useDrawCanvas = () => {
 	const orientation = useAppSelector(selectOrientation);
+	const nextOrientation = useAppSelector(selectNextOrientation);
+	const forwardFoot = useAppSelector(selectForwardFoot);
+	const dispatch = useAppDispatch();
 
 	const main = useCallback(() => {
-		console.log('execute main');
 		const canvas: HTMLCanvasElement | null = document.querySelector('#canvas');
 		// Initialize the GL context
 		if (canvas) {
@@ -29,12 +38,18 @@ export const useDrawCanvas = () => {
 					x: 0,
 					y: 0,
 					orientation,
-					forwardFoot: 0,
+					forwardFoot,
 				});
 			};
 			img.src = 'npcs/NPC_001.png';
-		}
-	}, [orientation]);
 
-	useEffect(() => main(), [main]);
+			if (nextOrientation === undefined) {
+				return;
+			}
+			dispatch(acceptNextOrientation());
+			dispatch(incrementForwardFoot());
+		}
+	}, [dispatch, forwardFoot, nextOrientation, orientation]);
+
+	useAnimationFrame(main, 500);
 };

@@ -1,12 +1,19 @@
 import { OrientationEnum } from '../../interfaces/Orientation';
-import { setOrientation } from '../../store/slices/PlayerCharacterSlice';
-import { useAppDispatch } from '../../store/storeHooks';
+import {
+	selectIsWalking,
+	selectNextOrientation,
+	setNextOrientation,
+	startWalking,
+	stopWalking,
+} from '../../store/slices/PlayerCharacterSlice';
+import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 
 export const MovementButtons = (): JSX.Element => {
 	const dispatch = useAppDispatch();
+	const nextOrientation = useAppSelector(selectNextOrientation);
+	const isWalking = useAppSelector(selectIsWalking);
 
 	const directions = Object.values(OrientationEnum).slice(
-		0,
 		Object.values(OrientationEnum).length / 2
 	);
 	return (
@@ -14,11 +21,27 @@ export const MovementButtons = (): JSX.Element => {
 			{directions.map((x) => (
 				<button
 					key={x}
-					onClick={() =>
-						dispatch(setOrientation(OrientationEnum[x as OrientationEnum]))
-					}
+					onPointerDown={() => {
+						if (nextOrientation !== x) {
+							dispatch(setNextOrientation(x as OrientationEnum));
+						}
+						if (!isWalking) {
+							dispatch(startWalking());
+						}
+					}}
+					onPointerLeave={() => dispatch(stopWalking())}
+					onMouseLeave={() => dispatch(stopWalking())}
+					onMouseUp={() => dispatch(stopWalking())}
+					onMouseDown={() => {
+						if (nextOrientation !== x) {
+							dispatch(setNextOrientation(x as OrientationEnum));
+						}
+						if (!isWalking) {
+							dispatch(startWalking());
+						}
+					}}
 				>
-					{x}
+					{OrientationEnum[x as OrientationEnum]}
 				</button>
 			))}
 		</div>
