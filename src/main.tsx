@@ -5,7 +5,7 @@ import { App } from './App.tsx';
 import './index.css';
 import { store } from './store/store.ts';
 
-export const size = 64;
+export const size = Math.min(window.innerHeight / 9, window.innerWidth / 17);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>

@@ -1,4 +1,3 @@
-import './App.css';
 import { MovementButtonGroup } from './components/MovementButtonGroup/MovementButtonGroup';
 import { OverworldCanvas } from './components/OverworldCanvas/OverworldCanvas';
 
