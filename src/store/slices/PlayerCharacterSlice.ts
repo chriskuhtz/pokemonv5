@@ -84,18 +84,18 @@ export const selectPosition = (state: RootState) =>
 	state.playerCharacter.position;
 
 export const selectNextCoordinates = createSelector(
-	[selectMap, selectNextOrientation, selectPosition],
-	({ height, width }, nextOrientation, position) => {
-		if (nextOrientation === 0 && position.y < height - 1) {
+	[selectMap, selectOrientation, selectPosition],
+	({ height, width }, orientation, position) => {
+		if (orientation === 0 && position.y < height - 1) {
 			return { x: position.x, y: position.y + 1 };
 		}
-		if (nextOrientation === 1 && position.x > 0) {
+		if (orientation === 1 && position.x > 0) {
 			return { x: position.x - 1, y: position.y };
 		}
-		if (nextOrientation === 2 && position.x < width - 1) {
+		if (orientation === 2 && position.x < width - 1) {
 			return { x: position.x + 1, y: position.y };
 		}
-		if (nextOrientation === 3 && position.y > 0) {
+		if (orientation === 3 && position.y > 0) {
 			return { x: position.x, y: position.y - 1 };
 		}
 		return { x: position.x, y: position.y };
