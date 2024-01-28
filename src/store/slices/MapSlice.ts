@@ -2,11 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { SpriteEnum } from '../../interfaces/Sprites';
 import { RootState } from '../store';
-import {
-	CharacterPosition,
-	playerCharacterSlice,
-	testMap,
-} from './PlayerCharacterSlice';
+import { CharacterPosition } from './PlayerCharacterSlice';
 
 export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
 export interface Occupant {
@@ -30,7 +26,7 @@ const initialState: MapState = {
 				orientation: OrientationEnum['DOWN'],
 				x: 5,
 				y: 1,
-				mapId: testMap,
+				mapId: 'testMap',
 			},
 		},
 	],
@@ -48,4 +44,4 @@ export const mapSlice = createSlice({
 export const selectMap = (state: RootState) => state.map;
 export const selectOccupants = (state: RootState) => state.map.occupants;
 
-export default playerCharacterSlice.reducer;
+export default mapSlice.reducer;

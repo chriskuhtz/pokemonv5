@@ -1,9 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { ForwardFootEnum } from '../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { RootState } from '../store';
+import { selectMap } from './MapSlice';
 
-export const testMap = 'testMap';
 export interface CharacterPosition {
 	orientation: OrientationEnum;
 	forwardFoot?: ForwardFootEnum;
@@ -22,7 +22,7 @@ const initialState: CounterState = {
 		orientation: 0,
 		x: 0,
 		y: 0,
-		mapId: testMap,
+		mapId: 'testMap',
 		forwardFoot: 0,
 	},
 	walking: false,
@@ -82,5 +82,24 @@ export const selectIsWalking = (state: RootState) =>
 	state.playerCharacter.walking;
 export const selectPosition = (state: RootState) =>
 	state.playerCharacter.position;
+
+export const selectNextCoordinates = createSelector(
+	[selectMap, selectNextOrientation, selectPosition],
+	({ height, width }, nextOrientation, position) => {
+		if (nextOrientation === 0 && position.y < height - 1) {
+			return { x: position.x, y: position.y + 1 };
+		}
+		if (nextOrientation === 1 && position.x > 0) {
+			return { x: position.x - 1, y: position.y };
+		}
+		if (nextOrientation === 2 && position.x < width - 1) {
+			return { x: position.x + 1, y: position.y };
+		}
+		if (nextOrientation === 3 && position.y > 0) {
+			return { x: position.x, y: position.y - 1 };
+		}
+		return { x: position.x, y: position.y };
+	}
+);
 
 export default playerCharacterSlice.reducer;
