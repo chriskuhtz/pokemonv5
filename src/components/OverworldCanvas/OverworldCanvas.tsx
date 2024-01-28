@@ -26,8 +26,8 @@ export const OverworldCanvas = (): JSX.Element => {
 			style={
 				{
 					'--SIZE': size,
-					'--OFFSET_TOP': y,
-					'--OFFSET_LEFT': x,
+					'--OFFSET_TOP': -y,
+					'--OFFSET_LEFT': -x,
 				} as CSSProperties
 			}
 		>
