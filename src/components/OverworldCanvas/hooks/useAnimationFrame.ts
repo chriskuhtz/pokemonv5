@@ -26,7 +26,7 @@ export const useAnimationFrame = (
 	}, [animationHandler, fpsInterval]);
 
 	useEffect(() => {
-		console.log('animationFrame', lastFrameTime.current);
+		//console.log('animationFrame', lastFrameTime.current);
 		frame.current = requestAnimationFrame(animate);
 
 		// kill animation cycle on component unmount

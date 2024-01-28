@@ -7,11 +7,13 @@ interface CounterState {
 	orientation: OrientationEnum;
 	forwardFoot: ForwardFootEnum;
 	nextOrientation?: OrientationEnum;
+	walking: boolean;
 }
 
 const initialState: CounterState = {
 	orientation: 0,
 	forwardFoot: 0,
+	walking: false,
 };
 
 export const playerCharacterSlice = createSlice({
@@ -37,7 +39,15 @@ export const playerCharacterSlice = createSlice({
 			if (state.nextOrientation !== undefined) {
 				state.orientation = state.nextOrientation;
 			}
-			state.nextOrientation = undefined;
+			if (state.walking === false) {
+				state.nextOrientation = undefined;
+			}
+		},
+		startWalking: (state) => {
+			state.walking = true;
+		},
+		stopWalking: (state) => {
+			state.walking = false;
 		},
 	},
 });
@@ -47,6 +57,8 @@ export const {
 	incrementForwardFoot,
 	setNextOrientation,
 	acceptNextOrientation,
+	startWalking,
+	stopWalking,
 } = playerCharacterSlice.actions;
 
 export const selectOrientation = (state: RootState) =>
@@ -55,5 +67,8 @@ export const selectForwardFoot = (state: RootState) =>
 	state.playerCharacter.forwardFoot;
 export const selectNextOrientation = (state: RootState) =>
 	state.playerCharacter.nextOrientation;
+
+export const selectIsWalking = (state: RootState) =>
+	state.playerCharacter.walking;
 
 export default playerCharacterSlice.reducer;

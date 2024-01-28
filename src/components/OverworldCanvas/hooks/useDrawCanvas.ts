@@ -51,5 +51,5 @@ export const useDrawCanvas = () => {
 		}
 	}, [dispatch, forwardFoot, nextOrientation, orientation]);
 
-	useAnimationFrame(() => main(), 500);
+	useAnimationFrame(main, 500);
 };
