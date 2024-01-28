@@ -1,20 +1,17 @@
 import { useCallback } from 'react';
 import {
-	acceptNextOrientation,
-	incrementForwardFoot,
 	selectForwardFoot,
-	selectNextOrientation,
 	selectOrientation,
 } from '../../../store/slices/PlayerCharacterSlice';
-import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
+import { useAppSelector } from '../../../store/storeHooks';
 import { playerCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
+import { useUpdatePosition } from './useUpdatePosition';
 
 export const useDrawPlayerCanvas = () => {
 	const orientation = useAppSelector(selectOrientation);
-	const nextOrientation = useAppSelector(selectNextOrientation);
 	const forwardFoot = useAppSelector(selectForwardFoot);
-	const dispatch = useAppDispatch();
+	const move = useUpdatePosition();
 
 	return useCallback(() => {
 		const canvas: HTMLCanvasElement | null = document.querySelector(
@@ -45,11 +42,7 @@ export const useDrawPlayerCanvas = () => {
 			};
 			img.src = 'npcs/NPC_001.png';
 
-			if (nextOrientation === undefined) {
-				return;
-			}
-			dispatch(acceptNextOrientation());
-			dispatch(incrementForwardFoot());
+			move();
 		}
-	}, [dispatch, forwardFoot, nextOrientation, orientation]);
+	}, [forwardFoot, move, orientation]);
 };

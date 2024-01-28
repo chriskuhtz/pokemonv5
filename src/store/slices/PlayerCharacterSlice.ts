@@ -32,58 +32,28 @@ export const playerCharacterSlice = createSlice({
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
-		incrementForwardFoot: (state) => {
-			if (
-				state.position.forwardFoot ===
-				Object.entries(ForwardFootEnum).length / 2 - 1
-			)
-				state.position = { ...state.position, forwardFoot: 0 };
-			else
-				state.position = {
-					...state.position,
-					forwardFoot: (state.position.forwardFoot ?? 0) + 1,
-				};
-		},
 		setNextOrientation: (
 			state,
 			action: PayloadAction<OrientationEnum | undefined>
 		) => {
 			state.nextOrientation = action.payload;
 		},
-		acceptNextOrientation: (state) => {
+		updatePosition: (state, action: PayloadAction<CharacterPosition>) => {
 			if (
-				state.nextOrientation !== undefined &&
-				state.nextOrientation !== state.position.orientation
-			) {
+				state.position.forwardFoot ===
+				Object.entries(ForwardFootEnum).length / 2 - 1
+			)
+				state.position = { ...action.payload, forwardFoot: 0 };
+			else
 				state.position = {
-					...state.position,
-					orientation: state.nextOrientation,
+					...action.payload,
+					forwardFoot: (state.position.forwardFoot ?? 0) + 1,
 				};
-			}
-			if (
-				state.nextOrientation !== undefined &&
-				state.nextOrientation === state.position.orientation
-			) {
-				state.position = {
-					...state.position,
-					x:
-						state.nextOrientation === 1
-							? state.position.x + 1
-							: state.nextOrientation === 2
-							? state.position.x - 1
-							: state.position.x,
-					y:
-						state.nextOrientation === 0
-							? state.position.y - 1
-							: state.nextOrientation === 3
-							? state.position.y + 1
-							: state.position.y,
-				};
-			}
 			if (state.walking === false) {
 				state.nextOrientation = undefined;
 			}
 		},
+
 		startWalking: (state) => {
 			state.walking = true;
 		},
@@ -97,13 +67,8 @@ export const playerCharacterSlice = createSlice({
 	},
 });
 
-export const {
-	incrementForwardFoot,
-	setNextOrientation,
-	acceptNextOrientation,
-	startWalking,
-	stopWalking,
-} = playerCharacterSlice.actions;
+export const { setNextOrientation, startWalking, stopWalking, updatePosition } =
+	playerCharacterSlice.actions;
 
 export const selectOrientation = (state: RootState) =>
 	state.playerCharacter.position.orientation;
