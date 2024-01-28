@@ -20,6 +20,7 @@ export const MovementButtons = (): JSX.Element => {
 		<div>
 			{directions.map((x) => (
 				<button
+					style={{ userSelect: 'none' }}
 					key={x}
 					onPointerDown={() => {
 						if (nextOrientation !== x) {
