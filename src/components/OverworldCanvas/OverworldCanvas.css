@@ -10,3 +10,9 @@
 	left: calc(var(--SIZE) * 8px + (var(--SIZE) * var(--OFFSET_LEFT) * 1px));
 	z-index: var(--OVERWORLD_CANVAS_INDEX);
 }
+#occupantCanvas {
+	position: absolute;
+	top: calc(var(--SIZE) * 4px + (var(--SIZE) * var(--OFFSET_TOP) * 1px));
+	left: calc(var(--SIZE) * 8px + (var(--SIZE) * var(--OFFSET_LEFT) * 1px));
+	z-index: calc(var(--OVERWORLD_CANVAS_INDEX) + 1);
+}

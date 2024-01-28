@@ -3,6 +3,7 @@ import { ForwardFootEnum } from '../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { RootState } from '../store';
 
+export const testMap = 'testMap';
 export interface CharacterPosition {
 	orientation: OrientationEnum;
 	forwardFoot?: ForwardFootEnum;
@@ -21,7 +22,7 @@ const initialState: CounterState = {
 		orientation: 0,
 		x: 0,
 		y: 0,
-		mapId: 'testMap',
+		mapId: testMap,
 		forwardFoot: 0,
 	},
 	walking: false,
