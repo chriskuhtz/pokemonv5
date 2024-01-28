@@ -1,6 +1,6 @@
 #playerCanvas {
 	position: absolute;
-	top: calc(var(--SIZE) * 4px);
+	top: calc(var(--SIZE) * 3.5px);
 	left: calc(var(--SIZE) * 8px);
 	z-index: var(--PLAYER_CANVAS_INDEX);
 }

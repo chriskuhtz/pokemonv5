@@ -22,7 +22,7 @@ export const drawCharacter = ({
 	const selectionOffsetX = 64 * forwardFoot;
 	const selectionOffsetY = 64 * orientation;
 
-	context.clearRect(x, y, size, size);
+	context.clearRect(x, y, size, size * 1.5);
 	context.drawImage(
 		img,
 		selectionOffsetX,
@@ -32,6 +32,6 @@ export const drawCharacter = ({
 		0,
 		0,
 		size,
-		size
+		size * 1.5
 	);
 };
