@@ -10,8 +10,8 @@ export interface MapState {
 	baseTile: BaseTileId;
 }
 const initialState: MapState = {
-	height: 2,
-	width: 4,
+	height: 20,
+	width: 40,
 	baseTile: 'grass',
 };
 
