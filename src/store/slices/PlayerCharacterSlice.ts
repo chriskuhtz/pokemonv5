@@ -48,6 +48,7 @@ export const playerCharacterSlice = createSlice({
 		},
 		stopWalking: (state) => {
 			state.walking = false;
+			state.forwardFoot = 0;
 		},
 	},
 });

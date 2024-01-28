@@ -1,13 +1,16 @@
-import { useDrawCanvas } from './hooks/useDrawCanvas';
+import { size } from '../../main';
+import { useAnimationFrame } from './hooks/useAnimationFrame';
+import { useDrawPlayerCanvas } from './hooks/useDrawCanvas';
 
 export const OverworldCanvas = (): JSX.Element => {
-	useDrawCanvas();
+	const drawPlayer = useDrawPlayerCanvas();
+	useAnimationFrame(drawPlayer, 30);
 	return (
 		<canvas
 			style={{ border: '1px solid red' }}
-			id="canvas"
-			width="510"
-			height="270"
+			id="playerCanvas"
+			width={size}
+			height={size}
 		/>
 	);
 };

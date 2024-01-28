@@ -5,6 +5,8 @@ import { App } from './App.tsx';
 import './index.css';
 import { store } from './store/store.ts';
 
+export const size = 64;
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<Provider store={store}>
