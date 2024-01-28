@@ -1,14 +1,12 @@
 import './App.css';
-import { useDrawCanvas } from './hooks/useDrawCanvas';
+import { MovementButtons } from './components/MovementButtons/MovementButtons';
+import { OverworldCanvas } from './components/OverworldCanvas/OverworldCanvas';
 
 export const App = () => {
-	useDrawCanvas();
 	return (
-		<canvas
-			style={{ border: '1px solid red' }}
-			id="canvas"
-			width="510"
-			height="270"
-		></canvas>
+		<>
+			<MovementButtons />
+			<OverworldCanvas />
+		</>
 	);
 };

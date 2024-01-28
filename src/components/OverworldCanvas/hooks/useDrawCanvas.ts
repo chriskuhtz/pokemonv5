@@ -1,8 +1,12 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { selectOrientation } from '../../../store/slices/PlayerCharacterSlice';
+import { useAppSelector } from '../../../store/storeHooks';
 import { drawCharacter } from '../functions/drawCharacter';
 
 export const useDrawCanvas = () => {
-	function main() {
+	const orientation = useAppSelector(selectOrientation);
+
+	const main = useCallback(() => {
 		console.log('execute main');
 		const canvas: HTMLCanvasElement | null = document.querySelector('#canvas');
 		// Initialize the GL context
@@ -24,13 +28,13 @@ export const useDrawCanvas = () => {
 					img,
 					x: 0,
 					y: 0,
-					orientation: 0,
-					forwardFoot: 1,
+					orientation,
+					forwardFoot: 0,
 				});
 			};
 			img.src = 'npcs/NPC_001.png';
 		}
-	}
+	}, [orientation]);
 
-	useEffect(() => main(), []);
+	useEffect(() => main(), [main]);
 };
