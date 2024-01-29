@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://chriskuhtz-s-workspace-lu92eq.eu-central-1.xata.sh/db/pokemonv5",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

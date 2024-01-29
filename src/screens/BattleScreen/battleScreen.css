@@ -1,0 +1,13 @@
+.battleScreen {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 0.5rem;
+	height: 100dvh;
+}
+.devInfo {
+	position: absolute;
+	border: 1px solid blue;
+	padding: 0.5rem;
+	top: 0;
+	left: 0;
+}
