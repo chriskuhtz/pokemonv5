@@ -36,7 +36,7 @@ export const CharacterSprite = ({
 			style={
 				{
 					...style,
-					'--backgroundUrl': `url(npcs/NPC_${index}.png) calc(var(--size) * ${walkingOffset}) calc(var(--size) * ${orientationOffset})`,
+					'--backgroundUrl': `url(/npcs/NPC_${index}.png) calc(var(--size) * ${walkingOffset}) calc(var(--size) * ${orientationOffset})`,
 				} as React.CSSProperties
 			}
 		></div>

@@ -8,6 +8,6 @@ export const MapObject = ({
 	style?: React.CSSProperties;
 }) => {
 	return (
-		<img className={className} style={style} src={`mapObjects//${id}.png`} />
+		<img className={className} style={style} src={`mapObjects/${id}.png`} />
 	);
 };
