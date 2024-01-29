@@ -19,7 +19,7 @@ export const RouterButton = ({
 	return (
 		<Pill
 			className={className}
-			style={style}
+			style={{ ...style, zIndex: 'var(--BUTTONS_INDEX' }}
 			center={text}
 			onClick={() => {
 				if (sideEffect) {

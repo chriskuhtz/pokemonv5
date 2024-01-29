@@ -23,6 +23,13 @@
 	--rounded: 8px;
 }
 
+button {
+	padding: 1rem;
+	background-color: var(--main-bg-color);
+	border: 1px solid var(--main-color);
+	border-radius: var(--rounded);
+}
+
 body {
 	margin: 0;
 	padding: 0;

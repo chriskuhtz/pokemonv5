@@ -1,18 +1,15 @@
 import { useMemo } from 'react';
 import { Direction } from '../../interfaces/Direction';
-import { ForwardFoot } from '../../interfaces/ForwardFoot';
 import './CharacterSprite.css';
 
 export const CharacterSprite = ({
 	orientation,
 	index,
-	forwardFoot,
 	className,
 	style,
 }: {
 	orientation: Direction;
 	index: string;
-	forwardFoot?: ForwardFoot;
 	className?: string;
 	style?: React.CSSProperties;
 }) => {
@@ -30,14 +27,8 @@ export const CharacterSprite = ({
 	}, [orientation]);
 
 	const walkingOffset = useMemo(() => {
-		if (forwardFoot === 'right') {
-			return -1.75;
-		}
-		if (forwardFoot === 'left') {
-			return -4.75;
-		}
 		return -0.25;
-	}, [forwardFoot]);
+	}, []);
 
 	return (
 		<div
@@ -45,7 +36,7 @@ export const CharacterSprite = ({
 			style={
 				{
 					...style,
-					'--backgroundUrl': `url(assets/npcs/NPC_${index}.png) calc(var(--size) * ${walkingOffset}) calc(var(--size) * ${orientationOffset})`,
+					'--backgroundUrl': `url(npcs/NPC_${index}.png) calc(var(--size) * ${walkingOffset}) calc(var(--size) * ${orientationOffset})`,
 				} as React.CSSProperties
 			}
 		></div>

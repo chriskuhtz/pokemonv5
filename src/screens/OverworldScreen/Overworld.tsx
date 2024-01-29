@@ -11,18 +11,9 @@ import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { Modal } from '../../ui_components/Modal/Modal';
 import { Pill } from '../../ui_components/Pill/Pill';
 
-// const tryXata = async () => {
-// 	const xata = getXataClient();
-
-// 	const record = await xata.db.accounts.getPaginated();
-// 	console.log(record);
-// };
-export const Overworld = () => {
+export const Overworld = (): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
-
-	//void tryXata();
-
 	return (
 		<>
 			<RouterButton to={RoutesEnum.menu} text={'Menu'} className="leftCorner" />
