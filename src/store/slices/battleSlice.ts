@@ -1,5 +1,5 @@
 import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../api/store';
+import { RootState } from '../store';
 
 export interface BattleSlice {
 	opponentIds?: string[];
@@ -28,13 +28,13 @@ export const battleSlice = createSlice({
 export const { initiateBattleSlice, resetBattleSlice } = battleSlice.actions;
 
 export const selectOpponentIds = (rootState: RootState): string[] => {
-	return rootState.battleSlice.opponentIds ?? [];
+	return rootState.battle.opponentIds ?? [];
 };
 export const selectAllyId = (rootState: RootState): string | undefined => {
-	return rootState.battleSlice.allyId;
+	return rootState.battle.allyId;
 };
 export const selectPlayerId = (rootState: RootState): string | undefined => {
-	return rootState.battleSlice.playerId;
+	return rootState.battle.playerId;
 };
 
 export const selectAllTrainerIds = createSelector(

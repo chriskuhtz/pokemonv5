@@ -8,7 +8,8 @@ import { Headline } from '../../components/Headline/Headline';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { getUserName } from '../../functions/getUserName';
-import { OwnedPokemon } from '../../interfaces/SaveFile';
+
+import { OwnedPokemon } from '../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../router/router';
 import { IconWithTag } from '../../shared/components/IconWithTag/IconWithTag';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';

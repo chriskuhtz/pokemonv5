@@ -14,15 +14,13 @@ import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import { SpriteSelection } from './components/SpriteSelection';
-import { PARTIAL_SAVE_FILE } from './constants/PartialSaveFile';
 
 export const NewGameProcess = (): JSX.Element => {
 	const currentOrientation = useRotate();
 	const { data, isFetching, isError } = useGetAllSaveFilesQuery();
 	const navigate = useNavigate();
 	const [postSaveFile] = usePostSaveFileMutation();
-	const [newSaveFile, setNewSaveFile] =
-		useState<Partial<SaveFile>>(PARTIAL_SAVE_FILE);
+	const [newSaveFile, setNewSaveFile] = useState<Partial<SaveFile>>({});
 	const [nameError, setNameError] = useState<boolean>(false);
 	const [spriteError, setSpriteError] = useState<boolean>(false);
 

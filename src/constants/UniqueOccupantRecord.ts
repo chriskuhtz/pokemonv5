@@ -1,5 +1,5 @@
 import { QuestsEnum } from '../interfaces/Quest';
-import { Occupant } from '../screens/OverWorldScreen/interfaces/Occupants/Occupant';
+import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
 //every occupant that can be handled should be unique
 export enum UniqueOccupantIds {
@@ -18,9 +18,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-oak-before-selection',
 		type: 'NPC',
 		position: {
-			position: { y: 2, x: 4 },
-			currentMapId: 'starter-town',
-			orientation: 'Down',
+			y: 2,
+			x: 4,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		dialogue: [
 			'Hello',
@@ -40,9 +41,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-oak-during-selection',
 		type: 'NPC',
 		position: {
-			position: { y: 2, x: 4 },
-			currentMapId: 'starter-town',
-			orientation: 'Down',
+			y: 2,
+			x: 4,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		dialogue: [
 			'Choosing the right Pokemon Partner is important',
@@ -55,9 +57,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-oak-after-selection',
 		type: 'NPC',
 		position: {
-			position: { y: 2, x: 4 },
-			currentMapId: 'starter-town',
-			orientation: 'Down',
+			y: 2,
+			x: 4,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		dialogue: [
 			'Aah, what an excellent choice',
@@ -74,9 +77,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-nurse-quest',
 		type: 'NPC',
 		position: {
-			position: { y: 5, x: 8 },
-			currentMapId: 'starter-town',
-			orientation: 'Left',
+			y: 5,
+			x: 8,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		dialogue: [
 			'Welcome to the world of Pokemon',
@@ -94,9 +98,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-merchant',
 		type: 'MERCHANT',
 		position: {
-			position: { y: 4, x: 8 },
-			currentMapId: 'starter-town',
-			orientation: 'Left',
+			y: 4,
+			x: 8,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		inventory: { potion: 100, 'poke-ball': 100, repel: 100 },
 		dialogue: ['What do you need?'],
@@ -106,9 +111,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-nurse',
 		type: 'HEALER',
 		position: {
-			position: { y: 5, x: 8 },
-			currentMapId: 'starter-town',
-			orientation: 'Left',
+			y: 5,
+			x: 8,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		sprite: '115',
 		questCondition: { id: QuestsEnum.talkToNurseJoy, status: 'completed' },
@@ -117,9 +123,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-ballMachine',
 		type: 'LARGE_OBSTACLE',
 		position: {
-			position: { y: 2, x: 5 },
-			currentMapId: 'starter-town',
-			orientation: 'Left',
+			y: 2,
+			x: 5,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		sprite: 'pokeballMachine',
 		height: 3,
@@ -138,9 +145,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-grass-blocker',
 		type: 'QUEST_CHECK',
 		position: {
-			position: { y: 8, x: 4 },
-			currentMapId: 'starter-town',
-			orientation: 'Left',
+			y: 8,
+			x: 4,
+			mapId: 'starter-town',
+			orientation: 0,
 		},
 		questCheck: {
 			id: QuestsEnum.pickStarter,

@@ -63,7 +63,7 @@ export const TalkToNurseJoyQuest: Quest = {
 	rewardItems: generateInventory({ potion: 5 }),
 	condition: {
 		type: 'HANDLED_OCCUPANT',
-		id: 'starter-town-nurse-quest',
+		id: UniqueOccupantIds['starter-town-nurse-quest'],
 	},
 };
 

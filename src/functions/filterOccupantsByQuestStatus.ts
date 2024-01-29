@@ -1,5 +1,5 @@
 import { SaveFile } from '../interfaces/SaveFile';
-import { Occupant } from '../screens/OverWorldScreen/interfaces/Occupants/Occupant';
+import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { checkQuestCondition } from './checkQuestCondition';
 
 export const filterOccupantsByQuestStatus = (

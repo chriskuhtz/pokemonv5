@@ -11,8 +11,9 @@ import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
 import { OwnedPokemon } from '../interfaces/OwnedPokemon';
 import { QuestRecord, QuestsEnum } from '../interfaces/Quest';
-import { OverworldPosition, SaveFile } from '../interfaces/SaveFile';
-import { PortalEvent } from '../screens/OverWorldScreen/interfaces/OverworldEvent';
+import { SaveFile } from '../interfaces/SaveFile';
+import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
+import { CharacterPosition } from '../store/slices/PlayerCharacterSlice';
 
 export const useSaveGame = () => {
 	const userName = getUserName();
@@ -31,7 +32,7 @@ export const useSaveGame = () => {
 			handledOccupants,
 			fundsUpdate,
 		}: {
-			currentPosition?: OverworldPosition;
+			currentPosition?: CharacterPosition;
 			inventoryChanges?: Partial<Inventory>;
 			portalEvent?: PortalEvent;
 			questUpdates?: Partial<SaveFile['quests']>;
@@ -50,7 +51,7 @@ export const useSaveGame = () => {
 				? joinInventories(data.inventory, inventoryChanges)
 				: data.inventory;
 			const updatedPosition =
-				portalEvent?.to ?? currentPosition ?? data.overworldPosition;
+				portalEvent?.to ?? currentPosition ?? data.position;
 
 			let updatedPokemon = pokemonUpdates
 				? data.pokemon
@@ -89,7 +90,7 @@ export const useSaveGame = () => {
 			void save({
 				...updatedData,
 				inventory: updatedInventory,
-				overworldPosition: updatedPosition,
+				position: updatedPosition,
 				quests: { ...data.quests, ...questUpdates },
 				handledOccupants: { ...data.handledOccupants, ...handledOccupants },
 				pokemon: updatedPokemon,
