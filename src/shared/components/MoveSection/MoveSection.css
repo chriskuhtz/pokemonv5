@@ -1,0 +1,15 @@
+.moveSection {
+	padding: 0 2rem;
+	@media (max-aspect-ratio: 1/1) {
+		padding: 0 1rem;
+	}
+}
+
+.movesGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+	@media (max-aspect-ratio: 1/1) {
+		grid-template-columns: 1frs;
+	}
+}

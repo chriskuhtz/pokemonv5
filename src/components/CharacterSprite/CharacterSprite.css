@@ -1,0 +1,6 @@
+.characterSprite {
+	height: calc(var(--size) * 1.5);
+	width: calc(var(--size) * 1.5);
+	background: var(--backgroundUrl);
+	background-size: calc(var(--size) * 6) calc(var(--size) * 6);
+}
