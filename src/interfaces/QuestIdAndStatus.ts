@@ -1,6 +1,6 @@
-import { QuestsEnum, QuestStatus } from './Quest';
+import { QuestName, QuestStatus } from './Quest';
 
 export interface QuestIdAndStatus {
-	id: QuestsEnum;
+	id: QuestName;
 	status: QuestStatus;
 }

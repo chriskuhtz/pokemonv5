@@ -10,7 +10,7 @@ import { joinInventories } from '../functions/joinInventories';
 import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
 import { OwnedPokemon } from '../interfaces/OwnedPokemon';
-import { QuestRecord, QuestsEnum } from '../interfaces/Quest';
+import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { CharacterPosition } from '../store/slices/PlayerCharacterSlice';
@@ -77,7 +77,7 @@ export const useSaveGame = () => {
 			Object.entries(questUpdates ?? {}).forEach((entry) => {
 				const [id, status] = entry;
 				if (status === 'completed') {
-					const quest = QuestRecord[id as QuestsEnum];
+					const quest = QuestRecord[id as QuestName];
 					updatedMoney += quest.rewardMoney ?? 0;
 
 					updatedInventory = joinInventories(

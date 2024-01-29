@@ -2,7 +2,7 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useMemo } from 'react';
 import { useGetSaveFileQuery } from '../api/saveFileApi';
 import { getUserName } from '../functions/getUserName';
-import { QuestRecord, QuestsEnum } from '../interfaces/Quest';
+import { QuestName, QuestRecord, questNames } from '../interfaces/Quest';
 import { useIsConditionFulfilled } from './useIsConditionFulfilled';
 
 export const useHasUnclaimedQuests = () => {
@@ -16,8 +16,8 @@ export const useHasUnclaimedQuests = () => {
 				saveFile &&
 				Object.entries(saveFile.quests).find((questEntry) => {
 					const [id, status] = questEntry;
-					if (id in QuestsEnum) {
-						const quest = QuestRecord[id as QuestsEnum];
+					if (id in questNames) {
+						const quest = QuestRecord[id as QuestName];
 						return status === 'active' && isConditionFulfilled(quest.condition);
 					}
 				})
