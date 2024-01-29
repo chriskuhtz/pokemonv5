@@ -28,7 +28,7 @@ export type Condition =
 export type QuestStatus = 'inactive' | 'active' | 'completed';
 export interface Quest {
 	status: QuestStatus;
-	id: QuestsEnum;
+	id: QuestName;
 	title: string;
 	description: string;
 	rewardMoney?: number;
@@ -36,14 +36,13 @@ export interface Quest {
 	condition: Condition;
 }
 
-export enum QuestsEnum {
-	pickStarter = 'pickStarter',
-	talkToNurseJoy = 'talkToNurseJoy',
-}
+export const questNames = ['pickStarter', 'talkToNurseJoy'] as const;
+
+export type QuestName = (typeof questNames)[number];
 
 export const PickStarterQuest: Quest = {
 	status: 'inactive',
-	id: QuestsEnum.pickStarter,
+	id: 'pickStarter',
 	title: 'Pick a Starter Pokemon',
 	description: 'Every Trainer must choose a Starter Pokemon.',
 	rewardMoney: 1000,
@@ -56,18 +55,18 @@ export const PickStarterQuest: Quest = {
 };
 export const TalkToNurseJoyQuest: Quest = {
 	status: 'inactive',
-	id: QuestsEnum.talkToNurseJoy,
+	id: 'talkToNurseJoy',
 	title: 'Speak with Nurse Joy',
 	description: 'Take your Pokemon to her if they are hurt.',
 	rewardMoney: 100,
 	rewardItems: generateInventory({ potion: 5 }),
 	condition: {
 		type: 'HANDLED_OCCUPANT',
-		id: UniqueOccupantIds['starter-town-nurse-quest'],
+		id: 'starter-town-nurse-quest',
 	},
 };
 
-export const QuestRecord: Record<QuestsEnum, Quest> = {
+export const QuestRecord: Record<QuestName, Quest> = {
 	pickStarter: PickStarterQuest,
 	talkToNurseJoy: TalkToNurseJoyQuest,
 };

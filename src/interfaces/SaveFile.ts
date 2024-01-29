@@ -3,7 +3,7 @@ import { CharacterPosition } from '../store/slices/PlayerCharacterSlice';
 import { DexEntry } from './DexEntry';
 import { Inventory } from './Inventory';
 import { OwnedPokemon } from './OwnedPokemon';
-import { QuestsEnum, QuestStatus } from './Quest';
+import { QuestName, QuestStatus } from './Quest';
 
 export interface SaveFile {
 	username: string;
@@ -15,5 +15,5 @@ export interface SaveFile {
 	money: number;
 	pokemon: OwnedPokemon[];
 	pokedex: DexEntry[];
-	quests: Record<QuestsEnum, QuestStatus>;
+	quests: Record<QuestName, QuestStatus>;
 }

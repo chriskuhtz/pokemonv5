@@ -1,17 +1,15 @@
-import { QuestsEnum } from '../interfaces/Quest';
 import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
 //every occupant that can be handled should be unique
-export enum UniqueOccupantIds {
-	'starter-town-oak-before-selection' = 'starter-town-oak-before-selection',
-	'starter-town-oak-during-selection' = 'starter-town-oak-during-selection',
-	'starter-town-oak-after-selection' = 'starter-town-oak-after-selection',
-	'starter-town-nurse-quest' = 'starter-town-nurse-quest',
-	'starter-town-merchant' = 'starter-town-merchant',
-	'starter-town-nurse' = 'starter-town-nurse',
-	'starter-town-ballMachine' = 'starter-town-ballMachine',
-	'starter-town-grass-blocker' = 'starter-town-grass-blocker',
-}
+export type UniqueOccupantIds =
+	| 'starter-town-oak-before-selection'
+	| 'starter-town-oak-during-selection'
+	| 'starter-town-oak-after-selection'
+	| 'starter-town-nurse-quest'
+	| 'starter-town-merchant'
+	| 'starter-town-nurse'
+	| 'starter-town-ballMachine'
+	| 'starter-town-grass-blocker';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'starter-town-oak-before-selection': {
@@ -32,10 +30,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		sprite: '136',
 		questUpdates: {
-			[QuestsEnum.talkToNurseJoy]: 'active',
-			[QuestsEnum.pickStarter]: 'active',
+			talkToNurseJoy: 'active',
+			pickStarter: 'active',
 		},
-		questCondition: { id: QuestsEnum.pickStarter, status: 'inactive' },
+		questCondition: { id: 'pickStarter', status: 'inactive' },
 	},
 	'starter-town-oak-during-selection': {
 		id: 'starter-town-oak-during-selection',
@@ -51,7 +49,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			'Consider your choices carefully',
 		],
 		sprite: '136',
-		questCondition: { id: QuestsEnum.pickStarter, status: 'active' },
+		questCondition: { id: 'pickStarter', status: 'active' },
 	},
 	'starter-town-oak-after-selection': {
 		id: 'starter-town-oak-after-selection',
@@ -69,7 +67,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		sprite: '136',
 		questCondition: {
-			id: QuestsEnum.pickStarter,
+			id: 'pickStarter',
 			status: 'completed',
 		},
 	},
@@ -89,10 +87,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			'Use them for first aid in the field',
 		],
 		questUpdates: {
-			[QuestsEnum.talkToNurseJoy]: 'completed',
+			talkToNurseJoy: 'completed',
 		},
 		sprite: '115',
-		questCondition: { id: QuestsEnum.talkToNurseJoy, status: 'active' },
+		questCondition: { id: 'talkToNurseJoy', status: 'active' },
 	},
 	'starter-town-merchant': {
 		id: 'starter-town-merchant',
@@ -117,7 +115,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 0,
 		},
 		sprite: '115',
-		questCondition: { id: QuestsEnum.talkToNurseJoy, status: 'completed' },
+		questCondition: { id: 'talkToNurseJoy', status: 'completed' },
 	},
 	'starter-town-ballMachine': {
 		id: 'starter-town-ballMachine',
@@ -136,7 +134,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			type: 'ROUTE',
 			to: '/starterSelection',
 			questCondition: {
-				id: QuestsEnum.pickStarter,
+				id: 'pickStarter',
 				status: 'active',
 			},
 		},
@@ -151,7 +149,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 0,
 		},
 		questCheck: {
-			id: QuestsEnum.pickStarter,
+			id: 'pickStarter',
 			status: 'completed',
 		},
 	},

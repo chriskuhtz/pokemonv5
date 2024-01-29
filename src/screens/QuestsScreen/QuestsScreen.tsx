@@ -6,7 +6,7 @@ import { Headline, HeadlineProps } from '../../components/Headline/Headline';
 import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
 import { getUserName } from '../../functions/getUserName';
 import { useHasUnclaimedQuests } from '../../hooks/useHasUnclaimedQuests';
-import { QuestRecord, QuestsEnum } from '../../interfaces/Quest';
+import { QuestName, QuestRecord } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
@@ -49,7 +49,7 @@ export const QuestsScreen = ({
 							const key = questEntry[0];
 							const status = questEntry[1];
 							if (key in QuestsEnum) {
-								const quest = { ...QuestRecord[key as QuestsEnum], status };
+								const quest = { ...QuestRecord[key as QuestName], status };
 								return <QuestListItem quest={quest} key={key} />;
 							}
 						})}
