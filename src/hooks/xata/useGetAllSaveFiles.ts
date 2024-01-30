@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
+import { v4 } from 'uuid';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { getXataClient } from './xataClient';
 
 export const staticSaveData: SaveFile = {
+	id: v4(),
 	username: 'generic username',
 	position: {
 		x: 0,
@@ -31,10 +33,11 @@ export const staticSaveData: SaveFile = {
 export const useGetAllSaveFiles = () => {
 	const [isFetching, setFetching] = useState<boolean>(false);
 	const [isError, setError] = useState<boolean>(false);
+	const [isSuccess, setSuccess] = useState<boolean>(false);
 	const [saveFiles, setSaveFiles] = useState<SaveFile[]>([]);
 
 	const getAllSaveFiles = useCallback(async () => {
-		if (isFetching || saveFiles.length > 0) {
+		if (isFetching || isSuccess) {
 			return;
 		}
 		setFetching(true);
@@ -47,8 +50,9 @@ export const useGetAllSaveFiles = () => {
 			return;
 		}
 		setSaveFiles(records.map((r) => r.saveFile));
+		setSuccess(true);
 		setFetching(false);
-	}, [isFetching, saveFiles]);
+	}, [isFetching, isSuccess]);
 	useEffect(() => void getAllSaveFiles(), [getAllSaveFiles]);
-	return { isFetching, saveFiles, isError };
+	return { isFetching, saveFiles, isError, isSuccess };
 };

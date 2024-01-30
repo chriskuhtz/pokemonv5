@@ -14,7 +14,7 @@ export const usePostSaveFile = () => {
 			}
 			setFetching(true);
 			const xata = getXataClient();
-			await xata.db.saveFiles.create(newSaveFile);
+			await xata.db.saveFiles.createOrReplace(newSaveFile);
 			setFetching(false);
 		},
 		[isFetching]

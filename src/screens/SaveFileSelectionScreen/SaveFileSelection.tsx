@@ -12,7 +12,7 @@ import { SaveFileOptions } from './components/SaveFileOptions';
 export const SaveFileSelection = (): JSX.Element => {
 	const navigate = useNavigate();
 
-	const { isFetching, saveFiles, isError } = useGetAllSaveFiles();
+	const { isFetching, saveFiles, isError, isSuccess } = useGetAllSaveFiles();
 
 	const selectSaveFile = useCallback(
 		(x: string) => {
@@ -25,7 +25,7 @@ export const SaveFileSelection = (): JSX.Element => {
 	if (isFetching) {
 		return <FetchingScreen />;
 	}
-	if (saveFiles.length > 0) {
+	if (isSuccess) {
 		return (
 			<div className={'container'}>
 				<SaveFileOptions
