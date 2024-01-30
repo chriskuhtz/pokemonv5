@@ -13,7 +13,7 @@ export const useCreateOrUpdateSaveFile = () => {
 			}
 			setFetching(true);
 			const xata = getXataClient();
-			await xata.db.saveFiles.createOrReplace(newSaveFile);
+			await xata.db.saveFiles.createOrReplace({ saveFile: newSaveFile });
 			setFetching(false);
 		},
 		[isFetching]
