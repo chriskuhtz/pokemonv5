@@ -1,14 +1,12 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useMemo } from 'react';
-import { useGetSaveFileQuery } from '../api/saveFileApi';
-import { getUserName } from '../functions/getUserName';
 import { QuestName, QuestRecord, questNames } from '../interfaces/Quest';
+import { selectSaveFile } from '../store/slices/saveFileSlice';
+import { useAppSelector } from '../store/storeHooks';
 import { useIsConditionFulfilled } from './useIsConditionFulfilled';
 
 export const useHasUnclaimedQuests = () => {
 	const isConditionFulfilled = useIsConditionFulfilled();
-	const username = getUserName();
-	const { data: saveFile } = useGetSaveFileQuery(username ?? skipToken);
+	const saveFile = useAppSelector(selectSaveFile);
 
 	return useMemo<boolean>(
 		() =>

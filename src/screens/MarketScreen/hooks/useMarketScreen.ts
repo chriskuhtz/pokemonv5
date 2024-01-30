@@ -1,20 +1,17 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetItemDataByNameQuery } from '../../../api/pokeApi';
-import { useGetSaveFileQuery } from '../../../api/saveFileApi';
-import { getUserName } from '../../../functions/getUserName';
+
 import { joinInventories } from '../../../functions/joinInventories';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { Inventory, generateInventory } from '../../../interfaces/Inventory';
 import { ItemName } from '../../../interfaces/Item';
 import { ItemData } from '../../../shared/interfaces/ItemData';
+import { selectSaveFile } from '../../../store/slices/saveFileSlice';
+import { useAppSelector } from '../../../store/storeHooks';
 
 export const useMarketScreen = () => {
-	const username = getUserName();
-	const { data, isError, isFetching } = useGetSaveFileQuery(
-		username ?? skipToken
-	);
+	const data = useAppSelector(selectSaveFile);
 	const [getItemData] = useLazyGetItemDataByNameQuery();
 	const save = useSaveGame();
 	const { state } = useLocation();
@@ -71,8 +68,6 @@ export const useMarketScreen = () => {
 		removeFromCart,
 		totalCost,
 		purchase,
-		isError,
-		isFetching,
 		hydratedInventory,
 		cart,
 		data,

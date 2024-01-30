@@ -1,17 +1,11 @@
-import { skipToken } from '@reduxjs/toolkit/query';
-import { useGetSaveFileQuery } from '../../api/saveFileApi';
 import { Headline } from '../../components/Headline/Headline';
 import { Trainercard } from '../../components/Trainercard/Trainercard';
-import { getUserName } from '../../functions/getUserName';
 import { RoutesEnum } from '../../router/router';
-import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
-import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
+import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppSelector } from '../../store/storeHooks';
 
 export const PlayerCardScreen = (): JSX.Element => {
-	const username = getUserName();
-	const { data, isError, isFetching } = useGetSaveFileQuery(
-		username ?? skipToken
-	);
+	const data = useAppSelector(selectSaveFile);
 
 	return (
 		<div className="container">
@@ -19,8 +13,7 @@ export const PlayerCardScreen = (): JSX.Element => {
 				text={'Trainercard'}
 				routerButtonProps={{ to: RoutesEnum.menu, text: 'Menu' }}
 			/>
-			{isError && <ErrorScreen />}
-			{isFetching && <FetchingScreen />}
+
 			{data && (
 				<div
 					style={{

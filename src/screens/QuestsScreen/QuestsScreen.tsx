@@ -1,15 +1,12 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetSaveFileQuery } from '../../api/saveFileApi';
 import { Headline, HeadlineProps } from '../../components/Headline/Headline';
 import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
-import { getUserName } from '../../functions/getUserName';
 import { useHasUnclaimedQuests } from '../../hooks/useHasUnclaimedQuests';
 import { QuestName, QuestRecord, questNames } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
-import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
-import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
+import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppSelector } from '../../store/storeHooks';
 
 export const QuestsScreen = ({
 	headlineProps,
@@ -18,11 +15,8 @@ export const QuestsScreen = ({
 	headlineProps: HeadlineProps;
 	routeAwayAfterAllClaimed?: { to: RoutesEnum };
 }): JSX.Element => {
-	const username = getUserName();
 	const navigate = useNavigate();
-	const { data, isError, isFetching } = useGetSaveFileQuery(
-		username ?? skipToken
-	);
+	const data = useAppSelector(selectSaveFile);
 	const hasUnclaimedQuests = useHasUnclaimedQuests();
 
 	useEffect(() => {
@@ -39,8 +33,6 @@ export const QuestsScreen = ({
 				style={headlineProps.style}
 				className={headlineProps.className}
 			/>
-			{isError && <ErrorScreen />}
-			{isFetching && <FetchingScreen />}
 			{data && (
 				<div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
 					{Object.entries(data.quests)

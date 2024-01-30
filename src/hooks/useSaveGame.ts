@@ -1,11 +1,5 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback } from 'react';
-import {
-	useGetSaveFileQuery,
-	usePutSaveFileMutation,
-} from '../api/saveFileApi';
 import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
-import { getUserName } from '../functions/getUserName';
 import { joinInventories } from '../functions/joinInventories';
 import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
@@ -14,11 +8,13 @@ import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { CharacterPosition } from '../store/slices/PlayerCharacterSlice';
+import { selectSaveFile } from '../store/slices/saveFileSlice';
+import { useAppSelector } from '../store/storeHooks';
+import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
 
 export const useSaveGame = () => {
-	const userName = getUserName();
-	const { data } = useGetSaveFileQuery(userName ?? skipToken);
-	const [save] = usePutSaveFileMutation();
+	const data = useAppSelector(selectSaveFile);
+	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
 
 	return useCallback(
 		({
@@ -87,7 +83,7 @@ export const useSaveGame = () => {
 				}
 			});
 
-			void save({
+			void createOrUpdateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
 				position: updatedPosition,
@@ -98,6 +94,6 @@ export const useSaveGame = () => {
 				money: updatedMoney,
 			});
 		},
-		[data, save]
+		[createOrUpdateSaveFile, data]
 	);
 };

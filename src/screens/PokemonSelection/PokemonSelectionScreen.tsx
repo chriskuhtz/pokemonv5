@@ -1,14 +1,12 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { useGetSaveFileQuery } from '../../api/saveFileApi';
 import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
-import { getUserName } from '../../functions/getUserName';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { Quest } from '../../interfaces/Quest';
+import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppSelector } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
-import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 
 export const PokemonSelectionScreen = ({
 	choices,
@@ -19,14 +17,9 @@ export const PokemonSelectionScreen = ({
 	headline: string;
 	quest?: Quest;
 }): JSX.Element => {
-	const username = getUserName();
-	const { data, isFetching } = useGetSaveFileQuery(username ?? skipToken);
+	const data = useAppSelector(selectSaveFile);
 	const save = useSaveGame();
 	const navigate = useNavigate();
-
-	if (isFetching) {
-		return <FetchingScreen />;
-	}
 
 	if (data) {
 		return (

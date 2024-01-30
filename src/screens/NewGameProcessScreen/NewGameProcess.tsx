@@ -38,7 +38,7 @@ export const NewGameProcess = (): JSX.Element => {
 			return;
 		}
 		if (isValidSaveFile(newSaveFile)) {
-			await createOrUpdateSaveFile({ saveFile: newSaveFile });
+			await createOrUpdateSaveFile(newSaveFile);
 			dispatch(setSaveFile(newSaveFile));
 			navigate(RoutesEnum.overworld);
 		}

@@ -1,7 +1,6 @@
 import { Headline } from '../../components/Headline/Headline';
 import { RoutesEnum } from '../../router/router';
 import { FetchingPill } from '../../ui_components/FetchingPill/FetchingPill';
-import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import './MarketScreen.css';
 import { Cart } from './components/Cart/Cart';
 import { HydratedInventory } from './components/HydratedInventory/HydratedInventory';
@@ -13,8 +12,6 @@ export const MarketScreen = (): JSX.Element => {
 		removeFromCart,
 		totalCost,
 		purchase,
-		isError,
-		isFetching,
 		hydratedInventory,
 		cart,
 		data,
@@ -26,14 +23,6 @@ export const MarketScreen = (): JSX.Element => {
 				text={'Market'}
 				routerButtonProps={{ to: RoutesEnum.overworld, text: 'Overworld' }}
 			/>
-			{isError && <ErrorScreen />}
-			{isFetching && (
-				<>
-					<FetchingPill />
-					<FetchingPill />
-					<FetchingPill />
-				</>
-			)}
 			{data && (
 				<div className="marketScreen">
 					<div>

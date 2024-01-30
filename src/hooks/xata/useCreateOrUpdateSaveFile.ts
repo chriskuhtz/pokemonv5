@@ -1,6 +1,5 @@
-import { EditableData } from '@xata.io/client';
 import { useCallback, useState } from 'react';
-import { SaveFilesRecord } from '../../xata';
+import { SaveFile } from '../../interfaces/SaveFile';
 import { getXataClient } from './xataClient';
 
 export const useCreateOrUpdateSaveFile = () => {
@@ -8,7 +7,7 @@ export const useCreateOrUpdateSaveFile = () => {
 	const [isError] = useState<boolean>(false);
 
 	const createOrUpdateSaveFile = useCallback(
-		async (newSaveFile: Omit<EditableData<SaveFilesRecord>, 'id'>) => {
+		async (newSaveFile: SaveFile) => {
 			if (isFetching) {
 				return;
 			}

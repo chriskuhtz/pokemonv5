@@ -1,26 +1,18 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-	useGetSaveFileQuery,
-	usePutSaveFileMutation,
-} from '../../api/saveFileApi';
 import { Headline } from '../../components/Headline/Headline';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
-import { getUserName } from '../../functions/getUserName';
 
+import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
 import { OwnedPokemon } from '../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../router/router';
 import { IconWithTag } from '../../shared/components/IconWithTag/IconWithTag';
-import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
-import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
+import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppSelector } from '../../store/storeHooks';
 
 export const StorageScreen = (): JSX.Element => {
-	const username = getUserName();
-	const { data, isError, isFetching } = useGetSaveFileQuery(
-		username ?? skipToken
-	);
-	const [putSaveFile] = usePutSaveFileMutation();
+	const data = useAppSelector(selectSaveFile);
+	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
 
 	const [ownedPokemon, setOwnedPokemon] = useState<OwnedPokemon[]>([]);
 
@@ -70,12 +62,12 @@ export const StorageScreen = (): JSX.Element => {
 					to: RoutesEnum.menu,
 					text: 'Menu',
 					sideEffect: () => {
-						if (data) void putSaveFile({ ...data, pokemon: ownedPokemon });
+						if (data)
+							void createOrUpdateSaveFile({ ...data, pokemon: ownedPokemon });
 					},
 				}}
 			/>
-			{isError && <ErrorScreen />}
-			{isFetching && <FetchingScreen />}
+
 			{ownedPokemon && (
 				<div>
 					<h2>Team:</h2>

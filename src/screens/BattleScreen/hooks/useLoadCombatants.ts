@@ -1,21 +1,19 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
-import { useGetSaveFileQuery } from '../../../api/saveFileApi';
-import { getUserName } from '../../../functions/getUserName';
 import { Combatant } from '../../../interfaces/Combatant';
 import { PokemonData } from '../../../shared/interfaces/PokemonData';
 import { OPPOID } from '../../../testing/constants/trainerIds';
 import { pokemonGenerator } from '../../../testing/generators/pokemonGenerator';
+import { selectSaveFile } from '../../../store/slices/saveFileSlice';
+import { useAppSelector } from '../../../store/storeHooks';
 
 export const useLoadCombatants = (): Combatant[] | undefined => {
 	const location = useLocation();
 	const encounterIds = location.state as number[];
+	const data = useAppSelector(selectSaveFile);
 
-	const username = getUserName();
-	const { data } = useGetSaveFileQuery(username ?? skipToken);
 	const teamMembers = useMemo(() => {
 		return data?.pokemon.filter((p) => p.onTeam);
 	}, [data]);

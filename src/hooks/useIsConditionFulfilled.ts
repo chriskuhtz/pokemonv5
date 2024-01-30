@@ -1,10 +1,9 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback } from 'react';
-import { useGetSaveFileQuery } from '../api/saveFileApi';
-import { getUserName } from '../functions/getUserName';
 import { isOwnedPokemonConditionFulfilled } from '../functions/isOwnedPokemonQuestFulfilled';
 import { Condition } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
+import { selectSaveFile } from '../store/slices/saveFileSlice';
+import { useAppSelector } from '../store/storeHooks';
 
 export const isHandledOccupantConditionFulfilled = (
 	condition: Condition,
@@ -18,8 +17,7 @@ export const isHandledOccupantConditionFulfilled = (
 	return saveFile.handledOccupants[id];
 };
 export const useIsConditionFulfilled = () => {
-	const username = getUserName();
-	const { data } = useGetSaveFileQuery(username ?? skipToken);
+	const data = useAppSelector(selectSaveFile);
 
 	return useCallback(
 		(condition: Condition) => {
