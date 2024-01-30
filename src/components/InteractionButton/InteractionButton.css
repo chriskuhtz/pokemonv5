@@ -4,6 +4,4 @@
 	left: 0;
 	margin: 0 0 2rem 2rem;
 	z-index: var(--BUTTONS_INDEX);
-	-webkit-user-select: none; /* Safari */
-	user-select: none;
 }

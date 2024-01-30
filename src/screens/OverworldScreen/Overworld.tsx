@@ -16,7 +16,13 @@ export const Overworld = (): JSX.Element => {
 	const dispatch = useAppDispatch();
 	return (
 		<>
-			<RouterButton to={RoutesEnum.menu} text={'Menu'} className="leftCorner" />
+			{currentDialogue.length === 0 && (
+				<RouterButton
+					to={RoutesEnum.menu}
+					text={'Menu'}
+					className="leftCorner"
+				/>
+			)}
 			<MovementButtonGroup />
 			<InteractionButton />
 			<OverworldCanvas />

@@ -8,8 +8,6 @@
 	gap: 1rem;
 	padding: 0 2rem 2rem 0;
 	z-index: var(--BUTTONS_INDEX);
-	-webkit-user-select: none; /* Safari */
-	user-select: none;
 }
 
 .middleButtons {

@@ -11,6 +11,8 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	-webkit-user-select: none; /* Safari */
+	user-select: none;
 	/* z indexes */
 	--PLAYER_CANVAS_INDEX: 2;
 	--OVERWORLD_CANVAS_INDEX: 1;
