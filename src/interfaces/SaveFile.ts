@@ -9,7 +9,6 @@ export interface SaveFile {
 	username: string;
 	position: CharacterPosition;
 	sprite: string;
-	id: string;
 	handledOccupants: Record<UniqueOccupantIds, boolean>;
 	inventory: Inventory;
 	money: number;

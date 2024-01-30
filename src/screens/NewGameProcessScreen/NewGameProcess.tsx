@@ -36,7 +36,7 @@ export const NewGameProcess = (): JSX.Element => {
 			return;
 		}
 		if (isValidSaveFile(newSaveFile)) {
-			await postSaveFile({ ...newSaveFile, password: 'noPasswordSet' });
+			await postSaveFile({ saveFile: newSaveFile });
 			setUserName(newSaveFile.username);
 			navigate(RoutesEnum.overworld);
 		}

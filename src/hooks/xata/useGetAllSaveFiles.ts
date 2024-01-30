@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { v4 } from 'uuid';
 import { SaveFile } from '../../interfaces/SaveFile';
-import { getXataClient } from '../../xata';
+import { getXataClient } from './xataClient';
 
 export const staticSaveData: SaveFile = {
 	username: 'generic username',
@@ -12,7 +11,6 @@ export const staticSaveData: SaveFile = {
 		mapId: 'testMap',
 		orientation: 0,
 	},
-	id: v4(),
 	sprite: '135',
 	quests: { pickStarter: 'inactive', talkToNurseJoy: 'inactive' },
 	handledOccupants: {
@@ -41,22 +39,14 @@ export const useGetAllSaveFiles = () => {
 		}
 		setFetching(true);
 		const xata = getXataClient();
-		const { records } = await xata.db.accounts.getPaginated();
+		const { records } = await xata.db.saveFiles.getPaginated();
 		console.log(records);
 		if (!records) {
 			setFetching(false);
 			setError(true);
 			return;
 		}
-		setSaveFiles(
-			records.map((r) => {
-				return {
-					...staticSaveData,
-					username: r.username ?? staticSaveData.username,
-					sprite: r.sprite ?? staticSaveData.sprite,
-				};
-			})
-		);
+		setSaveFiles(records.map((r) => r.saveFile));
 		setFetching(false);
 	}, [isFetching, saveFiles]);
 	useEffect(() => void getAllSaveFiles(), [getAllSaveFiles]);
