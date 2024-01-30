@@ -50,7 +50,11 @@ export const useGetAllSaveFiles = () => {
 		}
 		setSaveFiles(
 			records.map((r) => {
-				return { ...r, ...staticSaveData };
+				return {
+					...staticSaveData,
+					username: r.username ?? staticSaveData.username,
+					sprite: r.sprite ?? staticSaveData.sprite,
+				};
 			})
 		);
 		setFetching(false);
