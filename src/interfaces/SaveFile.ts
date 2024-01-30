@@ -15,5 +15,5 @@ export interface SaveFile {
 	pokemon: OwnedPokemon[];
 	pokedex: DexEntry[];
 	quests: Record<QuestName, QuestStatus>;
-	id: string;
+	playerId: string;
 }

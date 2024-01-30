@@ -21,7 +21,7 @@ export const BattleScreen = (): JSX.Element => {
 			<BattleScreenErrorHandler
 				initialCombatants={combatants}
 				opponentIds={[OPPOID]}
-				playerId={data.id}
+				playerId={data.playerId}
 				allyId={TRAINERID}
 			/>
 		);

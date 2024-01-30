@@ -4,10 +4,10 @@ import { v4 } from 'uuid';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { Combatant } from '../../../interfaces/Combatant';
 import { PokemonData } from '../../../shared/interfaces/PokemonData';
-import { OPPOID } from '../../../testing/constants/trainerIds';
-import { pokemonGenerator } from '../../../testing/generators/pokemonGenerator';
 import { selectSaveFile } from '../../../store/slices/saveFileSlice';
 import { useAppSelector } from '../../../store/storeHooks';
+import { OPPOID } from '../../../testing/constants/trainerIds';
+import { pokemonGenerator } from '../../../testing/generators/pokemonGenerator';
 
 export const useLoadCombatants = (): Combatant[] | undefined => {
 	const location = useLocation();
@@ -63,7 +63,7 @@ export const useLoadCombatants = (): Combatant[] | undefined => {
 					pokemon: pokemonGenerator({
 						dexId: teamMember.id,
 						name: teamMember.name,
-						ownerId: data?.id ?? '',
+						ownerId: data?.playerId ?? '',
 					}),
 				};
 			}),

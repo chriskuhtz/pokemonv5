@@ -4,7 +4,7 @@ import { SaveFile } from '../../interfaces/SaveFile';
 import { getXataClient } from './xataClient';
 
 export const staticSaveData: SaveFile = {
-	id: v4(),
+	playerId: v4(),
 	username: 'generic username',
 	position: {
 		x: 0,
@@ -42,7 +42,7 @@ export const useGetAllSaveFiles = () => {
 		}
 		setFetching(true);
 		const xata = getXataClient();
-		const { records } = await xata.db.saveFiles.getPaginated();
+		const records = await xata.db.saveFiles.getMany();
 		console.log(records);
 		if (!records) {
 			setFetching(false);
