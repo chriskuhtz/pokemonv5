@@ -1,7 +1,35 @@
 import { useCallback, useEffect, useState } from 'react';
+import { v4 } from 'uuid';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { getXataClient } from '../../xata';
 
+export const staticSaveData: SaveFile = {
+	username: 'generic username',
+	position: {
+		x: 0,
+		y: 0,
+		forwardFoot: 0,
+		mapId: 'testMap',
+		orientation: 0,
+	},
+	id: v4(),
+	sprite: '135',
+	quests: { pickStarter: 'inactive', talkToNurseJoy: 'inactive' },
+	handledOccupants: {
+		'starter-town-ballMachine': false,
+		'starter-town-grass-blocker': false,
+		'starter-town-merchant': false,
+		'starter-town-nurse-quest': false,
+		'starter-town-nurse': false,
+		'starter-town-oak-after-selection': false,
+		'starter-town-oak-before-selection': false,
+		'starter-town-oak-during-selection': false,
+	},
+	pokedex: [],
+	pokemon: [],
+	money: 5000,
+	inventory: { potion: 0, repel: 0, 'poke-ball': 0 },
+};
 export const useGetAllSaveFiles = () => {
 	const [isFetching, setFetching] = useState<boolean>(false);
 	const [isError, setError] = useState<boolean>(false);
@@ -22,33 +50,7 @@ export const useGetAllSaveFiles = () => {
 		}
 		setSaveFiles(
 			records.map((r) => {
-				return {
-					username: r.username ?? '',
-					position: {
-						x: 0,
-						y: 0,
-						forwardFoot: 0,
-						mapId: 'testMap',
-						orientation: 0,
-					},
-					id: r.id,
-					sprite: r.sprite ?? '001',
-					quests: { pickStarter: 'inactive', talkToNurseJoy: 'inactive' },
-					handledOccupants: {
-						'starter-town-ballMachine': false,
-						'starter-town-grass-blocker': false,
-						'starter-town-merchant': false,
-						'starter-town-nurse-quest': false,
-						'starter-town-nurse': false,
-						'starter-town-oak-after-selection': false,
-						'starter-town-oak-before-selection': false,
-						'starter-town-oak-during-selection': false,
-					},
-					pokedex: [],
-					pokemon: [],
-					money: 5000,
-					inventory: { potion: 0, repel: 0, 'poke-ball': 0 },
-				};
+				return { ...r, ...staticSaveData };
 			})
 		);
 		setFetching(false);

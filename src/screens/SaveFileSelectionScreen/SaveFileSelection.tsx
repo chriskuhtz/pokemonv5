@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapObject } from '../../components/MapObject/MapObject';
 import { setUserName } from '../../functions/setUserName';
-import { useGetAllSaveFiles } from '../../hooks/useGetAllSaveFiles';
+import { useGetAllSaveFiles } from '../../hooks/xata/useGetAllSaveFiles';
 import { RoutesEnum } from '../../router/router';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
