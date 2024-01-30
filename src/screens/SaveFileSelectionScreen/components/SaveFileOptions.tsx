@@ -7,7 +7,7 @@ export const SaveFileOptions = ({
 	selectSaveFile,
 }: {
 	saveFiles: SaveFile[];
-	selectSaveFile: (x: string) => void;
+	selectSaveFile: (x: SaveFile) => void;
 }) => {
 	return (
 		<>
@@ -22,7 +22,7 @@ export const SaveFileOptions = ({
 							index={saveFile.sprite}
 						/>
 					}
-					onClick={() => selectSaveFile(saveFile.username)}
+					onClick={() => selectSaveFile(saveFile)}
 				/>
 			))}
 		</>

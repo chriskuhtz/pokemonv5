@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapObject } from '../../components/MapObject/MapObject';
-import { setUserName } from '../../functions/setUserName';
 import { useGetAllSaveFiles } from '../../hooks/xata/useGetAllSaveFiles';
+import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
+import { setSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppDispatch } from '../../store/storeHooks';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
@@ -11,15 +13,16 @@ import { SaveFileOptions } from './components/SaveFileOptions';
 
 export const SaveFileSelection = (): JSX.Element => {
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 
 	const { isFetching, saveFiles, isError, isSuccess } = useGetAllSaveFiles();
 
 	const selectSaveFile = useCallback(
-		(x: string) => {
-			setUserName(x);
+		(x: SaveFile) => {
+			dispatch(setSaveFile(x));
 			navigate(RoutesEnum.overworld);
 		},
-		[navigate]
+		[dispatch, navigate]
 	);
 
 	if (isFetching) {

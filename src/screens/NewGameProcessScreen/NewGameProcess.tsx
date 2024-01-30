@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CharacterSprite } from '../../components/CharacterSprite/CharacterSprite';
 import { isValidSaveFile } from '../../functions/isValidSaveFile';
-import { setUserName } from '../../functions/setUserName';
 import { useRotate } from '../../hooks/useRotate';
+import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
 import { useGetAllSaveFiles } from '../../hooks/xata/useGetAllSaveFiles';
-import { usePostSaveFile } from '../../hooks/xata/usePostSaveFile';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
+import { setSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppDispatch } from '../../store/storeHooks';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
@@ -17,7 +18,8 @@ export const NewGameProcess = (): JSX.Element => {
 	const currentOrientation = useRotate();
 	const { saveFiles: data, isFetching, isError } = useGetAllSaveFiles();
 	const navigate = useNavigate();
-	const { postSaveFile } = usePostSaveFile();
+	const dispatch = useAppDispatch();
+	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
 	const [newSaveFile, setNewSaveFile] = useState<Partial<SaveFile>>({});
 	const [nameError, setNameError] = useState<string | undefined>();
 	const [spriteError, setSpriteError] = useState<boolean>(false);
@@ -36,11 +38,11 @@ export const NewGameProcess = (): JSX.Element => {
 			return;
 		}
 		if (isValidSaveFile(newSaveFile)) {
-			await postSaveFile({ saveFile: newSaveFile });
-			setUserName(newSaveFile.username);
+			await createOrUpdateSaveFile({ saveFile: newSaveFile });
+			dispatch(setSaveFile(newSaveFile));
 			navigate(RoutesEnum.overworld);
 		}
-	}, [data, navigate, newSaveFile, postSaveFile]);
+	}, [createOrUpdateSaveFile, data, dispatch, navigate, newSaveFile]);
 
 	useEffect(() => {
 		if (
