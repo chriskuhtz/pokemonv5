@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { SaveFile } from '../interfaces/SaveFile';
-import { getXataClient } from '../xata';
+import { SaveFile } from '../../interfaces/SaveFile';
+import { getXataClient } from '../../xata';
 
 export const useGetAllSaveFiles = () => {
 	const [isFetching, setFetching] = useState<boolean>(false);
