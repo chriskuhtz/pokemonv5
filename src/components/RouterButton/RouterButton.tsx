@@ -18,7 +18,7 @@ export const RouterButton = ({
 	const navigate = useNavigate();
 	return (
 		<Pill
-			className={className}
+			className={`${className} hoverEffect`}
 			style={{ ...style, zIndex: 'var(--BUTTONS_INDEX' }}
 			center={text}
 			onClick={() => {

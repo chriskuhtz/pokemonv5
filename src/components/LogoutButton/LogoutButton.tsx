@@ -1,16 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-import { logout } from '../../functions/logout';
+import { useLogOut } from '../../hooks/useLogOut';
 import { Pill } from '../../ui_components/Pill/Pill';
 
 export const LogoutButton = (): JSX.Element => {
-	const navigate = useNavigate();
+	const logOut = useLogOut();
 	return (
 		<Pill
 			style={{ backgroundColor: 'red' }}
-			onClick={() => {
-				logout();
-				navigate('/');
-			}}
+			onClick={logOut}
 			center={'Log Out'}
 		/>
 	);
