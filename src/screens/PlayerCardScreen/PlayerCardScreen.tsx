@@ -24,6 +24,7 @@ export const PlayerCardScreen = (): JSX.Element => {
 						sprite={data.sprite}
 						name={data.username}
 						money={data.money}
+						dex={data.pokedex}
 					/>
 				</div>
 			)}

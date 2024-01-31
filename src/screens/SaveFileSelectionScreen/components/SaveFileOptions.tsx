@@ -1,6 +1,5 @@
-import { CharacterSprite } from '../../../components/CharacterSprite/CharacterSprite';
+import { Trainercard } from '../../../components/Trainercard/Trainercard';
 import { SaveFileDBEntry } from '../../../hooks/xata/useGetAllSaveFiles';
-import { Pill } from '../../../ui_components/Pill/Pill';
 
 export const SaveFileOptions = ({
 	saveFiles,
@@ -10,21 +9,17 @@ export const SaveFileOptions = ({
 	selectSaveFile: (x: SaveFileDBEntry) => void;
 }) => {
 	return (
-		<>
-			{saveFiles.map((saveFile) => (
-				<Pill
-					key={saveFile.saveFile.username}
-					center={saveFile.saveFile.username}
-					leftSide={
-						<CharacterSprite
-							style={{ '--size': '40px' } as React.CSSProperties}
-							orientation="Down"
-							index={saveFile.saveFile.sprite}
-						/>
-					}
-					onClick={() => selectSaveFile(saveFile)}
-				/>
+		<div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+			{saveFiles.map((file) => (
+				<div key={file.saveFile.username} onClick={() => selectSaveFile(file)}>
+					<Trainercard
+						name={file.saveFile.username}
+						sprite={file.saveFile.sprite}
+						money={file.saveFile.money}
+						dex={file.saveFile.pokedex}
+					/>
+				</div>
 			))}
-		</>
+		</div>
 	);
 };
