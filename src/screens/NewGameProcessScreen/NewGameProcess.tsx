@@ -4,11 +4,12 @@ import { CharacterSprite } from '../../components/CharacterSprite/CharacterSprit
 import { isValidSaveFile } from '../../functions/isValidSaveFile';
 import { useRotate } from '../../hooks/useRotate';
 import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
-import { useGetAllSaveFiles } from '../../hooks/xata/useGetAllSaveFiles';
+import {
+	staticSaveData,
+	useGetAllSaveFiles,
+} from '../../hooks/xata/useGetAllSaveFiles';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
-import { setSaveFile } from '../../store/slices/saveFileSlice';
-import { useAppDispatch } from '../../store/storeHooks';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
@@ -18,14 +19,13 @@ export const NewGameProcess = (): JSX.Element => {
 	const currentOrientation = useRotate();
 	const { saveFiles: data, isFetching, isError } = useGetAllSaveFiles();
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
 	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
 	const [newSaveFile, setNewSaveFile] = useState<Partial<SaveFile>>({});
 	const [nameError, setNameError] = useState<string | undefined>();
 	const [spriteError, setSpriteError] = useState<boolean>(false);
 
 	const startGame = useCallback(async () => {
-		if (data.some((d) => d.username === newSaveFile.username)) {
+		if (data.some((d) => d.saveFile.username === newSaveFile.username)) {
 			setNameError('this username is already taken');
 			return;
 		}
@@ -38,15 +38,15 @@ export const NewGameProcess = (): JSX.Element => {
 			return;
 		}
 		if (isValidSaveFile(newSaveFile)) {
-			await createOrUpdateSaveFile(newSaveFile);
-			dispatch(setSaveFile(newSaveFile));
+			const combinedFile = { ...staticSaveData, ...newSaveFile };
+			await createOrUpdateSaveFile(combinedFile);
 			navigate(RoutesEnum.overworld);
 		}
-	}, [createOrUpdateSaveFile, data, dispatch, navigate, newSaveFile]);
+	}, [createOrUpdateSaveFile, data, navigate, newSaveFile]);
 
 	useEffect(() => {
 		if (
-			!data.some((d) => d.username === newSaveFile.username) &&
+			!data.some((d) => d.saveFile.username === newSaveFile.username) &&
 			newSaveFile.username &&
 			nameError
 		) {

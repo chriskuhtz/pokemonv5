@@ -30,11 +30,17 @@ export const staticSaveData: SaveFile = {
 	money: 5000,
 	inventory: { potion: 0, repel: 0, 'poke-ball': 0 },
 };
+
+export interface SaveFileDBEntry {
+	id: string;
+	saveFile: SaveFile;
+}
+
 export const useGetAllSaveFiles = () => {
 	const [isFetching, setFetching] = useState<boolean>(false);
 	const [isError, setError] = useState<boolean>(false);
 	const [isSuccess, setSuccess] = useState<boolean>(false);
-	const [saveFiles, setSaveFiles] = useState<SaveFile[]>([]);
+	const [saveFiles, setSaveFiles] = useState<SaveFileDBEntry[]>([]);
 
 	const getAllSaveFiles = useCallback(async () => {
 		if (isFetching || isSuccess) {
@@ -43,13 +49,13 @@ export const useGetAllSaveFiles = () => {
 		setFetching(true);
 		const xata = getXataClient();
 		const records = await xata.db.saveFiles.getMany();
-		console.log(records);
+
 		if (!records) {
 			setFetching(false);
 			setError(true);
 			return;
 		}
-		setSaveFiles(records.map((r) => r.saveFile));
+		setSaveFiles(records.map((r) => ({ id: r.id, saveFile: r.saveFile })));
 		setSuccess(true);
 		setFetching(false);
 	}, [isFetching, isSuccess]);

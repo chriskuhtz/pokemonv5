@@ -1,3 +1,3 @@
 export const logout = () => {
-	window.localStorage.removeItem('username');
+	window.localStorage.removeItem('userId');
 };

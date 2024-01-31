@@ -1,11 +1,10 @@
 import { Headline } from '../../components/Headline/Headline';
 import { Trainercard } from '../../components/Trainercard/Trainercard';
+import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { RoutesEnum } from '../../router/router';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
-import { useAppSelector } from '../../store/storeHooks';
 
 export const PlayerCardScreen = (): JSX.Element => {
-	const data = useAppSelector(selectSaveFile);
+	const data = useGetCurrentSaveFile();
 
 	return (
 		<div className="container">

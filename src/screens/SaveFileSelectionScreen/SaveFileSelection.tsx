@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapObject } from '../../components/MapObject/MapObject';
-import { useGetAllSaveFiles } from '../../hooks/xata/useGetAllSaveFiles';
-import { SaveFile } from '../../interfaces/SaveFile';
+import {
+	SaveFileDBEntry,
+	useGetAllSaveFiles,
+} from '../../hooks/xata/useGetAllSaveFiles';
 import { RoutesEnum } from '../../router/router';
 import { setSaveFile } from '../../store/slices/saveFileSlice';
 import { useAppDispatch } from '../../store/storeHooks';
@@ -18,8 +20,9 @@ export const SaveFileSelection = (): JSX.Element => {
 	const { isFetching, saveFiles, isError, isSuccess } = useGetAllSaveFiles();
 
 	const selectSaveFile = useCallback(
-		(x: SaveFile) => {
-			dispatch(setSaveFile(x));
+		(x: SaveFileDBEntry) => {
+			window.localStorage.setItem('userId', x.id);
+			dispatch(setSaveFile(x.saveFile));
 			navigate(RoutesEnum.overworld);
 		},
 		[dispatch, navigate]
