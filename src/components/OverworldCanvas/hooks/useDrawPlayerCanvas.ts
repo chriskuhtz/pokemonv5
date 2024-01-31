@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import {
 	selectForwardFoot,
 	selectOrientation,
@@ -9,11 +10,16 @@ import { drawCharacter } from '../functions/drawCharacter';
 import { useUpdatePosition } from './useUpdatePosition';
 
 export const useDrawPlayerCanvas = () => {
+	const saveFile = useGetCurrentSaveFile();
 	const orientation = useAppSelector(selectOrientation);
 	const forwardFoot = useAppSelector(selectForwardFoot);
 	const move = useUpdatePosition();
 
 	return useCallback(() => {
+		if (!saveFile) {
+			console.error('no saveFile, cant draw player');
+			return;
+		}
 		const canvas: HTMLCanvasElement | null = document.querySelector(
 			`#${playerCanvas}`
 		);
@@ -40,9 +46,9 @@ export const useDrawPlayerCanvas = () => {
 					forwardFoot: forwardFoot ?? 0,
 				});
 			};
-			img.src = 'npcs/NPC_001.png';
+			img.src = `npcs/NPC_${saveFile.sprite}.png`;
 
 			move();
 		}
-	}, [forwardFoot, move, orientation]);
+	}, [forwardFoot, move, orientation, saveFile]);
 };
