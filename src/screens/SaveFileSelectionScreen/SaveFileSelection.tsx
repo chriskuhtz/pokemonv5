@@ -39,6 +39,7 @@ export const SaveFileSelection = (): JSX.Element => {
 					selectSaveFile={selectSaveFile}
 				/>
 				<Pill
+					withHoverEffect
 					center={'New Game'}
 					onClick={() => navigate(RoutesEnum.newGame)}
 					leftSide={<MapObject style={{ height: '40px' }} id="pokeball" />}

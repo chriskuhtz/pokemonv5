@@ -10,6 +10,7 @@ export const Pill = ({
 	className,
 	style,
 	selected,
+	withHoverEffect,
 }: {
 	leftSide?: ReactNode;
 	center?: ReactNode;
@@ -19,6 +20,7 @@ export const Pill = ({
 	selected?: boolean;
 	className?: string;
 	style?: React.CSSProperties;
+	withHoverEffect?: boolean;
 }) => {
 	const handleClick = () => {
 		if (onClick && !disabled) {
@@ -29,7 +31,7 @@ export const Pill = ({
 		<div
 			className={`pill ${disabled ? 'disabled' : undefined} ${
 				selected ? 'selected' : undefined
-			} ${className}`}
+			} ${withHoverEffect ? 'hoverEffect' : undefined} ${className}`}
 			onClick={handleClick}
 			style={style}
 		>

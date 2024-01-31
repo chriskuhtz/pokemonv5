@@ -15,7 +15,7 @@ export const Trainercard = ({ name, sprite, money, dex }: TrainercardProps) => {
 	const currentOrientation = useRotate();
 
 	return (
-		<div className="trainercard">
+		<div className="hoverEffect trainercard">
 			<h2>Name:</h2>
 			<h2> {name}</h2>
 			<div>Sprite:</div>

@@ -73,3 +73,8 @@ p {
 	left: 1rem;
 	z-index: 9000;
 }
+
+.hoverEffect:hover {
+	font-weight: bolder;
+	border-width: 2px;
+}
