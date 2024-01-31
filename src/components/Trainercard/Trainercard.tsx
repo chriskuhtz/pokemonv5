@@ -16,7 +16,11 @@ export const Trainercard = ({ name, sprite, money }: TrainercardProps) => {
 			<h2>Name:</h2>
 			<h2> {name}</h2>
 			<div>Sprite:</div>
-			<CharacterSprite orientation={currentOrientation} index={sprite} />
+			<CharacterSprite
+				orientation={currentOrientation}
+				index={sprite}
+				style={{ '--size': '40px' } as React.CSSProperties}
+			/>
 			<div>Money:</div>
 			<div>{money}</div>
 		</div>
