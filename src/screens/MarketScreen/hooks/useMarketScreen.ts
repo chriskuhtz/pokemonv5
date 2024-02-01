@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useLazyGetItemDataByNameQuery } from '../../../api/pokeApi';
 
 import { joinInventories } from '../../../functions/joinInventories';
+import { useHydratedInventory } from '../../../hooks/useHydratedInventory';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { Inventory, generateInventory } from '../../../interfaces/Inventory';
 import { ItemName } from '../../../interfaces/Item';
@@ -12,29 +12,10 @@ import { useAppSelector } from '../../../store/storeHooks';
 
 export const useMarketScreen = () => {
 	const data = useAppSelector(selectSaveFile);
-	const [getItemData] = useLazyGetItemDataByNameQuery();
 	const save = useSaveGame();
 	const { state } = useLocation();
-
-	const [hydratedInventory, setHydratedInventory] = useState<ItemData[]>([]);
-
-	useEffect(() => {
-		const inventory = state as Partial<Inventory>;
-		const getHydratedItems = () =>
-			Promise.all(
-				Object.keys(inventory).map((i) => {
-					if (i in ItemName) {
-						return getItemData(i as ItemName).unwrap();
-					}
-				})
-			);
-		void getHydratedItems().then((res) => {
-			const filteredRes: ItemData[] = res.filter(
-				(r) => r !== undefined
-			) as ItemData[];
-			setHydratedInventory(filteredRes);
-		});
-	}, [getItemData, state]);
+	const inventory = state as Partial<Inventory>;
+	const { hydratedInventory } = useHydratedInventory(inventory);
 
 	const [cart, setCart] = useState<Inventory>(generateInventory({}));
 
