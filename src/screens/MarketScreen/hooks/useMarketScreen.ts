@@ -30,7 +30,7 @@ export const useMarketScreen = () => {
 	const totalCost = useMemo(() => {
 		return Object.entries(cart).reduce((sum, summand) => {
 			const [name, amount] = summand;
-			const cost = hydratedInventory.find((x) => x.name === name)?.cost ?? 0;
+			const cost = hydratedInventory?.find((x) => x.name === name)?.cost ?? 0;
 			return sum + amount * cost;
 		}, 0);
 	}, [cart, hydratedInventory]);
