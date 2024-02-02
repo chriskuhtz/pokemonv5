@@ -43,6 +43,7 @@ export interface Merchant extends BaseOccupant {
 export interface Healer extends BaseOccupant {
 	type: 'HEALER';
 	sprite: string;
+	dialogue: string[];
 }
 export interface OverworldItem extends BaseOccupant {
 	inventory: Inventory;
@@ -69,6 +70,8 @@ export interface InvisibleBlocker extends BaseOccupant {
 	type: 'INVISIBLE_BLOCKER';
 	onClick?: OverworldEvent;
 }
+
+export type OccupantWithDialogue = Npc | Merchant | Healer;
 export type Occupant =
 	| Npc
 	| OverworldItem

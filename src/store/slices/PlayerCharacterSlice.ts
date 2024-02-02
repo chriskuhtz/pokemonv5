@@ -104,7 +104,9 @@ export const selectNextCoordinates = createSelector(
 export const selectOccupantAtNextCoordinates = createSelector(
 	[selectNextCoordinates, selectOccupants],
 	({ x, y }, occupants) => {
-		return occupants.find((o) => o.position.x === x && o.position.y === y);
+		return Object.values(occupants).find(
+			(o) => o.position.x === x && o.position.y === y
+		);
 	}
 );
 

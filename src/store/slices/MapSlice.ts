@@ -1,35 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { OrientationEnum } from '../../interfaces/Orientation';
-import { SpriteEnum } from '../../interfaces/Sprites';
+import {
+	UniqueOccupantIds,
+	UniqueOccupantRecord,
+} from '../../constants/UniqueOccupantRecord';
+import { Occupant } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { RootState } from '../store';
-import { CharacterPosition } from './PlayerCharacterSlice';
 
 export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
-export interface Occupant {
-	position: CharacterPosition;
-	sprite: SpriteEnum;
-}
+
 export interface MapState {
 	height: number;
 	width: number;
 	baseTile: BaseTileId;
-	occupants: Occupant[];
+	occupants: Partial<Record<UniqueOccupantIds, Occupant>>;
 }
 const initialState: MapState = {
 	height: 20,
-	width: 40,
+	width: 9,
 	baseTile: 'grass',
-	occupants: [
-		{
-			sprite: SpriteEnum['oak'],
-			position: {
-				orientation: OrientationEnum['DOWN'],
-				x: 5,
-				y: 1,
-				mapId: 'testMap',
-			},
-		},
-	],
+	occupants: UniqueOccupantRecord,
 };
 
 export const mapSlice = createSlice({

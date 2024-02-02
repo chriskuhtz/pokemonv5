@@ -115,6 +115,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 0,
 		},
 		sprite: '115',
+		dialogue: ['Let me heal your Pokemon'],
 		questCondition: { id: 'talkToNurseJoy', status: 'completed' },
 	},
 	'starter-town-ballMachine': {

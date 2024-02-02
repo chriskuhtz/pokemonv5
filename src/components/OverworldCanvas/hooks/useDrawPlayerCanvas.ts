@@ -44,6 +44,8 @@ export const useDrawPlayerCanvas = () => {
 					y: 0,
 					orientation,
 					forwardFoot: forwardFoot ?? 0,
+					height: 1.5,
+					width: 1,
 				});
 			};
 			img.src = `npcs/NPC_${saveFile.sprite}.png`;

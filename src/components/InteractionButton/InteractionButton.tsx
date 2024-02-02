@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { isOccupantWithDialogue } from '../../functions/typeguards/isOccupantWithDialogue';
 import { selectOccupantAtNextCoordinates } from '../../store/slices/PlayerCharacterSlice';
 import {
 	addDialogue,
@@ -14,14 +15,12 @@ export const InteractionButton = () => {
 	const dispatch = useAppDispatch();
 
 	const handleClick = useCallback(() => {
-		if (occupant && currentDialogue.length === 0) {
-			dispatch(
-				addDialogue([
-					'Hello',
-					'My Name is Professor Oak',
-					'More content will follow soon ',
-				])
-			);
+		if (
+			occupant &&
+			isOccupantWithDialogue(occupant) &&
+			currentDialogue.length === 0
+		) {
+			dispatch(addDialogue(occupant.dialogue));
 		}
 		if (currentDialogue.length > 0) {
 			dispatch(continueDialogue());

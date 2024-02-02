@@ -9,6 +9,8 @@ export interface DrawCharacterProps {
 	y: number;
 	orientation: OrientationEnum;
 	forwardFoot: ForwardFootEnum;
+	height: number;
+	width: number;
 }
 
 export const drawCharacter = ({
@@ -18,11 +20,13 @@ export const drawCharacter = ({
 	orientation,
 	x,
 	y,
+	height,
+	width,
 }: DrawCharacterProps): void => {
 	const selectionOffsetX = 64 * forwardFoot;
 	const selectionOffsetY = 64 * orientation;
 
-	context.clearRect(x, y, size, size * 1.5);
+	context.clearRect(x, y, width * size, height * size);
 	context.drawImage(
 		img,
 		selectionOffsetX,
@@ -31,7 +35,7 @@ export const drawCharacter = ({
 		64,
 		x * size,
 		y * size,
-		size,
-		size * 1.5
+		width * size,
+		height * size
 	);
 };
