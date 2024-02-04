@@ -9,15 +9,34 @@ export const useCreateOrUpdateSaveFile = () => {
 	const [isError] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 
-	const createOrUpdateSaveFile = useCallback(
+	const createSaveFile = useCallback(
 		async (newSaveFile: SaveFile) => {
 			if (isFetching) {
 				return;
 			}
 			setFetching(true);
 			const xata = getXataClient();
+
+			await xata.db.saveFiles.create({ saveFile: newSaveFile }).then((res) => {
+				window.localStorage.setItem('userId', res.id);
+				dispatch(setSaveFile(res.saveFile));
+			});
+
+			setFetching(false);
+		},
+		[dispatch, isFetching]
+	);
+	const updateSaveFile = useCallback(
+		async (newSaveFile: SaveFile) => {
+			const id = window.localStorage.getItem('userId');
+			if (isFetching || !id) {
+				return;
+			}
+			setFetching(true);
+			const xata = getXataClient();
+
 			await xata.db.saveFiles
-				.createOrReplace({ saveFile: newSaveFile })
+				.createOrReplace({ id, saveFile: newSaveFile })
 				.then((res) => {
 					window.localStorage.setItem('userId', res.id);
 					dispatch(setSaveFile(res.saveFile));
@@ -27,5 +46,5 @@ export const useCreateOrUpdateSaveFile = () => {
 		},
 		[dispatch, isFetching]
 	);
-	return { isFetching, createOrUpdateSaveFile, isError };
+	return { isFetching, createSaveFile, updateSaveFile, isError };
 };

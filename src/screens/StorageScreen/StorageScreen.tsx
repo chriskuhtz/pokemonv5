@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Headline } from '../../components/Headline/Headline';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
@@ -11,7 +11,7 @@ import { useAppSelector } from '../../store/storeHooks';
 
 export const StorageScreen = (): JSX.Element => {
 	const data = useAppSelector(selectSaveFile);
-	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
+	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
 	const [ownedPokemon, setOwnedPokemon] = useState<OwnedPokemon[]>([]);
 
@@ -61,8 +61,7 @@ export const StorageScreen = (): JSX.Element => {
 					to: RoutesEnum.menu,
 					text: 'Menu',
 					sideEffect: () => {
-						if (data)
-							void createOrUpdateSaveFile({ ...data, pokemon: ownedPokemon });
+						if (data) void updateSaveFile({ ...data, pokemon: ownedPokemon });
 					},
 				}}
 			/>

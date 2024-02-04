@@ -19,7 +19,7 @@ export const NewGameProcess = (): JSX.Element => {
 	const currentOrientation = useRotate();
 	const { saveFiles: data, isFetching, isError } = useGetAllSaveFiles();
 	const navigate = useNavigate();
-	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
+	const { createSaveFile } = useCreateOrUpdateSaveFile();
 	const [newSaveFile, setNewSaveFile] = useState<Partial<SaveFile>>({});
 	const [nameError, setNameError] = useState<string | undefined>();
 	const [spriteError, setSpriteError] = useState<boolean>(false);
@@ -39,10 +39,10 @@ export const NewGameProcess = (): JSX.Element => {
 		}
 		if (isValidSaveFile(newSaveFile)) {
 			const combinedFile = { ...staticSaveData, ...newSaveFile };
-			await createOrUpdateSaveFile(combinedFile);
+			await createSaveFile(combinedFile);
 			navigate(RoutesEnum.overworld);
 		}
-	}, [createOrUpdateSaveFile, data, navigate, newSaveFile]);
+	}, [createSaveFile, data, navigate, newSaveFile]);
 
 	useEffect(() => {
 		if (

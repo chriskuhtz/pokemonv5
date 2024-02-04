@@ -7,14 +7,14 @@ import { OwnedPokemon } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
+import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
 import { useAppSelector } from '../store/storeHooks';
 import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
-import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 
 export const useSaveGame = () => {
 	const data = useAppSelector(selectSaveFile);
-	const { createOrUpdateSaveFile } = useCreateOrUpdateSaveFile();
+	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
 	return useCallback(
 		({
@@ -83,7 +83,7 @@ export const useSaveGame = () => {
 				}
 			});
 
-			void createOrUpdateSaveFile({
+			void updateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
 				position: updatedPosition,
@@ -94,6 +94,6 @@ export const useSaveGame = () => {
 				money: updatedMoney,
 			});
 		},
-		[createOrUpdateSaveFile, data]
+		[updateSaveFile, data]
 	);
 };
