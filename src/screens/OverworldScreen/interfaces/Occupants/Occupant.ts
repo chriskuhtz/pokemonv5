@@ -72,6 +72,13 @@ export interface InvisibleBlocker extends BaseOccupant {
 }
 
 export type OccupantWithDialogue = Npc | Merchant | Healer;
+export type OccupantWithSprite =
+	| Npc
+	| OverworldItem
+	| Merchant
+	| Healer
+	| Obstacle
+	| LargeObstacle;
 export type Occupant =
 	| Npc
 	| OverworldItem
