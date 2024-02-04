@@ -23,7 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
-      run: |
+      run: 
         npm install
         eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
         tsc
