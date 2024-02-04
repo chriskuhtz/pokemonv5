@@ -1,5 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { isOccupantWithDialogue } from '../../functions/typeguards/isOccupantWithDialogue';
+import { useSaveGame } from '../../hooks/useSaveGame';
+import { RoutesEnum } from '../../router/router';
+import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 import {
 	selectOccupantAtNextCoordinates,
@@ -18,6 +22,11 @@ export const InteractionButton = () => {
 	const playerOrientation = useAppSelector(selectOrientation);
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
+	const saveGame = useSaveGame();
+	const navigate = useNavigate();
+	const [focusedOccupant, setFocusedOccupant] = useState<
+		OccupantWithDialogue | undefined
+	>();
 
 	const handleClick = useCallback(() => {
 		if (
@@ -25,6 +34,7 @@ export const InteractionButton = () => {
 			isOccupantWithDialogue(occupant) &&
 			currentDialogue.length === 0
 		) {
+			setFocusedOccupant(occupant);
 			dispatch(
 				turnNpcTowardsPlayer({
 					occupantId: occupant.id,
@@ -34,9 +44,23 @@ export const InteractionButton = () => {
 			dispatch(addDialogue(occupant.dialogue));
 		}
 		if (currentDialogue.length > 0) {
+			if (currentDialogue.length === 1 && focusedOccupant) {
+				if (focusedOccupant.type === 'MERCHANT') {
+					navigate(RoutesEnum.market, { state: focusedOccupant.inventory });
+				}
+				saveGame({ questUpdates: focusedOccupant.questUpdates });
+			}
 			dispatch(continueDialogue());
 		}
-	}, [currentDialogue.length, dispatch, occupant, playerOrientation]);
+	}, [
+		currentDialogue.length,
+		dispatch,
+		focusedOccupant,
+		navigate,
+		occupant,
+		playerOrientation,
+		saveGame,
+	]);
 	return (
 		<button className="interactionButton" onClick={handleClick}>
 			A

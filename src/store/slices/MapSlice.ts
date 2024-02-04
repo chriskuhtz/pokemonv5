@@ -58,7 +58,6 @@ export const mapSlice = createSlice({
 				},
 			};
 
-			console.log(occupant, updatedOccupant, 'test');
 			state.occupants[action.payload.occupantId as UniqueOccupantIds] =
 				updatedOccupant;
 		},
