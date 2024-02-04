@@ -4,12 +4,12 @@ import {
 	UniqueOccupantRecord,
 } from '../../constants/UniqueOccupantRecord';
 import { checkQuestCondition } from '../../functions/checkQuestCondition';
+import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { isOccupantWithSprite } from '../../functions/typeguards/isOccupantWithDialogue';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { Occupant } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { RootState } from '../store';
 import { selectSaveFile } from './saveFileSlice';
-import { getOppositeDirection } from '../../functions/getOppositeDirection';
 
 export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
 
@@ -58,7 +58,7 @@ export const mapSlice = createSlice({
 				},
 			};
 
-			console.log(occupant, updatedOccupant);
+			console.log(occupant, updatedOccupant, 'test');
 			state.occupants[action.payload.occupantId as UniqueOccupantIds] =
 				updatedOccupant;
 		},
