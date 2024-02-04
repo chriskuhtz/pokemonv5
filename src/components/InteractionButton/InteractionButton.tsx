@@ -1,13 +1,15 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isOccupantWithDialogue } from '../../functions/typeguards/isOccupantWithDialogue';
+import {
+	isOccupantWithDialogue,
+	isOccupantWithPossibleOnClick,
+} from '../../functions/typeguards/isOccupantWithDialogue';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { RoutesEnum } from '../../router/router';
 import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
-import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
-import './InteractionButton.css';
+import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectOrientation } from '../../store/selectors/saveFile/selectOrientation';
@@ -15,6 +17,8 @@ import {
 	addDialogue,
 	continueDialogue,
 } from '../../store/slices/dialogueSlice';
+import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
+import './InteractionButton.css';
 
 export const InteractionButton = () => {
 	const occupant = useAppSelector(selectOccupantAtNextCoordinates);
@@ -26,8 +30,16 @@ export const InteractionButton = () => {
 	const [focusedOccupant, setFocusedOccupant] = useState<
 		OccupantWithDialogue | undefined
 	>();
+	const handleEvent = useOverworldEvent();
 
 	const handleClick = useCallback(() => {
+		if (
+			occupant &&
+			isOccupantWithPossibleOnClick(occupant) &&
+			occupant.onClick
+		) {
+			handleEvent(occupant.onClick);
+		}
 		if (
 			occupant &&
 			isOccupantWithDialogue(occupant) &&
@@ -52,9 +64,10 @@ export const InteractionButton = () => {
 			dispatch(continueDialogue());
 		}
 	}, [
-		currentDialogue.length,
+		currentDialogue,
 		dispatch,
 		focusedOccupant,
+		handleEvent,
 		navigate,
 		occupant,
 		playerOrientation,

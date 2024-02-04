@@ -1,6 +1,7 @@
 import {
 	Occupant,
 	OccupantWithDialogue,
+	OccupantWithPossibleOnClick,
 	OccupantWithSprite,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
@@ -16,4 +17,9 @@ export function isOccupantWithSprite(x: Occupant): x is OccupantWithSprite {
 		'OBSTACLE',
 		'LARGE_OBSTACLE',
 	].includes(x.type);
+}
+export function isOccupantWithPossibleOnClick(
+	x: Occupant
+): x is OccupantWithPossibleOnClick {
+	return ['OBSTACLE', 'LARGE_OBSTACLE', 'INVISIBLE_BLOCKER'].includes(x.type);
 }
