@@ -55,6 +55,7 @@ export const BagScreen = (): JSX.Element => {
 						}
 						key={item.name}
 						center={item.name}
+						rightSide={inventory[item.name]}
 					/>
 				))
 			)}

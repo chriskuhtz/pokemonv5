@@ -23,6 +23,9 @@ export const Cart = ({
 			<div>
 				{Object.entries(cart).map((cartItem) => {
 					const [name, amount] = cartItem;
+					if (amount === 0) {
+						return;
+					}
 					return (
 						<h3 className="cartItem">
 							<span>
