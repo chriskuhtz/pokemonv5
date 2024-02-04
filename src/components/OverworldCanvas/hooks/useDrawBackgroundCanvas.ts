@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { size } from '../../../main';
-import { selectMap } from '../../../store/slices/MapSlice';
 import { useAppSelector } from '../../../store/storeHooks';
 import { overworldCanvas } from '../OverworldCanvas';
+import { selectMap } from '../../../store/selectors/map/selectMap';
 
 export const useDrawBackGroundCanvas = () => {
 	const { height, width, baseTile } = useAppSelector(selectMap);

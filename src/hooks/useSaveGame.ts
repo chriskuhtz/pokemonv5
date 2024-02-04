@@ -7,10 +7,10 @@ import { OwnedPokemon } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
-import { CharacterPosition } from '../store/slices/PlayerCharacterSlice';
-import { selectSaveFile } from '../store/slices/saveFileSlice';
+import { CharacterPosition } from '../store/slices/saveFileSlice';
 import { useAppSelector } from '../store/storeHooks';
 import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
+import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 
 export const useSaveGame = () => {
 	const data = useAppSelector(selectSaveFile);

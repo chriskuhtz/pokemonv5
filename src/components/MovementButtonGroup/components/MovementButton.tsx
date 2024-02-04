@@ -1,11 +1,12 @@
 import { OrientationEnum } from '../../../interfaces/Orientation';
+import { selectIsWalking } from '../../../store/selectors/saveFile/selectIsWalking';
+import { selectNextOrientation } from '../../../store/selectors/saveFile/selectNextOrientation';
 import {
-	selectIsWalking,
-	selectNextOrientation,
 	setNextOrientation,
 	startWalking,
 	stopWalking,
-} from '../../../store/slices/PlayerCharacterSlice';
+} from '../../../store/slices/saveFileSlice';
+
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 
 export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {

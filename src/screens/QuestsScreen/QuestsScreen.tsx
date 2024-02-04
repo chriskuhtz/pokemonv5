@@ -5,7 +5,7 @@ import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
 import { useHasUnclaimedQuests } from '../../hooks/useHasUnclaimedQuests';
 import { QuestName, QuestRecord, questNames } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 
 export const QuestsScreen = ({

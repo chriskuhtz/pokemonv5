@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import {
-	selectNextCoordinates,
-	selectNextOrientation,
-	selectOccupantAtNextCoordinates,
-	selectPosition,
-	updatePosition,
-} from '../../../store/slices/PlayerCharacterSlice';
+
+import { selectNextCoordinates } from '../../../store/selectors/combination/selectNextCoordinates';
+import { selectOccupantAtNextCoordinates } from '../../../store/selectors/combination/selectOccupantAtNextCoordinates';
+import { selectNextOrientation } from '../../../store/selectors/saveFile/selectNextOrientation';
+import { selectPosition } from '../../../store/selectors/saveFile/selectPosition';
+import { updatePosition } from '../../../store/slices/saveFileSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 
 export const useUpdatePosition = () => {
@@ -17,7 +16,7 @@ export const useUpdatePosition = () => {
 	const { x, y } = useAppSelector(selectNextCoordinates);
 
 	return useCallback(() => {
-		if (nextOrientation === undefined) {
+		if (nextOrientation === undefined || position === undefined) {
 			return;
 		}
 		if (nextOrientation !== position.orientation) {

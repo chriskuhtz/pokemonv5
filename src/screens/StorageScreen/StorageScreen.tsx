@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Headline } from '../../components/Headline/Headline';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
-
 import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
 import { OwnedPokemon } from '../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../router/router';
 import { IconWithTag } from '../../shared/components/IconWithTag/IconWithTag';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 
 export const StorageScreen = (): JSX.Element => {

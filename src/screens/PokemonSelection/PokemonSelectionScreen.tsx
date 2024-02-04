@@ -4,9 +4,9 @@ import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { Quest } from '../../interfaces/Quest';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
 import { useAppSelector } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 
 export const PokemonSelectionScreen = ({
 	choices,

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { selectSaveFile, setSaveFile } from '../../store/slices/saveFileSlice';
+import { setSaveFile } from '../../store/slices/saveFileSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { useLogOut } from '../useLogOut';
 import { getXataClient } from './xataClient';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 
 export const useGetCurrentSaveFile = () => {
 	const [error, setError] = useState<boolean>(false);

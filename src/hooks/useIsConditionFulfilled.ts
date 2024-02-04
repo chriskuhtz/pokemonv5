@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { isOwnedPokemonConditionFulfilled } from '../functions/isOwnedPokemonQuestFulfilled';
 import { Condition } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
-import { selectSaveFile } from '../store/slices/saveFileSlice';
 import { useAppSelector } from '../store/storeHooks';
+import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 
 export const isHandledOccupantConditionFulfilled = (
 	condition: Condition,

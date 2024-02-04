@@ -1,7 +1,7 @@
 import { QuestIdAndStatus } from '../../../interfaces/QuestIdAndStatus';
 
 import { RoutesEnum } from '../../../router/router';
-import { CharacterPosition } from '../../../store/slices/PlayerCharacterSlice';
+import { CharacterPosition } from '../../../store/slices/saveFileSlice';
 
 export interface BaseEvent {
 	type: 'ENCOUNTER' | 'PORTAL' | 'ROUTE';

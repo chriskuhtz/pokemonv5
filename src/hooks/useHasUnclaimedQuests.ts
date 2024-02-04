@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { QuestName, QuestRecord, questNames } from '../interfaces/Quest';
-import { selectSaveFile } from '../store/slices/saveFileSlice';
+import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../store/storeHooks';
 import { useIsConditionFulfilled } from './useIsConditionFulfilled';
 

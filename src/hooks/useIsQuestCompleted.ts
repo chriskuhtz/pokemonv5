@@ -3,9 +3,9 @@ import { useCallback } from 'react';
 import { checkQuestCondition } from '../functions/checkQuestCondition';
 import { QuestCheck } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
+import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 import { initiateQuestDialogue } from '../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
-import { selectSaveFile } from '../store/slices/saveFileSlice';
 
 export const useIsQuestCompleted = () => {
 	const dispatch = useAppDispatch();

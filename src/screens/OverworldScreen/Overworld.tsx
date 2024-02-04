@@ -3,10 +3,8 @@ import { MovementButtonGroup } from '../../components/MovementButtonGroup/Moveme
 import { OverworldCanvas } from '../../components/OverworldCanvas/OverworldCanvas';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { RoutesEnum } from '../../router/router';
-import {
-	continueDialogue,
-	selectCurrentDialogue,
-} from '../../store/slices/dialogueSlice';
+import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
+import { continueDialogue } from '../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { Modal } from '../../ui_components/Modal/Modal';
 import { Pill } from '../../ui_components/Pill/Pill';

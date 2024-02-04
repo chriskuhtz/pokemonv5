@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { pokeApi } from '../api/pokeApi';
 import { mapSlice } from './slices/MapSlice';
-import { playerCharacterSlice } from './slices/PlayerCharacterSlice';
 import { battleSlice } from './slices/battleSlice';
 import { dialogueSlice } from './slices/dialogueSlice';
 import { saveFileSlice } from './slices/saveFileSlice';
@@ -9,11 +8,11 @@ import { saveFileSlice } from './slices/saveFileSlice';
 
 export const store = configureStore({
 	reducer: {
-		playerCharacter: playerCharacterSlice.reducer,
+		saveFile: saveFileSlice.reducer,
 		map: mapSlice.reducer,
 		dialogue: dialogueSlice.reducer,
 		battle: battleSlice.reducer,
-		saveFile: saveFileSlice.reducer,
+
 		[pokeApi.reducerPath]: pokeApi.reducer,
 	},
 	// Adding the api middleware enables caching, invalidation, polling,
