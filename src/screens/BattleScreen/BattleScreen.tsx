@@ -1,5 +1,5 @@
 import { Combatant } from '../../interfaces/Combatant';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 import { OPPOID, TRAINERID } from '../../testing/constants/trainerIds';
 import { BattleScreenErrorHandler } from './ErrorHandler/BattleScreenErrorHandler';

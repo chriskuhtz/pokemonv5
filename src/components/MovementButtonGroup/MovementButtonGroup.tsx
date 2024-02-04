@@ -1,8 +1,8 @@
 import { JSX } from 'react';
-import { selectCurrentDialogue } from '../../store/slices/dialogueSlice';
 import { useAppSelector } from '../../store/storeHooks';
 import './MovementButtonGroup.css';
 import { MovementButton } from './components/MovementButton';
+import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 
 export const MovementButtonGroup = (): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);

@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
-import {
-	selectForwardFoot,
-	selectOrientation,
-} from '../../../store/slices/PlayerCharacterSlice';
+
+import { selectForwardFoot } from '../../../store/selectors/saveFile/selectForwardFoot';
+import { selectOrientation } from '../../../store/selectors/saveFile/selectOrientation';
 import { useAppSelector } from '../../../store/storeHooks';
 import { playerCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
@@ -42,7 +41,7 @@ export const useDrawPlayerCanvas = () => {
 					img,
 					x: 0,
 					y: 0,
-					orientation,
+					orientation: orientation ?? 0,
 					forwardFoot: forwardFoot ?? 0,
 					height: 1.5,
 					width: 1,

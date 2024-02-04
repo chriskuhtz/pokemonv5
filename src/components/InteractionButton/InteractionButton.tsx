@@ -5,17 +5,16 @@ import { useSaveGame } from '../../hooks/useSaveGame';
 import { RoutesEnum } from '../../router/router';
 import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
-import {
-	selectOccupantAtNextCoordinates,
-	selectOrientation,
-} from '../../store/slices/PlayerCharacterSlice';
+
+import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
+import './InteractionButton.css';
+import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
+import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
+import { selectOrientation } from '../../store/selectors/saveFile/selectOrientation';
 import {
 	addDialogue,
 	continueDialogue,
-	selectCurrentDialogue,
 } from '../../store/slices/dialogueSlice';
-import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
-import './InteractionButton.css';
 
 export const InteractionButton = () => {
 	const occupant = useAppSelector(selectOccupantAtNextCoordinates);
@@ -38,7 +37,7 @@ export const InteractionButton = () => {
 			dispatch(
 				turnNpcTowardsPlayer({
 					occupantId: occupant.id,
-					playerOrientation: playerOrientation,
+					playerOrientation: playerOrientation ?? 0,
 				})
 			);
 			dispatch(addDialogue(occupant.dialogue));

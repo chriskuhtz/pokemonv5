@@ -6,7 +6,6 @@ import {
 	Npc,
 	OverworldItem,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { RootState } from '../store';
 
 export interface DialogueSlice {
 	dialogue: string[];
@@ -61,7 +60,3 @@ export const {
 	initiateNpcDialogue,
 	initiateQuestDialogue,
 } = dialogueSlice.actions;
-
-export const selectCurrentDialogue = (rootState: RootState): string[] => {
-	return rootState.dialogue.dialogue;
-};

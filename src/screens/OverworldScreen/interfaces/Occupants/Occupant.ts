@@ -1,7 +1,7 @@
 import { Inventory } from '../../../../interfaces/Inventory';
 import { QuestIdAndStatus } from '../../../../interfaces/QuestIdAndStatus';
 import { SaveFile } from '../../../../interfaces/SaveFile';
-import { CharacterPosition } from '../../../../store/slices/PlayerCharacterSlice';
+import { CharacterPosition } from '../../../../store/slices/saveFileSlice';
 import { Movement } from '../Movement';
 import { OverworldEvent } from '../OverworldEvent';
 

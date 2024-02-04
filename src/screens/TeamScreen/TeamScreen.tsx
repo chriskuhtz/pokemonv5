@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Headline } from '../../components/Headline/Headline';
 import { TeamGrid } from '../../components/TeamGrid/TeamGrid';
 import { RoutesEnum } from '../../router/router';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 
 export const TeamScreen = (): JSX.Element => {

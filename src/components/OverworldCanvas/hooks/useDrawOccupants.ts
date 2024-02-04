@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
+
 import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
-import { selectOccupantsToDraw } from '../../../store/slices/MapSlice';
+import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
 import { occupantCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { drawLargeObject } from '../functions/drawLargeObject';

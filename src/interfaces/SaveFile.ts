@@ -1,5 +1,5 @@
 import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
-import { CharacterPosition } from '../store/slices/PlayerCharacterSlice';
+import { CharacterPosition } from '../store/slices/saveFileSlice';
 import { DexEntry } from './DexEntry';
 import { Inventory } from './Inventory';
 import { OwnedPokemon } from './OwnedPokemon';
