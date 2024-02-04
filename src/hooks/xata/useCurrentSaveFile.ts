@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { SaveFile } from '../../interfaces/SaveFile';
-import { selectSaveFile } from '../../store/slices/saveFileSlice';
-import { useAppSelector } from '../../store/storeHooks';
+import { selectSaveFile, setSaveFile } from '../../store/slices/saveFileSlice';
+import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { useLogOut } from '../useLogOut';
 import { getXataClient } from './xataClient';
 
 export const useGetCurrentSaveFile = () => {
-	const [saveFile, setSaveFile] = useState<SaveFile | undefined>();
 	const [error, setError] = useState<boolean>(false);
-	const fromRedux = useAppSelector(selectSaveFile);
+	const saveFile = useAppSelector(selectSaveFile);
+	const dispatch = useAppDispatch();
 	const logOut = useLogOut();
 
 	useEffect(() => {
@@ -21,15 +20,13 @@ export const useGetCurrentSaveFile = () => {
 		if (saveFile) {
 			return;
 		}
-		if (fromRedux) {
-			setSaveFile(fromRedux);
-		}
+
 		if (id && !error) {
 			const xata = getXataClient();
 			const fetch = async () =>
 				await xata.db.saveFiles
 					.read(id)
-					.then((res) => setSaveFile(res?.saveFile))
+					.then((res) => dispatch(setSaveFile(res?.saveFile)))
 					.catch(() => {
 						setError(true);
 
@@ -38,7 +35,7 @@ export const useGetCurrentSaveFile = () => {
 					});
 			void fetch();
 		}
-	}, [error, fromRedux, logOut, saveFile]);
+	}, [dispatch, error, logOut, saveFile]);
 
 	return saveFile;
 };

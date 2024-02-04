@@ -4,7 +4,6 @@ import { mapSlice } from './slices/MapSlice';
 import { playerCharacterSlice } from './slices/PlayerCharacterSlice';
 import { battleSlice } from './slices/battleSlice';
 import { dialogueSlice } from './slices/dialogueSlice';
-import { occupantsSlice } from './slices/occupantsSlice';
 import { saveFileSlice } from './slices/saveFileSlice';
 // ...
 
@@ -13,7 +12,6 @@ export const store = configureStore({
 		playerCharacter: playerCharacterSlice.reducer,
 		map: mapSlice.reducer,
 		dialogue: dialogueSlice.reducer,
-		occupants: occupantsSlice.reducer,
 		battle: battleSlice.reducer,
 		saveFile: saveFileSlice.reducer,
 		[pokeApi.reducerPath]: pokeApi.reducer,

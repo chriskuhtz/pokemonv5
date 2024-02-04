@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { selectOccupants } from '../../../store/slices/MapSlice';
+import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
+import { selectOccupantsToDraw } from '../../../store/slices/MapSlice';
 import { occupantCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { drawLargeObject } from '../functions/drawLargeObject';
 
 export const useDrawOccupants = () => {
-	const occupants = useSelector(selectOccupants);
+	const occupants = useSelector(selectOccupantsToDraw);
 	const drawOccupants = useCallback(() => {
 		console.log('drawOccupants', occupants);
 		const canvas: HTMLCanvasElement | null = document.querySelector(
@@ -24,11 +25,10 @@ export const useDrawOccupants = () => {
 				return;
 			}
 			Object.values(occupants).forEach((o) => {
-				if (o.type === 'QUEST_CHECK' || o.type === 'INVISIBLE_BLOCKER') {
+				const img = new Image();
+				if (!isOccupantWithSprite(o)) {
 					return;
 				}
-				const img = new Image();
-
 				if (o.type === 'ITEM') {
 					img.onload = () => {
 						drawCharacter({

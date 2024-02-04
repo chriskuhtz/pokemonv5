@@ -11,13 +11,13 @@ export interface CharacterPosition {
 	y: number;
 	mapId: string;
 }
-interface CounterState {
+interface PlayerCharacterState {
 	position: CharacterPosition;
 	nextOrientation?: OrientationEnum;
 	walking: boolean;
 }
 
-const initialState: CounterState = {
+const initialState: PlayerCharacterState = {
 	position: {
 		orientation: 0,
 		x: 0,

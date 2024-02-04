@@ -1,10 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import {
 	UniqueOccupantIds,
 	UniqueOccupantRecord,
 } from '../../constants/UniqueOccupantRecord';
+import { checkQuestCondition } from '../../functions/checkQuestCondition';
+import { isOccupantWithSprite } from '../../functions/typeguards/isOccupantWithDialogue';
+import { OrientationEnum } from '../../interfaces/Orientation';
 import { Occupant } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { RootState } from '../store';
+import { selectSaveFile } from './saveFileSlice';
+import { getOppositeDirection } from '../../functions/getOppositeDirection';
 
 export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
 
@@ -25,12 +30,60 @@ export const mapSlice = createSlice({
 	name: 'map',
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
-	reducers: {},
+	reducers: {
+		turnNpcTowardsPlayer: (
+			state,
+			action: PayloadAction<{
+				playerOrientation: OrientationEnum;
+				occupantId: string;
+			}>
+		) => {
+			const occupant =
+				state.occupants[action.payload.occupantId as UniqueOccupantIds];
+			if (!occupant) {
+				return;
+			}
+			const newDirection = getOppositeDirection(
+				action.payload.playerOrientation
+			);
+
+			if (occupant.position.orientation === newDirection) {
+				return;
+			}
+			const updatedOccupant: Occupant = {
+				...occupant,
+				position: {
+					...occupant.position,
+					orientation: newDirection,
+				},
+			};
+
+			console.log(occupant, updatedOccupant);
+			state.occupants[action.payload.occupantId as UniqueOccupantIds] =
+				updatedOccupant;
+		},
+	},
 });
 
-//export const {} = mapSlice.actions;
+export const { turnNpcTowardsPlayer } = mapSlice.actions;
 
 export const selectMap = (state: RootState) => state.map;
 export const selectOccupants = (state: RootState) => state.map.occupants;
+
+export const selectOccupantsToDraw = createSelector(
+	[selectOccupants, selectSaveFile],
+	(occupants, saveFile) => {
+		if (!saveFile) {
+			return {};
+		}
+		return Object.fromEntries(
+			Object.entries(occupants).filter(
+				(entry) =>
+					isOccupantWithSprite(entry[1]) &&
+					checkQuestCondition(saveFile.quests, entry[1].questCondition)
+			)
+		);
+	}
+);
 
 export default mapSlice.reducer;

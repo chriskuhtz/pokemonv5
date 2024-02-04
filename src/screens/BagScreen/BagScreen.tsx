@@ -22,8 +22,6 @@ export const BagScreen = (): JSX.Element => {
 
 	const { hydratedInventory, status } = useHydratedInventory(inventory);
 
-	console.log(hydratedInventory, status);
-
 	if (!saveFile) {
 		return <ErrorScreen text="no save file" />;
 	}
