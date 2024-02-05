@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Headline, HeadlineProps } from '../../components/Headline/Headline';
 import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
 import { useHasUnclaimedQuests } from '../../hooks/useHasUnclaimedQuests';
-import { QuestName, QuestRecord, questNames } from '../../interfaces/Quest';
+import { QuestName, QuestRecord } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
+import { selectNotInactiveQuests } from '../../store/selectors/combination/selectNotInactiveQuests';
 import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 
@@ -16,8 +17,11 @@ export const QuestsScreen = ({
 	routeAwayAfterAllClaimed?: { to: RoutesEnum };
 }): JSX.Element => {
 	const navigate = useNavigate();
-	const data = useAppSelector(selectSaveFile);
+	const quests = useAppSelector(selectNotInactiveQuests);
+	const saveFile = useAppSelector(selectSaveFile);
 	const hasUnclaimedQuests = useHasUnclaimedQuests();
+
+	console.log('quests', quests, saveFile);
 
 	useEffect(() => {
 		if (routeAwayAfterAllClaimed && !hasUnclaimedQuests) {
@@ -33,19 +37,19 @@ export const QuestsScreen = ({
 				style={headlineProps.style}
 				className={headlineProps.className}
 			/>
-			{data && (
+			{quests.length > 0 ? (
 				<div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
-					{Object.entries(data.quests)
-						.filter((q) => q[1] !== 'inactive')
-						.map((questEntry) => {
-							const key = questEntry[0];
-							const status = questEntry[1];
-							if (key in questNames) {
-								const quest = { ...QuestRecord[key as QuestName], status };
-								return <QuestListItem quest={quest} key={key} />;
-							}
-						})}
+					{quests.map((questEntry) => {
+						const key = questEntry[0];
+						const status = questEntry[1];
+
+						const quest = { ...QuestRecord[key as QuestName], status };
+
+						return <QuestListItem quest={quest} key={key} />;
+					})}
 				</div>
+			) : (
+				<h3>No active quests</h3>
 			)}
 		</div>
 	);
