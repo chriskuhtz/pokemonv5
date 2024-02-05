@@ -5,8 +5,6 @@ import { selectNextCoordinates } from './selectNextCoordinates';
 export const selectOccupantAtNextCoordinates = createSelector(
 	[selectNextCoordinates, selectActiveOccupants],
 	({ x, y }, occupants) => {
-		return Object.values(occupants).find(
-			(o) => o.position.x === x && o.position.y === y
-		);
+		return occupants.find((o) => o.position.x === x && o.position.y === y);
 	}
 );

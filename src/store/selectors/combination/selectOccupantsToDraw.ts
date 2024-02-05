@@ -5,10 +5,8 @@ import { selectActiveOccupants } from './selectActiveOccupants';
 export const selectOccupantsToDraw = createSelector(
 	[selectActiveOccupants],
 	(occupants) => {
-		return Object.fromEntries(
-			Object.entries(occupants).filter((entry) =>
-				isOccupantWithSprite(entry[1])
-			)
+		return Object.values(occupants).filter((entry) =>
+			isOccupantWithSprite(entry)
 		);
 	}
 );

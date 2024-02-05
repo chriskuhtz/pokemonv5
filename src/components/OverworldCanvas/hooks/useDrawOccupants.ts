@@ -56,6 +56,18 @@ export const useDrawOccupants = () => {
 						});
 					};
 					img.src = `mapObjects/${o.sprite}.png`;
+				} else if (o.type === 'OBSTACLE') {
+					img.onload = () => {
+						drawLargeObject({
+							context: ctx,
+							img,
+							x: o.position.x,
+							y: o.position.y,
+							height: 1,
+							width: 1,
+						});
+					};
+					img.src = `mapObjects/${o.sprite}.png`;
 				} else {
 					img.onload = () => {
 						drawCharacter({

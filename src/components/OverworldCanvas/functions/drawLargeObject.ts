@@ -18,12 +18,5 @@ export const drawLargeObject = ({
 	width,
 }: DrawLargeObjectProps): void => {
 	context.clearRect(x, y, width * size, height * size);
-	context.drawImage(
-		img,
-
-		x * size,
-		y * size,
-		width * size,
-		height * size
-	);
+	context.drawImage(img, x * size, y * size, width * size, height * size);
 };

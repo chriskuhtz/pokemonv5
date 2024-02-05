@@ -51,7 +51,7 @@ export interface OverworldItem extends BaseOccupant {
 }
 export interface QuestCheck extends BaseOccupant {
 	type: 'QUEST_CHECK';
-	questCheck: QuestIdAndStatus;
+	questCondition?: QuestIdAndStatus;
 }
 export interface Obstacle extends BaseOccupant {
 	sprite: string;

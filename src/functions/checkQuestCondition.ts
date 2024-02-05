@@ -3,10 +3,14 @@ import { SaveFile } from '../interfaces/SaveFile';
 
 export const checkQuestCondition = (
 	quests: SaveFile['quests'],
-	questCondition?: QuestIdAndStatus
+	questCondition?: QuestIdAndStatus,
+	isQuestCheck?: boolean
 ) => {
 	if (!questCondition) {
 		return true;
+	}
+	if (isQuestCheck) {
+		return quests[questCondition.id] !== questCondition.status;
 	}
 	return quests[questCondition.id] === questCondition.status;
 };
