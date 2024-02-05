@@ -3,12 +3,16 @@ import { useSelector } from 'react-redux';
 
 import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
 import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
+
 import { occupantCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { drawLargeObject } from '../functions/drawLargeObject';
+import { selectDecorators } from '../../../store/selectors/map/selectDecorators';
 
 export const useDrawOccupants = () => {
 	const occupants = useSelector(selectOccupantsToDraw);
+	const decorators = useSelector(selectDecorators);
+
 	const drawOccupants = useCallback(() => {
 		console.log('drawOccupants', occupants);
 		const canvas: HTMLCanvasElement | null = document.querySelector(
@@ -25,7 +29,7 @@ export const useDrawOccupants = () => {
 				);
 				return;
 			}
-			Object.values(occupants).forEach((o) => {
+			occupants.forEach((o) => {
 				const img = new Image();
 				if (!isOccupantWithSprite(o)) {
 					return;
@@ -84,7 +88,21 @@ export const useDrawOccupants = () => {
 					img.src = `npcs/NPC_${o.sprite}.png`;
 				}
 			});
+			decorators.forEach((o) => {
+				const img = new Image();
+				img.onload = () => {
+					drawLargeObject({
+						context: ctx,
+						img,
+						x: o.x,
+						y: o.y,
+						height: 1,
+						width: 1,
+					});
+				};
+				img.src = `mapObjects/${o.sprite}.png`;
+			});
 		}
-	}, [occupants]);
+	}, [decorators, occupants]);
 	return { hasChanges: false, drawOccupants };
 };

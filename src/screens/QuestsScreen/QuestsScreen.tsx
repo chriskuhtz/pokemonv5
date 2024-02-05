@@ -6,7 +6,6 @@ import { useHasUnclaimedQuests } from '../../hooks/useHasUnclaimedQuests';
 import { QuestName, QuestRecord } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
 import { selectNotInactiveQuests } from '../../store/selectors/combination/selectNotInactiveQuests';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 
 export const QuestsScreen = ({
@@ -18,10 +17,7 @@ export const QuestsScreen = ({
 }): JSX.Element => {
 	const navigate = useNavigate();
 	const quests = useAppSelector(selectNotInactiveQuests);
-	const saveFile = useAppSelector(selectSaveFile);
 	const hasUnclaimedQuests = useHasUnclaimedQuests();
-
-	console.log('quests', quests, saveFile);
 
 	useEffect(() => {
 		if (routeAwayAfterAllClaimed && !hasUnclaimedQuests) {

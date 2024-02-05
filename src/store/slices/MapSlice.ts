@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import {
@@ -7,7 +8,7 @@ import {
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { starterTown } from '../../constants/maps/starterTown';
+import { Decorator } from '../../screens/OverworldScreen/interfaces/Decorator';
 
 export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
 
@@ -17,6 +18,7 @@ export interface MapState {
 	baseTile: BaseTileId;
 	interactives: Partial<Record<UniqueOccupantIds, Occupant>>;
 	obstacles: (Obstacle | LargeObstacle)[];
+	decorators: Decorator[];
 	mapId: string;
 }
 

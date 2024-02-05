@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
+import { useOverworldEvent } from '../../../hooks/useOverworldEvent';
+import { selectDecoratorAtNextCoordinatess } from '../../../store/selectors/combination/selectDecoratorAtCurrentPosition';
 import { selectNextCoordinates } from '../../../store/selectors/combination/selectNextCoordinates';
 import { selectOccupantAtNextCoordinates } from '../../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectNextOrientation } from '../../../store/selectors/saveFile/selectNextOrientation';
@@ -13,6 +15,8 @@ export const useUpdatePosition = () => {
 	const dispatch = useAppDispatch();
 	const nextOrientation = useAppSelector(selectNextOrientation);
 	const occupied = useAppSelector(selectOccupantAtNextCoordinates);
+	const decorator = useAppSelector(selectDecoratorAtNextCoordinatess);
+	const handleEvent = useOverworldEvent();
 	const { x, y } = useAppSelector(selectNextCoordinates);
 
 	return useCallback(() => {
@@ -22,6 +26,10 @@ export const useUpdatePosition = () => {
 		if (nextOrientation !== position.orientation) {
 			dispatch(updatePosition({ ...position, orientation: nextOrientation }));
 			return;
+		}
+
+		if (decorator?.onStep) {
+			handleEvent(decorator.onStep);
 		}
 
 		if (occupied) {
@@ -39,5 +47,5 @@ export const useUpdatePosition = () => {
 				y,
 			})
 		);
-	}, [dispatch, nextOrientation, occupied, position, x, y]);
+	}, [decorator, dispatch, nextOrientation, occupied, position, x, y]);
 };

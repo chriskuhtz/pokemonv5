@@ -6,6 +6,18 @@ export const starterTown: MapState = {
 	height: 20,
 	width: 9,
 	baseTile: 'grass',
+	decorators: [
+		{ x: 0, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 1, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 2, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 3, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 4, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 6, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 7, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 8, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 0, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+	],
 	interactives: UniqueOccupantRecord,
 	obstacles: [
 		{

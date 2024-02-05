@@ -14,10 +14,11 @@
 	-webkit-user-select: none; /* Safari */
 	user-select: none;
 	/* z indexes */
-	--PLAYER_CANVAS_INDEX: 2;
+
 	--OVERWORLD_CANVAS_INDEX: 1;
-	--MODAL_INDEX: 3;
-	--BUTTONS_INDEX: 4;
+	--PLAYER_CANVAS_INDEX: 3;
+	--MODAL_INDEX: 4;
+	--BUTTONS_INDEX: 5;
 	/* colors */
 	--main-bg-color: rgb(28, 30, 30);
 	--main-color: aliceblue;

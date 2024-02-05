@@ -19,6 +19,7 @@ export const useDrawPlayerCanvas = () => {
 			console.error('no saveFile, cant draw player');
 			return;
 		}
+
 		const canvas: HTMLCanvasElement | null = document.querySelector(
 			`#${playerCanvas}`
 		);
