@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { QuestRecord } from '../interfaces/Quest';
 import { BagScreen } from '../screens/BagScreen/BagScreen';
 import { BattleScreen } from '../screens/BattleScreen/BattleScreen';
 import { MarketScreen } from '../screens/MarketScreen/MarketScreen';
@@ -86,6 +87,7 @@ export const router = createBrowserRouter([
 			<PokemonSelectionScreen
 				choices={[1, 4, 7]}
 				headline={'Select your First Pokemon'}
+				quest={QuestRecord.pickStarter}
 			/>
 		),
 	},
