@@ -13,7 +13,8 @@ export type OccupantType =
 	| 'QUEST_CHECK'
 	| 'OBSTACLE'
 	| 'INVISIBLE_BLOCKER'
-	| 'LARGE_OBSTACLE';
+	| 'LARGE_OBSTACLE'
+	| 'TRAINER';
 
 export interface BaseOccupant {
 	id: string;
@@ -29,11 +30,17 @@ export interface Npc extends BaseOccupant {
 	dialogue: string[];
 	sprite: string;
 	movement?: Movement;
-	viewRange?: number;
-	watching?: boolean;
 	type: 'NPC';
 }
-
+export interface Trainer extends BaseOccupant {
+	dialogue: string[];
+	sprite: string;
+	movement?: Movement;
+	viewRange?: number;
+	watching?: boolean;
+	type: 'TRAINER';
+	team: number[];
+}
 export interface Merchant extends BaseOccupant {
 	type: 'MERCHANT';
 	dialogue: string[];
@@ -71,7 +78,7 @@ export interface InvisibleBlocker extends BaseOccupant {
 	onClick?: OverworldEvent;
 }
 
-export type OccupantWithDialogue = Npc | Merchant | Healer;
+export type OccupantWithDialogue = Npc | Merchant | Healer | Trainer;
 export type OccupantWithPossibleOnClick =
 	| LargeObstacle
 	| InvisibleBlocker
@@ -82,7 +89,8 @@ export type OccupantWithSprite =
 	| Merchant
 	| Healer
 	| Obstacle
-	| LargeObstacle;
+	| LargeObstacle
+	| Trainer;
 export type Occupant =
 	| Npc
 	| OverworldItem
@@ -91,4 +99,5 @@ export type Occupant =
 	| QuestCheck
 	| Obstacle
 	| InvisibleBlocker
-	| LargeObstacle;
+	| LargeObstacle
+	| Trainer;

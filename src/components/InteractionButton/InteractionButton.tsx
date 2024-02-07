@@ -59,7 +59,14 @@ export const InteractionButton = () => {
 				if (focusedOccupant.type === 'MERCHANT') {
 					navigate(RoutesEnum.market, { state: focusedOccupant.inventory });
 				}
-				saveGame({ questUpdates: focusedOccupant.questUpdates });
+				if (focusedOccupant.type === 'TRAINER') {
+					navigate(RoutesEnum.battle, { state: focusedOccupant.team });
+				}
+
+				saveGame({
+					questUpdates: focusedOccupant.questUpdates,
+					visitedNurse: focusedOccupant.type === 'HEALER',
+				});
 			}
 			dispatch(continueDialogue());
 		}
