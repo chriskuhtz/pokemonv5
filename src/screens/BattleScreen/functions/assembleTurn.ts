@@ -26,11 +26,21 @@ export const assembleTurn = (
 
 	//run away
 	if (c.nextAction?.name === RUNAWAY && c.state === 'ONFIELD') {
-		resSnapshots.push({
-			messages: [`${c.pokemon.name} ran away from the battle`],
-			combatants: [...tempCombatants],
-			endsBattle: { reason: 'RUN_AWAY' },
-		});
+		if (Math.random() > 0.5) {
+			resSnapshots.push({
+				messages: [`${c.pokemon.name} ran away from the battle`],
+				combatants: [...tempCombatants],
+				endsBattle: { reason: 'RUN_AWAY' },
+			});
+		} else
+			resSnapshots.push({
+				messages: [`${c.pokemon.name} failed to run away`],
+				combatants: [...tempCombatants],
+			});
+		return {
+			snapshots: resSnapshots,
+			updatedCombatants: [...tempCombatants],
+		};
 	}
 
 	//standard action
