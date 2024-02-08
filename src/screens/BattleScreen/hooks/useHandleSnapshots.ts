@@ -1,8 +1,10 @@
 import { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Combatant } from '../../../interfaces/Combatant';
+import { RoutesEnum } from '../../../router/router';
 import { assembleRound } from '../functions/assembleRound';
-import { BattleMode } from './useBattleScreen';
 import { BattleSnapshot } from '../interfaces/BattleSnapshot';
+import { BattleMode } from './useBattleScreen';
 
 export const useHandleSnapshots = ({
 	snapshots,
@@ -17,6 +19,7 @@ export const useHandleSnapshots = ({
 	setSnapshots: (x: BattleSnapshot[]) => void;
 	setCurrentCombatants: (x: Combatant[]) => void;
 }) => {
+	const navigate = useNavigate();
 	useEffect(() => {
 		if (mode === 'ASSEMBLING' && snapshots.length === 0) {
 			setSnapshots(assembleRound(currentCombatants));
@@ -25,12 +28,16 @@ export const useHandleSnapshots = ({
 
 	const handleNextSnapshot = useCallback(() => {
 		const copiedSnapshots = [...snapshots];
+
+		if (copiedSnapshots[0].endsBattle) {
+			navigate(RoutesEnum.overworld);
+		}
 		if (copiedSnapshots.length === 1) {
 			setCurrentCombatants(copiedSnapshots[0].combatants);
 		}
 		copiedSnapshots.splice(0, 1);
 		setSnapshots(copiedSnapshots);
-	}, [setCurrentCombatants, setSnapshots, snapshots]);
+	}, [navigate, setCurrentCombatants, setSnapshots, snapshots]);
 
 	return { handleNextSnapshot };
 };

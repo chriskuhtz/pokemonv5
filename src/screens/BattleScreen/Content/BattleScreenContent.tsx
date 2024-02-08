@@ -4,6 +4,7 @@ import { MessageHandlerModal } from '../components/MessageHandlerModal/MessageHa
 import { OpponentSide } from '../components/OpponentSide/OpponentSide';
 import { PlayerSide } from '../components/PlayerSide/PlayerSide';
 import { useBattleScreen } from '../hooks/useBattleScreen';
+
 export const BattleScreenContent = ({
 	initialCombatants,
 	opponentIds,

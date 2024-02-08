@@ -4,6 +4,8 @@ import { applyEffectsToTarget } from './applyEffectsToTarget';
 import { errorSnapshot } from './errorSnapshot';
 import { updateCombatantInArray } from './updateCombatantInArray';
 
+export const RUNAWAY = 'Run Away';
+
 export const assembleTurn = (
 	combatants: Combatant[],
 	c: Combatant
@@ -17,14 +19,25 @@ export const assembleTurn = (
 		(potentialTarget) => potentialTarget.id === c.nextAction?.target
 	);
 
+	//error state
 	if ((c.state === 'ONFIELD' && !c.nextAction) || !target) {
 		return errorSnapshot(tempCombatants);
 	}
 
+	//run away
+	if (c.nextAction?.name === RUNAWAY && c.state === 'ONFIELD') {
+		resSnapshots.push({
+			messages: [`${c.pokemon.name} ran away from the battle`],
+			combatants: [...tempCombatants],
+			endsBattle: true,
+		});
+	}
+
+	//standard action
 	if (c.state === 'ONFIELD' && c.nextAction && target) {
 		resSnapshots.push({
 			messages: [
-				`${c.pokemon.name} used an attack against ${target?.pokemon.name}`,
+				`${c.pokemon.name} used ${c.nextAction.name} against ${target?.pokemon.name}`,
 			],
 			combatants: [...tempCombatants],
 		});

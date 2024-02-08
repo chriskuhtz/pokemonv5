@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Combatant } from '../../interfaces/Combatant';
+import { RUNAWAY } from '../../screens/BattleScreen/functions/assembleTurn';
 import { UseBattleScreen } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ChooseActionModal } from './components/ChooseActionModal';
@@ -16,6 +17,12 @@ export const ChooseActionAndTarget = ({
 }): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false);
 	const [actionName, setActionName] = useState<string | undefined>('');
+
+	useEffect(() => {
+		if (actionName === RUNAWAY) {
+			selectAction(combatant.id, { name: RUNAWAY, target: combatant.id });
+		}
+	}, [actionName, combatant.id, selectAction]);
 
 	if (!open) {
 		return <Pill onClick={() => setOpen(true)} center={'Choose Action'} />;

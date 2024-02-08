@@ -1,3 +1,4 @@
+import { RUNAWAY } from '../../../screens/BattleScreen/functions/assembleTurn';
 import { Modal } from '../../../ui_components/Modal/Modal';
 import { Pill } from '../../../ui_components/Pill/Pill';
 import { TwoByXGrid } from '../../../ui_components/TwoByXGrid/TwoByXGrid';
@@ -28,7 +29,12 @@ export const ChooseActionModal = ({
 					/>
 					<Pill center="Bag" />
 					<Pill center="Team" />
-					<Pill center="Run away" />
+					<Pill
+						center="Run away"
+						onClick={() => {
+							setActionName(RUNAWAY);
+						}}
+					/>
 				</TwoByXGrid>
 			}
 		/>

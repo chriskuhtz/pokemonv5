@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { useOverworldEvent } from '../../../hooks/useOverworldEvent';
@@ -7,7 +7,10 @@ import { selectNextCoordinates } from '../../../store/selectors/combination/sele
 import { selectOccupantAtNextCoordinates } from '../../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectNextOrientation } from '../../../store/selectors/saveFile/selectNextOrientation';
 import { selectPosition } from '../../../store/selectors/saveFile/selectPosition';
-import { updatePosition } from '../../../store/slices/saveFileSlice';
+import {
+	stopWalking,
+	updatePosition,
+} from '../../../store/slices/saveFileSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 
 export const useUpdatePosition = () => {
@@ -18,6 +21,7 @@ export const useUpdatePosition = () => {
 	const decorator = useAppSelector(selectDecoratorAtNextCoordinatess);
 	const handleEvent = useOverworldEvent();
 	const { x, y } = useAppSelector(selectNextCoordinates);
+	const [encounterChance, setEncounterChance] = useState<number>(0);
 
 	return useCallback(() => {
 		if (nextOrientation === undefined || position === undefined) {
@@ -27,9 +31,19 @@ export const useUpdatePosition = () => {
 			dispatch(updatePosition({ ...position, orientation: nextOrientation }));
 			return;
 		}
-
 		if (decorator?.onStep) {
-			handleEvent(decorator.onStep);
+			const random = Math.random();
+			if (decorator?.onStep?.type === 'ENCOUNTER' && encounterChance < random) {
+				setEncounterChance(encounterChance + 0.05);
+			}
+			if (
+				(decorator?.onStep?.type === 'ENCOUNTER' && encounterChance > random) ||
+				decorator?.onStep?.type !== 'ENCOUNTER'
+			) {
+				dispatch(stopWalking());
+				handleEvent(decorator.onStep);
+				return;
+			}
 		}
 
 		if (occupied) {
@@ -40,6 +54,7 @@ export const useUpdatePosition = () => {
 			);
 			return;
 		}
+
 		dispatch(
 			updatePosition({
 				...position,
@@ -47,5 +62,15 @@ export const useUpdatePosition = () => {
 				y,
 			})
 		);
-	}, [decorator, dispatch, nextOrientation, occupied, position, x, y]);
+	}, [
+		decorator,
+		dispatch,
+		encounterChance,
+		handleEvent,
+		nextOrientation,
+		occupied,
+		position,
+		x,
+		y,
+	]);
 };

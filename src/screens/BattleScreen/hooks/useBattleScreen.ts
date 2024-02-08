@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Action } from '../../../interfaces/Action';
 import { Combatant } from '../../../interfaces/Combatant';
 import { BattleScreenProps } from '../BattleScreen';
@@ -63,6 +63,10 @@ export const useBattleScreen = ({
 		currentCombatants,
 		setCurrentCombatants,
 	});
+
+	useEffect(() => {
+		console.log(snapshots);
+	}, [snapshots]);
 
 	return {
 		messages: snapshots.length > 0 ? snapshots[0].messages : undefined,

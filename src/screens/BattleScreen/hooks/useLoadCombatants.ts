@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
+import { useFetch } from '../../../hooks/useFetch';
 import { Combatant } from '../../../interfaces/Combatant';
-import { PokemonData } from '../../../shared/interfaces/PokemonData';
+import { selectSaveFile } from '../../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../../store/storeHooks';
 import { OPPOID } from '../../../testing/constants/trainerIds';
 import { pokemonGenerator } from '../../../testing/generators/pokemonGenerator';
-import { selectSaveFile } from '../../../store/selectors/saveFile/selectSaveFile';
 
 export const useLoadCombatants = (): Combatant[] | undefined => {
 	const location = useLocation();
@@ -19,31 +19,27 @@ export const useLoadCombatants = (): Combatant[] | undefined => {
 	}, [data]);
 	const [getPokemonData] = useLazyGetPokemonDataByDexIdQuery();
 
-	const [encounterData, setEncounterData] = useState<PokemonData[]>([]);
-	const [teamData, setTeamData] = useState<PokemonData[]>([]);
+	const { res: encounterData } = useFetch(
+		async () =>
+			await Promise.all(
+				[...encounterIds].map((id) => getPokemonData(id).unwrap())
+			)
+	);
+	const { res: teamData } = useFetch(
+		async () =>
+			await Promise.all(
+				(teamMembers ?? []).map((pokemon) =>
+					getPokemonData(pokemon.dexId).unwrap()
+				)
+			)
+	);
 
-	useEffect(() => {
-		if (encounterData.length === 0) {
-			const fetchAll = async () =>
-				await Promise.all(
-					[...encounterIds, 244, 328, 734, 812, 69].map((id) =>
-						getPokemonData(id).unwrap()
-					)
-				).then((res) => setEncounterData(res));
-			fetchAll();
-		}
-	}, [encounterData.length, encounterIds, getPokemonData]);
-	useEffect(() => {
-		if (teamMembers && teamMembers.length > 0 && teamData.length === 0) {
-			const fetchAll = async () =>
-				await Promise.all(
-					teamMembers.map((pokemon) => getPokemonData(pokemon.dexId).unwrap())
-				).then((res) => setTeamData(res));
-			fetchAll();
-		}
-	}, [getPokemonData, teamData.length, teamMembers]);
-
-	if (encounterData.length > 0 && teamData.length > 0) {
+	if (
+		encounterData &&
+		teamData &&
+		encounterData.length > 0 &&
+		teamData?.length > 0
+	) {
 		return [
 			...encounterData.map((encounter) => {
 				return {
