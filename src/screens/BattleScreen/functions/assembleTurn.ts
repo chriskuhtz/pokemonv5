@@ -55,7 +55,14 @@ export const assembleTurn = (
 			c.nextAction,
 			target
 		);
-		tempCombatants = updateCombatantInArray(tempCombatants, updatedTarget);
+		if (updatedTarget.state === 'DEFEATED') {
+			tempCombatants = [...tempCombatants].filter(
+				(c) => c.id !== updatedTarget.id
+			);
+		} else {
+			tempCombatants = updateCombatantInArray(tempCombatants, updatedTarget);
+		}
+
 		resSnapshots.push({
 			messages: [`That hit the spot`, ...targetEffectMessages],
 			combatants: [...tempCombatants],

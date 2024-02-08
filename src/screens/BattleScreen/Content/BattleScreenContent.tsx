@@ -23,6 +23,10 @@ export const BattleScreenContent = ({
 		playerId: playerId,
 		allyId: allyId,
 	});
+
+	if (allCombatantsOnField.length === 0) {
+		return <div>No more active Combatants, whats happening?</div>;
+	}
 	return (
 		<div className="battleScreen">
 			<div className="devInfo">MODE: {mode}</div>

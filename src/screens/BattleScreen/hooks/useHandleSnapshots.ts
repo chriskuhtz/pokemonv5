@@ -20,7 +20,11 @@ export const useHandleSnapshots = ({
 }) => {
 	const handleBattleEnd = useHandleBattleEnd();
 	useEffect(() => {
-		if (mode === 'ASSEMBLING' && snapshots.length === 0) {
+		if (
+			mode === 'ASSEMBLING' &&
+			snapshots.length === 0 &&
+			currentCombatants.some((c) => c.state !== 'DEFEATED')
+		) {
 			setSnapshots(assembleRound(currentCombatants));
 		}
 	}, [currentCombatants, mode, setSnapshots, snapshots]);
