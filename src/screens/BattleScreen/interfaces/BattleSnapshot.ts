@@ -1,7 +1,13 @@
 import { Combatant } from '../../../interfaces/Combatant';
 
+export type BattleEndReason =
+	| 'RUN_AWAY'
+	| 'WILD_POKEMON_DEFEATED'
+	| 'WILD_POKEMON_ESCAPED'
+	| 'WILD_POKEMON_CAUGHT'
+	| 'TRAINER_DEFEATED';
 export interface BattleSnapshot {
 	messages: string[];
 	combatants: Combatant[];
-	endsBattle?: boolean;
+	endsBattle?: { reason: BattleEndReason };
 }

@@ -29,7 +29,7 @@ export const assembleTurn = (
 		resSnapshots.push({
 			messages: [`${c.pokemon.name} ran away from the battle`],
 			combatants: [...tempCombatants],
-			endsBattle: true,
+			endsBattle: { reason: 'RUN_AWAY' },
 		});
 	}
 
