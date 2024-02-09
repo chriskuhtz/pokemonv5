@@ -53,14 +53,14 @@ export const useLoadCombatants = (): Combatant[] | undefined => {
 					}),
 				};
 			}),
-			...teamMembers.map((teamMember) => {
+			...teamMembers.map((teamMember, i) => {
 				const data = teamData.find((d) => d.id === teamMember.dexId);
 				if (!data) {
 					console.error('cant create Pokemon, no data for dexId');
 					return;
 				}
 				return {
-					state: 'ONFIELD',
+					state: i < encounterData.length ? 'ONFIELD' : 'ONBENCH',
 					id: v4(),
 					pokemon: battlePokemonGenerator({
 						name: data.name,
