@@ -14,6 +14,7 @@ export const OpponentSide = ({
 					pokemon={c.pokemon}
 					onClick={() => {}}
 					rightSide={c.nextAction?.name}
+					battleState={c.state}
 				/>
 			))}
 		</div>

@@ -1,0 +1,26 @@
+/* The animation code */
+@keyframes shaking {
+	0% {
+		transform: rotate(-45deg);
+	}
+	25% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(45deg);
+	}
+	75% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-45deg);
+	}
+}
+
+/* The element to apply the animation to */
+.shaking {
+	transform-origin: bottom;
+	animation-name: shaking;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}

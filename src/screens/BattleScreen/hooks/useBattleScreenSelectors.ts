@@ -9,7 +9,10 @@ export const useBattleScreenSelectors = ({
 	playerId: string;
 }) => {
 	const allCombatantsOnField = useMemo(() => {
-		return currentCombatants.filter((c) => c.state === 'ONFIELD');
+		return currentCombatants.filter(
+			(c) =>
+				c.state === 'ONFIELD' || c.state === 'CATCHING' || c.state === 'CAUGHT'
+		);
 	}, [currentCombatants]);
 	const allPlayerCombatantsHaveMoves = useMemo(() => {
 		return allCombatantsOnField

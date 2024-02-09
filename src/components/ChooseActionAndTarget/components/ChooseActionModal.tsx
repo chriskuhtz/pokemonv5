@@ -1,4 +1,7 @@
-import { RUNAWAY } from '../../../screens/BattleScreen/functions/assembleTurn';
+import {
+	ATTEMPT_TO_CATCH,
+	RUNAWAY,
+} from '../../../screens/BattleScreen/functions/assembleTurn';
 import { Modal } from '../../../ui_components/Modal/Modal';
 import { Pill } from '../../../ui_components/Pill/Pill';
 import { TwoByXGrid } from '../../../ui_components/TwoByXGrid/TwoByXGrid';
@@ -28,7 +31,12 @@ export const ChooseActionModal = ({
 						center="Attack"
 					/>
 					<Pill center="Bag" />
-					<Pill center="Team" />
+					<Pill
+						center="Throw Pokeball"
+						onClick={() => {
+							setActionName(ATTEMPT_TO_CATCH);
+						}}
+					/>
 					<Pill
 						center="Run away"
 						onClick={() => {

@@ -2,10 +2,12 @@ import { Combatant } from '../../../interfaces/Combatant';
 import { BattleSnapshot } from '../interfaces/BattleSnapshot';
 import { applyEffectsToTarget } from './applyEffectsToTarget';
 import { canRunAway } from './canRunAway';
+import { catchSucceeds } from './catchSucceeds';
 import { errorSnapshot } from './errorSnapshot';
 import { updateCombatantInArray } from './updateCombatantInArray';
 
 export const RUNAWAY = 'Run Away';
+export const ATTEMPT_TO_CATCH = 'Attempt to Catch';
 
 export const assembleTurn = (
 	combatants: Combatant[],
@@ -37,6 +39,37 @@ export const assembleTurn = (
 			resSnapshots.push({
 				messages: [`${c.pokemon.name} failed to run away`],
 				combatants: [...tempCombatants],
+			});
+		return {
+			snapshots: resSnapshots,
+			updatedCombatants: [...tempCombatants],
+		};
+	}
+
+	//throw pokeball
+	if (c.nextAction?.name === ATTEMPT_TO_CATCH && c.state === 'ONFIELD') {
+		resSnapshots.push({
+			messages: [`You threw a Pokeball at ${target.pokemon.name}`],
+			combatants: updateCombatantInArray([...tempCombatants], {
+				...target,
+				state: 'CATCHING',
+			}),
+		});
+		if (catchSucceeds(target)) {
+			resSnapshots.push({
+				messages: [`${target.pokemon.name} was caught`],
+				combatants: updateCombatantInArray([...tempCombatants], {
+					...target,
+					state: 'CAUGHT',
+				}),
+			});
+		} else
+			resSnapshots.push({
+				messages: [`${target.pokemon.name} escaped the pokeball`],
+				combatants: updateCombatantInArray([...tempCombatants], {
+					...target,
+					state: 'ONFIELD',
+				}),
 			});
 		return {
 			snapshots: resSnapshots,
