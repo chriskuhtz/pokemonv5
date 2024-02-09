@@ -7,7 +7,7 @@ import { TwoByXGrid } from '../../../ui_components/TwoByXGrid/TwoByXGrid';
 export const ChooseTargetModal = ({
 	open,
 	setOpen,
-	combatants,
+	availableTargets,
 	selectAction,
 	actionName,
 	combatant,
@@ -16,7 +16,7 @@ export const ChooseTargetModal = ({
 	setOpen: (x: boolean) => void;
 	actionName: string;
 	selectAction: UseBattleScreen['selectNextActionForCombatant'];
-	combatants: Combatant[];
+	availableTargets: Combatant[];
 	combatant: Combatant;
 }) => {
 	return (
@@ -26,7 +26,7 @@ export const ChooseTargetModal = ({
 			modalTitle={`who is the target`}
 			modalContent={
 				<TwoByXGrid>
-					{combatants.map((c) => (
+					{availableTargets.map((c) => (
 						<Pill
 							key={c.id}
 							onClick={() => {

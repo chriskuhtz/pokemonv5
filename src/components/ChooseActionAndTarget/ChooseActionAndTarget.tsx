@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Combatant } from '../../interfaces/Combatant';
 import { RUNAWAY } from '../../screens/BattleScreen/functions/assembleTurn';
 import { UseBattleScreen } from '../../screens/BattleScreen/hooks/useBattleScreen';
+import { selectOpponentIds } from '../../store/selectors/battle/selectOpponentIds';
+import { useAppSelector } from '../../store/storeHooks';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ChooseActionModal } from './components/ChooseActionModal';
 import { ChooseTargetModal } from './components/ChooseTargetModal';
@@ -17,6 +19,7 @@ export const ChooseActionAndTarget = ({
 }): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false);
 	const [actionName, setActionName] = useState<string | undefined>('');
+	const oppoIds = useAppSelector(selectOpponentIds);
 
 	useEffect(() => {
 		if (actionName === RUNAWAY) {
@@ -44,7 +47,9 @@ export const ChooseActionAndTarget = ({
 			setOpen={setOpen}
 			actionName={actionName}
 			selectAction={selectAction}
-			combatants={combatants}
+			availableTargets={combatants.filter((c) =>
+				oppoIds.includes(c.pokemon.ownerId)
+			)}
 			combatant={combatant}
 		/>
 	);
