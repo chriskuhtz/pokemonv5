@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
+import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { Combatant } from '../../interfaces/Combatant';
-import { Pokemon } from '../../interfaces/Pokemon';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { MapObject } from '../MapObject/MapObject';
 import './battlePill.css';
@@ -13,7 +13,7 @@ export const BattlePill = ({
 	battleStatus,
 	battleState,
 }: {
-	pokemon: Pokemon;
+	pokemon: BattlePokemon;
 	onClick?: () => void;
 	rightSide?: ReactNode;
 	battleStatus?: Combatant['status'];

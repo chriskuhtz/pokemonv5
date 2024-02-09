@@ -4,9 +4,9 @@ import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { Quest } from '../../interfaces/Quest';
+import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 
 export const PokemonSelectionScreen = ({
 	choices,
@@ -47,6 +47,7 @@ export const PokemonSelectionScreen = ({
 											onTeam: data.pokemon.length < 6,
 											xp: 100,
 											damage: 0,
+											ownerId: data.playerId,
 										},
 									],
 									dexUpdates: choices.map((choice) => {

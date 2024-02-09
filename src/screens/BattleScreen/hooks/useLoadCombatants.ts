@@ -7,7 +7,7 @@ import { Combatant } from '../../../interfaces/Combatant';
 import { selectSaveFile } from '../../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../../store/storeHooks';
 import { OPPOID } from '../../../testing/constants/trainerIds';
-import { pokemonGenerator } from '../../../testing/generators/pokemonGenerator';
+import { battlePokemonGenerator } from '../../../testing/generators/battlePokemonGenerator';
 
 export const useLoadCombatants = (): Combatant[] | undefined => {
 	const location = useLocation();
@@ -37,6 +37,7 @@ export const useLoadCombatants = (): Combatant[] | undefined => {
 	if (
 		encounterData &&
 		teamData &&
+		teamMembers &&
 		encounterData.length > 0 &&
 		teamData?.length > 0
 	) {
@@ -45,21 +46,25 @@ export const useLoadCombatants = (): Combatant[] | undefined => {
 				return {
 					state: 'ONFIELD',
 					id: v4(),
-					pokemon: pokemonGenerator({
+					pokemon: battlePokemonGenerator({
 						dexId: encounter.id,
 						name: encounter.name,
 						ownerId: OPPOID,
 					}),
 				};
 			}),
-			...teamData.map((teamMember) => {
+			...teamMembers.map((teamMember) => {
+				const data = teamData.find((d) => d.id === teamMember.dexId);
+				if (!data) {
+					console.error('cant create Pokemon, no data for dexId');
+					return;
+				}
 				return {
 					state: 'ONFIELD',
 					id: v4(),
-					pokemon: pokemonGenerator({
-						dexId: teamMember.id,
-						name: teamMember.name,
-						ownerId: data?.playerId ?? '',
+					pokemon: battlePokemonGenerator({
+						name: data.name,
+						...teamMember,
 					}),
 				};
 			}),

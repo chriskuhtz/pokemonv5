@@ -49,6 +49,7 @@ export const useSaveGame = () => {
 			const updatedPosition =
 				portalEvent?.to ?? currentPosition ?? data.position;
 
+			//if there are updates, filter out all mons whose ids are included in the updates, then concat updates
 			let updatedPokemon = pokemonUpdates
 				? data.pokemon
 						.filter((d) => !pokemonUpdates?.some((u) => u.id === d.id))

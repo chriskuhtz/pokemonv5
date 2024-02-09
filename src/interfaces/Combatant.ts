@@ -1,8 +1,8 @@
 import { Action } from './Action';
-import { Pokemon } from './Pokemon';
+import { BattlePokemon } from './BattlePokemon';
 
 export interface Combatant {
-	pokemon: Pokemon;
+	pokemon: BattlePokemon;
 	id: string;
 	nextAction?: Action;
 	status?: 'CONFUSED';

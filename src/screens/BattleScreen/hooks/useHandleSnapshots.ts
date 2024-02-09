@@ -40,7 +40,10 @@ export const useHandleSnapshots = ({
 		const copiedSnapshots = [...snapshots];
 
 		if (copiedSnapshots[0].endsBattle) {
-			handleBattleEnd(copiedSnapshots[0].endsBattle.reason);
+			handleBattleEnd(
+				copiedSnapshots[0].endsBattle.reason,
+				copiedSnapshots[0].combatants
+			);
 		}
 		if (copiedSnapshots.length === 1) {
 			setCurrentCombatants(copiedSnapshots[0].combatants);
