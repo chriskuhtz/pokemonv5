@@ -1,6 +1,7 @@
 import { Combatant } from '../../../interfaces/Combatant';
 import { BattleSnapshot } from '../interfaces/BattleSnapshot';
 import { applyEffectsToTarget } from './applyEffectsToTarget';
+import { canRunAway } from './canRunAway';
 import { errorSnapshot } from './errorSnapshot';
 import { updateCombatantInArray } from './updateCombatantInArray';
 
@@ -26,7 +27,7 @@ export const assembleTurn = (
 
 	//run away
 	if (c.nextAction?.name === RUNAWAY && c.state === 'ONFIELD') {
-		if (Math.random() > 0.5) {
+		if (canRunAway(c)) {
 			resSnapshots.push({
 				messages: [`${c.pokemon.name} ran away from the battle`],
 				combatants: [...tempCombatants],
