@@ -14,7 +14,7 @@ export const useHandleBattleEnd = () => {
 		(reason: BattleEndReason) => {
 			if (reason === 'RUN_AWAY') {
 				dispatch(addDialogue(['you escaped the wild Pokemon']));
-			}
+			} else dispatch(addDialogue([reason]));
 			save({});
 			navigate(RoutesEnum.overworld);
 		},

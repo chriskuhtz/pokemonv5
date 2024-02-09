@@ -3,6 +3,7 @@ import { BattleSnapshot } from '../interfaces/BattleSnapshot';
 import { applyEffectsToTarget } from './applyEffectsToTarget';
 import { canRunAway } from './canRunAway';
 import { catchSucceeds } from './catchSucceeds';
+import { checkForBattleEnd } from './checkForBattleEnd';
 import { errorSnapshot } from './errorSnapshot';
 import { updateCombatantInArray } from './updateCombatantInArray';
 
@@ -11,7 +12,9 @@ export const ATTEMPT_TO_CATCH = 'Attempt to Catch';
 
 export const assembleTurn = (
 	combatants: Combatant[],
-	c: Combatant
+	c: Combatant,
+	oppoIds: string[],
+	playerId: string
 ): { snapshots: BattleSnapshot[]; updatedCombatants: Combatant[] } => {
 	const resSnapshots: BattleSnapshot[] = [];
 	let tempCombatants = updateCombatantInArray(combatants, {
@@ -56,12 +59,14 @@ export const assembleTurn = (
 			}),
 		});
 		if (catchSucceeds(target)) {
+			const updated = updateCombatantInArray([...tempCombatants], {
+				...target,
+				state: 'CAUGHT',
+			});
 			resSnapshots.push({
 				messages: [`${target.pokemon.name} was caught`],
-				combatants: updateCombatantInArray([...tempCombatants], {
-					...target,
-					state: 'CAUGHT',
-				}),
+				combatants: updated,
+				endsBattle: checkForBattleEnd(updated, oppoIds, playerId),
 			});
 		} else
 			resSnapshots.push({
@@ -100,13 +105,14 @@ export const assembleTurn = (
 		resSnapshots.push({
 			messages: [`That hit the spot`, ...targetEffectMessages],
 			combatants: [...tempCombatants],
+			endsBattle: checkForBattleEnd(tempCombatants, oppoIds, playerId),
 		});
 		return {
 			snapshots: resSnapshots,
 			updatedCombatants: [...tempCombatants],
 		};
 	}
-
+	//fallBack
 	return {
 		snapshots: [],
 		updatedCombatants: [...tempCombatants],

@@ -1,5 +1,8 @@
 import { useCallback, useEffect } from 'react';
 import { Combatant } from '../../../interfaces/Combatant';
+import { selectOpponentIds } from '../../../store/selectors/battle/selectOpponentIds';
+import { selectPlayerId } from '../../../store/selectors/battle/selectPlayerId';
+import { useAppSelector } from '../../../store/storeHooks';
 import { assembleRound } from '../functions/assembleRound';
 import { BattleSnapshot } from '../interfaces/BattleSnapshot';
 import { BattleMode } from './useBattleScreen';
@@ -18,16 +21,20 @@ export const useHandleSnapshots = ({
 	setSnapshots: (x: BattleSnapshot[]) => void;
 	setCurrentCombatants: (x: Combatant[]) => void;
 }) => {
+	const oppoIds = useAppSelector(selectOpponentIds);
+	const playerId = useAppSelector(selectPlayerId);
 	const handleBattleEnd = useHandleBattleEnd();
 	useEffect(() => {
 		if (
 			mode === 'ASSEMBLING' &&
 			snapshots.length === 0 &&
-			currentCombatants.some((c) => c.state !== 'DEFEATED')
+			currentCombatants.some((c) => c.state !== 'DEFEATED') &&
+			playerId &&
+			oppoIds.length > 0
 		) {
-			setSnapshots(assembleRound(currentCombatants));
+			setSnapshots(assembleRound(currentCombatants, oppoIds, playerId));
 		}
-	}, [currentCombatants, mode, setSnapshots, snapshots]);
+	}, [currentCombatants, mode, oppoIds, playerId, setSnapshots, snapshots]);
 
 	const handleNextSnapshot = useCallback(() => {
 		const copiedSnapshots = [...snapshots];

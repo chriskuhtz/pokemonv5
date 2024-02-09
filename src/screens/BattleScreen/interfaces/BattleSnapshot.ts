@@ -5,6 +5,7 @@ export type BattleEndReason =
 	| 'WILD_POKEMON_DEFEATED'
 	| 'WILD_POKEMON_ESCAPED'
 	| 'WILD_POKEMON_CAUGHT'
+	| 'LOST_BATTLE'
 	| 'TRAINER_DEFEATED';
 export interface BattleSnapshot {
 	messages: string[];

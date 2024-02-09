@@ -1,22 +1,14 @@
 import { Combatant } from '../../../interfaces/Combatant';
 import { BattleSnapshot } from '../interfaces/BattleSnapshot';
-import { RUNAWAY, assembleTurn } from './assembleTurn';
+import { assembleTurn } from './assembleTurn';
+import { sortByMovePriority } from './sortByMovePriority';
 
-export const combantantsSortedByMoveOrder = (
-	combatants: Combatant[]
-): Combatant[] => {
-	return [...combatants].sort((a, b) => {
-		if (a.nextAction?.name === RUNAWAY) {
-			return -1;
-		}
-		if (b.nextAction?.name === RUNAWAY) {
-			return 1;
-		}
-		return 0;
-	});
-};
-export const assembleRound = (combatants: Combatant[]): BattleSnapshot[] => {
-	let tempCombatants = combantantsSortedByMoveOrder(combatants);
+export const assembleRound = (
+	combatants: Combatant[],
+	oppoIds: string[],
+	playerId: string
+): BattleSnapshot[] => {
+	let tempCombatants = sortByMovePriority(combatants);
 
 	let res: BattleSnapshot[] = [];
 
@@ -27,7 +19,9 @@ export const assembleRound = (combatants: Combatant[]): BattleSnapshot[] => {
 		}
 		const { snapshots, updatedCombatants } = assembleTurn(
 			tempCombatants,
-			nextCombatant
+			nextCombatant,
+			oppoIds,
+			playerId
 		);
 		tempCombatants = [...updatedCombatants];
 		res = [...res, ...snapshots];
