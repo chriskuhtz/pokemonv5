@@ -16,7 +16,10 @@ export const useAssignActionsToNpcs = ({
 	currentCombatants: Combatant[];
 }) => {
 	useEffect(() => {
-		if (allPlayerCombatantsHaveMoves && !allCombatantsHaveMoves) {
+		const bestTarget = currentCombatants.find(
+			(c) => c.pokemon.ownerId === playerId
+		)?.id;
+		if (allPlayerCombatantsHaveMoves && !allCombatantsHaveMoves && bestTarget) {
 			setCurrentCombatants(
 				currentCombatants.map((c) => {
 					if (c.pokemon.ownerId === playerId) {
@@ -26,7 +29,7 @@ export const useAssignActionsToNpcs = ({
 						...c,
 
 						nextAction: actionGenerator({
-							target: currentCombatants[0].id,
+							target: bestTarget,
 						}),
 					};
 				})
