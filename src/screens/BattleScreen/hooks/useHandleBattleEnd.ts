@@ -35,7 +35,15 @@ export const useHandleBattleEnd = () => {
 			if (reason === 'RUN_AWAY') {
 				dispatch(addDialogue(['you escaped the wild Pokemon']));
 			} else dispatch(addDialogue([reason]));
-			save({ pokemonUpdates: updatedMons });
+			save({
+				pokemonUpdates: updatedMons,
+				dexUpdates: combatants.map((c) => ({
+					dexId: c.pokemon.dexId,
+					status: updatedMons.some((u) => u.id === c.pokemon.id)
+						? 'owned'
+						: 'seen',
+				})),
+			});
 			navigate(RoutesEnum.overworld);
 		},
 		[dispatch, navigate, playerId, save]
