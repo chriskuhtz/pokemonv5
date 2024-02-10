@@ -9,4 +9,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	name: string;
 	maxHp: number;
 	nextAction?: BattleAction;
+	side: 'PLAYER' | 'OPPONENT';
 }

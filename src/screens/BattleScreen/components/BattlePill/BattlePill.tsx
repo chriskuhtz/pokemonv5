@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
-import { BattlePokemon } from '../../interfaces/BattlePokemon';
-import { Pill } from '../../ui_components/Pill/Pill';
+import { getPokemonSpriteUrl } from '../../../../functions/getPokemonSpriteUrl';
+import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
+import { Pill } from '../../../../ui_components/Pill/Pill';
 import './battlePill.css';
 
 export const BattlePill = ({

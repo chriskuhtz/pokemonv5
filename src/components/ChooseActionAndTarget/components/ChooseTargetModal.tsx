@@ -1,5 +1,4 @@
-import { Combatant } from '../../../interfaces/Combatant';
-import { UseBattleScreen } from '../../../screens/BattleScreen/hooks/useBattleScreen';
+import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { Modal } from '../../../ui_components/Modal/Modal';
 import { Pill } from '../../../ui_components/Pill/Pill';
 import { TwoByXGrid } from '../../../ui_components/TwoByXGrid/TwoByXGrid';
@@ -10,14 +9,14 @@ export const ChooseTargetModal = ({
 	availableTargets,
 	selectAction,
 	actionName,
-	combatant,
+	actor,
 }: {
 	open: boolean;
 	setOpen: (x: boolean) => void;
-	actionName: string;
-	selectAction: UseBattleScreen['selectNextActionForCombatant'];
-	availableTargets: Combatant[];
-	combatant: Combatant;
+	actionName: BattleAction['type'];
+	selectAction: (updatedActor: BattlePokemon) => void;
+	availableTargets: BattlePokemon[];
+	actor: BattlePokemon;
 }) => {
 	return (
 		<Modal
@@ -31,12 +30,15 @@ export const ChooseTargetModal = ({
 							key={c.id}
 							onClick={() => {
 								setOpen(false);
-								selectAction(combatant.id, {
-									name: actionName,
-									target: c.id,
+								selectAction({
+									...actor,
+									nextAction: {
+										type: actionName,
+										target: c.id,
+									},
 								});
 							}}
-							center={c.pokemon.name}
+							center={c.name}
 						/>
 					))}
 				</TwoByXGrid>

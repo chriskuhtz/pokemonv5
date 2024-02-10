@@ -1,36 +1,32 @@
 import { useEffect, useState } from 'react';
-import { Combatant } from '../../interfaces/Combatant';
-import {
-	RUNAWAY,
-	SWITCH,
-} from '../../screens/BattleScreen/functions/assembleTurn';
-import { UseBattleScreen } from '../../screens/BattleScreen/hooks/useBattleScreen';
-import { selectOpponentIds } from '../../store/selectors/battle/selectOpponentIds';
-import { selectPlayerId } from '../../store/selectors/battle/selectPlayerId';
-import { useAppSelector } from '../../store/storeHooks';
+import { BattleAction, BattlePokemon } from '../../interfaces/BattlePokemon';
+
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ChooseActionModal } from './components/ChooseActionModal';
 import { ChooseTargetModal } from './components/ChooseTargetModal';
 
 export const ChooseActionAndTarget = ({
-	combatant,
-	combatants,
+	actor,
+	availableTargets,
 	selectAction,
 }: {
-	combatant: Combatant;
-	combatants: Combatant[];
-	selectAction: UseBattleScreen['selectNextActionForCombatant'];
+	actor: BattlePokemon;
+	availableTargets: BattlePokemon[];
+	selectAction: (updatedActor: BattlePokemon) => void;
 }): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false);
-	const [actionName, setActionName] = useState<string | undefined>('');
-	const oppoIds = useAppSelector(selectOpponentIds);
-	const playerId = useAppSelector(selectPlayerId);
+	const [actionName, setActionName] = useState<
+		BattleAction['type'] | undefined
+	>();
 
 	useEffect(() => {
-		if (actionName === RUNAWAY) {
-			selectAction(combatant.id, { name: RUNAWAY, target: combatant.id });
+		if (actionName === 'RUNAWAY') {
+			selectAction({
+				...actor,
+				nextAction: { type: 'RUNAWAY', target: actor.id },
+			});
 		}
-	}, [actionName, combatant.id, selectAction]);
+	}, [actionName, actor, selectAction]);
 
 	if (!open) {
 		return <Pill onClick={() => setOpen(true)} center={'Choose Action'} />;
@@ -39,23 +35,9 @@ export const ChooseActionAndTarget = ({
 		return (
 			<ChooseActionModal
 				open={!actionName}
-				name={combatant.pokemon.name}
+				name={actor.name}
 				setActionName={setActionName}
 				setOpen={setOpen}
-			/>
-		);
-	}
-	if (actionName === SWITCH) {
-		return (
-			<ChooseTargetModal
-				open={!!(actionName && open)}
-				setOpen={setOpen}
-				actionName={actionName}
-				selectAction={selectAction}
-				availableTargets={combatants.filter(
-					(c) => c.pokemon.ownerId === playerId && c.state === 'ONBENCH'
-				)}
-				combatant={combatant}
 			/>
 		);
 	}
@@ -66,10 +48,8 @@ export const ChooseActionAndTarget = ({
 			setOpen={setOpen}
 			actionName={actionName}
 			selectAction={selectAction}
-			availableTargets={combatants.filter(
-				(c) => oppoIds.includes(c.pokemon.ownerId) && c.state === 'ONFIELD'
-			)}
-			combatant={combatant}
+			availableTargets={availableTargets}
+			actor={actor}
 		/>
 	);
 };

@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { v4 } from 'uuid';
-import { useLazyGetPokemonDataByDexIdQuery } from '../../api/pokeApi';
-import { useFetch } from '../../hooks/useFetch';
+import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
-import { OwnedPokemon } from '../../interfaces/OwnedPokemon';
-import { PokemonData } from '../../shared/interfaces/PokemonData';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
+import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { useAppSelector } from '../../store/storeHooks';
-import { OPPOID } from '../../testing/constants/trainerIds';
+import { Modal } from '../../ui_components/Modal/Modal';
+import { Pill } from '../../ui_components/Pill/Pill';
+import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
+import { BattlePill } from './components/BattlePill/BattlePill';
+import { useBattleScreen } from './hooks/useBattleScreen';
 
 export interface BattleSide {
 	field: BattlePokemon[];
@@ -19,113 +17,64 @@ export interface BattleSide {
 	side: 'PLAYER' | 'OPPONENT';
 }
 
-export const createBattlePokemonFromData = (
-	data: PokemonData
-): BattlePokemon => {
-	return {
-		name: data.name,
-		dexId: data.id,
-		damage: 0,
-		maxHp: 20,
-		ownerId: OPPOID,
-		xp: 100,
-		id: v4(),
-	};
-};
-export const createBattlePokemonFromOwned = (
-	existing: OwnedPokemon,
-	data: PokemonData
-): BattlePokemon => {
-	return {
-		...existing,
-		name: data.name,
-		maxHp: 20,
-	};
-};
-
-export const useInitialiseBattleSides = (
-	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	activePokemonPerSide: number
-) => {
-	const data = useAppSelector(selectSaveFile);
-	const { state } = useLocation();
-	const encounters = state as number[];
-
-	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
-
-	const { res: allOpponentPokemon } = useFetch<BattlePokemon[]>(() =>
-		Promise.all(
-			encounters.map(async (e) => {
-				const data = await getPokemonByDexId(e).unwrap();
-				return createBattlePokemonFromData(data);
-			})
-		)
-	);
-	const { res: allPlayerPokemon } = useFetch<BattlePokemon[]>(() =>
-		Promise.all(
-			(data?.pokemon ?? [])
-				.filter((p) => p.onTeam)
-				.map(async (p) => {
-					const data = await getPokemonByDexId(p.dexId).unwrap();
-
-					return createBattlePokemonFromOwned(p, data);
-				})
-		)
-	);
-	useEffect(() => {
-		//initialise battle
-		if (
-			data &&
-			allPlayerPokemon &&
-			allPlayerPokemon?.length > 0 &&
-			allOpponentPokemon &&
-			allOpponentPokemon?.length > 0
-		) {
-			const ablePlayerPokemon = allPlayerPokemon.filter(
-				(p) => p.damage < p.maxHp
-			);
-			const defeatedPlayerPokemon = allPlayerPokemon.filter(
-				(p) => p.damage >= p.maxHp
-			);
-			setPlayerSide({
-				field: ablePlayerPokemon.slice(0, activePokemonPerSide),
-				bench: ablePlayerPokemon.slice(activePokemonPerSide),
-				defeated: defeatedPlayerPokemon,
-				side: 'PLAYER',
-			});
-			setOpponentSide({
-				bench: [],
-				defeated: [],
-				side: 'OPPONENT',
-				field: allOpponentPokemon,
-			});
-		}
-	}, [
-		data,
-		allOpponentPokemon,
-		allPlayerPokemon,
-		encounters,
-		setPlayerSide,
-		setOpponentSide,
-		activePokemonPerSide,
-	]);
-};
+export type BattleMode = 'COLLECTING' | 'EXECUTING';
 
 export const BattleScreen = (): JSX.Element => {
-	const { state } = useLocation();
-	const encounters = state as number[];
-	const activePokemonPerside = encounters.length;
-
-	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
-	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
-
-	useInitialiseBattleSides(
-		setPlayerSide,
-		setOpponentSide,
-		activePokemonPerside
-	);
-
+	const currentDialogue = useAppSelector(selectCurrentDialogue);
+	const { playerSide, opponentSide, handleAction, mode, selectAction } =
+		useBattleScreen();
 	console.log(playerSide, opponentSide);
-	return <div>reImplement</div>;
+
+	if (playerSide && opponentSide) {
+		return (
+			<div className="battle">
+				<div className="battleField">
+					<div className="playerField">
+						{playerSide?.field.map((p) => (
+							<BattlePill
+								back
+								pokemon={p}
+								rightSide={
+									mode === 'COLLECTING' && !p.nextAction ? (
+										<ChooseActionAndTarget
+											actor={p}
+											availableTargets={opponentSide?.field ?? []}
+											selectAction={selectAction}
+										/>
+									) : (
+										p.nextAction?.type
+									)
+								}
+							/>
+						))}
+					</div>
+					<div className="opponentField">
+						{opponentSide?.field.map((p) => (
+							<BattlePill
+								pokemon={p}
+								rightSide={
+									p.nextAction ? p.nextAction.type : 'select an Action'
+								}
+							/>
+						))}
+					</div>
+				</div>
+				<Modal
+					open={currentDialogue.length > 0}
+					modalContent={
+						<Pill
+							center={currentDialogue[0]}
+							style={{
+								margin: '0 2rem',
+								padding: '1rem 2rem',
+								fontSize: 'larger',
+							}}
+							onClick={handleAction}
+						/>
+					}
+				/>
+			</div>
+		);
+	}
+	return <FetchingScreen />;
 };

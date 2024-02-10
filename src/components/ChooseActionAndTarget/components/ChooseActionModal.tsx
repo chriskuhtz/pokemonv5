@@ -1,8 +1,5 @@
-import {
-	ATTEMPT_TO_CATCH,
-	RUNAWAY,
-	SWITCH,
-} from '../../../screens/BattleScreen/functions/assembleTurn';
+import { BattleAction } from '../../../interfaces/BattlePokemon';
+
 import { Modal } from '../../../ui_components/Modal/Modal';
 import { Pill } from '../../../ui_components/Pill/Pill';
 import { TwoByXGrid } from '../../../ui_components/TwoByXGrid/TwoByXGrid';
@@ -15,7 +12,7 @@ export const ChooseActionModal = ({
 }: {
 	open: boolean;
 	setOpen: (x: boolean) => void;
-	setActionName: (x: string) => void;
+	setActionName: (x: BattleAction['type']) => void;
 	name: string;
 }) => {
 	return (
@@ -27,26 +24,26 @@ export const ChooseActionModal = ({
 				<TwoByXGrid>
 					<Pill
 						onClick={() => {
-							setActionName('Attack');
+							setActionName('ATTACK');
 						}}
 						center="Attack"
 					/>
 					<Pill
 						center="Switch"
 						onClick={() => {
-							setActionName(SWITCH);
+							setActionName('SWITCH');
 						}}
 					/>
 					<Pill
 						center="Throw Pokeball"
 						onClick={() => {
-							setActionName(ATTEMPT_TO_CATCH);
+							setActionName('CATCH');
 						}}
 					/>
 					<Pill
 						center="Run away"
 						onClick={() => {
-							setActionName(RUNAWAY);
+							setActionName('RUNAWAY');
 						}}
 					/>
 				</TwoByXGrid>

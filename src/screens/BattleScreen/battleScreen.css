@@ -5,11 +5,11 @@
 	height: 100dvh;
 }
 
-.slots {
+.battleField {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	flex-grow: 1;
 }
-.playerSide {
+.playerField {
 	align-self: flex-end;
 }
