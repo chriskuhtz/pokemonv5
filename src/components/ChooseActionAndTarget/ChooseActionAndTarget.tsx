@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Combatant } from '../../interfaces/Combatant';
-import { RUNAWAY } from '../../screens/BattleScreen/functions/assembleTurn';
+import {
+	RUNAWAY,
+	SWITCH,
+} from '../../screens/BattleScreen/functions/assembleTurn';
 import { UseBattleScreen } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { selectOpponentIds } from '../../store/selectors/battle/selectOpponentIds';
+import { selectPlayerId } from '../../store/selectors/battle/selectPlayerId';
 import { useAppSelector } from '../../store/storeHooks';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ChooseActionModal } from './components/ChooseActionModal';
@@ -20,6 +24,7 @@ export const ChooseActionAndTarget = ({
 	const [open, setOpen] = useState<boolean>(false);
 	const [actionName, setActionName] = useState<string | undefined>('');
 	const oppoIds = useAppSelector(selectOpponentIds);
+	const playerId = useAppSelector(selectPlayerId);
 
 	useEffect(() => {
 		if (actionName === RUNAWAY) {
@@ -40,6 +45,20 @@ export const ChooseActionAndTarget = ({
 			/>
 		);
 	}
+	if (actionName === SWITCH) {
+		return (
+			<ChooseTargetModal
+				open={!!(actionName && open)}
+				setOpen={setOpen}
+				actionName={actionName}
+				selectAction={selectAction}
+				availableTargets={combatants.filter(
+					(c) => c.pokemon.ownerId === playerId && c.state === 'ONBENCH'
+				)}
+				combatant={combatant}
+			/>
+		);
+	}
 
 	return (
 		<ChooseTargetModal
@@ -47,8 +66,8 @@ export const ChooseActionAndTarget = ({
 			setOpen={setOpen}
 			actionName={actionName}
 			selectAction={selectAction}
-			availableTargets={combatants.filter((c) =>
-				oppoIds.includes(c.pokemon.ownerId)
+			availableTargets={combatants.filter(
+				(c) => oppoIds.includes(c.pokemon.ownerId) && c.state === 'ONFIELD'
 			)}
 			combatant={combatant}
 		/>

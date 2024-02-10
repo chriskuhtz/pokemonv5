@@ -9,6 +9,7 @@ import { updateCombatantInArray } from './updateCombatantInArray';
 
 export const RUNAWAY = 'Run Away';
 export const ATTEMPT_TO_CATCH = 'Attempt to Catch';
+export const SWITCH = 'Switch';
 
 export const assembleTurn = (
 	combatants: Combatant[],
@@ -76,6 +77,32 @@ export const assembleTurn = (
 					state: 'ONFIELD',
 				}),
 			});
+		return {
+			snapshots: resSnapshots,
+			updatedCombatants: [...tempCombatants],
+		};
+	}
+	//switch out
+	if (c.nextAction?.name === SWITCH && c.state === 'ONFIELD') {
+		console.log('assemble switch turn', c, target);
+		resSnapshots.push({
+			messages: [`You withdrew ${c.pokemon.name}`],
+			combatants: updateCombatantInArray([...tempCombatants], {
+				...c,
+				state: 'WITHDRAWING',
+			}),
+		});
+		resSnapshots.push({
+			messages: [`Go, ${target.pokemon.name}!`],
+			combatants: updateCombatantInArray(
+				updateCombatantInArray([...tempCombatants], {
+					...c,
+					state: 'ONBENCH',
+				}),
+				{ ...target, state: 'ONFIELD' }
+			),
+		});
+
 		return {
 			snapshots: resSnapshots,
 			updatedCombatants: [...tempCombatants],

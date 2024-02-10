@@ -1,6 +1,7 @@
 import {
 	ATTEMPT_TO_CATCH,
 	RUNAWAY,
+	SWITCH,
 } from '../../../screens/BattleScreen/functions/assembleTurn';
 import { Modal } from '../../../ui_components/Modal/Modal';
 import { Pill } from '../../../ui_components/Pill/Pill';
@@ -30,7 +31,12 @@ export const ChooseActionModal = ({
 						}}
 						center="Attack"
 					/>
-					<Pill center="Bag" />
+					<Pill
+						center="Switch"
+						onClick={() => {
+							setActionName(SWITCH);
+						}}
+					/>
 					<Pill
 						center="Throw Pokeball"
 						onClick={() => {

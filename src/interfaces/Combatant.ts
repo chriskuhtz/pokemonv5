@@ -6,5 +6,11 @@ export interface Combatant {
 	id: string;
 	nextAction?: Action;
 	status?: 'CONFUSED';
-	state: 'ONFIELD' | 'ONBENCH' | 'DEFEATED' | 'CATCHING' | 'CAUGHT';
+	state:
+		| 'ONFIELD'
+		| 'ONBENCH'
+		| 'DEFEATED'
+		| 'CATCHING'
+		| 'CAUGHT'
+		| 'WITHDRAWING';
 }

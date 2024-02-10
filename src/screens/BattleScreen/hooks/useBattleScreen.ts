@@ -15,6 +15,7 @@ export interface UseBattleScreen {
 	messages?: string[];
 	allCombatantsOnField: Combatant[];
 	combatantsOnPlayerBench: Combatant[];
+	allCombatants: Combatant[];
 	selectNextActionForCombatant: (id: string, action: Action) => void;
 	mode: BattleMode;
 	handleNextSnapshot: () => void;
@@ -79,7 +80,6 @@ export const useBattleScreen = (
 	useAssignActionsToNpcs({
 		allCombatantsHaveMoves,
 		allPlayerCombatantsHaveMoves,
-
 		setCurrentCombatants,
 		currentCombatants,
 		playerId,
@@ -103,6 +103,8 @@ export const useBattleScreen = (
 	}, [snapshots]);
 
 	return {
+		allCombatants:
+			snapshots.length > 0 ? snapshots[0].combatants : currentCombatants,
 		messages: snapshots.length > 0 ? snapshots[0].messages : undefined,
 		allCombatantsOnField: (snapshots.length > 0
 			? snapshots[0].combatants

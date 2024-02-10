@@ -22,6 +22,7 @@ export const BattleScreenContent = ({
 		playerHasCombatantsOnField,
 		combatantsOnPlayerBench,
 		setCurrentCombatants,
+		allCombatants,
 	} = useBattleScreen(initialCombatants);
 
 	if (allCombatantsOnField.length === 0) {
@@ -46,10 +47,10 @@ export const BattleScreenContent = ({
 			<PlayerSide
 				playerSide={allCombatantsOnField.filter(
 					(c) =>
-						c.state === 'ONFIELD' &&
+						(c.state === 'ONFIELD' || c.state === 'WITHDRAWING') &&
 						(c.pokemon.ownerId === playerId || c.pokemon.ownerId === allyId)
 				)}
-				allCombatants={allCombatantsOnField}
+				allCombatants={allCombatants}
 				selectNextActionForCombatant={selectNextActionForCombatant}
 			/>
 			<MessageHandlerModal

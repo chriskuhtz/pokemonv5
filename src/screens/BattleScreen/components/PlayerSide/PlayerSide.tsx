@@ -16,6 +16,7 @@ export const PlayerSide = ({
 		<div className="playerSide">
 			{playerSide.map((c) => (
 				<BattlePill
+					battleState={c.state}
 					key={c.id}
 					pokemon={c.pokemon}
 					rightSide={

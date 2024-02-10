@@ -22,7 +22,9 @@ export const BattlePill = ({
 	return (
 		<Pill
 			leftSide={
-				battleState === 'CATCHING' || battleState === 'CAUGHT' ? (
+				battleState === 'CATCHING' ||
+				battleState === 'CAUGHT' ||
+				battleState === 'WITHDRAWING' ? (
 					<MapObject
 						className={battleState === 'CATCHING' ? 'shaking' : undefined}
 						style={{ height: '40px' }}
