@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
-import { BattleSide } from '../../screens/BattleScreen/interfaces/battleScreenInterfaces';
 import { Pill } from '../../ui_components/Pill/Pill';
 import './battlePill.css';
 
@@ -9,18 +8,16 @@ export const BattlePill = ({
 	pokemon,
 	onClick,
 	rightSide,
-	side,
+	back,
 }: {
 	pokemon: BattlePokemon;
 	onClick?: () => void;
 	rightSide?: ReactNode;
-	side: BattleSide;
+	back?: boolean;
 }): JSX.Element => {
 	return (
 		<Pill
-			leftSide={
-				<img src={getPokemonSpriteUrl(pokemon.dexId, side === 'PLAYER')} />
-			}
+			leftSide={<img src={getPokemonSpriteUrl(pokemon.dexId, back)} />}
 			center={
 				<div>
 					<p>{pokemon.name}</p>
