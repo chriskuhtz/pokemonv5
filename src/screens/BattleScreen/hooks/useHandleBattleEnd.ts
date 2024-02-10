@@ -32,7 +32,6 @@ export const useHandleBattleEnd = () => {
 				}));
 			const updatedMons = [...ownedMons, ...caughtMons];
 
-			console.log(updatedMons);
 			if (reason === 'RUN_AWAY') {
 				dispatch(addDialogue(['you escaped the wild Pokemon']));
 			} else dispatch(addDialogue([reason]));

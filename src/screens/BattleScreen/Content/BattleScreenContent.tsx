@@ -3,6 +3,7 @@ import '../battleScreen.css';
 import { MessageHandlerModal } from '../components/MessageHandlerModal/MessageHandlerModal';
 import { OpponentSide } from '../components/OpponentSide/OpponentSide';
 import { PlayerSide } from '../components/PlayerSide/PlayerSide';
+import { SwitchInSelection } from '../components/SwitchInSelection/SwitchInSelection';
 import { useBattleScreen } from '../hooks/useBattleScreen';
 
 export const BattleScreenContent = ({
@@ -17,23 +18,36 @@ export const BattleScreenContent = ({
 		mode,
 		messages,
 		handleNextSnapshot,
-	} = useBattleScreen({
-		initialCombatants: initialCombatants,
-		opponentIds: opponentIds,
-		playerId: playerId,
-		allyId: allyId,
-	});
+		bothSidesHaveCombatantsOnField,
+		playerHasCombatantsOnField,
+		combatantsOnPlayerBench,
+		setCurrentCombatants,
+	} = useBattleScreen(initialCombatants);
 
 	if (allCombatantsOnField.length === 0) {
 		return <div>No more active Combatants, whats happening?</div>;
 	}
+	if (!playerHasCombatantsOnField && combatantsOnPlayerBench.length > 0) {
+		return (
+			<SwitchInSelection
+				setCurrentCombatants={setCurrentCombatants}
+				combatantsOnPlayerBench={combatantsOnPlayerBench}
+			/>
+		);
+	}
+	if (!bothSidesHaveCombatantsOnField) {
+		return <div>Both sides should have combatants, whats happening?</div>;
+	}
+
 	return (
 		<div className="battleScreen">
 			<div className="devInfo">MODE: {mode}</div>
 
 			<PlayerSide
 				playerSide={allCombatantsOnField.filter(
-					(c) => c.pokemon.ownerId === playerId || c.pokemon.ownerId === allyId
+					(c) =>
+						c.state === 'ONFIELD' &&
+						(c.pokemon.ownerId === playerId || c.pokemon.ownerId === allyId)
 				)}
 				allCombatants={allCombatantsOnField}
 				selectNextActionForCombatant={selectNextActionForCombatant}

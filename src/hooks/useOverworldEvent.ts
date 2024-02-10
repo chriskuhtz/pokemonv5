@@ -19,7 +19,9 @@ export const useOverworldEvent = () => {
 				return;
 			}
 			if (event.type === 'ENCOUNTER') {
-				navigate(RoutesEnum.battle, { state: [151] });
+				navigate(RoutesEnum.battle, {
+					state: [Math.round(Math.random() * 1000)],
+				});
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {
 				if (checkQuestCondition(quests, event.questCondition)) {

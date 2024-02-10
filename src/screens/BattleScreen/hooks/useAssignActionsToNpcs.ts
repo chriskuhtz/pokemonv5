@@ -5,17 +5,22 @@ import { actionGenerator } from '../../../testing/generators/actionGenerator';
 export const useAssignActionsToNpcs = ({
 	allCombatantsHaveMoves,
 	allPlayerCombatantsHaveMoves,
-	playerId,
+
 	setCurrentCombatants,
 	currentCombatants,
+	playerId,
 }: {
 	allCombatantsHaveMoves: boolean;
 	allPlayerCombatantsHaveMoves: boolean;
-	playerId: string;
+
 	setCurrentCombatants: (x: Combatant[]) => void;
 	currentCombatants: Combatant[];
+	playerId?: string;
 }) => {
 	useEffect(() => {
+		if (!playerId) {
+			return;
+		}
 		const bestTarget = currentCombatants.find(
 			(c) => c.pokemon.ownerId === playerId
 		)?.id;

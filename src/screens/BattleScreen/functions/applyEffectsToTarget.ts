@@ -5,7 +5,9 @@ export const applyEffectsToTarget = (
 	action: Action,
 	target: Combatant
 ): { updatedTarget: Combatant; targetEffectMessages: string[] } => {
-	console.log(action);
+	if (!action) {
+		return { updatedTarget: target, targetEffectMessages: [] };
+	}
 	const newDamage = target.pokemon.damage + 10;
 	const isDefeated = newDamage >= target.pokemon.maxHp;
 
