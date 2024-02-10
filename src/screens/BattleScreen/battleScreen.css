@@ -1,13 +1,15 @@
-.battleScreen {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	column-gap: 0.5rem;
+.battle {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	height: 100dvh;
 }
-.devInfo {
-	position: absolute;
-	border: 1px solid blue;
-	padding: 0.5rem;
-	top: 0;
-	left: 0;
+
+.slots {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	flex-grow: 1;
+}
+.playerSide {
+	align-self: flex-end;
 }

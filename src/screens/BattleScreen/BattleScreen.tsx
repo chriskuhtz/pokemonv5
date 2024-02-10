@@ -1,39 +1,33 @@
-import { useEffect } from 'react';
-import { Combatant } from '../../interfaces/Combatant';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
-import { initiateBattleSlice } from '../../store/slices/battleSlice';
-import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
-import { OPPOID, TRAINERID } from '../../testing/constants/trainerIds';
-import { BattleScreenErrorHandler } from './ErrorHandler/BattleScreenErrorHandler';
-import { useLoadCombatants } from './hooks/useLoadCombatants';
-
-export interface BattleScreenProps {
-	initialCombatants: Combatant[];
-	playerId: string;
-	opponentIds: string[];
-	allyId?: string;
-}
+import { BattlePill } from '../../components/BattlePill/BattlePill';
+import { Pill } from '../../ui_components/Pill/Pill';
+import './battleScreen.css';
+import { useBattle } from './hooks/useBattle';
 
 export const BattleScreen = (): JSX.Element => {
-	const data = useAppSelector(selectSaveFile);
-	const combatants = useLoadCombatants();
-	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		dispatch(
-			initiateBattleSlice({ opponentIds: [OPPOID], playerId: data?.playerId })
-		);
-	}, [data, dispatch]);
-	if (combatants && data) {
+	const { nextRound, nextSnapshot } = useBattle();
+	if (nextSnapshot) {
+		console.log(nextSnapshot);
 		return (
-			<BattleScreenErrorHandler
-				initialCombatants={combatants}
-				opponentIds={[OPPOID]}
-				playerId={data.playerId}
-				allyId={TRAINERID}
-			/>
+			<div className="battle">
+				<div className="slots">
+					<div className="playerSide">
+						{nextSnapshot.playerSide.map((slot) => (
+							<BattlePill {...slot} />
+						))}
+					</div>
+					<div className="opponentSide">
+						{nextSnapshot.opponentSide.map((slot) => (
+							<BattlePill {...slot} />
+						))}
+					</div>
+				</div>
+				<Pill center={nextSnapshot.message} />
+			</div>
 		);
 	}
+	if (!nextRound) {
+		<div>Lets assemble the next round</div>;
+	}
 
-	return <></>;
+	return <div>Something went wrong</div>;
 };
