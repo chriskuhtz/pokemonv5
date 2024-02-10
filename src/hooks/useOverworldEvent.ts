@@ -20,7 +20,10 @@ export const useOverworldEvent = () => {
 			}
 			if (event.type === 'ENCOUNTER') {
 				navigate(RoutesEnum.battle, {
-					state: [Math.round(Math.random() * 1000)],
+					state: [
+						Math.round(Math.random() * 1000),
+						Math.round(Math.random() * 1000),
+					],
 				});
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {

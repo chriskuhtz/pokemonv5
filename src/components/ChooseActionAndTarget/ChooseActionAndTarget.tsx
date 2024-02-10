@@ -25,6 +25,7 @@ export const ChooseActionAndTarget = ({
 				...actor,
 				nextAction: { type: 'RUNAWAY', target: actor.id },
 			});
+			setActionName(undefined);
 		}
 	}, [actionName, actor, selectAction]);
 
@@ -47,7 +48,10 @@ export const ChooseActionAndTarget = ({
 			open={!!(actionName && open)}
 			setOpen={setOpen}
 			actionName={actionName}
-			selectAction={selectAction}
+			selectAction={(x) => {
+				selectAction(x);
+				setActionName(undefined);
+			}}
 			availableTargets={availableTargets}
 			actor={actor}
 		/>

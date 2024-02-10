@@ -1,18 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
-import {
-	addDialogue,
-	continueDialogue,
-} from '../../../store/slices/dialogueSlice';
-import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
+import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 
 export const useBattleScreen = () => {
-	const currentDialogue = useAppSelector(selectCurrentDialogue);
-	const dispatch = useAppDispatch();
 	const { state } = useLocation();
 	const encounters = state as number[];
 	const activePokemonPerside = encounters.length;
@@ -65,12 +59,6 @@ export const useBattleScreen = () => {
 		}
 	}, [mode, opponentSide, playerSide]);
 
-	const allPokemonOnField = useMemo(() => {
-		if (!playerSide || !opponentSide) {
-			return [];
-		}
-		return [...playerSide.field, ...opponentSide.field];
-	}, [opponentSide, playerSide]);
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {
 			return [];
@@ -80,60 +68,6 @@ export const useBattleScreen = () => {
 			...opponentSide.field.filter((p) => p.nextAction),
 		];
 	}, [opponentSide, playerSide]);
-
-	useEffect(() => {
-		if (
-			mode === 'EXECUTING' &&
-			pokemonWithActions &&
-			pokemonWithActions.length > 0 &&
-			currentDialogue.length === 0
-		) {
-			const actor = pokemonWithActions[0];
-			const target = allPokemonOnField.find(
-				(p) => p.id === actor.nextAction?.target
-			);
-			dispatch(
-				addDialogue([
-					`${actor.name} used ${actor.nextAction?.type} against ${target?.name}`,
-				])
-			);
-		}
-	}, [
-		allPokemonOnField,
-		currentDialogue.length,
-		dispatch,
-		mode,
-		pokemonWithActions,
-	]);
-
-	const handleAction = useCallback(() => {
-		if (!playerSide || !opponentSide) {
-			return;
-		}
-		dispatch(continueDialogue());
-		if (pokemonWithActions.length > 0) {
-			const actor = pokemonWithActions[0];
-			if (actor.side === 'PLAYER') {
-				setPlayerSide({
-					...playerSide,
-					field: playerSide.field
-						.filter((p) => p.id !== actor.id)
-						.concat({ ...actor, nextAction: undefined }),
-				});
-			}
-			if (actor.side === 'OPPONENT') {
-				setOpponentSide({
-					...opponentSide,
-					field: opponentSide.field
-						.filter((p) => p.id !== actor.id)
-						.concat({ ...actor, nextAction: undefined }),
-				});
-			}
-		}
-		if (pokemonWithActions.length === 1) {
-			setMode('COLLECTING');
-		}
-	}, [dispatch, opponentSide, playerSide, pokemonWithActions]);
 
 	const selectAction = useCallback(
 		(updatedActor: BattlePokemon) => {
@@ -148,6 +82,22 @@ export const useBattleScreen = () => {
 			});
 		},
 		[playerSide]
+	);
+
+	const handleAction = useHandleAction(
+		playerSide,
+		opponentSide,
+		pokemonWithActions,
+		setPlayerSide,
+		setOpponentSide,
+		setMode
+	);
+
+	useCheckAndAssembleActions(
+		playerSide,
+		opponentSide,
+		pokemonWithActions,
+		mode
 	);
 
 	return {
