@@ -14,8 +14,8 @@ import { selectOccupantAtNextCoordinates } from '../../store/selectors/combinati
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectOrientation } from '../../store/selectors/saveFile/selectOrientation';
 import {
-	addDialogue,
 	continueDialogue,
+	setDialogue,
 } from '../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import './InteractionButton.css';
@@ -52,7 +52,7 @@ export const InteractionButton = () => {
 					playerOrientation: playerOrientation ?? 0,
 				})
 			);
-			dispatch(addDialogue(occupant.dialogue));
+			dispatch(setDialogue(occupant.dialogue));
 		}
 		if (currentDialogue.length > 0) {
 			if (currentDialogue.length === 1 && focusedOccupant) {

@@ -60,11 +60,13 @@ export const useInitialiseBattleSides = (
 				field: ablePlayerPokemon.slice(0, activePokemonPerSide),
 				bench: ablePlayerPokemon.slice(activePokemonPerSide),
 				defeated: defeatedPlayerPokemon,
+				caught: [],
 				side: 'PLAYER',
 			});
 			setOpponentSide({
 				bench: [],
 				defeated: [],
+				caught: [],
 				side: 'OPPONENT',
 				field: allOpponentPokemon,
 			});

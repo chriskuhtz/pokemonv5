@@ -17,8 +17,13 @@ export const dialogueSlice = createSlice({
 	name: 'dialogue',
 	initialState: initialState,
 	reducers: {
-		addDialogue: (state, action: PayloadAction<string[]>) => {
+		setDialogue: (state, action: PayloadAction<string[]>) => {
 			state.dialogue = action.payload;
+			console.log(state.dialogue);
+		},
+		concatDialogue: (state, action: PayloadAction<string[]>) => {
+			state.dialogue = [...state.dialogue, ...action.payload];
+			console.log(state.dialogue);
 		},
 		continueDialogue: (state) => {
 			state.dialogue = [...state.dialogue.slice(1)];
@@ -51,7 +56,7 @@ export const dialogueSlice = createSlice({
 });
 
 export const {
-	addDialogue,
+	setDialogue,
 	continueDialogue,
 	initiateEncounterDialogue,
 	initiateHealerDialogue,
@@ -59,4 +64,5 @@ export const {
 	initiateMerchantDialogue,
 	initiateNpcDialogue,
 	initiateQuestDialogue,
+	concatDialogue,
 } = dialogueSlice.actions;

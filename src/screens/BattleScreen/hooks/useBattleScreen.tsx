@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
-import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 
 export const useBattleScreen = () => {
 	const { state } = useLocation();
@@ -33,7 +33,7 @@ export const useBattleScreen = () => {
 				console.error('cant determine optimal target');
 				return;
 			}
-			console.log('updateOpponentSide');
+
 			setOpponentSide({
 				...opponentSide,
 				field: opponentSide?.field.map((p) => ({
@@ -54,7 +54,6 @@ export const useBattleScreen = () => {
 			opponentSide.field.length > 0 &&
 			opponentSide.field.every((p) => p.nextAction)
 		) {
-			console.log('everyone has action, switching to EXECUTE mode');
 			setMode('EXECUTING');
 		}
 	}, [mode, opponentSide, playerSide]);
@@ -89,8 +88,7 @@ export const useBattleScreen = () => {
 		opponentSide,
 		pokemonWithActions,
 		setPlayerSide,
-		setOpponentSide,
-		setMode
+		setOpponentSide
 	);
 
 	useCheckAndAssembleActions(
@@ -99,6 +97,12 @@ export const useBattleScreen = () => {
 		pokemonWithActions,
 		mode
 	);
+
+	useEffect(() => {
+		if (mode === 'EXECUTING' && pokemonWithActions.length === 1) {
+			setMode('COLLECTING');
+		}
+	}, [mode, pokemonWithActions]);
 
 	return {
 		mode,

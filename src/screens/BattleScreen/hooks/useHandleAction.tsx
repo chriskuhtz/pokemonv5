@@ -3,34 +3,61 @@ import { useNavigate } from 'react-router-dom';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { RoutesEnum } from '../../../router/router';
 import {
-	addDialogue,
+	concatDialogue,
 	continueDialogue,
 } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
-import { BattleMode, BattleSide } from '../BattleScreen';
+import { BattleSide } from '../BattleScreen';
 
 export const useHandleAction = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	pokemonWithActions: BattlePokemon[],
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setMode: React.Dispatch<React.SetStateAction<BattleMode>>
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
 ) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+
 	return useCallback(() => {
 		if (!playerSide || !opponentSide) {
 			return;
 		}
-		dispatch(continueDialogue());
+
 		if (pokemonWithActions.length > 0) {
 			const actor = pokemonWithActions[0];
-
+			console.log('handling action for', actor, pokemonWithActions);
+			const target = [...playerSide.field, ...opponentSide.field].find(
+				(p) => p.id === actor.nextAction?.target
+			);
+			dispatch(continueDialogue());
+			//run away
 			if (actor.nextAction?.type === 'RUNAWAY') {
-				dispatch(addDialogue(['Phew, escaped!']));
+				dispatch(concatDialogue(['Phew, escaped!']));
 				navigate(RoutesEnum.overworld);
+				return;
 			}
+
+			//catch
+			if (actor.nextAction?.type === 'CATCH' && target) {
+				dispatch(concatDialogue([`${target?.name} was caught`]));
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field
+							.filter((p) => p.id !== actor.id)
+							.concat({ ...actor, nextAction: undefined }),
+						caught: [...playerSide.caught, target],
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.filter((p) => p.id !== target.id),
+					});
+				}
+				return;
+			}
+
+			//attack
 			if (actor.side === 'PLAYER') {
 				setPlayerSide({
 					...playerSide,
@@ -48,15 +75,12 @@ export const useHandleAction = (
 				});
 			}
 		}
-		if (pokemonWithActions.length === 1) {
-			setMode('COLLECTING');
-		}
 	}, [
 		dispatch,
+		navigate,
 		opponentSide,
 		playerSide,
 		pokemonWithActions,
-		setMode,
 		setOpponentSide,
 		setPlayerSide,
 	]);

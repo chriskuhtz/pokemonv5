@@ -13,7 +13,7 @@ export interface BattleSide {
 	field: BattlePokemon[];
 	bench: BattlePokemon[];
 	defeated: BattlePokemon[];
-	caught?: BattlePokemon[];
+	caught: BattlePokemon[];
 	side: 'PLAYER' | 'OPPONENT';
 }
 
@@ -23,7 +23,6 @@ export const BattleScreen = (): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const { playerSide, opponentSide, handleAction, mode, selectAction } =
 		useBattleScreen();
-	console.log(playerSide, opponentSide);
 
 	if (playerSide && opponentSide) {
 		return (

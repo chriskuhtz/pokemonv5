@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
-import { addDialogue } from '../../../store/slices/dialogueSlice';
+import { concatDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
 
@@ -32,11 +32,15 @@ export const useCheckAndAssembleActions = (
 				(p) => p.id === actor.nextAction?.target
 			);
 			if (actor.nextAction?.type === 'RUNAWAY') {
-				dispatch(addDialogue([`You attempt to run away from the Battle`]));
+				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
+				return;
+			}
+			if (actor.nextAction?.type === 'CATCH') {
+				dispatch(concatDialogue([`You throw a Pokeball at ${target?.name}`]));
 				return;
 			}
 			dispatch(
-				addDialogue([
+				concatDialogue([
 					`${actor.name} used ${actor.nextAction?.type} against ${target?.name}`,
 				])
 			);

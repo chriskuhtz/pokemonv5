@@ -4,9 +4,9 @@ import { checkQuestCondition } from '../functions/checkQuestCondition';
 import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
-import { addDialogue } from '../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useSaveGame } from './useSaveGame';
+import { setDialogue } from '../store/slices/dialogueSlice';
 
 export const useOverworldEvent = () => {
 	const dispatch = useAppDispatch();
@@ -36,7 +36,7 @@ export const useOverworldEvent = () => {
 				}
 				if (!checkQuestCondition(quests, event.questCondition)) {
 					dispatch(
-						addDialogue(
+						setDialogue(
 							event.conditionFailMessage ?? [
 								'you must complete a certain quest',
 							]
