@@ -19,11 +19,9 @@ export const dialogueSlice = createSlice({
 	reducers: {
 		setDialogue: (state, action: PayloadAction<string[]>) => {
 			state.dialogue = action.payload;
-			console.log(state.dialogue);
 		},
 		concatDialogue: (state, action: PayloadAction<string[]>) => {
 			state.dialogue = [...state.dialogue, ...action.payload];
-			console.log(state.dialogue);
 		},
 		continueDialogue: (state) => {
 			state.dialogue = [...state.dialogue.slice(1)];

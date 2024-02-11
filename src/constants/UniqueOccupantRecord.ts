@@ -1,3 +1,4 @@
+import { generateInventory } from '../interfaces/Inventory';
 import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
 //every occupant that can be handled should be unique
@@ -9,9 +10,21 @@ export type UniqueOccupantIds =
 	| 'starter-town-merchant'
 	| 'starter-town-nurse'
 	| 'starter-town-ballMachine'
-	| 'starter-town-grass-blocker';
+	| 'starter-town-grass-blocker'
+	| 'starter-town-item-1';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
+	'starter-town-item-1': {
+		id: 'starter-town-item-1',
+		type: 'ITEM',
+		inventory: generateInventory({ repel: 7 }),
+		position: {
+			y: 7,
+			x: 0,
+			mapId: 'starter-town',
+			orientation: 0,
+		},
+	},
 	'starter-town-oak-before-selection': {
 		id: 'starter-town-oak-before-selection',
 		type: 'NPC',

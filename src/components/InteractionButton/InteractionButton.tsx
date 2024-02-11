@@ -40,6 +40,21 @@ export const InteractionButton = () => {
 		) {
 			handleEvent(occupant.onClick);
 		}
+		if (occupant && occupant.type === 'ITEM') {
+			dispatch(
+				setDialogue([
+					`You found ${Object.entries(occupant.inventory)
+						.filter((e) => e[1] > 0)
+						.map((e) => `${e[1]} ${e[0]}`)
+						.join(' and ')}.`,
+				])
+			);
+			saveGame({
+				inventoryChanges: occupant.inventory,
+				handledOccupants: { [`${occupant.id}`]: true },
+			});
+			return;
+		}
 		if (
 			occupant &&
 			isOccupantWithDialogue(occupant) &&

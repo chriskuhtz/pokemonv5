@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
 import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
 
+import { selectDecorators } from '../../../store/selectors/map/selectDecorators';
 import { occupantCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { drawLargeObject } from '../functions/drawLargeObject';
-import { selectDecorators } from '../../../store/selectors/map/selectDecorators';
 
 export const useDrawOccupants = () => {
 	const occupants = useSelector(selectOccupantsToDraw);
@@ -36,13 +36,11 @@ export const useDrawOccupants = () => {
 				}
 				if (o.type === 'ITEM') {
 					img.onload = () => {
-						drawCharacter({
+						drawLargeObject({
 							context: ctx,
 							img,
 							x: o.position.x,
-							y: o.position.y - 0.5,
-							orientation: o.position.orientation,
-							forwardFoot: 0,
+							y: o.position.y,
 							height: 1,
 							width: 1,
 						});
