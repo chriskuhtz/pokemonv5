@@ -1,17 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useSaveGame } from '../../../hooks/useSaveGame';
+import { useLocation } from 'react-router-dom';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { DexEntry } from '../../../interfaces/DexEntry';
-import { RoutesEnum } from '../../../router/router';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
+import { useLeaveBattle } from './useLeaveBattle';
 
 export const useBattleScreen = () => {
-	const navigate = useNavigate();
-	const save = useSaveGame();
 	const { state } = useLocation();
 	const encounters = state as number[];
 	const activePokemonPerside = encounters.length;
@@ -25,6 +21,7 @@ export const useBattleScreen = () => {
 		setOpponentSide,
 		activePokemonPerside
 	);
+	useEffect(() => console.log(playerSide?.field), [playerSide]);
 
 	//assign actions to opponents
 	useEffect(() => {
@@ -88,21 +85,7 @@ export const useBattleScreen = () => {
 		[playerSide]
 	);
 
-	const allDexUpdates: DexEntry[] = useMemo(() => {
-		if (!playerSide || !opponentSide) {
-			return [];
-		}
-		return [
-			...playerSide.caught.map((p) => ({ dexId: p.dexId, status: 'owned' })),
-			...opponentSide.field.map((p) => ({ dexId: p.dexId, status: 'seen' })),
-			...opponentSide.defeated.map((p) => ({ dexId: p.dexId, status: 'seen' })),
-		] as DexEntry[];
-	}, [opponentSide, playerSide]);
-
-	const leaveBattle = useCallback(() => {
-		save({ dexUpdates: allDexUpdates });
-		navigate(RoutesEnum.overworld);
-	}, [allDexUpdates, navigate, save]);
+	const leaveBattle = useLeaveBattle(playerSide, opponentSide);
 
 	const handleAction = useHandleAction(
 		playerSide,
