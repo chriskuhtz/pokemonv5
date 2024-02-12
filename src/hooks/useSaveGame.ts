@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
+import { addEntriesToDex } from '../functions/addEntriesToDex';
 import { joinInventories } from '../functions/joinInventories';
 import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
@@ -64,12 +65,7 @@ export const useSaveGame = () => {
 
 			let updatedMoney = data.money + (fundsUpdate ?? 0);
 
-			const updatedDex = dexUpdates
-				? data.pokedex
-						.filter((d) => !dexUpdates?.some((u) => u.dexId === d.dexId))
-						.concat(dexUpdates)
-						.sort((a, b) => a.dexId - b.dexId)
-				: data.pokedex;
+			const updatedDex = addEntriesToDex(data.pokedex, dexUpdates);
 
 			Object.entries(questUpdates ?? {}).forEach((entry) => {
 				const [id, status] = entry;

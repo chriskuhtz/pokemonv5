@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { RoutesEnum } from '../../../router/router';
 import {
 	concatDialogue,
 	continueDialogue,
@@ -14,7 +13,8 @@ export const useHandleAction = (
 	opponentSide: BattleSide | undefined,
 	pokemonWithActions: BattlePokemon[],
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	leaveBattle: () => void
 ) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
@@ -34,7 +34,7 @@ export const useHandleAction = (
 			//run away
 			if (actor.nextAction?.type === 'RUNAWAY') {
 				dispatch(concatDialogue(['Phew, escaped!']));
-				navigate(RoutesEnum.overworld);
+				leaveBattle();
 				return;
 			}
 
