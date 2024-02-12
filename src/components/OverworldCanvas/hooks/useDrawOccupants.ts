@@ -29,6 +29,8 @@ export const useDrawOccupants = () => {
 				);
 				return;
 			}
+			//clear entire canvas to remove stale occupants
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			occupants.forEach((o) => {
 				const img = new Image();
 				if (!isOccupantWithSprite(o)) {
