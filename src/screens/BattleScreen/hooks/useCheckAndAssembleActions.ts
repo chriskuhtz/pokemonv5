@@ -31,11 +31,15 @@ export const useCheckAndAssembleActions = (
 			const target = allPokemonOnField.find(
 				(p) => p.id === actor.nextAction?.target
 			);
-			if (actor.nextAction?.type === 'RUNAWAY') {
+			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'CATCH') {
+			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
+				dispatch(concatDialogue([`Got away safely`]));
+				return;
+			}
+			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
 				dispatch(concatDialogue([`You throw a Pokeball at ${target?.name}`]));
 				return;
 			}

@@ -1,10 +1,6 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import {
-	concatDialogue,
-	continueDialogue,
-} from '../../../store/slices/dialogueSlice';
+import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import { BattleEndReason } from './useLeaveBattle';
@@ -18,7 +14,6 @@ export const useHandleAction = (
 	leaveBattle: (reason: BattleEndReason) => void
 ) => {
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	return useCallback(() => {
 		if (!playerSide || !opponentSide) {
@@ -33,14 +28,27 @@ export const useHandleAction = (
 			);
 			dispatch(continueDialogue());
 			//run away
-			if (actor.nextAction?.type === 'RUNAWAY') {
+			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field
+							.filter((p) => p.id !== actor.id)
+							.concat({
+								...actor,
+								nextAction: { type: 'RUNAWAY_SUCCESS', target: actor.id },
+							}),
+					});
+				}
+				return;
+			}
+			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
 				leaveBattle('RUNAWAY');
 				return;
 			}
 
 			//catch
-			if (actor.nextAction?.type === 'CATCH' && target) {
-				dispatch(concatDialogue([`${target?.name} was caught`]));
+			if (actor.nextAction?.type === 'CATCH_SUCCESS' && target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -58,26 +66,30 @@ export const useHandleAction = (
 			}
 
 			//attack
-			if (actor.side === 'PLAYER') {
-				setPlayerSide({
-					...playerSide,
-					field: playerSide.field
-						.filter((p) => p.id !== actor.id)
-						.concat({ ...actor, nextAction: undefined }),
-				});
+			if (actor.nextAction?.type === 'ATTACK' && target) {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field
+							.filter((p) => p.id !== actor.id)
+							.concat({ ...actor, nextAction: undefined }),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field
+							.filter((p) => p.id !== actor.id)
+							.concat({ ...actor, nextAction: undefined }),
+					});
+				}
 			}
-			if (actor.side === 'OPPONENT') {
-				setOpponentSide({
-					...opponentSide,
-					field: opponentSide.field
-						.filter((p) => p.id !== actor.id)
-						.concat({ ...actor, nextAction: undefined }),
-				});
-			}
+
+			console.log('not sure what to do', actor);
 		}
 	}, [
 		dispatch,
-		navigate,
+		leaveBattle,
 		opponentSide,
 		playerSide,
 		pokemonWithActions,

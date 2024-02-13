@@ -37,13 +37,13 @@ export const ChooseActionModal = ({
 					<Pill
 						center="Throw Pokeball"
 						onClick={() => {
-							setActionName('CATCH');
+							setActionName('CATCH_ATTEMPT');
 						}}
 					/>
 					<Pill
 						center="Run away"
 						onClick={() => {
-							setActionName('RUNAWAY');
+							setActionName('RUNAWAY_ATTEMPT');
 						}}
 					/>
 				</TwoByXGrid>

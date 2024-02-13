@@ -20,10 +20,10 @@ export const ChooseActionAndTarget = ({
 	>();
 
 	useEffect(() => {
-		if (actionName === 'RUNAWAY') {
+		if (actionName === 'RUNAWAY_ATTEMPT') {
 			selectAction({
 				...actor,
-				nextAction: { type: 'RUNAWAY', target: actor.id },
+				nextAction: { type: 'RUNAWAY_ATTEMPT', target: actor.id },
 			});
 			setActionName(undefined);
 		}

@@ -1,7 +1,16 @@
 import { OwnedPokemon } from './OwnedPokemon';
 
 export interface BattleAction {
-	type: 'RUNAWAY' | 'CATCH' | 'ATTACK' | 'SWITCH' | 'ITEM';
+	type:
+		| 'CATCH_ATTEMPT'
+		| 'CATCH_SUCCESS'
+		| 'CATCH_FAILURE'
+		| 'ATTACK'
+		| 'SWITCH'
+		| 'ITEM'
+		| 'RUNAWAY_ATTEMPT'
+		| 'RUNAWAY_SUCCESS'
+		| 'RUNAWAY_FAILURE';
 	target: string;
 }
 
