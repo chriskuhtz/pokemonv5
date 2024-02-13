@@ -76,6 +76,10 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`The wild ${target?.name} was caught!`]));
 				return;
 			}
+			if (actor.nextAction?.type === 'CATCH_FAILURE') {
+				dispatch(concatDialogue([`The wild ${target?.name} broke free!`]));
+				return;
+			}
 			dispatch(
 				concatDialogue([`${actor.name} used ${actor.nextAction?.type}`])
 			);

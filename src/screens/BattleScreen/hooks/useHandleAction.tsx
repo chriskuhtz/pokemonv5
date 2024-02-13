@@ -136,6 +136,7 @@ export const useHandleAction = (
 			}
 			//catch attempt
 			if (actor.nextAction?.type === 'CATCH_ATTEMPT' && target) {
+				const successfullyCaught = Math.random() > 0.5;
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -145,7 +146,9 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: { type: 'CATCH_SUCCESS', target: target?.id },
+								nextAction: successfullyCaught
+									? { type: 'CATCH_SUCCESS', target: target?.id }
+									: { type: 'CATCH_FAILURE', target: target?.id },
 							};
 						}),
 					});
@@ -172,6 +175,37 @@ export const useHandleAction = (
 					setOpponentSide({
 						...opponentSide,
 						field: opponentSide.field.filter((p) => p.id !== target.id),
+					});
+				}
+				return;
+			}
+			//catch failure
+			if (actor.nextAction?.type === 'CATCH_FAILURE' && target) {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								status: undefined,
+							};
+						}),
 					});
 				}
 				return;
