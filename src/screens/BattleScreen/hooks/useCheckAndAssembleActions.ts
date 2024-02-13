@@ -32,6 +32,7 @@ export const useCheckAndAssembleActions = (
 			const target = allPokemonOnField.find(
 				(p) => p.id === actor.nextAction?.target
 			);
+			console.log('assemble', actor);
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])
@@ -44,6 +45,10 @@ export const useCheckAndAssembleActions = (
 			}
 			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
 				dispatch(concatDialogue([`Got away safely`]));
+				return;
+			}
+			if (actor.nextAction?.type === 'RUNAWAY_FAILURE') {
+				dispatch(concatDialogue([`Could not escape`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'CATCH_ATTEMPT' && target) {

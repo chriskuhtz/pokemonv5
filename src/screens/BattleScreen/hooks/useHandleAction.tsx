@@ -93,6 +93,7 @@ export const useHandleAction = (
 			}
 			//run away attempt
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
+				const canRunAway = Math.random() > 0.5;
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -102,7 +103,9 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: { type: 'RUNAWAY_SUCCESS', target: actor.id },
+								nextAction: canRunAway
+									? { type: 'RUNAWAY_SUCCESS', target: actor.id }
+									: { type: 'RUNAWAY_FAILURE', target: actor.id },
 							};
 						}),
 					});
@@ -112,6 +115,23 @@ export const useHandleAction = (
 			//run away success
 			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
 				leaveBattle('RUNAWAY');
+				return;
+			}
+			if (actor.nextAction?.type === 'RUNAWAY_FAILURE') {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
 				return;
 			}
 			//catch attempt
