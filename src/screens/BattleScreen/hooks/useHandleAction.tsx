@@ -32,12 +32,15 @@ export const useHandleAction = (
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
-						field: playerSide.field
-							.filter((p) => p.id !== actor.id)
-							.concat({
-								...actor,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
 								nextAction: { type: 'RUNAWAY_SUCCESS', target: actor.id },
-							}),
+							};
+						}),
 					});
 				}
 				return;
@@ -52,9 +55,16 @@ export const useHandleAction = (
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
-						field: playerSide.field
-							.filter((p) => p.id !== actor.id)
-							.concat({ ...actor, nextAction: undefined }),
+
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
 						caught: [...playerSide.caught, target],
 					});
 					setOpponentSide({
@@ -70,17 +80,29 @@ export const useHandleAction = (
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
-						field: playerSide.field
-							.filter((p) => p.id !== actor.id)
-							.concat({ ...actor, nextAction: undefined }),
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
 					});
 				}
 				if (actor.side === 'OPPONENT') {
 					setOpponentSide({
 						...opponentSide,
-						field: opponentSide.field
-							.filter((p) => p.id !== actor.id)
-							.concat({ ...actor, nextAction: undefined }),
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
 					});
 				}
 			}

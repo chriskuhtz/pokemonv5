@@ -76,9 +76,12 @@ export const useBattleScreen = () => {
 			}
 			setPlayerSide({
 				...playerSide,
-				field: playerSide.field
-					.filter((f) => f.id !== updatedActor.id)
-					.concat(updatedActor),
+				field: playerSide.field.map((p) => {
+					if (p.id !== updatedActor.id) {
+						return p;
+					}
+					return updatedActor;
+				}),
 			});
 		},
 		[playerSide]
