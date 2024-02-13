@@ -3,6 +3,7 @@ import { getPokemonSpriteUrl } from '../../../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { Pill } from '../../../../ui_components/Pill/Pill';
 import './battlePill.css';
+import { MapObject } from '../../../../components/MapObject/MapObject';
 
 export const BattlePill = ({
 	pokemon,
@@ -17,7 +18,17 @@ export const BattlePill = ({
 }): JSX.Element => {
 	return (
 		<Pill
-			leftSide={<img src={getPokemonSpriteUrl(pokemon.dexId, back)} />}
+			leftSide={
+				pokemon.status === 'BEING_CAUGHT' ? (
+					<MapObject
+						style={{ height: '40px' }}
+						id="pokeball"
+						className="shaking"
+					/>
+				) : (
+					<img src={getPokemonSpriteUrl(pokemon.dexId, back)} />
+				)
+			}
 			center={
 				<div>
 					<p>{pokemon.name}</p>

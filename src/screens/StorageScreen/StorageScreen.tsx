@@ -79,7 +79,7 @@ export const StorageScreen = (): JSX.Element => {
 						))}
 					</div>
 					<h2>Storage:</h2>{' '}
-					<div style={{ display: 'flex' }}>
+					<div style={{ display: 'flex', flexWrap: 'wrap' }}>
 						{storedPokemon.map((p) => (
 							<IconWithTag
 								key={p.id}

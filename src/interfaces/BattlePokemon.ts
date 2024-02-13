@@ -20,4 +20,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	maxHp: number;
 	nextAction?: BattleAction;
 	side: 'PLAYER' | 'OPPONENT';
+	status?: 'BEING_CAUGHT';
 }

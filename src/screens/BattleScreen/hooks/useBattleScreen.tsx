@@ -119,7 +119,8 @@ export const useBattleScreen = () => {
 		playerSide,
 		opponentSide,
 		pokemonWithActions,
-		mode
+		mode,
+		setOpponentSide
 	);
 
 	useEffect(() => {

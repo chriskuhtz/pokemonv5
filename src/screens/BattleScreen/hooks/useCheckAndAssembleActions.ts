@@ -9,7 +9,8 @@ export const useCheckAndAssembleActions = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	pokemonWithActions: BattlePokemon[],
-	mode: BattleMode
+	mode: BattleMode,
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
@@ -45,8 +46,25 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`Got away safely`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
+			if (actor.nextAction?.type === 'CATCH_ATTEMPT' && target) {
 				dispatch(concatDialogue([`You throw a Pokeball`]));
+				setOpponentSide((opponentSide) => {
+					if (!opponentSide) {
+						return undefined;
+					}
+					return {
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...target,
+								status: 'BEING_CAUGHT',
+							};
+						}),
+					};
+				});
 				return;
 			}
 			if (actor.nextAction?.type === 'CATCH_SUCCESS') {
@@ -63,5 +81,6 @@ export const useCheckAndAssembleActions = (
 		dispatch,
 		mode,
 		pokemonWithActions,
+		setOpponentSide,
 	]);
 };
