@@ -31,6 +31,12 @@ export const useCheckAndAssembleActions = (
 			const target = allPokemonOnField.find(
 				(p) => p.id === actor.nextAction?.target
 			);
+			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
+				dispatch(
+					concatDialogue([`There is no target for ${actor?.name}s action!`])
+				);
+				return;
+			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
 				return;
@@ -40,13 +46,15 @@ export const useCheckAndAssembleActions = (
 				return;
 			}
 			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
-				dispatch(concatDialogue([`You throw a Pokeball at ${target?.name}`]));
+				dispatch(concatDialogue([`You throw a Pokeball`]));
+				return;
+			}
+			if (actor.nextAction?.type === 'CATCH_SUCCESS') {
+				dispatch(concatDialogue([`The wild ${target?.name} was caught!`]));
 				return;
 			}
 			dispatch(
-				concatDialogue([
-					`${actor.name} used ${actor.nextAction?.type} against ${target?.name}`,
-				])
+				concatDialogue([`${actor.name} used ${actor.nextAction?.type}`])
 			);
 		}
 	}, [

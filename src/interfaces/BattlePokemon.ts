@@ -10,7 +10,8 @@ export interface BattleAction {
 		| 'ITEM'
 		| 'RUNAWAY_ATTEMPT'
 		| 'RUNAWAY_SUCCESS'
-		| 'RUNAWAY_FAILURE';
+		| 'RUNAWAY_FAILURE'
+		| 'TARGET_NOT_ON_FIELD';
 	target: string;
 }
 

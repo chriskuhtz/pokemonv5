@@ -27,7 +27,71 @@ export const useHandleAction = (
 				(p) => p.id === actor.nextAction?.target
 			);
 			dispatch(continueDialogue());
-			//run away
+
+			//no target
+			if (actor.nextAction && !target) {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: { type: 'TARGET_NOT_ON_FIELD', target: p.id },
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: { type: 'TARGET_NOT_ON_FIELD', target: p.id },
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//TARGET_NOT_ON_FIELD
+			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+			}
+			//run away attempt
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -45,12 +109,30 @@ export const useHandleAction = (
 				}
 				return;
 			}
+			//run away success
 			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
 				leaveBattle('RUNAWAY');
 				return;
 			}
-
-			//catch
+			//catch attempt
+			if (actor.nextAction?.type === 'CATCH_ATTEMPT' && target) {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: { type: 'CATCH_SUCCESS', target: target?.id },
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//catch success
 			if (actor.nextAction?.type === 'CATCH_SUCCESS' && target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -74,7 +156,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
 			//attack
 			if (actor.nextAction?.type === 'ATTACK' && target) {
 				if (actor.side === 'PLAYER') {

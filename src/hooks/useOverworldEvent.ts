@@ -4,9 +4,9 @@ import { checkQuestCondition } from '../functions/checkQuestCondition';
 import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
+import { setDialogue } from '../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useSaveGame } from './useSaveGame';
-import { setDialogue } from '../store/slices/dialogueSlice';
 
 export const useOverworldEvent = () => {
 	const dispatch = useAppDispatch();
@@ -21,8 +21,8 @@ export const useOverworldEvent = () => {
 			if (event.type === 'ENCOUNTER') {
 				navigate(RoutesEnum.battle, {
 					state: [
-						Math.round(Math.random() * 1000),
-						Math.round(Math.random() * 1000),
+						Math.round(1 + Math.random() * 1025),
+						Math.round(1 + Math.random() * 1025),
 					],
 				});
 			}
