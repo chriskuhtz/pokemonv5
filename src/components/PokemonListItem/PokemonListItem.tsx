@@ -15,6 +15,7 @@ export const PokemonListItem = ({ pokemon }: { pokemon: OwnedPokemon }) => {
 	if (data) {
 		return (
 			<Pill
+				withHoverEffect
 				leftSide={<img src={getPokemonSpriteUrl(pokemon.dexId)} />}
 				center={
 					<div>
