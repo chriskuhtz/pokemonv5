@@ -3,14 +3,13 @@ import { Headline } from '../../components/Headline/Headline';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
+import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { OwnedPokemon } from '../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../router/router';
 import { IconWithTag } from '../../shared/components/IconWithTag/IconWithTag';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
-import { useAppSelector } from '../../store/storeHooks';
 
 export const StorageScreen = (): JSX.Element => {
-	const data = useAppSelector(selectSaveFile);
+	const data = useGetCurrentSaveFile();
 	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
 	const [ownedPokemon, setOwnedPokemon] = useState<OwnedPokemon[]>([]);
@@ -30,7 +29,7 @@ export const StorageScreen = (): JSX.Element => {
 
 	const addToTeam = useCallback(
 		(pokemon: OwnedPokemon) => {
-			if (teamMembers.length === 6) {
+			if (teamMembers.length >= 6) {
 				return;
 			}
 			const updatedPokemon = { ...pokemon, onTeam: true };
@@ -43,7 +42,7 @@ export const StorageScreen = (): JSX.Element => {
 
 	const removeFromTeam = useCallback(
 		(pokemon: OwnedPokemon) => {
-			if (teamMembers.length === 1) {
+			if (teamMembers.length <= 1) {
 				return;
 			}
 			const updatedPokemon = { ...pokemon, onTeam: false };
@@ -72,6 +71,7 @@ export const StorageScreen = (): JSX.Element => {
 					<div style={{ display: 'flex' }}>
 						{teamMembers.map((p) => (
 							<IconWithTag
+								key={p.id}
 								src={getPokemonSpriteUrl(p.dexId)}
 								tag={calculateLevelData(p.xp).level}
 								onClick={() => removeFromTeam(p)}
@@ -82,6 +82,7 @@ export const StorageScreen = (): JSX.Element => {
 					<div style={{ display: 'flex' }}>
 						{storedPokemon.map((p) => (
 							<IconWithTag
+								key={p.id}
 								src={getPokemonSpriteUrl(p.dexId)}
 								tag={calculateLevelData(p.xp).level}
 								onClick={() => addToTeam(p)}

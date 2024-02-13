@@ -7,6 +7,7 @@ import {
 } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
+import { BattleEndReason } from './useLeaveBattle';
 
 export const useHandleAction = (
 	playerSide: BattleSide | undefined,
@@ -14,7 +15,7 @@ export const useHandleAction = (
 	pokemonWithActions: BattlePokemon[],
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	leaveBattle: () => void
+	leaveBattle: (reason: BattleEndReason) => void
 ) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
@@ -33,8 +34,7 @@ export const useHandleAction = (
 			dispatch(continueDialogue());
 			//run away
 			if (actor.nextAction?.type === 'RUNAWAY') {
-				dispatch(concatDialogue(['Phew, escaped!']));
-				leaveBattle();
+				leaveBattle('RUNAWAY');
 				return;
 			}
 

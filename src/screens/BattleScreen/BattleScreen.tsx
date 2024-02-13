@@ -31,6 +31,7 @@ export const BattleScreen = (): JSX.Element => {
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
 							<BattlePill
+								key={p.id}
 								back
 								pokemon={p}
 								rightSide={
@@ -50,6 +51,7 @@ export const BattleScreen = (): JSX.Element => {
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
 							<BattlePill
+								key={p.id}
 								pokemon={p}
 								rightSide={
 									p.nextAction ? p.nextAction.type : 'select an Action'

@@ -21,7 +21,6 @@ export const useBattleScreen = () => {
 		setOpponentSide,
 		activePokemonPerside
 	);
-	useEffect(() => console.log(playerSide?.field), [playerSide]);
 
 	//assign actions to opponents
 	useEffect(() => {
@@ -86,6 +85,23 @@ export const useBattleScreen = () => {
 	);
 
 	const leaveBattle = useLeaveBattle(playerSide, opponentSide);
+
+	useEffect(() => {
+		if (
+			playerSide &&
+			playerSide.field.length === 0 &&
+			playerSide.bench.length === 0
+		) {
+			leaveBattle('LOSS');
+		}
+		if (
+			opponentSide &&
+			opponentSide.field.length === 0 &&
+			opponentSide.bench.length === 0
+		) {
+			leaveBattle('WIN');
+		}
+	}, [leaveBattle, opponentSide, playerSide]);
 
 	const handleAction = useHandleAction(
 		playerSide,

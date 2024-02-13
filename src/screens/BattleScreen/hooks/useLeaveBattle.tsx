@@ -1,10 +1,14 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
+import { setDialogue } from '../../../store/slices/dialogueSlice';
+import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
+
+export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
 
 export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
@@ -12,7 +16,7 @@ export const useLeaveBattle = (
 ) => {
 	const navigate = useNavigate();
 	const save = useSaveGame();
-
+	const dispatch = useAppDispatch();
 	const allDexUpdates: DexEntry[] = useMemo(() => {
 		if (!playerSide || !opponentSide) {
 			return [];
@@ -46,9 +50,20 @@ export const useLeaveBattle = (
 		});
 	}, [opponentSide, playerSide]);
 
-	return useCallback(() => {
-		console.log(updatedOwnedPokemon);
-		save({ dexUpdates: allDexUpdates, pokemonUpdates: updatedOwnedPokemon });
-		navigate(RoutesEnum.overworld);
-	}, [allDexUpdates, navigate, save, updatedOwnedPokemon]);
+	return useCallback(
+		(reason: BattleEndReason) => {
+			if (reason === 'RUNAWAY') {
+				dispatch(setDialogue(['Phew, escaped']));
+			}
+			if (reason === 'WIN') {
+				dispatch(setDialogue(['You won the Battle']));
+			}
+			if (reason === 'LOSS') {
+				dispatch(setDialogue(['You lost the Battle']));
+			}
+			save({ dexUpdates: allDexUpdates, pokemonUpdates: updatedOwnedPokemon });
+			navigate(RoutesEnum.overworld);
+		},
+		[allDexUpdates, dispatch, navigate, save, updatedOwnedPokemon]
+	);
 };

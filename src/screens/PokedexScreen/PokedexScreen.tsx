@@ -25,7 +25,7 @@ export const PokedexScreen = (): JSX.Element => {
 			{sortedDex && (
 				<div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
 					{sortedDex.map((d) => (
-						<PokedexListItem dexEntry={d} />
+						<PokedexListItem key={d.dexId} dexEntry={d} />
 					))}
 				</div>
 			)}
