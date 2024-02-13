@@ -225,8 +225,32 @@ export const useHandleAction = (
 							};
 						}),
 					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								damage: p.damage + 10,
+							};
+						}),
+					});
 				}
 				if (actor.side === 'OPPONENT') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								damage: p.damage + 10,
+							};
+						}),
+					});
 					setOpponentSide({
 						...opponentSide,
 						field: opponentSide.field.map((p) => {
