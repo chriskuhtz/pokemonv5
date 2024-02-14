@@ -49,6 +49,7 @@ export const useBattleScreen = () => {
 		}
 	}, [mode, opponentSide, playerSide]);
 
+	//set Mode to executing
 	useEffect(() => {
 		if (
 			mode === 'COLLECTING' &&
@@ -128,7 +129,7 @@ export const useBattleScreen = () => {
 	);
 
 	useEffect(() => {
-		if (mode === 'EXECUTING' && pokemonWithActions.length === 1) {
+		if (mode === 'EXECUTING' && pokemonWithActions.length === 0) {
 			setMode('COLLECTING');
 		}
 	}, [mode, pokemonWithActions]);
