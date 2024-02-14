@@ -15,6 +15,24 @@ export const useHandleAction = (
 ) => {
 	const dispatch = useAppDispatch();
 
+	// const updatedPlayerField = useCallback(
+	// 	(update: BattlePokemon) => {
+	// 		if (!playerSide) {
+	// 			return;
+	// 		}
+	// 		setPlayerSide({
+	// 			...playerSide,
+	// 			field: playerSide.field.map((p) => {
+	// 				if (p.id !== update.id) {
+	// 					return p;
+	// 				}
+	// 				return update;
+	// 			}),
+	// 		});
+	// 	},
+	// 	[playerSide, setPlayerSide]
+	// );
+
 	return useCallback(() => {
 		if (!playerSide || !opponentSide) {
 			return;
@@ -117,6 +135,7 @@ export const useHandleAction = (
 				leaveBattle('RUNAWAY');
 				return;
 			}
+			//run away failure
 			if (actor.nextAction?.type === 'RUNAWAY_FAILURE') {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -212,6 +231,69 @@ export const useHandleAction = (
 			}
 			//attack
 			if (actor.nextAction?.type === 'ATTACK' && target) {
+				const newTargetDamage = target.damage + 10;
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction:
+									newTargetDamage >= target.maxHp
+										? { type: 'DEFEATED_TARGET', target: target.id }
+										: undefined,
+							};
+						}),
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								damage: newTargetDamage,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								damage: newTargetDamage,
+							};
+						}),
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction:
+									newTargetDamage >= target.maxHp
+										? { type: 'DEFEATED_TARGET', target: target.id }
+										: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//defeated target
+			if (actor.nextAction?.type === 'DEFEATED_TARGET' && target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -227,29 +309,15 @@ export const useHandleAction = (
 					});
 					setOpponentSide({
 						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
-							}
-							return {
-								...p,
-								damage: p.damage + 10,
-							};
-						}),
+						field: opponentSide.field.filter((p) => p.id !== target.id),
+						defeated: [...opponentSide.defeated, target],
 					});
 				}
 				if (actor.side === 'OPPONENT') {
 					setPlayerSide({
 						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
-							}
-							return {
-								...p,
-								damage: p.damage + 10,
-							};
-						}),
+						field: playerSide.field.filter((p) => p.id !== target.id),
+						defeated: [...playerSide.defeated, target],
 					});
 					setOpponentSide({
 						...opponentSide,
@@ -264,6 +332,7 @@ export const useHandleAction = (
 						}),
 					});
 				}
+				return;
 			}
 
 			console.log('not sure what to do', actor);

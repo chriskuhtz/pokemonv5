@@ -80,6 +80,10 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`The wild ${target?.name} broke free!`]));
 				return;
 			}
+			if (actor.nextAction?.type === 'DEFEATED_TARGET') {
+				dispatch(concatDialogue([`${target?.name} fainted!`]));
+				return;
+			}
 			dispatch(
 				concatDialogue([`${actor.name} used ${actor.nextAction?.type}`])
 			);

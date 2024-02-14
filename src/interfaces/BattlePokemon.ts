@@ -11,7 +11,8 @@ export interface BattleAction {
 		| 'RUNAWAY_ATTEMPT'
 		| 'RUNAWAY_SUCCESS'
 		| 'RUNAWAY_FAILURE'
-		| 'TARGET_NOT_ON_FIELD';
+		| 'TARGET_NOT_ON_FIELD'
+		| 'DEFEATED_TARGET';
 	target: string;
 }
 
