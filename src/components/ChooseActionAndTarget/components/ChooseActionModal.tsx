@@ -8,13 +8,16 @@ export const ChooseActionModal = ({
 	open,
 	setOpen,
 	setActionName,
+	availableActions,
 	name,
 }: {
 	open: boolean;
 	setOpen: (x: boolean) => void;
 	setActionName: (x: BattleAction['type']) => void;
+	availableActions: BattleAction['type'][];
 	name: string;
 }) => {
+	console.log(availableActions);
 	return (
 		<Modal
 			open={open}
@@ -22,30 +25,15 @@ export const ChooseActionModal = ({
 			modalTitle={`what should ${name} do`}
 			modalContent={
 				<TwoByXGrid>
-					<Pill
-						onClick={() => {
-							setActionName('ATTACK');
-						}}
-						center="Attack"
-					/>
-					<Pill
-						center="Switch"
-						onClick={() => {
-							setActionName('SWITCH');
-						}}
-					/>
-					<Pill
-						center="Throw Pokeball"
-						onClick={() => {
-							setActionName('CATCH_ATTEMPT');
-						}}
-					/>
-					<Pill
-						center="Run away"
-						onClick={() => {
-							setActionName('RUNAWAY_ATTEMPT');
-						}}
-					/>
+					{availableActions.map((a) => (
+						<Pill
+							key={a}
+							onClick={() => {
+								setActionName(a);
+							}}
+							center={a}
+						/>
+					))}
 				</TwoByXGrid>
 			}
 		/>

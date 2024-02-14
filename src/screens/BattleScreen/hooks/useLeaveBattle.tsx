@@ -46,7 +46,7 @@ export const useLeaveBattle = (
 				onTeam: numberOfPreviousTeamMembers + i < 6,
 			})),
 		].map((p) => {
-			return { ...p, nextAction: undefined };
+			return { ...p, nextAction: undefined, status: undefined };
 		});
 	}, [opponentSide, playerSide]);
 

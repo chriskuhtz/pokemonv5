@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
@@ -15,6 +15,10 @@ export const useBattleScreen = () => {
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
+
+	const availableActions: BattleAction['type'][] = useMemo(() => {
+		return ['ATTACK', 'CATCH_ATTEMPT', 'RUNAWAY_ATTEMPT'];
+	}, []);
 
 	useInitialiseBattleSides(
 		setPlayerSide,
@@ -135,5 +139,6 @@ export const useBattleScreen = () => {
 		opponentSide,
 		handleAction,
 		selectAction,
+		availableActions,
 	};
 };

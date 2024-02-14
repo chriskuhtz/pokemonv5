@@ -8,10 +8,12 @@ import { ChooseTargetModal } from './components/ChooseTargetModal';
 export const ChooseActionAndTarget = ({
 	actor,
 	availableTargets,
+	availableActions,
 	selectAction,
 }: {
 	actor: BattlePokemon;
 	availableTargets: BattlePokemon[];
+	availableActions: BattleAction['type'][];
 	selectAction: (updatedActor: BattlePokemon) => void;
 }): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false);
@@ -39,6 +41,7 @@ export const ChooseActionAndTarget = ({
 				name={actor.name}
 				setActionName={setActionName}
 				setOpen={setOpen}
+				availableActions={availableActions}
 			/>
 		);
 	}
