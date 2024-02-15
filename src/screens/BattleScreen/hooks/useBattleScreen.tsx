@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { MapEncounter } from '../../../store/slices/MapSlice';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
@@ -15,7 +16,7 @@ export interface SelectableAction {
 }
 export const useBattleScreen = () => {
 	const { state } = useLocation();
-	const encounters = state as number[];
+	const encounters = state as MapEncounter[];
 	const activePokemonPerside = encounters.length;
 	const saveFile = useGetCurrentSaveFile();
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();

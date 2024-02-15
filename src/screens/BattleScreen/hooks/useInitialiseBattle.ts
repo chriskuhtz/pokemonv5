@@ -4,6 +4,7 @@ import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectSaveFile } from '../../../store/selectors/saveFile/selectSaveFile';
+import { MapEncounter } from '../../../store/slices/MapSlice';
 import { useAppSelector } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import {
@@ -18,15 +19,15 @@ export const useInitialiseBattleSides = (
 ) => {
 	const data = useAppSelector(selectSaveFile);
 	const { state } = useLocation();
-	const encounters = state as number[];
+	const encounters = state as MapEncounter[];
 
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
 	const { res: allOpponentPokemon } = useFetch<BattlePokemon[]>(() =>
 		Promise.all(
 			encounters.map(async (e) => {
-				const data = await getPokemonByDexId(e).unwrap();
-				return createBattlePokemonFromData(data);
+				const data = await getPokemonByDexId(e.dexId).unwrap();
+				return createBattlePokemonFromData(data, e.xp);
 			})
 		)
 	);

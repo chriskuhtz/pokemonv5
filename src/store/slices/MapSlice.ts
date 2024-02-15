@@ -3,15 +3,18 @@ import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
+import { Decorator } from '../../screens/OverworldScreen/interfaces/Decorator';
 import {
 	LargeObstacle,
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { Decorator } from '../../screens/OverworldScreen/interfaces/Decorator';
 
 export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
-
+export interface MapEncounter {
+	dexId: number;
+	xp: number;
+}
 export interface MapState {
 	height: number;
 	width: number;
@@ -20,6 +23,7 @@ export interface MapState {
 	obstacles: (Obstacle | LargeObstacle)[];
 	decorators: Decorator[];
 	mapId: string;
+	encounters: MapEncounter[];
 }
 
 const initialState: MapState = starterTown;

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkQuestCondition } from '../functions/checkQuestCondition';
 import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
+import { selectEncounters } from '../store/selectors/map/selectEncounters';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
 import { setDialogue } from '../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
@@ -13,6 +14,8 @@ export const useOverworldEvent = () => {
 	const navigate = useNavigate();
 	const quests = useAppSelector(selectQuests);
 	const saveGame = useSaveGame();
+	const encounters = useAppSelector(selectEncounters);
+
 	return useCallback(
 		(event: OverworldEvent) => {
 			if (!quests) {
@@ -21,8 +24,8 @@ export const useOverworldEvent = () => {
 			if (event.type === 'ENCOUNTER') {
 				navigate(RoutesEnum.battle, {
 					state: [
-						Math.round(1 + Math.random() * 1025),
-						Math.round(1 + Math.random() * 1025),
+						encounters[Math.round(Math.random() * encounters.length)],
+						encounters[Math.round(Math.random() * encounters.length)],
 					],
 				});
 			}
