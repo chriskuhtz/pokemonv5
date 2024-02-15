@@ -27,6 +27,7 @@ export const BattleScreen = (): JSX.Element => {
 		handleAction,
 		mode,
 		selectAction,
+		resetAction,
 		availableActions,
 	} = useBattleScreen();
 
@@ -49,7 +50,10 @@ export const BattleScreen = (): JSX.Element => {
 											selectAction={selectAction}
 										/>
 									) : (
-										p.nextAction?.type
+										<div>
+											{p.nextAction?.type}{' '}
+											<Pill onClick={() => resetAction(p.id)} center={'X'} />
+										</div>
 									)
 								}
 							/>
@@ -61,7 +65,7 @@ export const BattleScreen = (): JSX.Element => {
 								key={p.id}
 								pokemon={p}
 								rightSide={
-									p.nextAction ? p.nextAction.type : 'select an Action'
+									p.nextAction ? p.nextAction.type : 'no assigned actions'
 								}
 							/>
 						))}

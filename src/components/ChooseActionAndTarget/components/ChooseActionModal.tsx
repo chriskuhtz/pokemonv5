@@ -14,14 +14,17 @@ export const ChooseActionModal = ({
 }: {
 	open: boolean;
 	setOpen: (x: boolean) => void;
-	setActionName: (x: BattleAction['type']) => void;
+	setActionName: (x: BattleAction['type'] | undefined) => void;
 	availableActions: SelectableAction[];
 	name: string;
 }) => {
 	return (
 		<Modal
 			open={open}
-			onCancel={() => setOpen(false)}
+			onCancel={() => {
+				setOpen(false);
+				setActionName(undefined);
+			}}
 			modalTitle={`what should ${name} do`}
 			modalContent={
 				<TwoByXGrid>

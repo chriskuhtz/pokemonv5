@@ -21,7 +21,13 @@ export const ChooseTargetModal = ({
 	return (
 		<Modal
 			open={!!(actionName && open)}
-			onCancel={() => setOpen(false)}
+			onCancel={() => {
+				setOpen(false),
+					selectAction({
+						...actor,
+						nextAction: undefined,
+					});
+			}}
 			modalTitle={`who is the target`}
 			modalContent={
 				<TwoByXGrid>

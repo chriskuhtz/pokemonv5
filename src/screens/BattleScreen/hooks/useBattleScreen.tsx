@@ -69,6 +69,24 @@ export const useBattleScreen = () => {
 		[playerSide]
 	);
 
+	const resetAction = useCallback(
+		(actorId: string) => {
+			if (!playerSide) {
+				return;
+			}
+			setPlayerSide({
+				...playerSide,
+				field: playerSide.field.map((p) => {
+					if (p.id !== actorId) {
+						return p;
+					}
+					return { ...p, nextAction: undefined };
+				}),
+			});
+		},
+		[playerSide]
+	);
+
 	const leaveBattle = useLeaveBattle(playerSide, opponentSide, usedBalls);
 
 	const handleAction = useHandleAction(
@@ -166,5 +184,6 @@ export const useBattleScreen = () => {
 		handleAction,
 		selectAction,
 		availableActions,
+		resetAction,
 	};
 };
