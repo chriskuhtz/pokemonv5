@@ -7,28 +7,28 @@ export const addEntriesToDex = (
 	if (!dexUpdates || !existing) {
 		return [];
 	}
-	const updatedDex = [...existing];
+	let updatedDex = [...existing];
 
+	//update from seen to owned
+	updatedDex = updatedDex.map((existingEntry) => {
+		const update = dexUpdates.find((d) => d.dexId === existingEntry.dexId);
+		if (
+			update &&
+			existingEntry.status === 'seen' &&
+			update.status === 'owned'
+		) {
+			return update;
+		}
+		return existingEntry;
+	});
+
+	//add new entries
 	dexUpdates.forEach((update) => {
 		const existingEntry = updatedDex.find((d) => d.dexId === update.dexId);
-
-		if (
-			!existingEntry ||
-			(existingEntry.status === 'seen' && update.status === 'owned')
-		) {
+		if (!existingEntry) {
 			updatedDex.push(update);
 		}
 	});
 
-	return updatedDex
-		.sort((a, b) => a.dexId - b.dexId)
-		.filter((entry, index) => {
-			if (index === 0) {
-				return true;
-			}
-			if (entry.dexId === updatedDex[index - 1].dexId) {
-				return false;
-			}
-			return true;
-		});
+	return updatedDex.sort((a, b) => a.dexId - b.dexId);
 };

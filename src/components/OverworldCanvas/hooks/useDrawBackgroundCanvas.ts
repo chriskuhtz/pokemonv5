@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { size } from '../../../main';
+import { selectMap } from '../../../store/selectors/map/selectMap';
 import { useAppSelector } from '../../../store/storeHooks';
 import { overworldCanvas } from '../OverworldCanvas';
-import { selectMap } from '../../../store/selectors/map/selectMap';
 
 export const useDrawBackGroundCanvas = () => {
 	const { height, width, baseTile } = useAppSelector(selectMap);
 	return useCallback(() => {
-		console.log('draw background');
+		// console.log('draw background');
 		const canvas: HTMLCanvasElement | null = document.querySelector(
 			`#${overworldCanvas}`
 		);
