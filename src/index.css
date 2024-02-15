@@ -17,8 +17,8 @@
 
 	--OVERWORLD_CANVAS_INDEX: 1;
 	--PLAYER_CANVAS_INDEX: 3;
-	--MODAL_INDEX: 4;
-	--BUTTONS_INDEX: 5;
+	--MODAL_INDEX: 4000;
+	--BUTTONS_INDEX: 5000;
 	/* colors */
 	--main-bg-color: rgb(28, 30, 30);
 	--main-color: aliceblue;

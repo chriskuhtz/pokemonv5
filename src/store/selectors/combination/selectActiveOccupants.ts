@@ -5,6 +5,7 @@ import { selectObstacles } from '../map/selectObstacles';
 import { selectOccupants } from '../map/selectOccupants';
 import { selectHandledOccupants } from '../saveFile/selectHandledOccupants';
 import { selectQuests } from '../saveFile/selectQuests';
+import { getBlockersForLargeOccupants } from '../../../functions/getBlockersForLargeObstacles';
 
 export const selectActiveOccupants = createSelector(
 	[selectOccupants, selectQuests, selectObstacles, selectHandledOccupants],
@@ -13,21 +14,24 @@ export const selectActiveOccupants = createSelector(
 			return [];
 		}
 
-		return [
-			...Object.values(occupants).filter((entry) => {
-				const occupantId = entry.id as UniqueOccupantIds;
-				const handled = handledOccupants[occupantId];
-				if (entry.type === 'ITEM' && handled) {
-					return false;
-				}
+		const activeOccupants = Object.values(occupants).filter((entry) => {
+			const occupantId = entry.id as UniqueOccupantIds;
+			const handled = handledOccupants[occupantId];
+			if (entry.type === 'ITEM' && handled) {
+				return false;
+			}
 
-				return checkQuestCondition(
-					quests,
-					entry.questCondition,
-					entry.type === 'QUEST_CHECK'
-				);
-			}),
+			return checkQuestCondition(
+				quests,
+				entry.questCondition,
+				entry.type === 'QUEST_CHECK'
+			);
+		});
+
+		return [
+			...activeOccupants,
 			...obstacles,
+			...getBlockersForLargeOccupants(activeOccupants),
 		];
 	}
 );
