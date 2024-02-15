@@ -18,7 +18,6 @@ export const ChooseActionModal = ({
 	availableActions: SelectableAction[];
 	name: string;
 }) => {
-	console.log(availableActions);
 	return (
 		<Modal
 			open={open}

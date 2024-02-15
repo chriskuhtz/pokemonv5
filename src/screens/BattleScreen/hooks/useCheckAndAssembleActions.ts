@@ -33,7 +33,7 @@ export const useCheckAndAssembleActions = (
 			const target = allPokemonOnField.find(
 				(p) => p.id === actor.nextAction?.target
 			);
-			console.log('assemble', actor);
+			//console.log('assemble', actor);
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])

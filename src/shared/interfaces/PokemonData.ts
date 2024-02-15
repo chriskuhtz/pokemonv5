@@ -31,6 +31,9 @@ export interface PokemonData {
 	abilities: AbilitySlot[];
 	base_experience: number;
 	height: number;
+	cries: {
+		latest: string;
+	};
 	held_items: HeldItemSlot[];
 	id: number;
 	is_default: boolean;

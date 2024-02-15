@@ -40,7 +40,7 @@ export const useHandleAction = (
 
 		if (pokemonWithActions.length > 0) {
 			const actor = pokemonWithActions[0];
-			console.log('handling action for', actor, pokemonWithActions);
+			//console.log('handling action for', actor, pokemonWithActions);
 			const target = [...playerSide.field, ...opponentSide.field].find(
 				(p) => p.id === actor.nextAction?.target
 			);
