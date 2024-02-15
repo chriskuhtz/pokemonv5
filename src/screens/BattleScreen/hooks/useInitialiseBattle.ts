@@ -4,13 +4,13 @@ import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectSaveFile } from '../../../store/selectors/saveFile/selectSaveFile';
-import { MapEncounter } from '../../../store/slices/MapSlice';
 import { useAppSelector } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import {
 	createBattlePokemonFromData,
 	createBattlePokemonFromOwned,
 } from '../functions/createBattlePokemon';
+import { BattleScreenProps } from './useBattleScreen';
 
 export const useInitialiseBattleSides = (
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
@@ -19,10 +19,7 @@ export const useInitialiseBattleSides = (
 ) => {
 	const data = useAppSelector(selectSaveFile);
 	const { state } = useLocation();
-	const { opponents } = state as {
-		opponents: MapEncounter[];
-		isTrainer: boolean;
-	};
+	const { opponents } = state as BattleScreenProps;
 
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 

@@ -14,12 +14,13 @@ export interface SelectableAction {
 	name: string;
 	disabled: boolean;
 }
+export interface BattleScreenProps {
+	opponents: MapEncounter[];
+	isTrainer: boolean;
+}
 export const useBattleScreen = () => {
 	const { state } = useLocation();
-	const { opponents, isTrainer } = state as {
-		opponents: MapEncounter[];
-		isTrainer: boolean;
-	};
+	const { opponents, isTrainer } = state as BattleScreenProps;
 	const activePokemonPerside = opponents.length;
 	const saveFile = useGetCurrentSaveFile();
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
