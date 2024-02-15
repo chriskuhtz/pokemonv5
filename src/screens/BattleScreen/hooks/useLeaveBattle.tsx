@@ -12,7 +12,8 @@ export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
 
 export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
-	opponentSide: BattleSide | undefined
+	opponentSide: BattleSide | undefined,
+	usedBalls: number
 ) => {
 	const navigate = useNavigate();
 	const save = useSaveGame();
@@ -61,9 +62,13 @@ export const useLeaveBattle = (
 			if (reason === 'LOSS') {
 				dispatch(setDialogue(['You lost the Battle']));
 			}
-			save({ dexUpdates: allDexUpdates, pokemonUpdates: updatedOwnedPokemon });
+			save({
+				dexUpdates: allDexUpdates,
+				pokemonUpdates: updatedOwnedPokemon,
+				inventoryChanges: { 'poke-ball': -usedBalls },
+			});
 			navigate(RoutesEnum.overworld);
 		},
-		[allDexUpdates, dispatch, navigate, save, updatedOwnedPokemon]
+		[allDexUpdates, dispatch, navigate, save, updatedOwnedPokemon, usedBalls]
 	);
 };

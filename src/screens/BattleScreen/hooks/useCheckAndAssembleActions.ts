@@ -10,7 +10,8 @@ export const useCheckAndAssembleActions = (
 	opponentSide: BattleSide | undefined,
 	pokemonWithActions: BattlePokemon[],
 	mode: BattleMode,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setUsedBalls: React.Dispatch<React.SetStateAction<number>>
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
@@ -51,8 +52,12 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`Could not escape`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'CATCH_ATTEMPT' && target) {
+			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
 				dispatch(concatDialogue([`You throw a Pokeball`]));
+				setUsedBalls((balls) => balls + 1);
+				if (!target) {
+					return;
+				}
 				setOpponentSide((opponentSide) => {
 					if (!opponentSide) {
 						return undefined;
@@ -94,6 +99,7 @@ export const useCheckAndAssembleActions = (
 		dispatch,
 		mode,
 		pokemonWithActions,
+		setUsedBalls,
 		setOpponentSide,
 	]);
 };

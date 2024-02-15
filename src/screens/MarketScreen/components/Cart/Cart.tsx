@@ -27,7 +27,7 @@ export const Cart = ({
 						return;
 					}
 					return (
-						<h3 className="cartItem">
+						<h3 key={name} className="cartItem">
 							<span>
 								{amount} {name}
 							</span>

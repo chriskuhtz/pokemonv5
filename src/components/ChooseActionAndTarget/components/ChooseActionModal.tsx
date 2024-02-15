@@ -1,4 +1,5 @@
 import { BattleAction } from '../../../interfaces/BattlePokemon';
+import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
 
 import { Modal } from '../../../ui_components/Modal/Modal';
 import { Pill } from '../../../ui_components/Pill/Pill';
@@ -14,7 +15,7 @@ export const ChooseActionModal = ({
 	open: boolean;
 	setOpen: (x: boolean) => void;
 	setActionName: (x: BattleAction['type']) => void;
-	availableActions: BattleAction['type'][];
+	availableActions: SelectableAction[];
 	name: string;
 }) => {
 	console.log(availableActions);
@@ -27,11 +28,12 @@ export const ChooseActionModal = ({
 				<TwoByXGrid>
 					{availableActions.map((a) => (
 						<Pill
-							key={a}
+							key={a.action}
 							onClick={() => {
-								setActionName(a);
+								setActionName(a.action);
 							}}
-							center={a}
+							center={a.name}
+							disabled={a.disabled}
 						/>
 					))}
 				</TwoByXGrid>

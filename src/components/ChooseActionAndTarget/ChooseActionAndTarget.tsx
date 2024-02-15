@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BattleAction, BattlePokemon } from '../../interfaces/BattlePokemon';
 
+import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ChooseActionModal } from './components/ChooseActionModal';
 import { ChooseTargetModal } from './components/ChooseTargetModal';
@@ -13,7 +14,7 @@ export const ChooseActionAndTarget = ({
 }: {
 	actor: BattlePokemon;
 	availableTargets: BattlePokemon[];
-	availableActions: BattleAction['type'][];
+	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
 }): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false);
