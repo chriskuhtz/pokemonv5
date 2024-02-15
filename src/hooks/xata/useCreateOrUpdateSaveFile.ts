@@ -17,10 +17,12 @@ export const useCreateOrUpdateSaveFile = () => {
 			setFetching(true);
 			const xata = getXataClient();
 
-			await xata.db.saveFiles.create({ saveFile: newSaveFile }).then((res) => {
-				window.localStorage.setItem('userId', res.id);
-				dispatch(setSaveFile(res.saveFile));
-			});
+			await xata.db.saveFiles
+				.create({ saveFile: newSaveFile, password: 'bear' })
+				.then((res) => {
+					window.localStorage.setItem('userId', res.id);
+					dispatch(setSaveFile(res.saveFile));
+				});
 
 			setFetching(false);
 		},
