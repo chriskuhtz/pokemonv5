@@ -4,14 +4,13 @@ import { OverworldCanvas } from '../../components/OverworldCanvas/OverworldCanva
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { RoutesEnum } from '../../router/router';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
-import { continueDialogue } from '../../store/slices/dialogueSlice';
-import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
+import { useAppSelector } from '../../store/storeHooks';
 import { Modal } from '../../ui_components/Modal/Modal';
 import { Pill } from '../../ui_components/Pill/Pill';
 
 export const Overworld = (): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
-	const dispatch = useAppDispatch();
+
 	return (
 		<>
 			{currentDialogue.length === 0 && (
@@ -34,7 +33,7 @@ export const Overworld = (): JSX.Element => {
 							padding: '1rem 2rem',
 							fontSize: 'larger',
 						}}
-						onClick={() => dispatch(continueDialogue())}
+						//onClick={() => dispatch(continueDialogue())}
 					/>
 				}
 			/>

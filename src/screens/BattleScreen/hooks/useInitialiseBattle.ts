@@ -19,13 +19,16 @@ export const useInitialiseBattleSides = (
 ) => {
 	const data = useAppSelector(selectSaveFile);
 	const { state } = useLocation();
-	const encounters = state as MapEncounter[];
+	const { opponents } = state as {
+		opponents: MapEncounter[];
+		isTrainer: boolean;
+	};
 
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
 	const { res: allOpponentPokemon } = useFetch<BattlePokemon[]>(() =>
 		Promise.all(
-			encounters.map(async (e) => {
+			opponents.map(async (e) => {
 				const data = await getPokemonByDexId(e.dexId).unwrap();
 				return createBattlePokemonFromData(data, e.xp);
 			})
@@ -76,7 +79,7 @@ export const useInitialiseBattleSides = (
 		data,
 		allOpponentPokemon,
 		allPlayerPokemon,
-		encounters,
+		opponents,
 		setPlayerSide,
 		setOpponentSide,
 		activePokemonPerSide,

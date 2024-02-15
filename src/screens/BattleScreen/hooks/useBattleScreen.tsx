@@ -16,8 +16,11 @@ export interface SelectableAction {
 }
 export const useBattleScreen = () => {
 	const { state } = useLocation();
-	const encounters = state as MapEncounter[];
-	const activePokemonPerside = encounters.length;
+	const { opponents, isTrainer } = state as {
+		opponents: MapEncounter[];
+		isTrainer: boolean;
+	};
+	const activePokemonPerside = opponents.length;
 	const saveFile = useGetCurrentSaveFile();
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
@@ -31,15 +34,15 @@ export const useBattleScreen = () => {
 		}
 		return [
 			{ action: 'ATTACK', name: 'Attack', disabled: false },
-			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: false },
+			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: isTrainer },
 			{
 				action: 'CATCH_ATTEMPT',
 				name: 'Throw Pokeball',
-				disabled: usedBalls > saveFile.inventory['poke-ball'],
+				disabled: usedBalls > saveFile.inventory['poke-ball'] || isTrainer,
 			},
 			{ action: 'SWITCH', name: 'Switch', disabled: true },
 		];
-	}, [saveFile, usedBalls]);
+	}, [isTrainer, saveFile, usedBalls]);
 
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {

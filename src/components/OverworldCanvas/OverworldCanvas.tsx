@@ -48,6 +48,7 @@ export const OverworldCanvas = (): JSX.Element => {
 			/>
 			{Array.from({ length: height }).map((_, i) => (
 				<canvas
+					key={`occupantCanvas${i}`}
 					id={`occupantCanvas${i}`}
 					className={`occupantCanvas`}
 					style={{ zIndex: `calc(var(--OVERWORLD_CANVAS_INDEX) + ${i} + 1)` }}

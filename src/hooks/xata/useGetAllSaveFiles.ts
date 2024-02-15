@@ -16,6 +16,7 @@ export const staticSaveData: SaveFile = {
 	sprite: '135',
 	quests: { pickStarter: 'inactive', talkToNurseJoy: 'inactive' },
 	handledOccupants: {
+		'starter-town-youngster-jimmy': false,
 		'starter-town-item-1': false,
 		'starter-town-ballMachine': false,
 		'starter-town-grass-blocker': false,

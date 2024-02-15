@@ -11,9 +11,27 @@ export type UniqueOccupantIds =
 	| 'starter-town-nurse'
 	| 'starter-town-ballMachine'
 	| 'starter-town-grass-blocker'
-	| 'starter-town-item-1';
+	| 'starter-town-item-1'
+	| 'starter-town-youngster-jimmy';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
+	'starter-town-youngster-jimmy': {
+		id: 'starter-town-youngster-jimmy',
+		type: 'TRAINER',
+		position: {
+			y: 6,
+			x: 0,
+			mapId: 'starter-town',
+			orientation: 2,
+		},
+		dialogue: ['Think you got what it takes, Big Dog?'],
+		sprite: '093',
+		team: [{ dexId: 399, xp: 100 }],
+		questCondition: {
+			id: 'pickStarter',
+			status: 'completed',
+		},
+	},
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',
 		type: 'ITEM',

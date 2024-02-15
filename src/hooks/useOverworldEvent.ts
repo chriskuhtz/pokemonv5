@@ -23,10 +23,13 @@ export const useOverworldEvent = () => {
 			}
 			if (event.type === 'ENCOUNTER') {
 				navigate(RoutesEnum.battle, {
-					state: [
-						encounters[Math.round(Math.random() * encounters.length)],
-						encounters[Math.round(Math.random() * encounters.length)],
-					],
+					state: {
+						opponents: [
+							encounters[Math.round(Math.random() * encounters.length)],
+							encounters[Math.round(Math.random() * encounters.length)],
+						],
+						isTrainer: false,
+					},
 				});
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {
@@ -48,6 +51,6 @@ export const useOverworldEvent = () => {
 				}
 			}
 		},
-		[dispatch, navigate, quests, saveGame]
+		[dispatch, encounters, navigate, quests, saveGame]
 	);
 };

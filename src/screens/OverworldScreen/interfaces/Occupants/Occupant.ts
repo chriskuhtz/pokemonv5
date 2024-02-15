@@ -1,6 +1,7 @@
 import { Inventory } from '../../../../interfaces/Inventory';
 import { QuestIdAndStatus } from '../../../../interfaces/QuestIdAndStatus';
 import { SaveFile } from '../../../../interfaces/SaveFile';
+import { MapEncounter } from '../../../../store/slices/MapSlice';
 import { CharacterPosition } from '../../../../store/slices/saveFileSlice';
 import { Movement } from '../Movement';
 import { OverworldEvent } from '../OverworldEvent';
@@ -39,7 +40,7 @@ export interface Trainer extends BaseOccupant {
 	viewRange?: number;
 	watching?: boolean;
 	type: 'TRAINER';
-	team: number[];
+	team: MapEncounter[];
 }
 export interface Merchant extends BaseOccupant {
 	type: 'MERCHANT';

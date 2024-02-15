@@ -75,7 +75,9 @@ export const InteractionButton = () => {
 					navigate(RoutesEnum.market, { state: focusedOccupant.inventory });
 				}
 				if (focusedOccupant.type === 'TRAINER') {
-					navigate(RoutesEnum.battle, { state: focusedOccupant.team });
+					navigate(RoutesEnum.battle, {
+						state: { opponents: focusedOccupant.team, isTrainer: true },
+					});
 				}
 
 				saveGame({
