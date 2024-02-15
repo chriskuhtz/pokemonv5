@@ -231,7 +231,7 @@ export const useHandleAction = (
 			}
 			//attack
 			if (actor.nextAction?.type === 'ATTACK' && target) {
-				const newTargetDamage = target.damage + 10;
+				const newTargetDamage = target.damage + actor.attack;
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
