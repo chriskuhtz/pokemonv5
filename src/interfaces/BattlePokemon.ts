@@ -23,4 +23,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	nextAction?: BattleAction;
 	side: 'PLAYER' | 'OPPONENT';
 	status?: 'BEING_CAUGHT';
+	base_experience: number;
 }

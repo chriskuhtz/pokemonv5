@@ -9,8 +9,6 @@ import { OPPOID } from '../../../testing/constants/trainerIds';
 export const createBattlePokemonFromData = (
 	data: PokemonData
 ): BattlePokemon => {
-	console.log(data);
-
 	const baseHp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat ?? 100;
 	const xp = 100;
 	const { level } = calculateLevelData(xp);
@@ -27,6 +25,7 @@ export const createBattlePokemonFromData = (
 		xp: xp,
 		id: v4(),
 		side: 'OPPONENT',
+		base_experience: data.base_experience,
 	};
 };
 export const createBattlePokemonFromOwned = (
@@ -44,5 +43,6 @@ export const createBattlePokemonFromOwned = (
 		maxHp: calculateStat(hpStat, 0, 0, 'hardy', level, 'hp'),
 		attack: calculateStat(baseAttack, 0, 0, 'hardy', level, 'attack'),
 		side: 'PLAYER',
+		base_experience: data.base_experience,
 	};
 };

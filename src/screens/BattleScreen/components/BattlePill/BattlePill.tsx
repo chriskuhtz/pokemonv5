@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
+import { MapObject } from '../../../../components/MapObject/MapObject';
+import { calculateLevelData } from '../../../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { Pill } from '../../../../ui_components/Pill/Pill';
 import './battlePill.css';
-import { MapObject } from '../../../../components/MapObject/MapObject';
 
 export const BattlePill = ({
 	pokemon,
@@ -16,6 +17,7 @@ export const BattlePill = ({
 	rightSide?: ReactNode;
 	back?: boolean;
 }): JSX.Element => {
+	const { level } = calculateLevelData(pokemon.xp);
 	return (
 		<Pill
 			leftSide={
@@ -31,7 +33,9 @@ export const BattlePill = ({
 			}
 			center={
 				<div>
-					<p>{pokemon.name}</p>
+					<p>
+						{pokemon.name} / Lvl {level}
+					</p>
 					<p>
 						{pokemon.maxHp - pokemon.damage}/{pokemon.maxHp}
 					</p>
