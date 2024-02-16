@@ -25,7 +25,9 @@ export const QuestListItem = ({ quest }: { quest: Quest }) => {
 				<div>
 					<h3>{quest.title}</h3>
 					<p>{quest.description}</p>
-					<p>Reward Money: {quest.rewardMoney}$</p>
+					<p>
+						<strong>Reward Money: {quest.rewardMoney}$</strong>
+					</p>
 				</div>
 			}
 			rightSide={
