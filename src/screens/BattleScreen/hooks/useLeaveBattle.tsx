@@ -67,19 +67,8 @@ export const useLeaveBattle = (
 	}, [opponentSide, playerSide]);
 
 	return useCallback(
-		(reason: BattleEndReason) => {
-			if (reason === 'RUNAWAY') {
-				dispatch(setDialogue(['Phew, escaped']));
-			}
-			if (reason === 'WIN') {
-				if (trainer) {
-					dispatch(setDialogue(trainer.dialogueAfterDefeat));
-				} else dispatch(setDialogue(['You won the Battle']));
-			}
-			if (reason === 'LOSS') {
-				dispatch(setDialogue(['You lost the Battle']));
-			}
-			save({
+		async (reason: BattleEndReason) => {
+			await save({
 				dexUpdates: allDexUpdates,
 				handledOccupants: trainerId ? { [`${trainerId}`]: true } : undefined,
 				pokemonUpdates: updatedOwnedPokemon,
@@ -91,8 +80,20 @@ export const useLeaveBattle = (
 					reason === 'LOSS' && nearestHealer
 						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }
 						: undefined,
+			}).then(() => {
+				navigate(RoutesEnum.overworld);
+				if (reason === 'RUNAWAY') {
+					dispatch(setDialogue(['Phew, escaped']));
+				}
+				if (reason === 'WIN') {
+					if (trainer) {
+						dispatch(setDialogue(trainer.dialogueAfterDefeat));
+					} else dispatch(setDialogue(['You won the Battle']));
+				}
+				if (reason === 'LOSS') {
+					dispatch(setDialogue(['You lost the Battle']));
+				}
 			});
-			navigate(RoutesEnum.overworld);
 		},
 		[
 			allDexUpdates,

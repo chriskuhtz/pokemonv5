@@ -133,7 +133,7 @@ export const useHandleAction = (
 			}
 			//run away success
 			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
-				leaveBattle('RUNAWAY');
+				void leaveBattle('RUNAWAY');
 				return;
 			}
 			//run away failure

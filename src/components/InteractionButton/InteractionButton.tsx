@@ -118,9 +118,9 @@ export const InteractionButton = () => {
 	]);
 	return (
 		<button
-			className={
-				currentDialogue.length > 0 ? 'dialogueButton' : 'interactionButton'
-			}
+			className={`bottomDialogue ${
+				currentDialogue.length === 0 ? 'interactionButton' : ''
+			}`}
 			onClick={handleClick}
 		>
 			{currentDialogue.length > 0 ? currentDialogue[0] : 'A'}

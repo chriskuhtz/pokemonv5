@@ -130,7 +130,7 @@ export const useBattleScreen = () => {
 			//ignore bench until switching is available
 			//&&playerSide.bench.length === 0
 		) {
-			leaveBattle('LOSS');
+			void leaveBattle('LOSS');
 		}
 		if (
 			opponentSide &&
@@ -138,7 +138,7 @@ export const useBattleScreen = () => {
 			//ignore bench until switching is available
 			//&&opponentSide.bench.length === 0
 		) {
-			leaveBattle('WIN');
+			void leaveBattle('WIN');
 		}
 	}, [leaveBattle, opponentSide, playerSide]);
 	//set Mode to executing

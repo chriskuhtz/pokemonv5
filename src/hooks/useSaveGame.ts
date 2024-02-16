@@ -18,7 +18,7 @@ export const useSaveGame = () => {
 	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
 	return useCallback(
-		({
+		async ({
 			currentPosition,
 			inventoryChanges,
 			portalEvent,
@@ -82,7 +82,7 @@ export const useSaveGame = () => {
 				}
 			});
 
-			void updateSaveFile({
+			await updateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
 				position: updatedPosition,
