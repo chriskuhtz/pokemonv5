@@ -9,9 +9,11 @@ import { RoutesEnum } from '../../router/router';
 import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
+import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
+import { selectHandledOccupants } from '../../store/selectors/saveFile/selectHandledOccupants';
 import { selectOrientation } from '../../store/selectors/saveFile/selectOrientation';
 import {
 	continueDialogue,
@@ -24,6 +26,7 @@ export const InteractionButton = () => {
 	const occupant = useAppSelector(selectOccupantAtNextCoordinates);
 	const playerOrientation = useAppSelector(selectOrientation);
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
+	const handledOccupants = useAppSelector(selectHandledOccupants);
 	const dispatch = useAppDispatch();
 	const saveGame = useSaveGame();
 	const navigate = useNavigate();
@@ -67,7 +70,14 @@ export const InteractionButton = () => {
 					playerOrientation: playerOrientation ?? 0,
 				})
 			);
-			dispatch(setDialogue(occupant.dialogue));
+			const handled = handledOccupants
+				? handledOccupants[occupant.id as UniqueOccupantIds]
+				: false;
+			const correctDialogue =
+				occupant.type === 'TRAINER' && handled
+					? occupant.dialogueAfterDefeat
+					: occupant.dialogue;
+			dispatch(setDialogue(correctDialogue));
 		}
 		if (currentDialogue.length > 0) {
 			if (currentDialogue.length === 1 && focusedOccupant) {
@@ -75,9 +85,17 @@ export const InteractionButton = () => {
 					navigate(RoutesEnum.market, { state: focusedOccupant.inventory });
 				}
 				if (focusedOccupant.type === 'TRAINER') {
-					navigate(RoutesEnum.battle, {
-						state: { opponents: focusedOccupant.team, isTrainer: true },
-					});
+					const handled = handledOccupants
+						? handledOccupants[focusedOccupant.id as UniqueOccupantIds]
+						: false;
+					if (!handled) {
+						navigate(RoutesEnum.battle, {
+							state: {
+								opponents: focusedOccupant.team,
+								trainerId: focusedOccupant.id,
+							},
+						});
+					}
 				}
 
 				saveGame({
@@ -88,10 +106,11 @@ export const InteractionButton = () => {
 			dispatch(continueDialogue());
 		}
 	}, [
-		currentDialogue,
+		currentDialogue.length,
 		dispatch,
 		focusedOccupant,
 		handleEvent,
+		handledOccupants,
 		navigate,
 		occupant,
 		playerOrientation,

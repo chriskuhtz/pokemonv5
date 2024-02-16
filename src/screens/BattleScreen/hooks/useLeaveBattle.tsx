@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
@@ -14,7 +15,8 @@ export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
 export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
-	usedBalls: number
+	usedBalls: number,
+	trainerId?: UniqueOccupantIds
 ) => {
 	const navigate = useNavigate();
 	const save = useSaveGame();
@@ -66,6 +68,7 @@ export const useLeaveBattle = (
 			}
 			save({
 				dexUpdates: allDexUpdates,
+				handledOccupants: trainerId ? { [`${trainerId}`]: true } : undefined,
 				pokemonUpdates: updatedOwnedPokemon,
 				inventoryChanges: { 'poke-ball': -usedBalls },
 				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
@@ -82,6 +85,7 @@ export const useLeaveBattle = (
 			navigate,
 			nearestHealer,
 			save,
+			trainerId,
 			updatedOwnedPokemon,
 			usedBalls,
 		]

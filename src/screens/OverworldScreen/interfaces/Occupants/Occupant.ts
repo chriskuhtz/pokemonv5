@@ -35,6 +35,7 @@ export interface Npc extends BaseOccupant {
 }
 export interface Trainer extends BaseOccupant {
 	dialogue: string[];
+	dialogueAfterDefeat: string[];
 	sprite: string;
 	movement?: Movement;
 	viewRange?: number;

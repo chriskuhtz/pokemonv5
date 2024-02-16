@@ -28,7 +28,6 @@ export const useOverworldEvent = () => {
 							encounters[Math.round(Math.random() * encounters.length)],
 							encounters[Math.round(Math.random() * encounters.length)],
 						],
-						isTrainer: false,
 					},
 				});
 			}

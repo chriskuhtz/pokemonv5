@@ -25,6 +25,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 2,
 		},
 		dialogue: ['Think you got what it takes, Big Dog?'],
+		dialogueAfterDefeat: ['You definitely got it, Large Canine'],
 		sprite: '093',
 		team: [{ dexId: 399, xp: 100 }],
 		questCondition: {

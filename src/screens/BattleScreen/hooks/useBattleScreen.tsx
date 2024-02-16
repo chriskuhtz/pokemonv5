@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MapEncounter } from '../../../store/slices/MapSlice';
@@ -16,11 +17,11 @@ export interface SelectableAction {
 }
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
-	isTrainer: boolean;
+	trainerId?: UniqueOccupantIds;
 }
 export const useBattleScreen = () => {
 	const { state } = useLocation();
-	const { opponents, isTrainer } = state as BattleScreenProps;
+	const { opponents, trainerId } = state as BattleScreenProps;
 	const activePokemonPerside = opponents.length;
 	const saveFile = useGetCurrentSaveFile();
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
@@ -35,15 +36,15 @@ export const useBattleScreen = () => {
 		}
 		return [
 			{ action: 'ATTACK', name: 'Attack', disabled: false },
-			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: isTrainer },
+			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: !!trainerId },
 			{
 				action: 'CATCH_ATTEMPT',
 				name: 'Throw Pokeball',
-				disabled: usedBalls > saveFile.inventory['poke-ball'] || isTrainer,
+				disabled: usedBalls > saveFile.inventory['poke-ball'] || !!trainerId,
 			},
 			{ action: 'SWITCH', name: 'Switch', disabled: true },
 		];
-	}, [isTrainer, saveFile, usedBalls]);
+	}, [saveFile, trainerId, usedBalls]);
 
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {
@@ -91,7 +92,12 @@ export const useBattleScreen = () => {
 		[playerSide]
 	);
 
-	const leaveBattle = useLeaveBattle(playerSide, opponentSide, usedBalls);
+	const leaveBattle = useLeaveBattle(
+		playerSide,
+		opponentSide,
+		usedBalls,
+		trainerId
+	);
 
 	const handleAction = useHandleAction(
 		playerSide,
