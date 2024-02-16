@@ -5,20 +5,22 @@ import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWi
 import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
 
 import { selectDecorators } from '../../../store/selectors/map/selectDecorators';
+import { selectMap } from '../../../store/selectors/map/selectMap';
 import { occupantCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { drawLargeObject } from '../functions/drawLargeObject';
 
 export const useDrawOccupants = () => {
-	const occupants = useSelector(selectOccupantsToDraw);
+	const occupantsToDraw = useSelector(selectOccupantsToDraw);
+	const { height } = useSelector(selectMap);
 	const decorators = useSelector(selectDecorators);
 
 	const drawOccupants = useCallback(() => {
-		// console.log('drawOccupants', occupants);
+		console.log('drawOccupants', occupantsToDraw);
 
-		occupants.forEach((o) => {
+		Array.from({ length: height }).forEach((_, i) => {
 			const canvas: HTMLCanvasElement | null = document.querySelector(
-				`#${occupantCanvas}${o.position.y}`
+				`#${occupantCanvas}${i}`
 			);
 			// Initialize the GL context
 			if (!canvas) {
@@ -35,6 +37,25 @@ export const useDrawOccupants = () => {
 			}
 			//clear entire canvas to remove stale
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		});
+
+		occupantsToDraw.forEach((o) => {
+			const canvas: HTMLCanvasElement | null = document.querySelector(
+				`#${occupantCanvas}${o.position.y}`
+			);
+			// Initialize the GL context
+			if (!canvas) {
+				return;
+			}
+			const ctx = canvas.getContext('2d');
+
+			// Only continue if WebGL is available and working
+			if (ctx === null) {
+				alert(
+					'Unable to initialize 2d context. Your browser or machine may not support it.'
+				);
+				return;
+			}
 
 			const img = new Image();
 			if (!isOccupantWithSprite(o)) {
@@ -125,6 +146,6 @@ export const useDrawOccupants = () => {
 			};
 			img.src = `mapObjects/${o.sprite}.png`;
 		});
-	}, [decorators, occupants]);
+	}, [decorators, occupantsToDraw]);
 	return { hasChanges: false, drawOccupants };
 };

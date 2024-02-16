@@ -43,7 +43,7 @@ export const Trainercard = ({
 				if (badge[1] === false) {
 					return;
 				}
-				return <strong>{badge[0]}</strong>;
+				return <strong key={badge[0]}>{badge[0]}</strong>;
 			})}
 		</div>
 	);
