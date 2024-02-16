@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { QuestRecord } from '../interfaces/Quest';
 import { BagScreen } from '../screens/BagScreen/BagScreen';
 import { BattleScreen } from '../screens/BattleScreen/BattleScreen';
+import { LoginScreen } from '../screens/LoginScreen/LoginScreen';
 import { MarketScreen } from '../screens/MarketScreen/MarketScreen';
 import { NewGameProcess } from '../screens/NewGameProcessScreen/NewGameProcess';
 import { Overworld } from '../screens/OverworldScreen/Overworld';
@@ -10,7 +11,6 @@ import { PlayerMenu } from '../screens/PlayerMenuScreen/PlayerMenuScreen';
 import { PokedexScreen } from '../screens/PokedexScreen/PokedexScreen';
 import { PokemonSelectionScreen } from '../screens/PokemonSelection/PokemonSelectionScreen';
 import { QuestsScreen } from '../screens/QuestsScreen/QuestsScreen';
-import { SaveFileSelection } from '../screens/SaveFileSelectionScreen/SaveFileSelection';
 import { StorageScreen } from '../screens/StorageScreen/StorageScreen';
 import { TeamScreen } from '../screens/TeamScreen/TeamScreen';
 import { TestArea } from '../screens/TestArea/TestArea';
@@ -30,12 +30,13 @@ export enum RoutesEnum {
 	starterSelection = '/starterSelection',
 	test = '/test',
 	newFulfilledQuest = '/newFulfilledQuest',
+	login = '/login',
 }
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <SaveFileSelection />,
+		element: <LoginScreen />,
 	},
 	{
 		path: RoutesEnum.overworld,
