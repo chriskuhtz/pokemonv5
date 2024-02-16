@@ -34,7 +34,11 @@ export const Trainercard = ({
 			/>
 			<div>Money:</div>
 			<strong>{money}$</strong>
+			<h3>Pokedex:</h3>
+			<div id="gridPlaceholder" />
 			{dex && <DexSummary dex={dex} />}
+			<h3>Badges:</h3>
+			<div id="gridPlaceholder" />
 			{Object.entries(badges).map((badge) => {
 				if (badge[1] === false) {
 					return;

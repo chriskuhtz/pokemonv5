@@ -85,7 +85,8 @@ export const useLeaveBattle = (
 				pokemonUpdates: updatedOwnedPokemon,
 				inventoryChanges: { 'poke-ball': -usedBalls },
 				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
-				fundsUpdate: trainer?.rewardMoney ?? 0,
+				fundsUpdate: trainer?.rewardMoney,
+				newBadge: trainer?.rewardBadge,
 				currentPosition:
 					reason === 'LOSS' && nearestHealer
 						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }

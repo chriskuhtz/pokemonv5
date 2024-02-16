@@ -21,13 +21,16 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'starter-town-youngster-jimmy',
 		type: 'TRAINER',
 		position: {
-			y: 6,
-			x: 0,
+			y: 7,
+			x: 3,
 			mapId: 'starter-town',
 			orientation: 2,
 		},
 		dialogue: ['Think you got what it takes, Big Dog?'],
-		dialogueAfterDefeat: ['You definitely got it, Large Canine'],
+		dialogueAfterDefeat: [
+			'You definitely got it, Large Canine.',
+			'Maybe you could even beat Brock.',
+		],
 		sprite: '093',
 		team: [{ dexId: 399, xp: 100 }],
 		questCondition: {
@@ -43,7 +46,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			y: 12,
 			x: 0,
 			mapId: 'starter-town',
-			orientation: 2,
+			orientation: 3,
 		},
 		dialogue: [
 			'I am Brock, the Gym Leader of this area.',
@@ -56,8 +59,9 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		dialogueAfterDefeat: [
 			'You have proven yourself worthy.',
-			'I wish you good fortune in your travels',
+			'I wish you good fortune in your travels.',
 			'Seek out new experiences and places to grow stronger.',
+			'Take this Stone Badge as a sign of your victory.',
 		],
 		sprite: SpriteEnum['brock'],
 		team: [{ dexId: 95, xp: 1000 }],
@@ -66,7 +70,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			status: 'completed',
 		},
 		rewardMoney: 4000,
-		rewardBadges: 'stoneBadge',
+		rewardBadge: 'stoneBadge',
 	},
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',

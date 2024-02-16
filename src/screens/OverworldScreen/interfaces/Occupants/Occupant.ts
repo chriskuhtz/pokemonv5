@@ -44,7 +44,7 @@ export interface Trainer extends BaseOccupant {
 	team: MapEncounter[];
 	rewardMoney: number;
 	rewardItems?: Partial<Inventory>;
-	rewardBadges?: GymBadge;
+	rewardBadge?: GymBadge;
 }
 export interface Merchant extends BaseOccupant {
 	type: 'MERCHANT';

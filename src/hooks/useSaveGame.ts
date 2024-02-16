@@ -6,7 +6,7 @@ import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
 import { OwnedPokemon } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
-import { SaveFile } from '../interfaces/SaveFile';
+import { GymBadge, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
@@ -28,6 +28,7 @@ export const useSaveGame = () => {
 			dexUpdates,
 			handledOccupants,
 			fundsUpdate,
+			newBadge,
 		}: {
 			currentPosition?: CharacterPosition;
 			inventoryChanges?: Partial<Inventory>;
@@ -38,6 +39,7 @@ export const useSaveGame = () => {
 			dexUpdates?: DexEntry[];
 			handledOccupants?: Partial<Record<UniqueOccupantIds, boolean>>;
 			fundsUpdate?: number;
+			newBadge?: GymBadge;
 		}) => {
 			if (!data) {
 				return;
@@ -89,6 +91,9 @@ export const useSaveGame = () => {
 				pokemon: updatedPokemon,
 				pokedex: updatedDex,
 				money: updatedMoney,
+				gymBadges: newBadge
+					? { ...data.gymBadges, [`${newBadge}`]: true }
+					: data.gymBadges,
 			});
 		},
 		[updateSaveFile, data]
