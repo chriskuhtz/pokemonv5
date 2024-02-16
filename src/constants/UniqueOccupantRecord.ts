@@ -32,6 +32,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			id: 'pickStarter',
 			status: 'completed',
 		},
+		rewardMoney: 300,
 	},
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',

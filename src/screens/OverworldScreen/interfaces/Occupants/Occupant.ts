@@ -1,6 +1,6 @@
 import { Inventory } from '../../../../interfaces/Inventory';
 import { QuestIdAndStatus } from '../../../../interfaces/QuestIdAndStatus';
-import { SaveFile } from '../../../../interfaces/SaveFile';
+import { GymBadge, SaveFile } from '../../../../interfaces/SaveFile';
 import { MapEncounter } from '../../../../store/slices/MapSlice';
 import { CharacterPosition } from '../../../../store/slices/saveFileSlice';
 import { Movement } from '../Movement';
@@ -42,6 +42,9 @@ export interface Trainer extends BaseOccupant {
 	watching?: boolean;
 	type: 'TRAINER';
 	team: MapEncounter[];
+	rewardMoney: number;
+	rewardItems?: Partial<Inventory>;
+	rewardBadges?: GymBadge;
 }
 export interface Merchant extends BaseOccupant {
 	type: 'MERCHANT';
