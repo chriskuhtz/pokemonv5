@@ -117,8 +117,13 @@ export const InteractionButton = () => {
 		saveGame,
 	]);
 	return (
-		<button className="interactionButton" onClick={handleClick}>
-			A
+		<button
+			className={
+				currentDialogue.length > 0 ? 'dialogueButton' : 'interactionButton'
+			}
+			onClick={handleClick}
+		>
+			{currentDialogue.length > 0 ? currentDialogue[0] : 'A'}
 		</button>
 	);
 };

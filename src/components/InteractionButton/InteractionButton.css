@@ -1,7 +1,16 @@
-.interactionButton {
+.interactionButton,
+.dialogueButton {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	margin: 0 0 2rem 2rem;
 	z-index: var(--BUTTONS_INDEX);
+	font-size: x-large;
+}
+
+.interactionButton {
+	margin: 0 0 2rem 2rem;
+}
+.dialogueButton {
+	margin: 0 2rem 2rem 2rem;
+	width: calc(100% - 4rem);
 }
