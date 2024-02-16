@@ -11,10 +11,10 @@ export const DexSummary = ({ dex }: { dex: DexEntry[] }) => {
 	return (
 		<>
 			<div>
-				Caught: <strong>{caught}</strong>
+				Caught Pokemon: <strong>{caught}</strong>
 			</div>
 			<div>
-				Seen: <strong>{seen}</strong>
+				Seen Pokemon: <strong>{seen}</strong>
 			</div>
 		</>
 	);
