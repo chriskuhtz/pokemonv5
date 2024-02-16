@@ -1,6 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
+import {
+	UniqueOccupantIds,
+	UniqueOccupantRecord,
+} from '../../../constants/UniqueOccupantRecord';
+import { isTrainer } from '../../../functions/typeguards/isOccupantWithDialogue';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
@@ -32,6 +36,13 @@ export const useLeaveBattle = (
 		] as DexEntry[];
 	}, [opponentSide, playerSide]);
 	const nearestHealer = useAppSelector(selectNearestHealer);
+	const trainer = useMemo(() => {
+		const possibleOccupant = trainerId && UniqueOccupantRecord[trainerId];
+
+		if (possibleOccupant && isTrainer(possibleOccupant)) {
+			return possibleOccupant;
+		}
+	}, [trainerId]);
 
 	const updatedOwnedPokemon: OwnedPokemon[] = useMemo(() => {
 		if (!playerSide || !opponentSide) {
@@ -61,7 +72,9 @@ export const useLeaveBattle = (
 				dispatch(setDialogue(['Phew, escaped']));
 			}
 			if (reason === 'WIN') {
-				dispatch(setDialogue(['You won the Battle']));
+				if (trainer) {
+					dispatch(setDialogue(trainer.dialogueAfterDefeat));
+				} else dispatch(setDialogue(['You won the Battle']));
 			}
 			if (reason === 'LOSS') {
 				dispatch(setDialogue(['You lost the Battle']));
@@ -72,6 +85,7 @@ export const useLeaveBattle = (
 				pokemonUpdates: updatedOwnedPokemon,
 				inventoryChanges: { 'poke-ball': -usedBalls },
 				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
+				fundsUpdate: trainer?.rewardMoney ?? 0,
 				currentPosition:
 					reason === 'LOSS' && nearestHealer
 						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }
@@ -85,6 +99,7 @@ export const useLeaveBattle = (
 			navigate,
 			nearestHealer,
 			save,
+			trainer,
 			trainerId,
 			updatedOwnedPokemon,
 			usedBalls,
