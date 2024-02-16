@@ -38,7 +38,7 @@ export const useCreateOrUpdateSaveFile = () => {
 			const xata = getXataClient();
 
 			await xata.db.saveFiles
-				.createOrReplace({ id, saveFile: newSaveFile })
+				.createOrUpdate({ id, saveFile: JSON.stringify(newSaveFile) })
 				.then((res) => {
 					window.localStorage.setItem('userId', res.id);
 					dispatch(setSaveFile(res.saveFile));
