@@ -42,7 +42,7 @@ export const OverworldCanvas = (): JSX.Element => {
 		>
 			<canvas
 				id={playerCanvas}
-				style={{ zIndex: `calc(var(--PLAYER_CANVAS_INDEX) + ${y} + 1)` }}
+				style={{ zIndex: `calc(var(--PLAYER_CANVAS_INDEX) + ${y})` }}
 				width={size}
 				height={size * 2}
 			/>
