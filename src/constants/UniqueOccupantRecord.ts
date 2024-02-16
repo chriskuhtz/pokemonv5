@@ -1,4 +1,5 @@
 import { generateInventory } from '../interfaces/Inventory';
+import { SpriteEnum } from '../interfaces/SpriteEnum';
 import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
 //every occupant that can be handled should be unique
@@ -12,7 +13,8 @@ export type UniqueOccupantIds =
 	| 'starter-town-ballMachine'
 	| 'starter-town-grass-blocker'
 	| 'starter-town-item-1'
-	| 'starter-town-youngster-jimmy';
+	| 'starter-town-youngster-jimmy'
+	| 'brock';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'starter-town-youngster-jimmy': {
@@ -29,10 +31,42 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		sprite: '093',
 		team: [{ dexId: 399, xp: 100 }],
 		questCondition: {
-			id: 'pickStarter',
+			id: 'talkToNurseJoy',
 			status: 'completed',
 		},
 		rewardMoney: 300,
+	},
+	brock: {
+		id: 'brock',
+		type: 'TRAINER',
+		position: {
+			y: 12,
+			x: 0,
+			mapId: 'starter-town',
+			orientation: 2,
+		},
+		dialogue: [
+			'I am Brock, the Gym Leader of this area.',
+			'My speciality are Rock Pokemon.',
+			'As Gym Leader, it is my responsibility to test the new trainers that come through here.',
+			'Should you defeat me, i will award you the Rock Badge.',
+			'Badges are a sign of your skill as a Pokemon trainer.',
+			'You should travel far and wide to collect them all.',
+			'But first, you need to get past me and Onix!',
+		],
+		dialogueAfterDefeat: [
+			'You have proven yourself worthy.',
+			'I wish you good fortune in your travels',
+			'Seek out new experiences and places to grow stronger.',
+		],
+		sprite: SpriteEnum['brock'],
+		team: [{ dexId: 95, xp: 1000 }],
+		questCondition: {
+			id: 'talkToNurseJoy',
+			status: 'completed',
+		},
+		rewardMoney: 4000,
+		rewardBadges: 'stoneBadge',
 	},
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',
@@ -183,7 +217,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 0,
 		},
 		questCondition: {
-			id: 'pickStarter',
+			id: 'talkToNurseJoy',
 			status: 'completed',
 		},
 	},

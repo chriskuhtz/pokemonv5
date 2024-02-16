@@ -22,12 +22,17 @@ export const useOverworldEvent = () => {
 				return;
 			}
 			if (event.type === 'ENCOUNTER') {
+				const opponents = [
+					encounters[Math.round(Math.random() * encounters.length)],
+				];
+				if (Math.random() > 0.8) {
+					opponents.push(
+						encounters[Math.round(Math.random() * encounters.length)]
+					);
+				}
 				navigate(RoutesEnum.battle, {
 					state: {
-						opponents: [
-							encounters[Math.round(Math.random() * encounters.length)],
-							encounters[Math.round(Math.random() * encounters.length)],
-						],
+						opponents: opponents,
 					},
 				});
 			}

@@ -4,8 +4,11 @@ export const addEntriesToDex = (
 	existing?: DexEntry[],
 	dexUpdates?: DexEntry[]
 ): DexEntry[] => {
-	if (!dexUpdates || !existing) {
+	if (!existing) {
 		return [];
+	}
+	if (!dexUpdates || dexUpdates.length === 0) {
+		return existing;
 	}
 	let updatedDex = [...existing];
 

@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { calculateGainedXp } from '../../../shared/functions/calculateGainedXp';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import { BattleEndReason } from './useLeaveBattle';
-import { calculateGainedXp } from '../../../shared/functions/calculateGainedXp';
 
 export const useHandleAction = (
 	playerSide: BattleSide | undefined,
@@ -233,18 +233,16 @@ export const useHandleAction = (
 			//attack
 			if (actor.nextAction?.type === 'ATTACK' && target) {
 				const newTargetDamage = target.damage + actor.attack;
-				const gainedXP = calculateGainedXp(target);
-				const xpPerPokemon = gainedXP / playerSide.field.length;
+
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
 							if (p.id !== actor.id) {
-								return { ...p, xp: p.xp + xpPerPokemon };
+								return p;
 							}
 							return {
 								...p,
-								xp: p.xp + xpPerPokemon,
 								nextAction:
 									newTargetDamage >= target.maxHp
 										? { type: 'DEFEATED_TARGET', target: target.id }
@@ -298,15 +296,18 @@ export const useHandleAction = (
 			}
 			//defeated target
 			if (actor.nextAction?.type === 'DEFEATED_TARGET' && target) {
+				const gainedXP = calculateGainedXp(target);
+				const xpPerPokemon = gainedXP / playerSide.field.length;
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
 							if (p.id !== actor.id) {
-								return p;
+								return { ...p, xp: p.xp + xpPerPokemon };
 							}
 							return {
 								...p,
+								xp: p.xp + xpPerPokemon,
 								nextAction: undefined,
 							};
 						}),

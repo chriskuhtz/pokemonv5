@@ -17,6 +17,7 @@ export const SaveFileOptions = ({
 						sprite={file.saveFile.sprite}
 						money={file.saveFile.money}
 						dex={file.saveFile.pokedex}
+						badges={file.saveFile.gymBadges}
 					/>
 				</div>
 			))}

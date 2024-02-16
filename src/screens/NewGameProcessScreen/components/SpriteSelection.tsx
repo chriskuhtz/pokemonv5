@@ -22,8 +22,8 @@ export const SpriteSelection = ({
 					: 'What do you look like'}
 			</h3>
 			<div className="SpriteSelection_spriteList">
-				{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((x) => {
-					const parsedId = `00${x}`;
+				{[180, 179, 57, 23, 26, 3, 4].map((x) => {
+					const parsedId = `00${x}`.slice(-3);
 					return (
 						<Pill
 							style={{ color: spriteError ? 'red' : undefined }}

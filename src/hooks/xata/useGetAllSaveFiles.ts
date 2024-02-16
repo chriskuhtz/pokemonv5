@@ -26,11 +26,13 @@ export const staticSaveData: SaveFile = {
 		'starter-town-oak-after-selection': false,
 		'starter-town-oak-before-selection': false,
 		'starter-town-oak-during-selection': false,
+		brock: false,
 	},
 	pokedex: [],
 	pokemon: [],
 	money: 5000,
 	inventory: { potion: 0, repel: 0, 'poke-ball': 0 },
+	gymBadges: { stoneBadge: false },
 };
 
 export interface SaveFileDBEntry {

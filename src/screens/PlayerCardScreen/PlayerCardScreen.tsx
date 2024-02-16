@@ -21,6 +21,7 @@ export const PlayerCardScreen = (): JSX.Element => {
 					}}
 				>
 					<Trainercard
+						badges={data.gymBadges}
 						sprite={data.sprite}
 						name={data.username}
 						money={data.money}
