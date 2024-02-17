@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode, useMemo } from 'react';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { MapObject } from '../MapObject/MapObject';
@@ -15,24 +15,35 @@ export const BattleSprite = ({
 	active?: boolean;
 	back?: boolean;
 }) => {
-	return (
-		<div className="battleSpriteContainer">
-			{pokemon.status === 'BEING_CAUGHT' ? (
-				<MapObject
-					className="shakingBall"
-					style={{ height: '60px' }}
-					id="pokeball"
-				/>
-			) : (
-				<img
-					className={`battleSprite ${active ? 'active' : ''}`}
-					height={'120px'}
-					width={'120px'}
-					src={getPokemonSpriteUrl(pokemon.dexId, back)}
-				/>
-			)}
+	const healthPercentage = useMemo(() => {
+		const percentage = Math.round(
+			((pokemon.maxHp - pokemon.damage) / pokemon.maxHp) * 100
+		);
 
-			{overlay && <div className="overlay">{overlay}</div>}
+		const degrees = Math.round(3.6 * percentage);
+
+		return `${degrees}deg`;
+	}, [pokemon]);
+
+	return (
+		<div
+			style={{ '--healthPercentage': healthPercentage } as CSSProperties}
+			className="healthIndicator"
+		>
+			<div className="battleSprite">
+				{pokemon.status === 'BEING_CAUGHT' ? (
+					<MapObject className="shakingBall" id="pokeball" />
+				) : (
+					<img
+						className={` ${active ? 'active' : ''}`}
+						height={'120px'}
+						width={'120px'}
+						src={getPokemonSpriteUrl(pokemon.dexId, back)}
+					/>
+				)}
+
+				{overlay && <div className="overlay">{overlay}</div>}
+			</div>
 		</div>
 	);
 };
