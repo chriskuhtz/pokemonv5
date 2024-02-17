@@ -3,8 +3,8 @@ import { BattleAction, BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { Pill } from '../../ui_components/Pill/Pill';
-import { ChooseActionModal } from './components/ChooseActionModal';
-import { ChooseTargetModal } from './components/ChooseTargetModal';
+import { ChooseAction } from './components/ChooseAction';
+import { ChooseTarget } from './components/ChooseTarget';
 
 export const ChooseActionAndTarget = ({
 	actor,
@@ -37,7 +37,7 @@ export const ChooseActionAndTarget = ({
 	}
 	if (!actionName) {
 		return (
-			<ChooseActionModal
+			<ChooseAction
 				open={!actionName}
 				name={actor.name}
 				setActionName={setActionName}
@@ -48,7 +48,7 @@ export const ChooseActionAndTarget = ({
 	}
 
 	return (
-		<ChooseTargetModal
+		<ChooseTarget
 			open={!!(actionName && open)}
 			setOpen={setOpen}
 			actionName={actionName}
