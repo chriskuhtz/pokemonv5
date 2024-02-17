@@ -6,7 +6,10 @@ import './index.css';
 import { router } from './router/router.tsx';
 import { store } from './store/store.ts';
 
-export const size = Math.max(window.innerHeight / 9, window.innerWidth / 17);
+export const size =
+	window.innerHeight > window.innerWidth
+		? window.innerHeight / 9
+		: window.innerWidth / 17;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
