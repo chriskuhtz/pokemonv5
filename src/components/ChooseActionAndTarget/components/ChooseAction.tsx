@@ -31,7 +31,7 @@ export const ChooseAction = ({
 				<strong>{`what should ${name} do:`}</strong>
 				{availableActions.map((a) => (
 					<Pill
-						style={{ flexGrow: 1 }}
+						style={{ flexGrow: 1, fontSize: 'medium' }}
 						key={a.action}
 						onClick={() => {
 							setActionName(a.action);

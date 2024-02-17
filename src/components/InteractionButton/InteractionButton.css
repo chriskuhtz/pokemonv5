@@ -1,4 +1,7 @@
 .interactionButton {
 	margin: 0 0 2rem 2rem;
-	width: min-content;
+	width: 80px;
+	height: 80px;
+	background-color: var(--main-bg-color);
+	border-radius: var(--circular);
 }

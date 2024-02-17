@@ -1,3 +1,4 @@
+import { TiThMenu } from 'react-icons/ti';
 import { InteractionButton } from '../../components/InteractionButton/InteractionButton';
 import { MovementButtonGroup } from '../../components/MovementButtonGroup/MovementButtonGroup';
 import { OverworldCanvas } from '../../components/OverworldCanvas/OverworldCanvas';
@@ -14,7 +15,7 @@ export const Overworld = (): JSX.Element => {
 			{currentDialogue.length === 0 && (
 				<RouterButton
 					to={RoutesEnum.menu}
-					text={'Menu'}
+					text={<TiThMenu style={{ height: '30px', width: '30px' }} />}
 					className="leftCorner"
 				/>
 			)}

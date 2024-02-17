@@ -31,7 +31,7 @@ export const ChooseTarget = ({
 				<strong>{`who is the target:`}</strong>
 				{availableTargets.map((c) => (
 					<Pill
-						style={{ flexGrow: 1 }}
+						style={{ flexGrow: 1, fontSize: 'medium' }}
 						key={c.id}
 						onClick={() => {
 							setOpen(false);

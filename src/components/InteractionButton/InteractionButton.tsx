@@ -9,6 +9,7 @@ import { RoutesEnum } from '../../router/router';
 import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
+import { TbCircleLetterA } from 'react-icons/tb';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
@@ -20,6 +21,7 @@ import {
 	setDialogue,
 } from '../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
+import { Banner } from '../BottomBanner/Banner';
 import './InteractionButton.css';
 
 export const InteractionButton = () => {
@@ -116,14 +118,14 @@ export const InteractionButton = () => {
 		playerOrientation,
 		saveGame,
 	]);
+	if (currentDialogue.length > 0) {
+		return <Banner text={currentDialogue[0]} onClick={handleClick} bottom />;
+	}
 	return (
-		<button
-			className={`bottomDialogue ${
-				currentDialogue.length === 0 ? 'interactionButton' : ''
+		<TbCircleLetterA
+			className={`bottomDialogue interactionButton
 			}`}
 			onClick={handleClick}
-		>
-			{currentDialogue.length > 0 ? currentDialogue[0] : 'A'}
-		</button>
+		/>
 	);
 };

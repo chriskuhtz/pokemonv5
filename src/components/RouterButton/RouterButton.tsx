@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Pill } from '../../ui_components/Pill/Pill';
+import { ReactNode } from 'react';
 
 export interface RouterButtonProps {
 	to: string;
-	text: string;
+	text: ReactNode;
 	sideEffect?: () => void;
 	className?: string;
 	style?: React.CSSProperties;

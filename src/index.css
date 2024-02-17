@@ -21,9 +21,14 @@
 	--BUTTONS_INDEX: 5000;
 	/* colors */
 	--main-bg-color: rgb(28, 30, 30);
+	--main-bg-95: color-mix(in srgb, var(--main-bg-color) 95%, white);
+	--main-bg-90: color-mix(in srgb, var(--main-bg-color) 90%, white);
 	--main-color: aliceblue;
 	/* borders */
 	--rounded: 8px;
+	--circular: 9000px;
+	/*slant */
+	--slant: -15deg;
 }
 
 button {
@@ -88,4 +93,12 @@ p {
 	font-size: x-large;
 	margin: 0 2rem 2rem 2rem;
 	width: calc(100% - 4rem);
+}
+
+.bottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	z-index: var(--BUTTONS_INDEX);
 }

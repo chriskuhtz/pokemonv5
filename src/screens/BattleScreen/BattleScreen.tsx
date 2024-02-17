@@ -1,3 +1,4 @@
+import { Banner } from '../../components/BottomBanner/Banner';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
@@ -71,9 +72,7 @@ export const BattleScreen = (): JSX.Element => {
 					</div>
 				</div>
 				{currentDialogue.length > 0 && (
-					<button className="bottomDialogue" onClick={handleAction}>
-						{currentDialogue[0]}
-					</button>
+					<Banner text={currentDialogue[0]} onClick={handleAction} bottom />
 				)}
 			</div>
 		);

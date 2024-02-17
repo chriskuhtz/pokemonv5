@@ -1,0 +1,30 @@
+.banner {
+	z-index: var(--BUTTONS_INDEX);
+	font-size: x-large;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--main-bg-90);
+
+	:nth-child(3) {
+		align-self: center;
+		text-align: center;
+		padding: 0 2rem;
+		flex-grow: 1;
+	}
+}
+.bannerLeftSlant,
+.bannerRightSlant {
+	min-width: 3rem;
+	padding: 3rem 0;
+	background-color: var(--main-bg-95);
+	transform: skewX(var(--slant));
+	margin: 0 -1rem;
+}
+.bannerLeftSection,
+.bannerRightSection {
+	min-width: 2rem;
+	padding: 3rem 0;
+	background-color: var(--main-bg-95);
+}
