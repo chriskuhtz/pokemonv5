@@ -191,16 +191,6 @@ export const useBattleScreen = () => {
 		}
 	}, [mode, opponentSide, playerSide]);
 
-	useEffect(() => {
-		console.log(playerSide?.field);
-	}, [playerSide?.field]);
-	useEffect(() => {
-		console.log(nextPokemonWithoutAction);
-	}, [nextPokemonWithoutAction]);
-	useEffect(() => {
-		console.log(mode);
-	}, [mode]);
-
 	return {
 		mode,
 		playerSide,
