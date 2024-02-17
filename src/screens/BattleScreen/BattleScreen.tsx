@@ -1,4 +1,5 @@
 import { IoIosCloseCircle } from 'react-icons/io';
+import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { Banner } from '../../components/BottomBanner/Banner';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
@@ -6,7 +7,6 @@ import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurr
 import { useAppSelector } from '../../store/storeHooks';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
-import { BattlePill } from './components/BattlePill/BattlePill';
 import { useBattleScreen } from './hooks/useBattleScreen';
 
 export interface BattleSide {
@@ -30,6 +30,7 @@ export const BattleScreen = (): JSX.Element => {
 		resetAction,
 		availableActions,
 		nextPokemonWithoutAction,
+		pokemonWithActions,
 	} = useBattleScreen();
 
 	if (playerSide && opponentSide) {
@@ -38,13 +39,23 @@ export const BattleScreen = (): JSX.Element => {
 				<div className="battleField">
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
-							<BattlePill
+							<BattleSprite
 								key={p.id}
 								back
 								pokemon={p}
-								rightSide={
+								active={
+									pokemonWithActions.length > 0 &&
+									pokemonWithActions[0].id === p.id
+								}
+								overlay={
 									p.nextAction && (
-										<div>
+										<div
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												alignItems: 'center',
+											}}
+										>
 											{p.nextAction?.type}{' '}
 											{mode === 'COLLECTING' && (
 												<IoIosCloseCircle
@@ -60,11 +71,13 @@ export const BattleScreen = (): JSX.Element => {
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<BattlePill
+							<BattleSprite
 								key={p.id}
 								pokemon={p}
-								rightSide={
-									p.nextAction ? p.nextAction.type : 'no assigned actions'
+								active={
+									mode === 'EXECUTING' &&
+									pokemonWithActions.length > 0 &&
+									pokemonWithActions[0].id === p.id
 								}
 							/>
 						))}

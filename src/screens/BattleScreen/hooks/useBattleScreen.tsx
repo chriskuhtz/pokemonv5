@@ -200,5 +200,6 @@ export const useBattleScreen = () => {
 		availableActions,
 		resetAction,
 		nextPokemonWithoutAction,
+		pokemonWithActions,
 	};
 };

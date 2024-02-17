@@ -1,0 +1,76 @@
+/* The animation code */
+@keyframes shakingBall {
+	0% {
+		transform: rotate(-45deg);
+	}
+	25% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(45deg);
+	}
+	75% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-45deg);
+	}
+}
+
+/* The element to apply the animation to */
+.shakingBall {
+	transform-origin: bottom;
+	animation-name: shakingBall;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+@keyframes jumping {
+	0% {
+		transform: translateY(0);
+	}
+	25% {
+		transform: translateY(10%);
+	}
+	50% {
+		transform: translateY(5%);
+	}
+	75% {
+		transform: translateY(10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.battleSpriteContainer {
+	height: 120px;
+	width: 120px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.battleSpriteContainer:has(.overlay) {
+	margin-left: 60px;
+}
+
+.battleSprite {
+	animation-name: jumping;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+.active {
+	animation-duration: 1s;
+}
+.overlay {
+	border-radius: var(--circular);
+	background-color: rgba(0, 0, 0, 0.5);
+	position: relative;
+	left: -120px;
+	height: 120px;
+	min-width: 120px;
+	max-width: 120px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
