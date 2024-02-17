@@ -94,6 +94,11 @@ p {
 	margin: 0 2rem 2rem 2rem;
 	width: calc(100% - 4rem);
 }
+.dialogue {
+	font-size: x-large;
+	margin: 2rem;
+	width: calc(100% - 4rem);
+}
 
 .bottom {
 	position: absolute;

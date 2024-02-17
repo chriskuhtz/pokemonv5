@@ -107,6 +107,10 @@ export const useBattleScreen = () => {
 		setOpponentSide,
 		leaveBattle
 	);
+
+	const nextPokemonWithoutAction = useMemo(() => {
+		return playerSide?.field.find((p) => p.nextAction === undefined);
+	}, [playerSide]);
 	//initialise Battle
 	useInitialiseBattleSides(
 		setPlayerSide,
@@ -187,6 +191,16 @@ export const useBattleScreen = () => {
 		}
 	}, [mode, opponentSide, playerSide]);
 
+	useEffect(() => {
+		console.log(playerSide?.field);
+	}, [playerSide?.field]);
+	useEffect(() => {
+		console.log(nextPokemonWithoutAction);
+	}, [nextPokemonWithoutAction]);
+	useEffect(() => {
+		console.log(mode);
+	}, [mode]);
+
 	return {
 		mode,
 		playerSide,
@@ -195,5 +209,6 @@ export const useBattleScreen = () => {
 		selectAction,
 		availableActions,
 		resetAction,
+		nextPokemonWithoutAction,
 	};
 };

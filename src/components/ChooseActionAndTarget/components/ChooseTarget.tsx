@@ -2,24 +2,20 @@ import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { Pill } from '../../../ui_components/Pill/Pill';
 export const ChooseTarget = ({
-	open,
-	setOpen,
 	availableTargets,
 	selectAction,
 	actionName,
 	actor,
 }: {
-	open: boolean;
-	setOpen: (x: boolean) => void;
 	actionName: BattleAction['type'];
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
 }) => {
-	if (actionName && open) {
+	if (actionName) {
 		return (
 			<div
-				className="bottomDialogue"
+				className="dialogue"
 				style={{
 					display: 'flex',
 					justifyContent: 'space-evenly',
@@ -34,7 +30,6 @@ export const ChooseTarget = ({
 						style={{ flexGrow: 1, fontSize: 'medium' }}
 						key={c.id}
 						onClick={() => {
-							setOpen(false);
 							selectAction({
 								...actor,
 								nextAction: {
@@ -49,11 +44,10 @@ export const ChooseTarget = ({
 				<IoIosCloseCircle
 					style={{ height: '40px', width: '40px' }}
 					onClick={() => {
-						setOpen(false),
-							selectAction({
-								...actor,
-								nextAction: undefined,
-							});
+						selectAction({
+							...actor,
+							nextAction: undefined,
+						});
 					}}
 				/>
 			</div>

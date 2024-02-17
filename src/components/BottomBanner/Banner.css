@@ -1,5 +1,5 @@
 .banner {
-	z-index: var(--BUTTONS_INDEX);
+	/* z-index: var(--BUTTONS_INDEX); */
 	font-size: x-large;
 	width: 100%;
 	display: flex;

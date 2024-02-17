@@ -1,17 +1,14 @@
-import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleAction } from '../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
 import { Pill } from '../../../ui_components/Pill/Pill';
 
 export const ChooseAction = ({
 	open,
-	setOpen,
 	setActionName,
 	availableActions,
 	name,
 }: {
 	open: boolean;
-	setOpen: (x: boolean) => void;
 	setActionName: (x: BattleAction['type'] | undefined) => void;
 	availableActions: SelectableAction[];
 	name: string;
@@ -19,7 +16,7 @@ export const ChooseAction = ({
 	if (open) {
 		return (
 			<div
-				className="bottomDialogue"
+				className="dialogue"
 				style={{
 					display: 'flex',
 					justifyContent: 'space-evenly',
@@ -40,29 +37,8 @@ export const ChooseAction = ({
 						disabled={a.disabled}
 					/>
 				))}
-				<IoIosCloseCircle
-					style={{ height: '40px', width: '40px' }}
-					onClick={() => setOpen(false)}
-				/>
 			</div>
 		);
 	}
 	return <></>;
 };
-
-{
-	/* <Modal
-open={open}
-onCancel={() => {
-	setOpen(false);
-	setActionName(undefined);
-}}
-modalTitle={`what should ${name} do`}
-modalContent={
-	<TwoByXGrid>
-	
-	</TwoByXGrid>
-}
-/>
-); */
-}

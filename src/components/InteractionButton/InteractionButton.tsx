@@ -119,7 +119,7 @@ export const InteractionButton = () => {
 		saveGame,
 	]);
 	if (currentDialogue.length > 0) {
-		return <Banner text={currentDialogue[0]} onClick={handleClick} bottom />;
+		return <Banner content={currentDialogue[0]} onClick={handleClick} bottom />;
 	}
 	return (
 		<TbCircleLetterA

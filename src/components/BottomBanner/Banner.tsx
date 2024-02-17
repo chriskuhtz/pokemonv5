@@ -1,19 +1,20 @@
+import { ReactNode } from 'react';
 import './Banner.css';
 
 export const Banner = ({
-	text,
+	content,
 	onClick,
 	bottom,
 }: {
-	text: string;
-	onClick: () => void;
+	content: ReactNode;
+	onClick?: () => void;
 	bottom?: boolean;
 }): JSX.Element => {
 	return (
 		<div className={`banner ${bottom ? 'bottom' : ''}`} onClick={onClick}>
 			<div className="bannerLeftSection" />
 			<div className="bannerLeftSlant" />
-			<div>{text}</div>
+			<div>{content}</div>
 			<div className="bannerRightSlant" />
 			<div className="bannerRightSection" />
 		</div>

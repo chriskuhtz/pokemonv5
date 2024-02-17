@@ -1,9 +1,9 @@
+import { IoIosCloseCircle } from 'react-icons/io';
 import { Banner } from '../../components/BottomBanner/Banner';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { useAppSelector } from '../../store/storeHooks';
-import { Pill } from '../../ui_components/Pill/Pill';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
 import { BattlePill } from './components/BattlePill/BattlePill';
@@ -29,6 +29,7 @@ export const BattleScreen = (): JSX.Element => {
 		selectAction,
 		resetAction,
 		availableActions,
+		nextPokemonWithoutAction,
 	} = useBattleScreen();
 
 	if (playerSide && opponentSide) {
@@ -42,17 +43,15 @@ export const BattleScreen = (): JSX.Element => {
 								back
 								pokemon={p}
 								rightSide={
-									mode === 'COLLECTING' && !p.nextAction ? (
-										<ChooseActionAndTarget
-											actor={p}
-											availableTargets={opponentSide?.field ?? []}
-											availableActions={availableActions}
-											selectAction={selectAction}
-										/>
-									) : (
+									p.nextAction && (
 										<div>
 											{p.nextAction?.type}{' '}
-											<Pill onClick={() => resetAction(p.id)} center={'X'} />
+											{mode === 'COLLECTING' && (
+												<IoIosCloseCircle
+													style={{ height: '40px', width: '40px' }}
+													onClick={() => resetAction(p.id)}
+												/>
+											)}
 										</div>
 									)
 								}
@@ -71,8 +70,16 @@ export const BattleScreen = (): JSX.Element => {
 						))}
 					</div>
 				</div>
+				{nextPokemonWithoutAction && mode === 'COLLECTING' && (
+					<ChooseActionAndTarget
+						actor={nextPokemonWithoutAction}
+						availableTargets={opponentSide?.field ?? []}
+						availableActions={availableActions}
+						selectAction={selectAction}
+					/>
+				)}
 				{currentDialogue.length > 0 && (
-					<Banner text={currentDialogue[0]} onClick={handleAction} bottom />
+					<Banner content={currentDialogue[0]} onClick={handleAction} />
 				)}
 			</div>
 		);

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { BattleAction, BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
-import { Pill } from '../../ui_components/Pill/Pill';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseTarget } from './components/ChooseTarget';
 
@@ -17,7 +16,6 @@ export const ChooseActionAndTarget = ({
 	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
 }): JSX.Element => {
-	const [open, setOpen] = useState<boolean>(false);
 	const [actionName, setActionName] = useState<
 		BattleAction['type'] | undefined
 	>();
@@ -32,16 +30,12 @@ export const ChooseActionAndTarget = ({
 		}
 	}, [actionName, actor, selectAction]);
 
-	if (!open) {
-		return <Pill onClick={() => setOpen(true)} center={'Choose Action'} />;
-	}
 	if (!actionName) {
 		return (
 			<ChooseAction
 				open={!actionName}
 				name={actor.name}
 				setActionName={setActionName}
-				setOpen={setOpen}
 				availableActions={availableActions}
 			/>
 		);
@@ -49,8 +43,6 @@ export const ChooseActionAndTarget = ({
 
 	return (
 		<ChooseTarget
-			open={!!(actionName && open)}
-			setOpen={setOpen}
 			actionName={actionName}
 			selectAction={(x) => {
 				selectAction(x);
