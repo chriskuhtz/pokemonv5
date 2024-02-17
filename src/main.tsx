@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
@@ -11,10 +11,35 @@ export const size =
 		? window.innerHeight / 9
 		: window.innerWidth / 17;
 
+export const FullScreen = ({
+	children,
+}: {
+	children: ReactNode;
+}): JSX.Element => {
+	const [isFullscreen, setIsFullscreen] = React.useState(false);
+
+	// Watch for fullscreenchange
+	React.useEffect(() => {
+		console.log(isFullscreen);
+		function onFullscreenChange() {
+			setIsFullscreen(Boolean(document.fullscreenElement));
+		}
+
+		document.addEventListener('fullscreenchange', onFullscreenChange);
+
+		return () =>
+			document.removeEventListener('fullscreenchange', onFullscreenChange);
+	}, []);
+
+	return <div>{children}</div>;
+};
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<RouterProvider router={router} />
+			<FullScreen>
+				<RouterProvider router={router} />
+			</FullScreen>
 		</Provider>
 	</React.StrictMode>
 );
