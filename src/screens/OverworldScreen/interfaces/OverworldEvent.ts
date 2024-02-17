@@ -15,13 +15,13 @@ export interface PortalEvent extends BaseEvent {
 	type: 'PORTAL';
 	to: CharacterPosition;
 	questCondition: QuestIdAndStatus;
-	conditionFailMessage?: string[];
+	conditionFailMessage: string[];
 }
 export interface RouterEvent extends BaseEvent {
 	type: 'ROUTE';
 	to: RoutesEnum | string;
 	questCondition: QuestIdAndStatus;
-	conditionFailMessage?: string[];
+	conditionFailMessage: string[];
 }
 
 export type OverworldEvent = EncounterEvent | PortalEvent | RouterEvent;

@@ -209,6 +209,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 				id: 'pickStarter',
 				status: 'active',
 			},
+			conditionFailMessage: ['You should speak to the Professor first.'],
 		},
 	},
 	'starter-town-grass-blocker': {
