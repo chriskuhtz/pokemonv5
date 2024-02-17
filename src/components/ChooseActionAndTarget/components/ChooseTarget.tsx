@@ -1,7 +1,7 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { Pill } from '../../../ui_components/Pill/Pill';
 import { Banner } from '../../BottomBanner/Banner';
+import { Slanted } from '../../Slanted/Slanted';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,
@@ -21,8 +21,12 @@ export const ChooseTarget = ({
 						<strong>{`who is the target:`}</strong>
 						<div style={{ display: 'flex', gap: '.5rem' }}>
 							{availableTargets.map((c) => (
-								<Pill
-									style={{ flexGrow: 1, fontSize: 'medium' }}
+								<Slanted
+									style={{
+										flexGrow: 1,
+										border: '1px solid',
+										backgroundColor: 'var(--main-bg-color)',
+									}}
 									key={c.id}
 									onClick={() => {
 										selectAction({
@@ -33,7 +37,7 @@ export const ChooseTarget = ({
 											},
 										});
 									}}
-									center={c.name}
+									content={c.name}
 								/>
 							))}
 							<IoIosCloseCircle

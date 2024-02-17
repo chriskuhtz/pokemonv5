@@ -1,7 +1,7 @@
 import { BattleAction } from '../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
-import { Pill } from '../../../ui_components/Pill/Pill';
 import { Banner } from '../../BottomBanner/Banner';
+import { Slanted } from '../../Slanted/Slanted';
 
 export const ChooseAction = ({
 	open,
@@ -20,16 +20,26 @@ export const ChooseAction = ({
 				content={
 					<div style={{ textAlign: 'left' }}>
 						<strong>{`what should ${name} do:`}</strong>
-						<div style={{ display: 'flex', gap: '.5rem' }}>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'stretch',
+								justifyContent: 'space-evenly',
+								gap: '1rem',
+							}}
+						>
 							{availableActions.map((a) => (
-								<Pill
-									style={{ fontSize: 'medium' }}
+								<Slanted
+									style={{
+										flexGrow: 1,
+										border: '1px solid',
+										backgroundColor: 'var(--main-bg-color)',
+									}}
 									key={a.action}
 									onClick={() => {
 										setActionName(a.action);
 									}}
-									center={a.name}
-									disabled={a.disabled}
+									content={a.name}
 								/>
 							))}
 						</div>

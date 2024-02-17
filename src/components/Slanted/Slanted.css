@@ -1,0 +1,6 @@
+.slanted {
+	font-size: medium;
+	padding: 0.5rem;
+	background-color: var(--main-bg-95);
+	transform: skew(var(--slant));
+}

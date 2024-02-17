@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Slanted } from '../Slanted/Slanted';
 import './Banner.css';
 
 export const Banner = ({
@@ -12,11 +13,15 @@ export const Banner = ({
 }): JSX.Element => {
 	return (
 		<div className={`banner ${bottom ? 'bottom' : ''}`} onClick={onClick}>
-			<div className="bannerLeftSection" />
-			<div className="bannerLeftSlant" />
-			<div>{content}</div>
-			<div className="bannerRightSlant" />
-			<div className="bannerRightSection" />
+			<Slanted
+				style={{
+					backgroundColor: 'var(--main-bg-90)',
+					width: '85%',
+					padding: '1.5rem 2rem',
+					fontSize: 'x-large',
+				}}
+				content={content}
+			/>
 		</div>
 	);
 };

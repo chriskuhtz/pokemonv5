@@ -20,8 +20,8 @@
 	--BUTTONS_INDEX: 5000;
 	/* colors */
 	--main-bg-color: rgb(28, 30, 30);
-	--main-bg-95: color-mix(in srgb, var(--main-bg-color) 95%, white);
-	--main-bg-90: color-mix(in srgb, var(--main-bg-color) 90%, white);
+	--main-bg-95: color-mix(in srgb, var(--main-bg-color) 95%, aliceblue);
+	--main-bg-90: color-mix(in srgb, var(--main-bg-color) 90%, aliceblue);
 	--main-color: aliceblue;
 	/* borders */
 	--rounded: 8px;

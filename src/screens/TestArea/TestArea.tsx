@@ -1,6 +1,5 @@
-import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
-import { BattlePokemon } from '../../interfaces/BattlePokemon';
-import { BattlePill } from '../BattleScreen/components/BattlePill/BattlePill';
+import { ChooseAction } from '../../components/ChooseActionAndTarget/components/ChooseAction';
+import { BattleAction, BattlePokemon } from '../../interfaces/BattlePokemon';
 
 const pokemon: BattlePokemon = {
 	id: '1cb7406e-2aab-488a-8f86-cff89e71334d',
@@ -10,7 +9,7 @@ const pokemon: BattlePokemon = {
 	dexId: 19,
 	maxHp: 19,
 	attack: 11,
-	damage: 0,
+	damage: 5,
 	onTeam: true,
 	ownerId: 'opponent',
 	base_experience: 51,
@@ -19,15 +18,35 @@ const pokemon: BattlePokemon = {
 export const TestArea = (): JSX.Element => {
 	return (
 		<div>
-			<BattlePill pokemon={pokemon} />
-			<BattlePill pokemon={{ ...pokemon, status: 'BEING_CAUGHT' }} />
-			<div style={{ display: 'flex' }}>
-				<BattleSprite pokemon={pokemon} />
-				<BattleSprite pokemon={{ ...pokemon, status: 'BEING_CAUGHT' }} />
-				<BattleSprite pokemon={pokemon} back active />
-				<BattleSprite pokemon={pokemon} active />
-				<BattleSprite pokemon={pokemon} active overlay={'HEllo'} />
-			</div>
+			<ChooseAction
+				open={true}
+				setActionName={function (x: BattleAction['type'] | undefined): void {
+					console.log(x);
+				}}
+				availableActions={[
+					{
+						action: 'ATTACK',
+						name: 'Attack',
+						disabled: false,
+					},
+					{
+						action: 'CATCH_ATTEMPT',
+						name: 'Throw Pokeball',
+						disabled: false,
+					},
+					{
+						action: 'RUNAWAY_ATTEMPT',
+						name: 'Run Away',
+						disabled: false,
+					},
+					{
+						action: 'SWITCH',
+						name: 'Switch',
+						disabled: true,
+					},
+				]}
+				name={'Bollo'}
+			/>
 		</div>
 	);
 };
