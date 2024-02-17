@@ -1,6 +1,7 @@
 import { BattleAction } from '../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
 import { Pill } from '../../../ui_components/Pill/Pill';
+import { Banner } from '../../BottomBanner/Banner';
 
 export const ChooseAction = ({
 	open,
@@ -15,29 +16,26 @@ export const ChooseAction = ({
 }) => {
 	if (open) {
 		return (
-			<div
-				className="dialogue"
-				style={{
-					display: 'flex',
-					justifyContent: 'space-evenly',
-					backgroundColor: 'var(--main-bg-color)',
-					alignItems: 'center',
-					gap: '0.5rem',
-				}}
-			>
-				<strong>{`what should ${name} do:`}</strong>
-				{availableActions.map((a) => (
-					<Pill
-						style={{ flexGrow: 1, fontSize: 'medium' }}
-						key={a.action}
-						onClick={() => {
-							setActionName(a.action);
-						}}
-						center={a.name}
-						disabled={a.disabled}
-					/>
-				))}
-			</div>
+			<Banner
+				content={
+					<div style={{ textAlign: 'left' }}>
+						<strong>{`what should ${name} do:`}</strong>
+						<div style={{ display: 'flex', gap: '.5rem' }}>
+							{availableActions.map((a) => (
+								<Pill
+									style={{ fontSize: 'medium' }}
+									key={a.action}
+									onClick={() => {
+										setActionName(a.action);
+									}}
+									center={a.name}
+									disabled={a.disabled}
+								/>
+							))}
+						</div>
+					</div>
+				}
+			/>
 		);
 	}
 	return <></>;
