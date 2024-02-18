@@ -20,6 +20,12 @@ export const pokeApi = createApi({
 		getItemDataByName: builder.query<ItemData, ItemName>({
 			query: (itemName: ItemName) => `/item/${itemName}`,
 		}),
+		getMoveDataByName: builder.query<ItemData, ItemName>({
+			query: (name: string) => {
+				const parsedName = name.toLowerCase().replace(' ', '-');
+				return `/move/${parsedName}`;
+			},
+		}),
 	}),
 });
 
@@ -32,4 +38,6 @@ export const {
 	useGetSpeciesDataByDexIdQuery,
 	useLazyGetPokemonDataByDexIdQuery,
 	useLazyGetSpeciesDataByDexIdQuery,
+	useGetMoveDataByNameQuery,
+	useLazyGetMoveDataByNameQuery,
 } = pokeApi;
