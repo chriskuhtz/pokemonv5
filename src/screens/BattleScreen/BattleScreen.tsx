@@ -2,9 +2,12 @@ import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { Banner } from '../../components/BottomBanner/Banner';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
+import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { RoutesEnum } from '../../router/router';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { useAppSelector } from '../../store/storeHooks';
+import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
 import { useBattleScreen } from './hooks/useBattleScreen';
@@ -31,8 +34,30 @@ export const BattleScreen = (): JSX.Element => {
 		availableActions,
 		nextPokemonWithoutAction,
 		pokemonWithActions,
+		opponentFetchStatus,
+		playerFetchStatus,
 	} = useBattleScreen();
 
+	if (
+		opponentFetchStatus === 'error' ||
+		playerFetchStatus === 'error' ||
+		(playerFetchStatus === 'success' && playerSide?.field.length === 0) ||
+		(opponentFetchStatus === 'success' && opponentSide?.field.length === 0)
+	) {
+		return (
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'stretch',
+					justifyContent: 'center',
+				}}
+			>
+				<ErrorMessage message={'Something went wrong'} />
+				<RouterButton text={'Back to Overworld'} to={RoutesEnum.overworld} />
+			</div>
+		);
+	}
 	if (playerSide && opponentSide) {
 		return (
 			<div className="battle">

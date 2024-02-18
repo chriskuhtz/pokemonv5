@@ -98,4 +98,6 @@ export const useInitialiseBattleSides = (
 		playerFetchStatus,
 		setPlayerSide,
 	]);
+
+	return { opponentFetchStatus, playerFetchStatus };
 };

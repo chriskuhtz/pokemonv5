@@ -112,7 +112,7 @@ export const useBattleScreen = () => {
 		return playerSide?.field.find((p) => p.nextAction === undefined);
 	}, [playerSide]);
 	//initialise Battle
-	useInitialiseBattleSides(
+	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
 		setPlayerSide,
 		setOpponentSide,
 		activePokemonPerside
@@ -201,5 +201,7 @@ export const useBattleScreen = () => {
 		resetAction,
 		nextPokemonWithoutAction,
 		pokemonWithActions,
+		opponentFetchStatus,
+		playerFetchStatus,
 	};
 };
