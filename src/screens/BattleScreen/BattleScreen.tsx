@@ -1,6 +1,6 @@
 import { IoIosCloseCircle } from 'react-icons/io';
+import { Banner } from '../../components/Banner/Banner';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
-import { Banner } from '../../components/BottomBanner/Banner';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';

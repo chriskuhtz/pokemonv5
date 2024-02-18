@@ -1,6 +1,6 @@
 import { BattleAction } from '../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
-import { Banner } from '../../BottomBanner/Banner';
+import { Banner } from '../../Banner/Banner';
 import { Slanted } from '../../Slanted/Slanted';
 
 export const ChooseAction = ({

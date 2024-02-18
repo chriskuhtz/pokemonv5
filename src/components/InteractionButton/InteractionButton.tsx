@@ -21,7 +21,7 @@ import {
 	setDialogue,
 } from '../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
-import { Banner } from '../BottomBanner/Banner';
+import { Banner } from '../Banner/Banner';
 import './InteractionButton.css';
 
 export const InteractionButton = () => {
