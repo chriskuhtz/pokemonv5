@@ -153,6 +153,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			'Aah, what an excellent choice',
 			'I am sure this Pokemon will become an excellent Partner',
 			'I look forward to hearing about your many adventures',
+			'You should talk to Nurse Joy next',
+			'She will provide you with some starting equipment',
 		],
 		sprite: '136',
 		questCondition: {
