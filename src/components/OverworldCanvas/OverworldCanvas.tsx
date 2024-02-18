@@ -25,9 +25,11 @@ export const OverworldCanvas = (): JSX.Element => {
 		}
 	}, fps);
 	useEffect(() => {
-		drawBackground();
 		drawOccupants();
 	}, [drawBackground, drawOccupants]);
+	useEffect(() => {
+		drawBackground();
+	}, [drawBackground]);
 	const { x, y } = useAppSelector(selectPosition) ?? { x: 0, y: 0 };
 	const { height, width } = useAppSelector(selectMap);
 	return (

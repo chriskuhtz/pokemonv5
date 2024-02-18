@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { size } from '../../../main';
 import { selectMap } from '../../../store/selectors/map/selectMap';
 import { BaseTile } from '../../../store/slices/MapSlice';
@@ -40,7 +40,6 @@ const drawUniformBackground = (
 	}
 	return;
 };
-
 const drawCheckeredBackground = (
 	height: number,
 	width: number,
@@ -89,7 +88,6 @@ const drawCheckeredBackground = (
 	}
 	return;
 };
-
 const drawRandom3Background = (
 	height: number,
 	width: number,
@@ -394,8 +392,13 @@ const drawRandom6Background = (
 };
 
 export const useDrawBackGroundCanvas = () => {
+	const [valid, setValid] = useState<boolean>(false);
 	const { height, width, baseTile } = useAppSelector(selectMap);
+
 	return useCallback(() => {
+		if (valid) {
+			return;
+		}
 		if (baseTile.pattern === 'uniform') {
 			drawUniformBackground(height, width, baseTile);
 		}
@@ -414,6 +417,7 @@ export const useDrawBackGroundCanvas = () => {
 		if (baseTile.pattern === 'random6') {
 			drawRandom6Background(height, width, baseTile);
 		}
+		setValid(true);
 		console.error('what is this basetile');
-	}, [baseTile, height, width]);
+	}, [baseTile, height, valid, width]);
 };
