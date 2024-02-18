@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
-import { starterTown } from '../../constants/maps/starterTown';
+import { oaksLab } from '../../constants/maps/oaksLab';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { Decorator } from '../../screens/OverworldScreen/interfaces/Decorator';
@@ -43,13 +43,16 @@ export interface MapState {
 	encounters: MapEncounter[];
 }
 
-const initialState: MapState = starterTown;
+const initialState: MapState = oaksLab;
 
 export const mapSlice = createSlice({
 	name: 'map',
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
+		setMap: (state, action: PayloadAction<MapState>) => {
+			state = action.payload;
+		},
 		turnNpcTowardsPlayer: (
 			state,
 			action: PayloadAction<{
@@ -83,6 +86,6 @@ export const mapSlice = createSlice({
 	},
 });
 
-export const { turnNpcTowardsPlayer } = mapSlice.actions;
+export const { turnNpcTowardsPlayer, setMap } = mapSlice.actions;
 
 export default mapSlice.reducer;

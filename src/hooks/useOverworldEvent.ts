@@ -43,6 +43,9 @@ export const useOverworldEvent = () => {
 						saveGame({});
 						navigate(event.to);
 					}
+					if (event.type === 'PORTAL') {
+						void saveGame({ portalEvent: event });
+					}
 				}
 				if (!checkQuestCondition(quests, event.questCondition)) {
 					dispatch(

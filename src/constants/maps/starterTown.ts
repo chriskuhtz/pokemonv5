@@ -1,8 +1,9 @@
 import { MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
 
+const mapId = 'starter-town';
 export const starterTown: MapState = {
-	mapId: 'starter-town',
+	mapId,
 	height: 14,
 	width: 9,
 	baseTile: { id: 'grass', pattern: 'random5' },
@@ -39,7 +40,11 @@ export const starterTown: MapState = {
 		{ x: 7, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 8, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 	],
-	interactives: UniqueOccupantRecord,
+	interactives: Object.fromEntries(
+		Object.entries(UniqueOccupantRecord).filter(
+			(entry) => entry[1].position.mapId === mapId
+		)
+	),
 	obstacles: [
 		{
 			type: 'OBSTACLE',

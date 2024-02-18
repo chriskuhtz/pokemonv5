@@ -10,7 +10,7 @@ export const staticSaveData: SaveFile = {
 		x: 0,
 		y: 0,
 		forwardFoot: 0,
-		mapId: 'testMap',
+		mapId: 'oaks-lab',
 		orientation: 0,
 	},
 	sprite: '135',

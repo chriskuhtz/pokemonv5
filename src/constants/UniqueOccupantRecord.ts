@@ -49,7 +49,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			mapId: 'starter-town',
 			orientation: 3,
 		},
-		dialogue: ['You dont even have a Pokemon?', 'Bugger off'],
+		dialogue: ['You should speak to the Nurse before heading into the grass'],
 		sprite: '093',
 		questCondition: {
 			id: 'talkToNurseJoy',
@@ -106,8 +106,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		type: 'NPC',
 		position: {
 			y: 2,
-			x: 4,
-			mapId: 'starter-town',
+			x: 2,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		dialogue: [
@@ -129,8 +129,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		type: 'NPC',
 		position: {
 			y: 2,
-			x: 4,
-			mapId: 'starter-town',
+			x: 2,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		dialogue: [
@@ -145,15 +145,15 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		type: 'NPC',
 		position: {
 			y: 2,
-			x: 4,
-			mapId: 'starter-town',
+			x: 2,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		dialogue: [
 			'Aah, what an excellent choice',
 			'I am sure this Pokemon will become an excellent Partner',
 			'I look forward to hearing about your many adventures',
-			'You should talk to Nurse Joy next',
+			'You should talk to Nurse Joy outside',
 			'She will provide you with some starting equipment',
 		],
 		sprite: '136',
@@ -214,8 +214,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		type: 'LARGE_OBSTACLE',
 		position: {
 			y: 2,
-			x: 5,
-			mapId: 'starter-town',
+			x: 3,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		sprite: 'pokeballMachine',
