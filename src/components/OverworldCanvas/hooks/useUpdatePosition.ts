@@ -24,6 +24,10 @@ export const useUpdatePosition = () => {
 	const [encounterChance, setEncounterChance] = useState<number>(0);
 
 	return useCallback(() => {
+		if (nextOrientation === undefined && position?.forwardFoot !== 0) {
+			dispatch(stopWalking());
+			return;
+		}
 		if (nextOrientation === undefined || position === undefined) {
 			return;
 		}

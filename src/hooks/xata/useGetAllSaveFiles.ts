@@ -26,6 +26,7 @@ export const staticSaveData: SaveFile = {
 		'starter-town-oak-after-selection': false,
 		'starter-town-oak-before-selection': false,
 		'starter-town-oak-during-selection': false,
+		'starter-town-youngster-jimmy-blocker': false,
 		brock: false,
 	},
 	pokedex: [],

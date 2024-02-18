@@ -14,7 +14,8 @@ export type UniqueOccupantIds =
 	| 'starter-town-grass-blocker'
 	| 'starter-town-item-1'
 	| 'starter-town-youngster-jimmy'
-	| 'brock';
+	| 'brock'
+	| 'starter-town-youngster-jimmy-blocker';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'starter-town-youngster-jimmy': {
@@ -38,6 +39,23 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			status: 'completed',
 		},
 		rewardMoney: 300,
+	},
+	'starter-town-youngster-jimmy-blocker': {
+		id: 'starter-town-youngster-jimmy-blocker',
+		type: 'NPC',
+		position: {
+			y: 8,
+			x: 4,
+			mapId: 'starter-town',
+			orientation: 3,
+		},
+		dialogue: ['You dont even have a Pokemon?', 'Bugger off'],
+		sprite: '093',
+		questCondition: {
+			id: 'talkToNurseJoy',
+			status: 'completed',
+			negate: true,
+		},
 	},
 	brock: {
 		id: 'brock',

@@ -18,7 +18,11 @@ export const useCreateOrUpdateSaveFile = () => {
 			const xata = getXataClient();
 
 			await xata.db.saveFiles
-				.create({ saveFile: newSaveFile, password: 'bear' })
+				.create({
+					saveFile: newSaveFile,
+					password: 'taco',
+					username: newSaveFile.username,
+				})
 				.then((res) => {
 					window.localStorage.setItem('userId', res.id);
 					dispatch(setSaveFile(res.saveFile));

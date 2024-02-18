@@ -33,9 +33,18 @@ export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {
 						dispatch(startWalking());
 					}
 				}}
-				onPointerLeave={() => dispatch(stopWalking())}
-				onMouseLeave={() => dispatch(stopWalking())}
-				onMouseUp={() => dispatch(stopWalking())}
+				onPointerOut={() => {
+					dispatch(stopWalking());
+				}}
+				onPointerLeave={() => {
+					dispatch(stopWalking());
+				}}
+				onMouseLeave={() => {
+					dispatch(stopWalking());
+				}}
+				onMouseUp={() => {
+					dispatch(stopWalking());
+				}}
 				onMouseDown={() => {
 					if (nextOrientation !== x) {
 						dispatch(setNextOrientation(x as OrientationEnum));

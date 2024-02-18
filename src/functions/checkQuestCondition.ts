@@ -9,8 +9,9 @@ export const checkQuestCondition = (
 	if (!questCondition) {
 		return true;
 	}
-	if (isQuestCheck) {
+	if (isQuestCheck || questCondition.negate) {
 		return quests[questCondition.id] !== questCondition.status;
 	}
+
 	return quests[questCondition.id] === questCondition.status;
 };
