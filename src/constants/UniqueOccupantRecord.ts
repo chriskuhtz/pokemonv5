@@ -4,22 +4,22 @@ import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupa
 
 //every occupant that can be handled should be unique
 export type UniqueOccupantIds =
-	| 'starter-town-oak-before-selection'
-	| 'starter-town-oak-during-selection'
-	| 'starter-town-oak-after-selection'
+	| 'oak-before-selection'
+	| 'oak-during-selection'
+	| 'oak-after-selection'
 	| 'starter-town-nurse-quest'
 	| 'starter-town-merchant'
 	| 'starter-town-nurse'
-	| 'starter-town-ballMachine'
+	| 'ballMachine'
 	| 'starter-town-grass-blocker'
 	| 'starter-town-item-1'
-	| 'starter-town-youngster-jimmy'
+	| 'youngster-jimmy'
 	| 'brock'
-	| 'starter-town-youngster-jimmy-blocker';
+	| 'youngster-jimmy-blocker';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
-	'starter-town-youngster-jimmy': {
-		id: 'starter-town-youngster-jimmy',
+	'youngster-jimmy': {
+		id: 'youngster-jimmy',
 		type: 'TRAINER',
 		position: {
 			y: 7,
@@ -40,8 +40,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		},
 		rewardMoney: 300,
 	},
-	'starter-town-youngster-jimmy-blocker': {
-		id: 'starter-town-youngster-jimmy-blocker',
+	'youngster-jimmy-blocker': {
+		id: 'youngster-jimmy-blocker',
 		type: 'NPC',
 		position: {
 			y: 8,
@@ -101,8 +101,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 0,
 		},
 	},
-	'starter-town-oak-before-selection': {
-		id: 'starter-town-oak-before-selection',
+	'oak-before-selection': {
+		id: 'oak-before-selection',
 		type: 'NPC',
 		position: {
 			y: 2,
@@ -124,8 +124,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		},
 		questCondition: { id: 'pickStarter', status: 'inactive' },
 	},
-	'starter-town-oak-during-selection': {
-		id: 'starter-town-oak-during-selection',
+	'oak-during-selection': {
+		id: 'oak-during-selection',
 		type: 'NPC',
 		position: {
 			y: 2,
@@ -140,8 +140,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		sprite: '136',
 		questCondition: { id: 'pickStarter', status: 'active' },
 	},
-	'starter-town-oak-after-selection': {
-		id: 'starter-town-oak-after-selection',
+	'oak-after-selection': {
+		id: 'oak-after-selection',
 		type: 'NPC',
 		position: {
 			y: 2,
@@ -209,8 +209,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		dialogue: ['Let me heal your Pokemon'],
 		questCondition: { id: 'talkToNurseJoy', status: 'completed' },
 	},
-	'starter-town-ballMachine': {
-		id: 'starter-town-ballMachine',
+	ballMachine: {
+		id: 'ballMachine',
 		type: 'LARGE_OBSTACLE',
 		position: {
 			y: 2,
