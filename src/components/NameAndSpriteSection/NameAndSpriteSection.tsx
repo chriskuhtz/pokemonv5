@@ -1,4 +1,4 @@
-import { getPokemonSpriteUrl } from '../../../functions/getPokemonSpriteUrl';
+import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import './NameAndSpriteSection.css';
 
 export const NameAndSpriteSection = ({

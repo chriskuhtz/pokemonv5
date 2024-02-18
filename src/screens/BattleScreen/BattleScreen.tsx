@@ -1,5 +1,4 @@
 import { IoIosCloseCircle } from 'react-icons/io';
-import { Banner } from '../../components/Banner/Banner';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
@@ -7,6 +6,7 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { RoutesEnum } from '../../router/router';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { useAppSelector } from '../../store/storeHooks';
+import { Banner } from '../../ui_components/Banner/Banner';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';

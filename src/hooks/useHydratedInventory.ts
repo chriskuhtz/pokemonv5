@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useLazyGetItemDataByNameQuery } from '../api/pokeApi';
 import { Inventory } from '../interfaces/Inventory';
 import { ItemName } from '../interfaces/Item';
-import { ItemData } from '../shared/interfaces/ItemData';
+import { ItemData } from '../interfaces/ItemData';
 import { useFetch } from './useFetch';
 
 export const useHydratedInventory = (inventory: Partial<Inventory>) => {

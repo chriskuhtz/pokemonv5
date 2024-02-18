@@ -1,7 +1,7 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { Banner } from '../../Banner/Banner';
-import { Slanted } from '../../Slanted/Slanted';
+import { Banner } from '../../../ui_components/Banner/Banner';
+import { Slanted } from '../../../ui_components/Slanted/Slanted';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
+import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { calculateGainedXp } from '../../../shared/functions/calculateGainedXp';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';

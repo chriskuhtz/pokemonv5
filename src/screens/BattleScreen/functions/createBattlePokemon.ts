@@ -1,9 +1,9 @@
 import { v4 } from 'uuid';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
+import { calculateStat } from '../../../functions/calculateStat';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
-import { calculateStat } from '../../../shared/functions/calculateStat';
-import { PokemonData } from '../../../shared/interfaces/PokemonData';
+import { PokemonData } from '../../../interfaces/PokemonData';
 import { OPPOID } from '../../../testing/constants/trainerIds';
 
 export const createBattlePokemonFromData = (

@@ -1,4 +1,4 @@
-import { MoveDto } from '../interfaces/Move';
+import { MoveDto } from '../../interfaces/Move';
 
 export const fetchMove = async (name: string): Promise<MoveDto | undefined> => {
 	const parsedName = name.toLowerCase().replace(' ', '-');

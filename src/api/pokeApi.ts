@@ -1,9 +1,9 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ItemName } from '../interfaces/Item';
-import { ItemData } from '../shared/interfaces/ItemData';
-import { PokemonData } from '../shared/interfaces/PokemonData';
-import { PokemonSpeciesData } from '../shared/interfaces/PokemonSpeciesData';
+import { ItemData } from '../interfaces/ItemData';
+import { PokemonData } from '../interfaces/PokemonData';
+import { PokemonSpeciesData } from '../interfaces/PokemonSpeciesData';
 
 // Define a service using a base URL and expected endpoints
 

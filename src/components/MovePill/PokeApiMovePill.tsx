@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { fetchMove } from '../../api/pokeApiFunctions/fetchMove';
 import { MoveDto } from '../../interfaces/Move';
-import { fetchMove } from '../../pokeApiFunctions/fetchMove';
 import {
 	RequestState,
 	RequestStateDisplay,

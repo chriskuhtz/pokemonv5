@@ -1,5 +1,5 @@
-import { calculateLevelData } from '../../functions/calculateLevelData';
-import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { BattlePokemon } from '../interfaces/BattlePokemon';
+import { calculateLevelData } from './calculateLevelData';
 
 export const calculateGainedXp = (pokemon: BattlePokemon) => {
 	// https://bulbapedia.bulbagarden.net/wiki/Experience#Example_(Generation_V)
