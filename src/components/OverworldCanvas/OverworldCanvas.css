@@ -18,6 +18,8 @@
 	overflow: none;
 }
 .overworld {
-	overflow: hidden;
+	max-height: 100dvh;
+	height: 100dvh;
+	overflow: none;
 	position: fixed;
 }
