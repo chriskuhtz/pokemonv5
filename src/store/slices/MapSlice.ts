@@ -10,7 +10,24 @@ import {
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
-export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
+export type BaseTileId =
+	| 'beach'
+	| 'caveFloor'
+	| 'cobblestone'
+	| 'grass'
+	| 'gray';
+export type BaseTilePattern =
+	| 'uniform'
+	| 'checkered'
+	| 'random3'
+	| 'random4'
+	| 'random5'
+	| 'random6';
+
+export interface BaseTile {
+	id: BaseTileId;
+	pattern: BaseTilePattern;
+}
 export interface MapEncounter {
 	dexId: number;
 	xp: number;
@@ -18,7 +35,7 @@ export interface MapEncounter {
 export interface MapState {
 	height: number;
 	width: number;
-	baseTile: BaseTileId;
+	baseTile: BaseTile;
 	interactives: Partial<Record<UniqueOccupantIds, Occupant>>;
 	obstacles: (Obstacle | LargeObstacle)[];
 	decorators: Decorator[];
