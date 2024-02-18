@@ -9,7 +9,7 @@ import { store } from './store/store.ts';
 export const size =
 	window.innerHeight > window.innerWidth
 		? window.innerHeight / 9
-		: window.innerWidth / 17;
+		: window.innerWidth / 21;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
