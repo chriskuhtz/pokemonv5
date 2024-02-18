@@ -32,6 +32,7 @@ export const OverworldCanvas = (): JSX.Element => {
 	const { height, width } = useAppSelector(selectMap);
 	return (
 		<div
+			className="overworld"
 			style={
 				{
 					'--SIZE': size,

@@ -14,3 +14,7 @@
 	top: calc(var(--SIZE) * 4px + (var(--SIZE) * var(--OFFSET_TOP) * 1px));
 	left: calc(var(--SIZE) * 8px + (var(--SIZE) * var(--OFFSET_LEFT) * 1px));
 }
+.overworld {
+	max-height: 100dvh;
+	overflow: hidden;
+}
