@@ -10,7 +10,6 @@ const drawUniformBackground = (
 	width: number,
 	baseTile: BaseTile
 ) => {
-	// console.log('draw background');
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);
@@ -45,7 +44,6 @@ const drawCheckeredBackground = (
 	width: number,
 	baseTile: BaseTile
 ) => {
-	// console.log('draw background');
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);
@@ -93,7 +91,6 @@ const drawRandom3Background = (
 	width: number,
 	baseTile: BaseTile
 ) => {
-	// console.log('draw background');
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);
@@ -152,7 +149,6 @@ const drawRandom4Background = (
 	width: number,
 	baseTile: BaseTile
 ) => {
-	// console.log('draw background');
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);
@@ -222,7 +218,6 @@ const drawRandom5Background = (
 	width: number,
 	baseTile: BaseTile
 ) => {
-	// console.log('draw background');
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);
@@ -303,7 +298,6 @@ const drawRandom6Background = (
 	width: number,
 	baseTile: BaseTile
 ) => {
-	// console.log('draw background');
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);

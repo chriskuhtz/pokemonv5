@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { oaksLab } from '../../constants/maps/oaksLab';
+import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { Decorator } from '../../screens/OverworldScreen/interfaces/Decorator';
@@ -43,15 +44,22 @@ export interface MapState {
 	encounters: MapEncounter[];
 }
 
-const initialState: MapState = oaksLab;
+const mapsRecord: Record<string, MapState> = {
+	'starter-town': starterTown,
+	'oaks-lab': oaksLab,
+};
+
+const initialState: MapState = starterTown;
 
 export const mapSlice = createSlice({
 	name: 'map',
 	// `createSlice` will infer the state type from the `initialState` argument
-	initialState,
+	initialState: initialState,
 	reducers: {
-		setMap: (state, action: PayloadAction<MapState>) => {
-			state = action.payload;
+		setMapById: (state, action: PayloadAction<string>) => {
+			if (mapsRecord[action.payload]) {
+				state = { ...mapsRecord[action.payload] };
+			} else console.error('invalid mapId, cant set state');
 		},
 		turnNpcTowardsPlayer: (
 			state,
@@ -86,6 +94,6 @@ export const mapSlice = createSlice({
 	},
 });
 
-export const { turnNpcTowardsPlayer, setMap } = mapSlice.actions;
+export const { turnNpcTowardsPlayer, setMapById } = mapSlice.actions;
 
 export default mapSlice.reducer;

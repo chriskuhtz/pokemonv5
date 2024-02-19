@@ -47,6 +47,21 @@ export const starterTown: MapState = {
 	),
 	obstacles: [
 		{
+			type: 'LARGE_OBSTACLE',
+			id: 'oaks-house',
+			sprite: 'houses/largeHouse',
+			position: {
+				x: 3,
+				y: 3,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+			height: 4,
+			width: 6,
+			clearanceBehind: 1,
+		},
+		{
 			type: 'OBSTACLE',
 			id: 'greenRock0/8',
 			sprite: 'greenRock',
