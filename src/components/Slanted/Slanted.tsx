@@ -5,13 +5,19 @@ export const Slanted = ({
 	content,
 	onClick,
 	style,
+	disabled,
 }: {
 	content: ReactNode;
 	onClick?: () => void;
 	style?: CSSProperties;
+	disabled?: boolean;
 }) => {
 	return (
-		<div style={style} className="slanted" onClick={onClick}>
+		<div
+			style={style}
+			className={`slanted ${disabled ? 'disabled' : ''}`}
+			onClick={disabled ? () => {} : onClick}
+		>
 			{content}
 		</div>
 	);
