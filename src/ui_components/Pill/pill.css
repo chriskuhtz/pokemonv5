@@ -8,9 +8,6 @@
 	background-color: var(--main-bg-color);
 }
 
-.disabled {
-	opacity: 0.5;
-}
 .selected {
 	border-color: green;
 	background-color: rgba(55, 223, 17, 0.7);
