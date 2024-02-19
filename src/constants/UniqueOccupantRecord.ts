@@ -49,7 +49,9 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			mapId: 'starter-town',
 			orientation: 3,
 		},
-		dialogue: ['You dont even have a Pokemon?', 'Bugger off'],
+		dialogue: [
+			'You should talk to the Professor and Nurse Joy before heading into the wilderness',
+		],
 		sprite: '093',
 		questCondition: {
 			id: 'talkToNurseJoy',

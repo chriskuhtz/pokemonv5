@@ -1,4 +1,5 @@
 import { CSSProperties, ReactNode, useMemo } from 'react';
+import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { MapObject } from '../MapObject/MapObject';
@@ -24,7 +25,7 @@ export const BattleSprite = ({
 
 		return `${degrees}deg`;
 	}, [pokemon]);
-
+	const { level } = calculateLevelData(pokemon.xp);
 	return (
 		<div
 			style={{ '--healthPercentage': healthPercentage } as CSSProperties}
@@ -41,7 +42,7 @@ export const BattleSprite = ({
 						src={getPokemonSpriteUrl(pokemon.dexId, back)}
 					/>
 				)}
-
+				<div className="levelIndicator">Lvl {level}</div>
 				{overlay && <div className="overlay">{overlay}</div>}
 			</div>
 		</div>

@@ -140,15 +140,13 @@ export const starterTown: MapState = {
 	],
 	encounters: [
 		//rattata
+		{ dexId: 19, xp: 70 },
 		{ dexId: 19, xp: 100 },
-		{ dexId: 19, xp: 200 },
-		{ dexId: 19, xp: 300 },
 		//pidgey
+		{ dexId: 19, xp: 70 },
 		{ dexId: 16, xp: 100 },
-		{ dexId: 16, xp: 200 },
-		{ dexId: 16, xp: 300 },
 		//pidgeotto
-		{ dexId: 17, xp: 300 },
+		{ dexId: 17, xp: 200 },
 		//pikachu
 		{ dexId: 25, xp: 100 },
 	],
