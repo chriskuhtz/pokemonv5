@@ -70,12 +70,15 @@ export const useLeaveBattle = (
 		async (reason: BattleEndReason) => {
 			await save({
 				dexUpdates: allDexUpdates,
-				handledOccupants: trainerId ? { [`${trainerId}`]: true } : undefined,
+				handledOccupants:
+					reason === 'WIN' && trainerId
+						? { [`${trainerId}`]: true }
+						: undefined,
 				pokemonUpdates: updatedOwnedPokemon,
 				inventoryChanges: { 'poke-ball': -usedBalls },
 				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
-				fundsUpdate: trainer?.rewardMoney,
-				newBadge: trainer?.rewardBadge,
+				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
+				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				currentPosition:
 					reason === 'LOSS' && nearestHealer
 						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }
