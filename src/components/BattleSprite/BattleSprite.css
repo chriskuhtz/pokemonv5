@@ -17,12 +17,6 @@
 	}
 }
 
-/* The element to apply the animation to */
-.shakingBall {
-	height: 60px;
-	width: 60px;
-}
-
 @keyframes jumping {
 	0% {
 		transform: translateY(0);
@@ -42,7 +36,7 @@
 }
 
 .healthIndicator {
-	animation-name: jumping;
+	animation-name: var(--animationName);
 	animation-duration: 2s;
 	animation-iteration-count: infinite;
 	display: flex;
@@ -60,34 +54,41 @@
 		transparent var(--healthPercentage)
 	);
 }
-.healthIndicator:has(.battleSprite):has(.shakingBall) {
-	transform-origin: center;
-	animation-name: shakingBall;
-	animation-duration: 2s;
-	animation-iteration-count: infinite;
-}
 
-.battleSprite {
+.content {
 	min-height: 120px;
 	max-height: 120px;
 	min-width: 120px;
 	max-width: 120px;
 	background-color: var(--main-bg-color);
 	border-radius: var(--circular);
+	display: grid;
 }
-.battleSprite:has(.shakingBall) {
+
+.battleSprite {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 120px;
+	height: 120px;
 }
-.active {
-	animation-duration: 1s;
+.indicatorWrapper {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
+	width: 120px;
+	height: 120px;
+}
+
+.battleSprite,
+.overlay,
+.indicatorWrapper {
+	grid-column: 1;
+	grid-row: 1;
 }
 .overlay {
 	border-radius: var(--circular);
 	background-color: rgba(0, 0, 0, 0.5);
-	position: relative;
-	top: -159px;
 	min-height: 120px;
 	max-height: 120px;
 	min-width: 120px;
@@ -95,17 +96,18 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 2;
 }
 .levelIndicator {
 	border-radius: var(--circular);
 	background-color: var(--main-bg-90);
-	padding: 0.25rem;
 	position: relative;
-	top: -127px;
-	right: -84px;
+	padding: 0.25rem;
 	max-width: max-content;
+	height: min-content;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 2;
+
+	z-index: 3;
 }

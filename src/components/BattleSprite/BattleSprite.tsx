@@ -2,18 +2,15 @@ import { CSSProperties, ReactNode, useMemo } from 'react';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
-import { MapObject } from '../MapObject/MapObject';
 import './BattleSprite.css';
 
 export const BattleSprite = ({
 	pokemon,
 	overlay,
-	active,
 	back,
 }: {
 	pokemon: BattlePokemon;
 	overlay?: ReactNode;
-	active?: boolean;
 	back?: boolean;
 }) => {
 	const healthPercentage = useMemo(() => {
@@ -28,21 +25,31 @@ export const BattleSprite = ({
 	const { level } = calculateLevelData(pokemon.xp);
 	return (
 		<div
-			style={{ '--healthPercentage': healthPercentage } as CSSProperties}
+			style={
+				{
+					'--healthPercentage': healthPercentage,
+					'--animationName':
+						pokemon.status === 'BEING_CAUGHT' ? 'shakingBall' : 'jumping',
+				} as CSSProperties
+			}
 			className="healthIndicator"
 		>
-			<div className="battleSprite">
-				{pokemon.status === 'BEING_CAUGHT' ? (
-					<MapObject className="shakingBall" id="pokeball" />
-				) : (
+			<div className="content">
+				<div className="battleSprite">
 					<img
-						className={` ${active ? 'active' : ''}`}
-						height={'120px'}
-						width={'120px'}
-						src={getPokemonSpriteUrl(pokemon.dexId, back)}
+						height={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
+						width={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
+						src={
+							pokemon.status === 'BEING_CAUGHT'
+								? `mapObjects/pokeball.png`
+								: getPokemonSpriteUrl(pokemon.dexId, back)
+						}
 					/>
-				)}
-				<div className="levelIndicator">Lvl {level}</div>
+				</div>
+				<div className="indicatorWrapper">
+					<div className="levelIndicator">Lvl {level}</div>
+				</div>
+
 				{overlay && <div className="overlay">{overlay}</div>}
 			</div>
 		</div>
