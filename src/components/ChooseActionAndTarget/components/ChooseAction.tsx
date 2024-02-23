@@ -36,6 +36,7 @@ export const ChooseAction = ({
 										backgroundColor: 'var(--main-bg-color)',
 									}}
 									key={a.action}
+									disabled={a.disabled}
 									onClick={() => {
 										setActionName(a.action);
 									}}

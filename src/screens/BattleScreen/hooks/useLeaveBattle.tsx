@@ -6,6 +6,7 @@ import {
 } from '../../../constants/UniqueOccupantRecord';
 import { isTrainer } from '../../../functions/typeguards/isOccupantWithDialogue';
 import { useSaveGame } from '../../../hooks/useSaveGame';
+import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
@@ -22,6 +23,7 @@ export const useLeaveBattle = (
 	usedBalls: number,
 	trainerId?: UniqueOccupantIds
 ) => {
+	const saveFile = useGetCurrentSaveFile();
 	const navigate = useNavigate();
 	const save = useSaveGame();
 	const dispatch = useAppDispatch();
@@ -45,18 +47,22 @@ export const useLeaveBattle = (
 	}, [trainerId]);
 
 	const updatedOwnedPokemon: OwnedPokemon[] = useMemo(() => {
-		if (!playerSide || !opponentSide) {
+		if (!playerSide || !opponentSide || !saveFile) {
 			return [];
 		}
-		const numberOfPreviousTeamMembers =
-			playerSide.field.length +
-			playerSide.defeated.length +
-			playerSide.bench.length;
 
-		return [
+		const teamMembersAfterBattle = [
 			...playerSide.field,
 			...playerSide.bench,
 			...playerSide.defeated,
+		];
+		const numberOfPreviousTeamMembers = teamMembersAfterBattle.length;
+
+		return [
+			...saveFile.pokemon.map((p) => {
+				//update, but dont change team order
+				return teamMembersAfterBattle.find((t) => t.id === p.id) ?? p;
+			}),
 			...playerSide.caught.map((p, i) => ({
 				...p,
 				onTeam: numberOfPreviousTeamMembers + i < 6,
@@ -64,18 +70,21 @@ export const useLeaveBattle = (
 		].map((p) => {
 			return { ...p, nextAction: undefined, status: undefined };
 		});
-	}, [opponentSide, playerSide]);
+	}, [opponentSide, playerSide, saveFile]);
 
 	return useCallback(
 		async (reason: BattleEndReason) => {
 			await save({
 				dexUpdates: allDexUpdates,
-				handledOccupants: trainerId ? { [`${trainerId}`]: true } : undefined,
+				handledOccupants:
+					reason === 'WIN' && trainerId
+						? { [`${trainerId}`]: true }
+						: undefined,
 				pokemonUpdates: updatedOwnedPokemon,
 				inventoryChanges: { 'poke-ball': -usedBalls },
 				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
-				fundsUpdate: trainer?.rewardMoney,
-				newBadge: trainer?.rewardBadge,
+				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
+				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				currentPosition:
 					reason === 'LOSS' && nearestHealer
 						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }

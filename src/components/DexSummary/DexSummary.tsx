@@ -5,7 +5,7 @@ export const DexSummary = ({ dex }: { dex: DexEntry[] }) => {
 	const { caught, seen } = useMemo(() => {
 		return {
 			caught: dex.filter((entry) => entry.status === 'owned').length,
-			seen: dex.filter((entry) => entry.status === 'seen').length,
+			seen: dex.length,
 		};
 	}, [dex]);
 	return (
