@@ -4,6 +4,7 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { MapObject } from '../MapObject/MapObject';
 import './BattleSprite.css';
 
+//test commit
 export const BattleSprite = ({
 	pokemon,
 	overlay,
