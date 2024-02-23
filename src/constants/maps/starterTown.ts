@@ -8,6 +8,15 @@ export const starterTown: MapState = {
 	width: 9,
 	baseTile: { id: 'grass', pattern: 'random5' },
 	decorators: [
+		{
+			x: 5,
+			y: 3,
+			sprite: '',
+			onStep: {
+				type: 'PORTAL',
+				to: { orientation: 0, mapId: 'oaks-lab', y: 0, x: 0 },
+			},
+		},
 		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
