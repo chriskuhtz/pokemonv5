@@ -22,35 +22,59 @@ export const BattleSprite = ({
 
 		return `${degrees}deg`;
 	}, [pokemon]);
+	const expPercentage = useMemo(() => {
+		const { xpAtNextLevel } = calculateLevelData(pokemon.xp);
+		const percentage = Math.round(
+			((xpAtNextLevel - pokemon.xp) / xpAtNextLevel) * 100
+		);
+
+		const degrees = Math.round(3.6 * percentage);
+
+		return `${degrees}deg`;
+	}, [pokemon]);
+
 	const { level } = calculateLevelData(pokemon.xp);
 	return (
 		<div
 			style={
 				{
-					'--healthPercentage': healthPercentage,
+					'--expPercentage': expPercentage,
+					'--expColor':
+						pokemon.side === 'PLAYER' ? 'blue' : 'var(--main-bg-color)',
 					'--animationName':
 						pokemon.status === 'BEING_CAUGHT' ? 'shakingBall' : 'jumping',
 				} as CSSProperties
 			}
-			className="healthIndicator"
+			className="expIndicator"
 		>
-			<div className="content">
-				<div className="battleSprite">
-					<img
-						height={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
-						width={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
-						src={
-							pokemon.status === 'BEING_CAUGHT'
-								? `mapObjects/pokeball.png`
-								: getPokemonSpriteUrl(pokemon.dexId, back)
-						}
-					/>
-				</div>
-				<div className="indicatorWrapper">
-					<div className="levelIndicator">Lvl {level}</div>
-				</div>
+			<div
+				style={
+					{
+						'--healthPercentage': healthPercentage,
+						'--animationName':
+							pokemon.status === 'BEING_CAUGHT' ? 'shakingBall' : 'jumping',
+					} as CSSProperties
+				}
+				className="healthIndicator"
+			>
+				<div className="content">
+					<div className="battleSprite">
+						<img
+							height={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
+							width={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
+							src={
+								pokemon.status === 'BEING_CAUGHT'
+									? `mapObjects/pokeball.png`
+									: getPokemonSpriteUrl(pokemon.dexId, back)
+							}
+						/>
+					</div>
+					<div className="tagWrapper">
+						<div className="levelTag">Lvl {level}</div>
+					</div>
 
-				{overlay && <div className="overlay">{overlay}</div>}
+					{overlay && <div className="overlay">{overlay}</div>}
+				</div>
 			</div>
 		</div>
 	);

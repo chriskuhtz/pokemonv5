@@ -34,11 +34,26 @@
 		transform: translateY(0);
 	}
 }
-
-.healthIndicator {
+.expIndicator {
 	animation-name: var(--animationName);
 	animation-duration: 2s;
 	animation-iteration-count: infinite;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-height: 134px;
+	max-width: 134px;
+	min-height: 134px;
+	min-width: 134px;
+	border-radius: var(--circular);
+
+	background-image: conic-gradient(
+		var(--expColor) 0deg,
+		var(--expColor) var(--expPercentage),
+		transparent var(--expPercentage)
+	);
+}
+.healthIndicator {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -72,7 +87,7 @@
 	width: 120px;
 	height: 120px;
 }
-.indicatorWrapper {
+.tagWrapper {
 	display: flex;
 	justify-content: flex-end;
 	align-items: flex-start;
@@ -82,7 +97,7 @@
 
 .battleSprite,
 .overlay,
-.indicatorWrapper {
+.tagWrapper {
 	grid-column: 1;
 	grid-row: 1;
 }
@@ -98,7 +113,7 @@
 	align-items: center;
 	z-index: 2;
 }
-.levelIndicator {
+.levelTag {
 	border-radius: var(--circular);
 	background-color: var(--main-bg-90);
 	position: relative;
