@@ -9,7 +9,7 @@ import { useDrawBackGroundCanvas } from './hooks/useDrawBackgroundCanvas';
 import { useDrawOccupants } from './hooks/useDrawOccupants';
 import { useDrawPlayerCanvas } from './hooks/useDrawPlayerCanvas';
 
-export const fps = 15;
+export const fps = 10;
 export const playerCanvas = 'playerCanvas';
 export const overworldCanvas = 'overworldCanvas';
 export const occupantCanvas = 'occupantCanvas';
@@ -32,6 +32,7 @@ export const OverworldCanvas = (): JSX.Element => {
 	}, [drawBackground]);
 	const { x, y } = useAppSelector(selectPosition) ?? { x: 0, y: 0 };
 	const { height, width } = useAppSelector(selectMap);
+
 	return (
 		<div
 			className="overworld"

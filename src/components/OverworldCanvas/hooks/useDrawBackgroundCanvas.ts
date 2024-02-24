@@ -386,11 +386,12 @@ const drawRandom6Background = (
 };
 
 export const useDrawBackGroundCanvas = () => {
-	const [valid, setValid] = useState<boolean>(false);
-	const { height, width, baseTile } = useAppSelector(selectMap);
+	const [lastDrawnMapId, setLastDrawnMapId] = useState<string | undefined>();
+
+	const { height, width, baseTile, mapId } = useAppSelector(selectMap);
 
 	return useCallback(() => {
-		if (valid) {
+		if (lastDrawnMapId === mapId) {
 			return;
 		}
 		if (baseTile.pattern === 'uniform') {
@@ -411,7 +412,7 @@ export const useDrawBackGroundCanvas = () => {
 		if (baseTile.pattern === 'random6') {
 			drawRandom6Background(height, width, baseTile);
 		}
-		setValid(true);
+		setLastDrawnMapId(mapId);
 		console.error('what is this basetile');
-	}, [baseTile, height, valid, width]);
+	}, [baseTile, height, lastDrawnMapId, mapId, width]);
 };

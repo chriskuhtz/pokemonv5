@@ -54,11 +54,14 @@ const initialState: MapState = starterTown;
 export const mapSlice = createSlice({
 	name: 'map',
 	// `createSlice` will infer the state type from the `initialState` argument
-	initialState: initialState,
+	initialState,
 	reducers: {
 		setMapById: (state, action: PayloadAction<string>) => {
+			if (state.mapId === action.payload) {
+				return;
+			}
 			if (mapsRecord[action.payload]) {
-				state = { ...mapsRecord[action.payload] };
+				return mapsRecord[action.payload];
 			} else console.error('invalid mapId, cant set state');
 		},
 		turnNpcTowardsPlayer: (
