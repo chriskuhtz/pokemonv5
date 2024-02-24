@@ -14,7 +14,7 @@ export const starterTown: MapState = {
 			sprite: '',
 			onStep: {
 				type: 'PORTAL',
-				to: { orientation: 0, mapId: 'oaks-lab', y: 0, x: 0 },
+				to: { orientation: 3, mapId: 'oaks-lab', y: 4, x: 2 },
 			},
 		},
 		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -277,14 +277,14 @@ export const starterTown: MapState = {
 	],
 	encounters: [
 		//rattata
-		{ dexId: 19, xp: 70 },
-		{ dexId: 19, xp: 100 },
+		{ dexId: 19, xp: 40 },
+		{ dexId: 19, xp: 60 },
 		//pidgey
-		{ dexId: 19, xp: 70 },
-		{ dexId: 16, xp: 100 },
+		{ dexId: 19, xp: 40 },
+		{ dexId: 16, xp: 60 },
 		//pidgeotto
 		{ dexId: 17, xp: 200 },
 		//pikachu
-		{ dexId: 25, xp: 100 },
+		{ dexId: 25, xp: 60 },
 	],
 };

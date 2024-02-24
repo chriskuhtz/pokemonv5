@@ -20,7 +20,7 @@ export const oaksLab: MapState = {
 			y: 5,
 			onStep: {
 				type: 'PORTAL',
-				to: { mapId: 'starter-town', x: 0, y: 0, orientation: 0 },
+				to: { mapId: 'starter-town', x: 5, y: 4, orientation: 0 },
 			},
 		},
 	],

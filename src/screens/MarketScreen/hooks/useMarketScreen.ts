@@ -35,12 +35,12 @@ export const useMarketScreen = () => {
 		}, 0);
 	}, [cart, hydratedInventory]);
 
-	const purchase = useCallback(() => {
+	const purchase = useCallback(async () => {
 		if (!data) {
 			return;
 		}
 
-		void save({ fundsUpdate: -totalCost, inventoryChanges: cart });
+		await save({ fundsUpdate: -totalCost, inventoryChanges: cart });
 		setCart(generateInventory({}));
 	}, [cart, data, save, totalCost]);
 

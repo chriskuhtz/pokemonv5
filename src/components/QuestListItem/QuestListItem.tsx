@@ -14,7 +14,9 @@ export const QuestListItem = ({ quest }: { quest: Quest }) => {
 				quest.status === 'active' && isConditionFulfilled(quest.condition) ? (
 					<Pill
 						style={{ backgroundColor: 'green' }}
-						onClick={() => save({ questUpdates: { [quest.id]: 'completed' } })}
+						onClick={async () =>
+							await save({ questUpdates: { [quest.id]: 'completed' } })
+						}
 						center={'claim'}
 					/>
 				) : (

@@ -37,7 +37,7 @@ export const InteractionButton = () => {
 	>();
 	const handleEvent = useOverworldEvent();
 
-	const handleClick = useCallback(() => {
+	const handleClick = useCallback(async () => {
 		if (
 			occupant &&
 			isOccupantWithPossibleOnClick(occupant) &&
@@ -54,7 +54,7 @@ export const InteractionButton = () => {
 						.join(' and ')}.`,
 				])
 			);
-			saveGame({
+			await saveGame({
 				inventoryChanges: occupant.inventory,
 				handledOccupants: { [`${occupant.id}`]: true },
 			});
@@ -100,7 +100,7 @@ export const InteractionButton = () => {
 					}
 				}
 
-				saveGame({
+				await saveGame({
 					questUpdates: focusedOccupant.questUpdates,
 					visitedNurse: focusedOccupant.type === 'HEALER',
 				});

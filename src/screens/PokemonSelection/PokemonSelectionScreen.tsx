@@ -38,8 +38,8 @@ export const PokemonSelectionScreen = ({
 						<PokemonCardWithImage
 							dexId={c}
 							key={c}
-							onClick={() => {
-								void save({
+							onClick={async () => {
+								await save({
 									pokemonUpdates: [
 										{
 											dexId: c,

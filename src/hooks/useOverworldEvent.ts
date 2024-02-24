@@ -17,7 +17,7 @@ export const useOverworldEvent = () => {
 	const encounters = useAppSelector(selectEncounters);
 
 	return useCallback(
-		(event: OverworldEvent) => {
+		async (event: OverworldEvent) => {
 			if (!quests) {
 				return;
 			}
@@ -40,11 +40,11 @@ export const useOverworldEvent = () => {
 				if (checkQuestCondition(quests, event.questCondition)) {
 					//handle quests
 					if (event.type === 'ROUTE') {
-						saveGame({});
+						await saveGame({});
 						navigate(event.to);
 					}
 					if (event.type === 'PORTAL') {
-						void saveGame({ portalEvent: event });
+						await saveGame({ portalEvent: event });
 					}
 				}
 				if (!checkQuestCondition(quests, event.questCondition)) {
