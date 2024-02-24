@@ -33,7 +33,6 @@ export const BattleScreen = (): JSX.Element => {
 		resetAction,
 		availableActions,
 		nextPokemonWithoutAction,
-		pokemonWithActions,
 		opponentFetchStatus,
 		playerFetchStatus,
 	} = useBattleScreen();
@@ -68,10 +67,6 @@ export const BattleScreen = (): JSX.Element => {
 								key={p.id}
 								back
 								pokemon={p}
-								active={
-									pokemonWithActions.length > 0 &&
-									pokemonWithActions[0].id === p.id
-								}
 								overlay={
 									p.nextAction && (
 										<div
@@ -96,15 +91,7 @@ export const BattleScreen = (): JSX.Element => {
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<BattleSprite
-								key={p.id}
-								pokemon={p}
-								active={
-									mode === 'EXECUTING' &&
-									pokemonWithActions.length > 0 &&
-									pokemonWithActions[0].id === p.id
-								}
-							/>
+							<BattleSprite key={p.id} pokemon={p} />
 						))}
 					</div>
 				</div>

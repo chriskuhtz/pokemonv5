@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
@@ -12,7 +12,7 @@ import { useLeaveBattle } from './useLeaveBattle';
 
 export interface SelectableAction {
 	action: BattleAction['type'];
-	name: string;
+	name: ReactNode;
 	disabled: boolean;
 }
 export interface BattleScreenProps {
@@ -34,13 +34,20 @@ export const useBattleScreen = () => {
 		if (!saveFile) {
 			return [];
 		}
+		const catchingDisabled =
+			usedBalls > saveFile.inventory['poke-ball'] || !!trainerId;
 		return [
 			{ action: 'ATTACK', name: 'Attack', disabled: false },
 			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: !!trainerId },
 			{
 				action: 'CATCH_ATTEMPT',
-				name: 'Throw Pokeball',
-				disabled: usedBalls > saveFile.inventory['poke-ball'] || !!trainerId,
+				name: (
+					<div style={{ display: 'flex', alignItems: 'center' }}>
+						Throw Pokeball (
+						{!catchingDisabled && saveFile.inventory['poke-ball'] - usedBalls})
+					</div>
+				),
+				disabled: catchingDisabled,
 			},
 			{ action: 'SWITCH', name: 'Switch', disabled: true },
 		];
