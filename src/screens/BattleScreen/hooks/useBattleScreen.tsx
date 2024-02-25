@@ -201,7 +201,7 @@ export const useBattleScreen = () => {
 					nextAction: {
 						type: 'ATTACK',
 						target: optimalTarget,
-						move: p.moves[0] ?? 'splash',
+						move: p.moves[Math.round(Math.random() * 4)] ?? 'splash',
 					},
 				})),
 			});
