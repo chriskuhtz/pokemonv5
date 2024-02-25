@@ -37,7 +37,7 @@ export const BattlePill = ({
 						{pokemon.name} / Lvl {level}
 					</p>
 					<p>
-						{pokemon.maxHp - pokemon.damage}/{pokemon.maxHp}
+						{pokemon.hp - pokemon.damage}/{pokemon.hp}
 					</p>
 				</div>
 			}

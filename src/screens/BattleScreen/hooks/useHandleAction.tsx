@@ -221,9 +221,7 @@ export const useHandleAction = (
 					actor.nextAction.move
 				).unwrap();
 				const correctAttackStat =
-					damage_class.name === 'physical'
-						? actor.attack
-						: actor.special_attack;
+					damage_class.name === 'physical' ? actor.attack : actor.spatk;
 
 				const damage = Math.round((correctAttackStat * (power ?? 0)) / 100);
 				const newTargetDamage = target.damage + damage;
@@ -238,7 +236,7 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction:
-									newTargetDamage >= target.maxHp
+									newTargetDamage >= target.hp
 										? { type: 'DEFEATED_TARGET', target: target.id }
 										: undefined,
 							};
@@ -279,7 +277,7 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction:
-									newTargetDamage >= target.maxHp
+									newTargetDamage >= target.hp
 										? { type: 'DEFEATED_TARGET', target: target.id }
 										: undefined,
 							};

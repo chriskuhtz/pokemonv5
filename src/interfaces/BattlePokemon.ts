@@ -3,9 +3,12 @@ import { OwnedPokemon } from './OwnedPokemon';
 
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
-	maxHp: number;
+	hp: number;
 	attack: number;
-	special_attack: number;
+	spatk: number;
+	defence: number;
+	spdef: number;
+	speed: number;
 	nextAction?: BattleAction;
 	side: 'PLAYER' | 'OPPONENT';
 	status?: 'BEING_CAUGHT';
