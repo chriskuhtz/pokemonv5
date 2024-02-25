@@ -1,10 +1,16 @@
 export const calculateLevelData = (
 	xp: number
-): { level: number; xpToNextLevel: number; xpAtNextLevel: number } => {
-	const level = Math.max(1, Math.round(Math.cbrt(xp)));
+): {
+	level: number;
 
-	const xpAtNextLevel = Math.pow(level, 3);
-	const xpToNextLevel = xpAtNextLevel - xp;
+	progressToNextLevel: number;
+} => {
+	const level = Math.max(1, Math.floor(Math.cbrt(xp)));
 
-	return { level, xpToNextLevel, xpAtNextLevel };
+	const xpAtNextLevel = Math.pow(level + 1, 3);
+	const xpForThisLevel = Math.pow(level, 3);
+	const totalXpToNextLevel = xpAtNextLevel - xpForThisLevel;
+	const progressToNextLevel = (xp - xpForThisLevel) / totalXpToNextLevel;
+
+	return { level, progressToNextLevel };
 };

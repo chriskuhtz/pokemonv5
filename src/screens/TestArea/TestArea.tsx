@@ -1,9 +1,9 @@
-import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
+import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
 const testmon: BattlePokemon = {
 	id: '9517d3ef-84ec-44ef-bd75-14345e54fb27',
-	xp: 100,
+	xp: 344,
 	name: 'bulbasaur',
 	side: 'PLAYER',
 	dexId: 1,
@@ -43,11 +43,9 @@ const testmon3: BattlePokemon = {
 };
 
 export const TestArea = (): JSX.Element => {
-	const getFirstFourMoves = useGetFirstFourMoves();
-
 	return (
 		<div style={{ padding: '2rem', display: 'flex' }}>
-			<button onClick={async () => await getFirstFourMoves(35)}>GET</button>
+			<BattleSprite pokemon={testmon} />
 		</div>
 	);
 };
