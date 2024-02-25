@@ -21,7 +21,7 @@ export interface BattleSide {
 	side: 'PLAYER' | 'OPPONENT';
 }
 
-export type BattleMode = 'COLLECTING' | 'EXECUTING';
+export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'LOADING';
 
 export const BattleScreen = (): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
@@ -36,6 +36,7 @@ export const BattleScreen = (): JSX.Element => {
 		nextPokemonWithoutAction,
 		opponentFetchStatus,
 		playerFetchStatus,
+		setMode,
 	} = useBattleScreen();
 
 	if (
@@ -111,7 +112,11 @@ export const BattleScreen = (): JSX.Element => {
 				{currentDialogue.length > 0 && (
 					<Banner
 						content={currentDialogue[0]}
-						onClick={async () => await handleAction()}
+						onClick={async () => {
+							setMode('LOADING');
+							await handleAction();
+							setMode('EXECUTING');
+						}}
 					/>
 				)}
 			</div>

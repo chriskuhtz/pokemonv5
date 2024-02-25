@@ -26,7 +26,7 @@ export const useHandleAction = (
 
 		if (pokemonWithActions.length > 0) {
 			const actor = pokemonWithActions[0];
-			//console.log('handling action for', actor, pokemonWithActions);
+			console.log('handling action for', actor, pokemonWithActions);
 			const target = [...playerSide.field, ...opponentSide.field].find(
 				(p) => p.id === actor.nextAction?.target
 			);
@@ -218,9 +218,7 @@ export const useHandleAction = (
 			//attack
 			if (isBattleAttack(actor.nextAction) && target) {
 				const move = await getMoveByName(actor.nextAction.move).unwrap();
-
 				const damage = Math.round((actor.attack * (move.power ?? 0)) / 100);
-
 				const newTargetDamage = target.damage + damage;
 
 				if (actor.side === 'PLAYER') {

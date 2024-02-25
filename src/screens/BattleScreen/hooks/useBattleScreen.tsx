@@ -124,6 +124,7 @@ export const useBattleScreen = () => {
 	const nextPokemonWithoutAction = useMemo(() => {
 		return playerSide?.field.find((p) => p.nextAction === undefined);
 	}, [playerSide]);
+
 	//initialise Battle
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
 		setPlayerSide,
@@ -220,5 +221,6 @@ export const useBattleScreen = () => {
 		pokemonWithActions,
 		opponentFetchStatus,
 		playerFetchStatus,
+		setMode,
 	};
 };
