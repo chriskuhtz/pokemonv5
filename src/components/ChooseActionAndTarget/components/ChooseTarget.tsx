@@ -1,8 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { IoIosCloseCircle } from 'react-icons/io';
-import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
+import { BattleAction } from '../../../interfaces/BattleAction';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,
