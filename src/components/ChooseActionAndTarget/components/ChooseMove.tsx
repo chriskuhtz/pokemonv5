@@ -1,16 +1,15 @@
-import { BattleAction } from '../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 
-export const ChooseAction = ({
+export const ChooseMove = ({
 	open,
-	setActionName,
+	setMoveName,
 	availableActions,
 	name,
 }: {
 	open: boolean;
-	setActionName: (x: BattleAction['type'] | undefined) => void;
+	setMoveName: (x: string | undefined) => void;
 	availableActions: SelectableAction[];
 	name: string;
 }) => {
@@ -19,7 +18,7 @@ export const ChooseAction = ({
 			<Banner
 				content={
 					<div style={{ textAlign: 'left' }}>
-						<strong>{`what should ${name} do:`}</strong>
+						<strong>{`which move should ${name} use:`}</strong>
 						<div
 							style={{
 								display: 'flex',
@@ -38,7 +37,7 @@ export const ChooseAction = ({
 									key={a.actionType}
 									disabled={a.disabled}
 									onClick={() => {
-										setActionName(a.actionType);
+										setMoveName(a.moveName);
 									}}
 									content={a.displayName}
 								/>

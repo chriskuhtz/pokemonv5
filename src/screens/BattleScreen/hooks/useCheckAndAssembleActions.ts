@@ -4,6 +4,7 @@ import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectC
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { isBattleAttack } from '../../../interfaces/BattleAction';
 
 export const useCheckAndAssembleActions = (
 	playerSide: BattleSide | undefined,
@@ -33,7 +34,7 @@ export const useCheckAndAssembleActions = (
 			const target = allPokemonOnField.find(
 				(p) => p.id === actor.nextAction?.target
 			);
-			//console.log('assemble', actor);
+			console.log('assemble', actor);
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])
@@ -87,6 +88,12 @@ export const useCheckAndAssembleActions = (
 			}
 			if (actor.nextAction?.type === 'DEFEATED_TARGET') {
 				dispatch(concatDialogue([`${target?.name} fainted!`]));
+				return;
+			}
+			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
+				dispatch(
+					concatDialogue([`${actor.name} used ${actor.nextAction?.move}`])
+				);
 				return;
 			}
 			dispatch(

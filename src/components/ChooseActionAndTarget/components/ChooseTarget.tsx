@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { Banner } from '../../../ui_components/Banner/Banner';
@@ -6,9 +7,11 @@ export const ChooseTarget = ({
 	availableTargets,
 	selectAction,
 	actionName,
+	moveName,
 	actor,
 }: {
 	actionName: BattleAction['type'];
+	moveName?: string;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
@@ -31,10 +34,17 @@ export const ChooseTarget = ({
 									onClick={() => {
 										selectAction({
 											...actor,
-											nextAction: {
-												type: actionName,
-												target: c.id,
-											},
+											nextAction:
+												actionName === 'ATTACK'
+													? {
+															type: actionName,
+															target: c.id,
+															move: moveName,
+													  }
+													: {
+															type: actionName,
+															target: c.id,
+													  },
 										});
 									}}
 									content={c.name}

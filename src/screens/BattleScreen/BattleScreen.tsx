@@ -11,6 +11,7 @@ import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
 import { useBattleScreen } from './hooks/useBattleScreen';
+import { isBattleAttack } from '../../interfaces/BattleAction';
 
 export interface BattleSide {
 	field: BattlePokemon[];
@@ -76,7 +77,9 @@ export const BattleScreen = (): JSX.Element => {
 												alignItems: 'center',
 											}}
 										>
-											{p.nextAction?.type}{' '}
+											{isBattleAttack(p.nextAction)
+												? p.nextAction.move
+												: p.nextAction.type}{' '}
 											{mode === 'COLLECTING' && (
 												<IoIosCloseCircle
 													style={{ height: '40px', width: '40px' }}

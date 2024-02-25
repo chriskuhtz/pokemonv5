@@ -16,24 +16,6 @@ export const useHandleAction = (
 ) => {
 	const dispatch = useAppDispatch();
 
-	// const updatedPlayerField = useCallback(
-	// 	(update: BattlePokemon) => {
-	// 		if (!playerSide) {
-	// 			return;
-	// 		}
-	// 		setPlayerSide({
-	// 			...playerSide,
-	// 			field: playerSide.field.map((p) => {
-	// 				if (p.id !== update.id) {
-	// 					return p;
-	// 				}
-	// 				return update;
-	// 			}),
-	// 		});
-	// 	},
-	// 	[playerSide, setPlayerSide]
-	// );
-
 	return useCallback(() => {
 		if (!playerSide || !opponentSide) {
 			return;

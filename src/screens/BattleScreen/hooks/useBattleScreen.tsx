@@ -11,8 +11,9 @@ import { useInitialiseBattleSides } from './useInitialiseBattle';
 import { useLeaveBattle } from './useLeaveBattle';
 
 export interface SelectableAction {
-	action: BattleAction['type'];
-	name: ReactNode;
+	actionType: BattleAction['type'];
+	displayName: ReactNode;
+	moveName?: string;
 	disabled: boolean;
 }
 export interface BattleScreenProps {
@@ -35,13 +36,17 @@ export const useBattleScreen = () => {
 			return [];
 		}
 		const catchingDisabled =
-			usedBalls > saveFile.inventory['poke-ball'] || !!trainerId;
+			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
 		return [
-			{ action: 'ATTACK', name: 'Attack', disabled: false },
-			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: !!trainerId },
+			{ actionType: 'ATTACK', displayName: 'Attack', disabled: false },
 			{
-				action: 'CATCH_ATTEMPT',
-				name: (
+				actionType: 'RUNAWAY_ATTEMPT',
+				displayName: 'Run Away',
+				disabled: !!trainerId,
+			},
+			{
+				actionType: 'CATCH_ATTEMPT',
+				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						Throw Pokeball (
 						{!catchingDisabled && saveFile.inventory['poke-ball'] - usedBalls})
@@ -49,7 +54,7 @@ export const useBattleScreen = () => {
 				),
 				disabled: catchingDisabled,
 			},
-			{ action: 'SWITCH', name: 'Switch', disabled: true },
+			{ actionType: 'SWITCH', displayName: 'Switch', disabled: true },
 		];
 	}, [saveFile, trainerId, usedBalls]);
 
@@ -192,7 +197,7 @@ export const useBattleScreen = () => {
 				...opponentSide,
 				field: opponentSide?.field.map((p) => ({
 					...p,
-					nextAction: { type: 'ATTACK', target: optimalTarget },
+					nextAction: { type: 'ATTACK', target: optimalTarget, move: 'tackle' },
 				})),
 			});
 		}

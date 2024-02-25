@@ -22,8 +22,9 @@ export const BattleSprite = ({
 
 		return `${degrees}deg`;
 	}, [pokemon]);
+
+	const { level, xpAtNextLevel } = calculateLevelData(pokemon.xp);
 	const expPercentage = useMemo(() => {
-		const { xpAtNextLevel } = calculateLevelData(pokemon.xp);
 		const percentage = Math.round(
 			((xpAtNextLevel - pokemon.xp) / xpAtNextLevel) * 100
 		);
@@ -31,9 +32,8 @@ export const BattleSprite = ({
 		const degrees = Math.round(3.6 * percentage);
 
 		return `${degrees}deg`;
-	}, [pokemon]);
+	}, [pokemon.xp, xpAtNextLevel]);
 
-	const { level } = calculateLevelData(pokemon.xp);
 	return (
 		<div
 			style={
