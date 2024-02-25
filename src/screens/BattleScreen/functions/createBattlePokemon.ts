@@ -19,6 +19,8 @@ export const useCreateBattlePokemonFromData = () => {
 
 			const baseAttack =
 				data.stats.find((s) => s.stat.name === 'attack')?.base_stat ?? 100;
+			const baseSpatk =
+				data.stats.find((s) => s.stat.name === 'spatk')?.base_stat ?? 100;
 
 			return {
 				moves: (await getFirstFourMoves(data.id)).map((m) => m.name),
@@ -27,6 +29,7 @@ export const useCreateBattlePokemonFromData = () => {
 				damage: 0,
 				maxHp: calculateStat(baseHp, 0, 0, 'hardy', level, 'hp'),
 				attack: calculateStat(baseAttack, 0, 0, 'hardy', level, 'attack'),
+				special_attack: calculateStat(baseSpatk, 0, 0, 'hardy', level, 'spatk'),
 				ownerId: OPPOID,
 				xp: baseXp,
 				id: v4(),
@@ -47,11 +50,15 @@ export const createBattlePokemonFromOwned = (
 	const { level } = calculateLevelData(xp);
 	const baseAttack =
 		data.stats.find((s) => s.stat.name === 'attack')?.base_stat ?? 100;
+	const baseSpatk =
+		data.stats.find((s) => s.stat.name === 'spatk')?.base_stat ?? 100;
+
 	return {
 		...existing,
 		name: data.name,
 		maxHp: calculateStat(hpStat, 0, 0, 'hardy', level, 'hp'),
 		attack: calculateStat(baseAttack, 0, 0, 'hardy', level, 'attack'),
+		special_attack: calculateStat(baseSpatk, 0, 0, 'hardy', level, 'spatk'),
 		side: 'PLAYER',
 		base_experience: data.base_experience,
 	};

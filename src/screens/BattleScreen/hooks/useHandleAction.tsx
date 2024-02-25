@@ -217,8 +217,15 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(actor.nextAction) && target) {
-				const move = await getMoveByName(actor.nextAction.move).unwrap();
-				const damage = Math.round((actor.attack * (move.power ?? 0)) / 100);
+				const { power, damage_class } = await getMoveByName(
+					actor.nextAction.move
+				).unwrap();
+				const correctAttackStat =
+					damage_class.name === 'physical'
+						? actor.attack
+						: actor.special_attack;
+
+				const damage = Math.round((correctAttackStat * (power ?? 0)) / 100);
 				const newTargetDamage = target.damage + damage;
 
 				if (actor.side === 'PLAYER') {
