@@ -20,7 +20,12 @@ export const Banner = ({
 					padding: '1.5rem 2rem',
 					fontSize: 'x-large',
 				}}
-				content={content}
+				content={
+					<div>
+						{content}
+						{new Date().getMilliseconds()}
+					</div>
+				}
 			/>
 		</div>
 	);

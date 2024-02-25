@@ -34,7 +34,7 @@ export const ChooseMove = ({
 										border: '1px solid',
 										backgroundColor: 'var(--main-bg-color)',
 									}}
-									key={a.actionType}
+									key={a.moveName}
 									disabled={a.disabled}
 									onClick={() => {
 										setMoveName(a.moveName);

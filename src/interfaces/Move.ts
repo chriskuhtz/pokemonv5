@@ -71,7 +71,7 @@ export interface MoveDto {
 	machines: Machine[];
 	meta: MoveMeta;
 	name: string;
-	power: number;
+	power: number | null;
 	pp: number;
 	priority: number;
 	stat_changes: StatChange[];

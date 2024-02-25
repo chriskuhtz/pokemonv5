@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
+import { useLazyGetMoveDataByNameQuery } from '../../../api/pokeApi';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
+import { isBattleAttack } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -15,6 +17,7 @@ export const useHandleAction = (
 	leaveBattle: (reason: BattleEndReason) => void
 ) => {
 	const dispatch = useAppDispatch();
+	const [getMoveByName] = useLazyGetMoveDataByNameQuery();
 
 	return useCallback(async () => {
 		if (!playerSide || !opponentSide) {
@@ -213,8 +216,12 @@ export const useHandleAction = (
 				return;
 			}
 			//attack
-			if (actor.nextAction?.type === 'ATTACK' && target) {
-				const newTargetDamage = target.damage + actor.attack;
+			if (isBattleAttack(actor.nextAction) && target) {
+				const move = await getMoveByName(actor.nextAction.move).unwrap();
+
+				const damage = Math.round((actor.attack * (move.power ?? 0)) / 100);
+
+				const newTargetDamage = target.damage + damage;
 
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -326,6 +333,7 @@ export const useHandleAction = (
 		}
 	}, [
 		dispatch,
+		getMoveByName,
 		leaveBattle,
 		opponentSide,
 		playerSide,

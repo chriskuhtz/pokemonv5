@@ -98,14 +98,16 @@ export const BattleScreen = (): JSX.Element => {
 						))}
 					</div>
 				</div>
-				{nextPokemonWithoutAction && mode === 'COLLECTING' && (
-					<ChooseActionAndTarget
-						actor={nextPokemonWithoutAction}
-						availableTargets={opponentSide?.field ?? []}
-						availableActions={availableActions}
-						selectAction={selectAction}
-					/>
-				)}
+				{currentDialogue.length === 0 &&
+					nextPokemonWithoutAction &&
+					mode === 'COLLECTING' && (
+						<ChooseActionAndTarget
+							actor={nextPokemonWithoutAction}
+							availableTargets={opponentSide?.field ?? []}
+							availableActions={availableActions}
+							selectAction={selectAction}
+						/>
+					)}
 				{currentDialogue.length > 0 && (
 					<Banner
 						content={currentDialogue[0]}

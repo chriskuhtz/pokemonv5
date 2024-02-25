@@ -19,6 +19,8 @@ interface BattleAttackAction extends BaseBattleAction {
 }
 export type BattleAction = BaseBattleAction | BattleAttackAction;
 
-export function isBattleAttack(x: BattleAction): x is BattleAttackAction {
-	return x.type === 'ATTACK';
+export function isBattleAttack(
+	x: BattleAction | undefined
+): x is BattleAttackAction {
+	return !!(x && x.type === 'ATTACK');
 }
