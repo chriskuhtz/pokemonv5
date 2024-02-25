@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { BattleAction, BattlePokemon } from '../../interfaces/BattlePokemon';
+import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
+import { BattleAction } from '../../interfaces/BattleAction';
 
 export const ChooseActionAndTarget = ({
 	actor,
@@ -49,32 +50,12 @@ export const ChooseActionAndTarget = ({
 				open={actionName === 'ATTACK'}
 				name={actor.name}
 				setMoveName={setMoveName}
-				availableActions={[
-					{
-						displayName: 'Tackle',
-						actionType: 'ATTACK',
-						disabled: false,
-						moveName: 'tackle',
-					},
-					{
-						displayName: 'Quick Attack',
-						actionType: 'ATTACK',
-						disabled: false,
-						moveName: 'quick-attack',
-					},
-					{
-						displayName: 'Peck',
-						actionType: 'ATTACK',
-						disabled: false,
-						moveName: 'peck',
-					},
-					{
-						displayName: 'Bite',
-						actionType: 'ATTACK',
-						disabled: false,
-						moveName: 'bite',
-					},
-				]}
+				availableActions={actor.moves.map((m) => ({
+					displayName: m,
+					actionType: 'ATTACK',
+					disabled: false,
+					moveName: m,
+				}))}
 			/>
 		);
 	}
