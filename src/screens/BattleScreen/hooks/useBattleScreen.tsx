@@ -2,7 +2,8 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
-import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { BattleAction } from '../../../interfaces/BattleAction';
+import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MapEncounter } from '../../../store/slices/MapSlice';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
@@ -197,7 +198,11 @@ export const useBattleScreen = () => {
 				...opponentSide,
 				field: opponentSide?.field.map((p) => ({
 					...p,
-					nextAction: { type: 'ATTACK', target: optimalTarget, move: 'tackle' },
+					nextAction: {
+						type: 'ATTACK',
+						target: optimalTarget,
+						move: p.moves[0] ?? 'splash',
+					},
 				})),
 			});
 		}

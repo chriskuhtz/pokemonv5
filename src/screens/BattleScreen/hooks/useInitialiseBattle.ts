@@ -6,8 +6,8 @@ import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { BattleSide } from '../BattleScreen';
 import {
-	createBattlePokemonFromData,
 	createBattlePokemonFromOwned,
+	useCreateBattlePokemonFromData,
 } from '../functions/createBattlePokemon';
 import { BattleScreenProps } from './useBattleScreen';
 
@@ -19,6 +19,7 @@ export const useInitialiseBattleSides = (
 	const data = useGetCurrentSaveFile();
 	const { state } = useLocation();
 	const { opponents } = state as BattleScreenProps;
+	const createBattlePokemonFromData = useCreateBattlePokemonFromData();
 
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
@@ -28,7 +29,7 @@ export const useInitialiseBattleSides = (
 		Promise.all(
 			opponents.map(async (e) => {
 				const data = await getPokemonByDexId(e.dexId).unwrap();
-				return createBattlePokemonFromData(data, e.xp);
+				return await createBattlePokemonFromData(data, e.xp);
 			})
 		)
 	);

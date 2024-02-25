@@ -1,4 +1,3 @@
-import { Move } from './Move';
 import { PokemonType } from './PokemonType';
 
 export interface AbilitySlot {
@@ -38,7 +37,12 @@ export interface PokemonData {
 	id: number;
 	is_default: boolean;
 	location_area_encounters: string;
-	moves: Move[];
+	moves: {
+		move: {
+			name: string;
+			url: string;
+		};
+	}[];
 	name: string;
 	order: number;
 	species: {

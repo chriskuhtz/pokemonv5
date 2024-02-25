@@ -2,6 +2,7 @@ import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
+import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { RoutesEnum } from '../../router/router';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
@@ -11,7 +12,6 @@ import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
 import { useBattleScreen } from './hooks/useBattleScreen';
-import { isBattleAttack } from '../../interfaces/BattleAction';
 
 export interface BattleSide {
 	field: BattlePokemon[];
@@ -107,7 +107,10 @@ export const BattleScreen = (): JSX.Element => {
 					/>
 				)}
 				{currentDialogue.length > 0 && (
-					<Banner content={currentDialogue[0]} onClick={handleAction} />
+					<Banner
+						content={currentDialogue[0]}
+						onClick={async () => await handleAction()}
+					/>
 				)}
 			</div>
 		);

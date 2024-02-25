@@ -16,7 +16,7 @@ export const useHandleAction = (
 ) => {
 	const dispatch = useAppDispatch();
 
-	return useCallback(() => {
+	return useCallback(async () => {
 		if (!playerSide || !opponentSide) {
 			return;
 		}
@@ -279,7 +279,7 @@ export const useHandleAction = (
 			//defeated target
 			if (actor.nextAction?.type === 'DEFEATED_TARGET' && target) {
 				const gainedXP = calculateGainedXp(target);
-				const xpPerPokemon = gainedXP / playerSide.field.length;
+				const xpPerPokemon = Math.round(gainedXP / playerSide.field.length);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,

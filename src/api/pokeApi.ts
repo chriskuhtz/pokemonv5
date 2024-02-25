@@ -2,6 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ItemName } from '../interfaces/Item';
 import { ItemData } from '../interfaces/ItemData';
+import { MoveDto } from '../interfaces/Move';
 import { PokemonData } from '../interfaces/PokemonData';
 import { PokemonSpeciesData } from '../interfaces/PokemonSpeciesData';
 
@@ -20,7 +21,7 @@ export const pokeApi = createApi({
 		getItemDataByName: builder.query<ItemData, ItemName>({
 			query: (itemName: ItemName) => `/item/${itemName}`,
 		}),
-		getMoveDataByName: builder.query<ItemData, ItemName>({
+		getMoveDataByName: builder.query<MoveDto, string>({
 			query: (name: string) => {
 				const parsedName = name.toLowerCase().replace(' ', '-');
 				return `/move/${parsedName}`;
