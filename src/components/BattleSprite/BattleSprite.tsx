@@ -8,10 +8,12 @@ export const BattleSprite = ({
 	pokemon,
 	overlay,
 	back,
+	noAnimation,
 }: {
 	pokemon: BattlePokemon;
 	overlay?: ReactNode;
 	back?: boolean;
+	noAnimation?: boolean;
 }) => {
 	const healthPercentage = useMemo(() => {
 		const percentage = Math.round(
@@ -30,6 +32,16 @@ export const BattleSprite = ({
 		return `${degrees}deg`;
 	}, [progressToNextLevel]);
 
+	const animationName = useMemo(() => {
+		if (pokemon.status === 'BEING_CAUGHT') {
+			return 'shakingBall';
+		}
+		if (noAnimation) {
+			return '';
+		}
+		return 'jumping';
+	}, [noAnimation, pokemon.status]);
+
 	return (
 		<div
 			style={
@@ -37,8 +49,7 @@ export const BattleSprite = ({
 					'--expPercentage': expPercentage,
 					'--expColor':
 						pokemon.side === 'PLAYER' ? 'blue' : 'var(--main-bg-color)',
-					'--animationName':
-						pokemon.status === 'BEING_CAUGHT' ? 'shakingBall' : 'jumping',
+					'--animationName': animationName,
 				} as CSSProperties
 			}
 			className="expIndicator"
@@ -47,8 +58,6 @@ export const BattleSprite = ({
 				style={
 					{
 						'--healthPercentage': healthPercentage,
-						'--animationName':
-							pokemon.status === 'BEING_CAUGHT' ? 'shakingBall' : 'jumping',
 					} as CSSProperties
 				}
 				className="healthIndicator"
