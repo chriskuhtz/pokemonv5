@@ -2,7 +2,10 @@ import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
-import { isBattleAttack } from '../../interfaces/BattleAction';
+import {
+	isBattleActionWithTarget,
+	isBattleAttack,
+} from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { RoutesEnum } from '../../router/router';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
@@ -105,6 +108,16 @@ export const BattleScreen = (): JSX.Element => {
 						<ChooseActionAndTarget
 							actor={nextPokemonWithoutAction}
 							availableTargets={opponentSide?.field ?? []}
+							availableSwitches={
+								playerSide?.bench.filter((benchmon) =>
+									playerSide.field.every(
+										(fieldmon) =>
+											fieldmon.nextAction === undefined ||
+											(isBattleActionWithTarget(fieldmon.nextAction) &&
+												fieldmon.nextAction.target !== benchmon.id)
+									)
+								) ?? []
+							}
 							availableActions={availableActions}
 							selectAction={selectAction}
 						/>

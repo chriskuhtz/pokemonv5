@@ -12,10 +12,12 @@ export const ChooseActionAndTarget = ({
 	actor,
 	availableTargets,
 	availableActions,
+	availableSwitches,
 	selectAction,
 }: {
 	actor: BattlePokemon;
 	availableTargets: BattlePokemon[];
+	availableSwitches: BattlePokemon[];
 	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
 }): JSX.Element => {
@@ -57,6 +59,22 @@ export const ChooseActionAndTarget = ({
 					disabled: false,
 					move: m,
 				}))}
+			/>
+		);
+	}
+
+	if (actionName === 'SWITCH') {
+		return (
+			<ChooseTarget
+				actionName={actionName}
+				move={move}
+				selectAction={(x) => {
+					selectAction(x);
+					setActionName(undefined);
+					setMove(undefined);
+				}}
+				availableTargets={availableSwitches}
+				actor={actor}
 			/>
 		);
 	}

@@ -30,7 +30,9 @@ interface BattleActionWithTarget extends BaseBattleAction {
 		| 'DEFEATED_TARGET'
 		| 'NOT_VERY_EFFECTIVE'
 		| 'SUPER_EFFECTIVE'
-		| 'NO_EFFECT';
+		| 'NO_EFFECT'
+		| 'SWITCH';
+
 	target: string;
 }
 interface BattleAttackAction extends BaseBattleAction {

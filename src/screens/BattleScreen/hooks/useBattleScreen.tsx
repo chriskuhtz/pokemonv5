@@ -39,6 +39,8 @@ export const useBattleScreen = () => {
 		}
 		const catchingDisabled =
 			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
+
+		const switchingDisabled = !playerSide || playerSide?.bench.length < 1;
 		return [
 			{ actionType: 'ATTACK', displayName: 'Attack', disabled: false },
 			{
@@ -56,9 +58,13 @@ export const useBattleScreen = () => {
 				),
 				disabled: catchingDisabled,
 			},
-			{ actionType: 'SWITCH', displayName: 'Switch', disabled: true },
+			{
+				actionType: 'SWITCH',
+				displayName: 'Switch',
+				disabled: switchingDisabled,
+			},
 		];
-	}, [saveFile, trainerId, usedBalls]);
+	}, [playerSide, saveFile, trainerId, usedBalls]);
 
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {

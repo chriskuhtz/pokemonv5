@@ -41,10 +41,16 @@ export const useHandleAction = (
 						(p) => p.id === action?.target
 				  )
 				: undefined;
+			const switchTarget =
+				isBattleActionWithTarget(action) && action.type === 'SWITCH'
+					? [...playerSide.bench, ...opponentSide.bench].find(
+							(p) => p.id === action?.target
+					  )
+					: undefined;
 
 			dispatch(continueDialogue());
 			//no target
-			if (isBattleActionWithTarget(action) && !target) {
+			if (isBattleActionWithTarget(action) && !target && !switchTarget) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -70,6 +76,87 @@ export const useHandleAction = (
 								...p,
 								nextAction: { type: 'TARGET_NOT_ON_FIELD', target: p.id },
 							};
+						}),
+					});
+				}
+				return;
+			}
+			//SWITCH
+			if (action?.type === 'SWITCH' && switchTarget) {
+				console.log('yaya', switchTarget);
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field
+							.filter((p) => p.id !== actor.id)
+							.concat(switchTarget)
+							.map((p) => {
+								if (
+									isBattleActionWithTarget(p.nextAction) &&
+									p.nextAction.target === actor.id
+								) {
+									return {
+										...p,
+										nextAction: { ...p.nextAction, target: switchTarget.id },
+									};
+								}
+								return p;
+							}),
+						bench: playerSide.bench
+							.filter((p) => p.id !== switchTarget.id)
+							.concat({ ...actor, nextAction: undefined }),
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (
+								isBattleActionWithTarget(p.nextAction) &&
+								p.nextAction.target === actor.id
+							) {
+								return {
+									...p,
+									nextAction: { ...p.nextAction, target: switchTarget.id },
+								};
+							}
+							return p;
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field
+							.filter((p) => p.id !== actor.id)
+							.concat(switchTarget)
+							.map((p) => {
+								if (
+									isBattleActionWithTarget(p.nextAction) &&
+									p.nextAction.target === actor.id
+								) {
+									return {
+										...p,
+										nextAction: { ...p.nextAction, target: switchTarget.id },
+									};
+								}
+								return p;
+							}),
+						bench: opponentSide.bench
+							.filter((p) => p.id !== switchTarget.id)
+							.concat({ ...actor, nextAction: undefined }),
+					});
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (
+								isBattleActionWithTarget(p.nextAction) &&
+								p.nextAction.target === actor.id
+							) {
+								return {
+									...p,
+									nextAction: { ...p.nextAction, target: switchTarget.id },
+								};
+							}
+							return p;
 						}),
 					});
 				}
@@ -149,7 +236,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: undefined,
+								nextAction,
 							};
 						}),
 					});

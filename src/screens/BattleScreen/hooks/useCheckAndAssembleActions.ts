@@ -26,6 +26,12 @@ export const useCheckAndAssembleActions = (
 		}
 		return [...playerSide.field, ...opponentSide.field];
 	}, [opponentSide, playerSide]);
+	const allPokemonOnBench = useMemo(() => {
+		if (!playerSide || !opponentSide) {
+			return [];
+		}
+		return [...playerSide.bench, ...opponentSide.bench];
+	}, [opponentSide, playerSide]);
 	useEffect(() => {
 		if (
 			mode === 'EXECUTING' &&
@@ -38,8 +44,22 @@ export const useCheckAndAssembleActions = (
 			const target = isBattleActionWithTarget(action)
 				? allPokemonOnField.find((p) => p.id === action.target)
 				: undefined;
+			const switchTarget =
+				isBattleActionWithTarget(action) && action?.type === 'SWITCH'
+					? allPokemonOnBench.find((p) => p.id === action.target)
+					: undefined;
 
 			console.log('assemble', actor);
+			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
+				dispatch(
+					concatDialogue([
+						`${actor.side === 'PLAYER' ? 'You' : 'Opponent'} withdrew ${
+							actor.name
+						} and sent out ${switchTarget.name}`,
+					])
+				);
+				return;
+			}
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])
@@ -133,5 +153,6 @@ export const useCheckAndAssembleActions = (
 		pokemonWithActions,
 		setUsedBalls,
 		setOpponentSide,
+		allPokemonOnBench,
 	]);
 };
