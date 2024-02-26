@@ -1,3 +1,5 @@
+import { TypeIcon } from '../../../../components/TypeIcon/TypeIcon';
+import { PokemonType } from '../../../../interfaces/PokemonType';
 import './NameAndSpriteSection.css';
 
 export const NameAndSpriteSection = ({
@@ -6,21 +8,29 @@ export const NameAndSpriteSection = ({
 	nickname,
 	owner,
 	level,
+	primaryType,
+	secondaryType,
 }: {
 	dexId: number;
 	name: string;
 	level: number;
 	owner?: string;
 	nickname?: string;
+	primaryType: PokemonType;
+	secondaryType?: PokemonType;
 }): JSX.Element => {
 	return (
 		<div className="nameAndSpriteSection">
 			<div>
 				<h1>
-					{name}{' '}
-					{nickname && nickname !== name.toUpperCase() && (
-						<span>: {nickname}</span>
-					)}
+					<div className="nameAndTypes">
+						<TypeIcon type={primaryType} />
+						{secondaryType && <TypeIcon type={secondaryType} />}
+						{name}{' '}
+						{nickname && nickname !== name.toUpperCase() && (
+							<span>: {nickname}</span>
+						)}
+					</div>
 				</h1>
 				{owner && <h3>Trainer: {owner}</h3>}
 				<h3>Level: {level}</h3>

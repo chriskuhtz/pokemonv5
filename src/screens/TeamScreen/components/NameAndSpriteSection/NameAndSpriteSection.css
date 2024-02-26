@@ -12,3 +12,9 @@
 	height: 30vh;
 	width: 30vh;
 }
+
+.nameAndTypes {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}

@@ -15,4 +15,5 @@ export type PokemonType =
 	| 'dragon'
 	| 'fighting'
 	| 'flying'
-	| 'poison';
+	| 'poison'
+	| 'bug';

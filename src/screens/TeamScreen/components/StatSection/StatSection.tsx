@@ -6,9 +6,11 @@ import {
 	Radar,
 	RadarChart,
 } from 'recharts';
+import { typeColors } from '../../../../constants/typeColors';
 import { calculateStat } from '../../../../functions/calculateStat';
 import { getBaseStatTotal } from '../../../../functions/getBaseStatTotal';
 import { Nature } from '../../../../interfaces/Natures';
+import { PokemonType } from '../../../../interfaces/PokemonType';
 import { Stat, StatObject } from '../../../../interfaces/StatObject';
 import './StatSection.css';
 
@@ -24,12 +26,14 @@ export const StatSection = ({
 	evs,
 	nature,
 	level,
+	type,
 }: {
 	baseStats: StatObject;
-	ivs: StatObject;
-	evs: StatObject;
+	ivs?: StatObject;
+	evs?: StatObject;
 	nature: Nature;
 	level: number;
+	type: PokemonType;
 }): JSX.Element => {
 	const bst = useMemo((): number | undefined => {
 		if (baseStats) {
@@ -44,8 +48,8 @@ export const StatSection = ({
 
 				value: calculateStat(
 					value,
-					ivs[key],
-					evs[key],
+					ivs?.[key] ?? 0,
+					evs?.[key] ?? 0,
 					nature,
 					50,
 					key as Stat,
@@ -62,8 +66,8 @@ export const StatSection = ({
 
 				value: calculateStat(
 					value,
-					ivs[key],
-					evs[key],
+					ivs?.[key] ?? 0,
+					evs?.[key] ?? 0,
 					nature,
 					level,
 					key as Stat
@@ -73,27 +77,28 @@ export const StatSection = ({
 	}, [baseStats, evs, ivs, level, nature]);
 
 	return (
-		<div className="statSection">
-			<RadarChart
-				cx={200}
-				cy={200}
-				outerRadius={130}
-				width={400}
-				height={400}
-				data={statChartData}
-			>
-				<PolarGrid />
-				<PolarAngleAxis dataKey="statName" />
-				<PolarRadiusAxis />
-				<Radar
-					dataKey="value"
-					stroke="#8884d8"
-					fill="#8884d8"
-					fillOpacity={0.6}
-				/>
-			</RadarChart>
-			<div>
-				<h2>Stats:</h2>
+		<div>
+			<h2>Stats:</h2>
+			<div className="statSection">
+				<RadarChart
+					cx={200}
+					cy={200}
+					outerRadius={130}
+					width={400}
+					height={400}
+					data={statChartData}
+				>
+					<PolarGrid />
+					<PolarAngleAxis dataKey="statName" />
+					<PolarRadiusAxis />
+					<Radar
+						dataKey="value"
+						stroke={typeColors[type]}
+						fill={typeColors[type]}
+						fillOpacity={0.6}
+					/>
+				</RadarChart>
+
 				<div className="statsGrid">
 					{bst && <h3>Total: {bst}</h3>}
 					<h3>Nature: {nature}</h3>

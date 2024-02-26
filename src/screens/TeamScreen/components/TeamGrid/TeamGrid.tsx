@@ -48,7 +48,7 @@ export const TeamGrid = ({ pokemon }: TeamGridProps): JSX.Element => {
 	}
 	if (playerFetchStatus === 'success' && team) {
 		return (
-			<div className="teamScreen">
+			<div className="teamGridAndFocused">
 				<div className="teamGrid">
 					{team.map((p) => (
 						<div key={p.id} onClick={() => setFocused(p)}>

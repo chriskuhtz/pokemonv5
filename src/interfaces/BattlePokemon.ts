@@ -1,5 +1,6 @@
 import { BattleAction } from './BattleAction';
 import { OwnedPokemon } from './OwnedPokemon';
+import { PokemonType } from './PokemonType';
 
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
@@ -13,4 +14,6 @@ export interface BattlePokemon extends OwnedPokemon {
 	side: 'PLAYER' | 'OPPONENT';
 	status?: 'BEING_CAUGHT';
 	base_experience: number;
+	primaryType: PokemonType;
+	secondaryType?: PokemonType;
 }

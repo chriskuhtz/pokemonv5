@@ -1,6 +1,8 @@
+import { TypeIcon } from '../../../../components/TypeIcon/TypeIcon';
 import { PokemonType } from '../../../../interfaces/PokemonType';
 import { Pill } from '../../../../ui_components/Pill/Pill';
 import './MovePill.css';
+
 export const MovePill = ({
 	name,
 	type,
@@ -16,9 +18,7 @@ export const MovePill = ({
 }) => {
 	return (
 		<Pill
-			leftSide={
-				<img src={`./typeIcons/${type}.png`} className="movePillTypeIcon" />
-			}
+			leftSide={<TypeIcon type={type} />}
 			center={
 				<div className="movePillCenter">
 					<strong key={name}>{name}</strong>

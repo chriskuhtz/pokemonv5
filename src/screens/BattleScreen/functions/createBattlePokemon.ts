@@ -44,6 +44,8 @@ export const useCreateBattlePokemonFromData = () => {
 			);
 
 			return {
+				primaryType: data.types[0].type.name,
+				secondaryType: data.types[1]?.type.name,
 				moves: (await getFirstFourMoves(data.id)).map((m) => m.name),
 				name: data.name,
 				dexId: data.id,
@@ -78,6 +80,8 @@ export const createBattlePokemonFromOwned = (
 	);
 
 	return {
+		primaryType: data.types[0].type.name,
+		secondaryType: data.types[1]?.type.name,
 		...existing,
 		name: data.name,
 		side: 'PLAYER',

@@ -4,3 +4,7 @@
 	border-radius: var(--rounded);
 	padding: 1rem;
 }
+.movesAndStats {
+	display: flex;
+	gap: 1rem;
+}
