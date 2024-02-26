@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
+import { isBattleAttack } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
-import { isBattleAttack } from '../../../interfaces/BattleAction';
 
 export const useCheckAndAssembleActions = (
 	playerSide: BattleSide | undefined,
@@ -39,6 +39,10 @@ export const useCheckAndAssembleActions = (
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])
 				);
+				return;
+			}
+			if (actor.nextAction?.type === 'MISSED_ATTACK') {
+				dispatch(concatDialogue([`${actor.name} missed`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {

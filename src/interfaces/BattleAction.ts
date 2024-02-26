@@ -10,7 +10,8 @@ interface BaseBattleAction {
 		| 'RUNAWAY_SUCCESS'
 		| 'RUNAWAY_FAILURE'
 		| 'TARGET_NOT_ON_FIELD'
-		| 'DEFEATED_TARGET';
+		| 'DEFEATED_TARGET'
+		| 'MISSED_ATTACK';
 	target: string;
 }
 interface BattleAttackAction extends BaseBattleAction {

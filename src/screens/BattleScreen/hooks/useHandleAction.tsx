@@ -1,7 +1,12 @@
 import { useCallback } from 'react';
 import { useLazyGetMoveDataByNameQuery } from '../../../api/pokeApi';
+import {
+	calculateDamage,
+	getDamageFactors,
+} from '../../../functions/calculateDamage';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
-import { isBattleAttack } from '../../../interfaces/BattleAction';
+import { makeAccuracyCheck } from '../../../functions/makeAccuracyCheck';
+import { BattleAction, isBattleAttack } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -63,6 +68,37 @@ export const useHandleAction = (
 					});
 				}
 				return;
+			}
+			//MISS
+			if (actor.nextAction?.type === 'MISSED_ATTACK') {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
 			}
 			//TARGET_NOT_ON_FIELD
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
@@ -217,14 +253,23 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(actor.nextAction) && target) {
-				const { power, damage_class } = await getMoveByName(
-					actor.nextAction.move
-				).unwrap();
-				const correctAttackStat =
-					damage_class.name === 'physical' ? actor.attack : actor.spatk;
+				const move = await getMoveByName(actor.nextAction.move).unwrap();
 
-				const damage = Math.round((correctAttackStat * (power ?? 0)) / 100);
+				let nextAction: BattleAction | undefined = undefined;
+
+				const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
+
+				if (!passesAccuracyCheck) {
+					nextAction = { type: 'MISSED_ATTACK', target: target.id };
+				}
+				const damage = passesAccuracyCheck
+					? calculateDamage(getDamageFactors(actor, move, target))
+					: 0;
 				const newTargetDamage = target.damage + damage;
+
+				if (newTargetDamage >= target.hp) {
+					nextAction = { type: 'DEFEATED_TARGET', target: target.id };
+				}
 
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -235,10 +280,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction:
-									newTargetDamage >= target.hp
-										? { type: 'DEFEATED_TARGET', target: target.id }
-										: undefined,
+								nextAction,
 							};
 						}),
 					});
@@ -276,10 +318,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction:
-									newTargetDamage >= target.hp
-										? { type: 'DEFEATED_TARGET', target: target.id }
-										: undefined,
+								nextAction,
 							};
 						}),
 					});
