@@ -112,6 +112,10 @@ export const calculateDamage = ({
 }: DamageFactors): number => {
 	const random = Math.floor((1 - Math.random() * 0.15) * 100) / 100;
 
+	if (movePower === 0 || typeFactor === 0) {
+		return 0;
+	}
+
 	const levelFactor = (2 * attackerLevel) / 5 + 2;
 	const baseDamage =
 		(levelFactor * movePower * (correctAttack / correctDefence)) / 50 + 2;
