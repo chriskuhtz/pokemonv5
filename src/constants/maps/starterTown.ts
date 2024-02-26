@@ -280,11 +280,15 @@ export const starterTown: MapState = {
 		{ dexId: 19, xp: 40 },
 		{ dexId: 19, xp: 60 },
 		//pidgey
-		{ dexId: 19, xp: 40 },
+		{ dexId: 16, xp: 40 },
 		{ dexId: 16, xp: 60 },
 		//pidgeotto
 		{ dexId: 17, xp: 200 },
 		//pikachu
 		{ dexId: 25, xp: 60 },
+		//teddiursa
+		{ dexId: 216, xp: 60 },
+		// poochyena
+		{ dexId: 261, xp: 60 },
 	],
 };

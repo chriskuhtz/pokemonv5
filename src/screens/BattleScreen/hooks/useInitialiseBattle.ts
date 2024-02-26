@@ -46,7 +46,8 @@ export const useInitialiseBattleSides = (
 					.map(async (p) => {
 						const data = await getPokemonByDexId(p.dexId).unwrap();
 
-						return createBattlePokemonFromOwned(p, data);
+						const pokemon = await createBattlePokemonFromOwned(p, data);
+						return pokemon;
 					})
 			);
 	}, [data, getPokemonByDexId]);

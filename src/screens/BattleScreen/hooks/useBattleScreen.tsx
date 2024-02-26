@@ -4,6 +4,7 @@ import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattleAction } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { MoveDto } from '../../../interfaces/Move';
 import { MapEncounter } from '../../../store/slices/MapSlice';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
@@ -14,7 +15,7 @@ import { useLeaveBattle } from './useLeaveBattle';
 export interface SelectableAction {
 	actionType: BattleAction['type'];
 	displayName: ReactNode;
-	moveName?: string;
+	move?: MoveDto;
 	disabled: boolean;
 }
 export interface BattleScreenProps {

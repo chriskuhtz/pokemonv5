@@ -79,7 +79,7 @@ export const BattleScreen = (): JSX.Element => {
 											}}
 										>
 											{isBattleAttack(p.nextAction)
-												? p.nextAction.move
+												? p.nextAction.move.name
 												: p.nextAction.type}{' '}
 											{mode === 'COLLECTING' && (
 												<IoIosCloseCircle

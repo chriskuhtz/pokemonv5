@@ -1,12 +1,16 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
-import { useLazyGetMoveDataByNameQuery } from '../../../api/pokeApi';
 import {
 	calculateDamage,
 	getDamageFactors,
 } from '../../../functions/calculateDamage';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { makeAccuracyCheck } from '../../../functions/makeAccuracyCheck';
-import { BattleAction, isBattleAttack } from '../../../interfaces/BattleAction';
+import {
+	BattleAction,
+	isBattleActionWithTarget,
+	isBattleAttack,
+} from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -22,7 +26,6 @@ export const useHandleAction = (
 	leaveBattle: (reason: BattleEndReason) => void
 ) => {
 	const dispatch = useAppDispatch();
-	const [getMoveByName] = useLazyGetMoveDataByNameQuery();
 
 	return useCallback(async () => {
 		if (!playerSide || !opponentSide) {
@@ -31,14 +34,17 @@ export const useHandleAction = (
 
 		if (pokemonWithActions.length > 0) {
 			const actor = pokemonWithActions[0];
-			console.log('handling action for', actor, pokemonWithActions);
-			const target = [...playerSide.field, ...opponentSide.field].find(
-				(p) => p.id === actor.nextAction?.target
-			);
-			dispatch(continueDialogue());
+			const action = actor.nextAction;
 
+			const target = isBattleActionWithTarget(action)
+				? [...playerSide.field, ...opponentSide.field].find(
+						(p) => p.id === action?.target
+				  )
+				: undefined;
+
+			dispatch(continueDialogue());
 			//no target
-			if (actor.nextAction && !target) {
+			if (isBattleActionWithTarget(action) && !target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -69,8 +75,13 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//MISS
-			if (actor.nextAction?.type === 'MISSED_ATTACK') {
+			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
+			if (
+				action &&
+				['MISSED_ATTACK', 'TARGET_NOT_ON_FIELD', 'RUNAWAY_FAILURE'].includes(
+					action.type
+				)
+			) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -99,9 +110,22 @@ export const useHandleAction = (
 						}),
 					});
 				}
+				return;
 			}
-			//TARGET_NOT_ON_FIELD
-			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
+			// EFFECTIVESS NOTIFICATIONS,
+			if (
+				action &&
+				['NO_EFFECT', 'NOT_VERY_EFFECTIVE', 'SUPER_EFFECTIVE'].includes(
+					action.type
+				) &&
+				target
+			) {
+				let nextAction: BattleAction | undefined = undefined;
+
+				if (target.damage >= target.hp) {
+					nextAction = { type: 'DEFEATED_TARGET', target: target.id };
+				}
+
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -111,7 +135,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: undefined,
+								nextAction,
 							};
 						}),
 					});
@@ -130,6 +154,7 @@ export const useHandleAction = (
 						}),
 					});
 				}
+				return;
 			}
 			//run away attempt
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
@@ -155,24 +180,6 @@ export const useHandleAction = (
 			//run away success
 			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
 				void leaveBattle('RUNAWAY');
-				return;
-			}
-			//run away failure
-			if (actor.nextAction?.type === 'RUNAWAY_FAILURE') {
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
 				return;
 			}
 			//catch attempt
@@ -253,24 +260,34 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(actor.nextAction) && target) {
-				const move = await getMoveByName(actor.nextAction.move).unwrap();
+				const { move } = actor.nextAction;
 
 				let nextAction: BattleAction | undefined = undefined;
 
 				const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
 
 				if (!passesAccuracyCheck) {
-					nextAction = { type: 'MISSED_ATTACK', target: target.id };
+					nextAction = { type: 'MISSED_ATTACK' };
 				}
-				const damage = passesAccuracyCheck
-					? calculateDamage(getDamageFactors(actor, move, target))
-					: 0;
-				const newTargetDamage = target.damage + damage;
 
-				if (newTargetDamage >= target.hp) {
+				const damageFactors = getDamageFactors(actor, move, target);
+				const attackDamage = passesAccuracyCheck
+					? calculateDamage(damageFactors)
+					: 0;
+				const newTargetDamage = target.damage + attackDamage;
+
+				if (newTargetDamage >= target.hp && damageFactors.typeFactor === 1) {
 					nextAction = { type: 'DEFEATED_TARGET', target: target.id };
 				}
-
+				if (damageFactors.typeFactor === 0) {
+					nextAction = { type: 'NO_EFFECT', target: target.id };
+				}
+				if (damageFactors.typeFactor > 1) {
+					nextAction = { type: 'SUPER_EFFECTIVE', target: target.id };
+				}
+				if (damageFactors.typeFactor < 1) {
+					nextAction = { type: 'NOT_VERY_EFFECTIVE', target: target.id };
+				}
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -371,11 +388,10 @@ export const useHandleAction = (
 				return;
 			}
 
-			console.log('not sure what to do', actor);
+			console.log('not sure what to do, bearing around', actor);
 		}
 	}, [
 		dispatch,
-		getMoveByName,
 		leaveBattle,
 		opponentSide,
 		playerSide,

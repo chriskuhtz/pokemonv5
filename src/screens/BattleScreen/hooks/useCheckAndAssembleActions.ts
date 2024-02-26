@@ -1,5 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { isBattleAttack } from '../../../interfaces/BattleAction';
+import {
+	isBattleActionWithTarget,
+	isBattleAttack,
+} from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
@@ -31,9 +34,11 @@ export const useCheckAndAssembleActions = (
 			currentDialogue.length === 0
 		) {
 			const actor = pokemonWithActions[0];
-			const target = allPokemonOnField.find(
-				(p) => p.id === actor.nextAction?.target
-			);
+			const action = actor.nextAction;
+			const target = isBattleActionWithTarget(action)
+				? allPokemonOnField.find((p) => p.id === action.target)
+				: undefined;
+
 			console.log('assemble', actor);
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
@@ -94,9 +99,25 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`${target?.name} fainted!`]));
 				return;
 			}
+			if (actor.nextAction?.type === 'NOT_VERY_EFFECTIVE') {
+				dispatch(
+					concatDialogue([`It is not very effective against ${target?.name}`])
+				);
+				return;
+			}
+			if (actor.nextAction?.type === 'SUPER_EFFECTIVE') {
+				dispatch(
+					concatDialogue([`It is very effective against ${target?.name}`])
+				);
+				return;
+			}
+			if (actor.nextAction?.type === 'NO_EFFECT') {
+				dispatch(concatDialogue([`It has no effect on ${target?.name}`]));
+				return;
+			}
 			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
 				dispatch(
-					concatDialogue([`${actor.name} used ${actor.nextAction?.move}`])
+					concatDialogue([`${actor.name} used ${actor.nextAction?.move.name}`])
 				);
 				return;
 			}

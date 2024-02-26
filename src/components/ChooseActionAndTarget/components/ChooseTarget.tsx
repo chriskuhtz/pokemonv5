@@ -1,18 +1,22 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { IoIosCloseCircle } from 'react-icons/io';
+import {
+	BattleAction,
+	isBattleActionWithTarget,
+} from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
-import { BattleAction } from '../../../interfaces/BattleAction';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,
 	actionName,
-	moveName,
+	move,
 	actor,
 }: {
 	actionName: BattleAction['type'];
-	moveName?: string;
+	move?: MoveDto;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
@@ -40,12 +44,17 @@ export const ChooseTarget = ({
 													? {
 															type: actionName,
 															target: c.id,
-															move: moveName,
+															move: move,
 													  }
-													: {
+													: isBattleActionWithTarget({
 															type: actionName,
+													  })
+													? {
+															type: actionName,
+															//@ts-expect-error this is correct
 															target: c.id,
-													  },
+													  }
+													: { type: actionName },
 										});
 									}}
 									content={c.name}

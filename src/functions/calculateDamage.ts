@@ -30,12 +30,6 @@ export const getTypeFactor = (
 
 	const { none, superEffective, notvery } = typeEffectivenessChart[moveType];
 
-	console.log(
-		moveType,
-		primaryType,
-		secondaryType,
-		typeEffectivenessChart[moveType]
-	);
 	if (
 		none.includes(primaryType) ||
 		(secondaryType && none.includes(secondaryType))

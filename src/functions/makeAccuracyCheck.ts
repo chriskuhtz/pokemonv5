@@ -10,7 +10,8 @@ export const makeAccuracyCheck = (
 		return true;
 	}
 	const random = Math.random();
-	const totalAccuracy = move.accuracy / 100;
+	const totalAccuracy =
+		(move.accuracy / 100) * actor.evasiveness * target.evasiveness;
 
 	if (random < totalAccuracy) {
 		return true;

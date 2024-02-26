@@ -1,4 +1,5 @@
 import { BattleAction } from './BattleAction';
+import { MoveDto } from './Move';
 import { OwnedPokemon } from './OwnedPokemon';
 import { PokemonType } from './PokemonType';
 
@@ -16,4 +17,6 @@ export interface BattlePokemon extends OwnedPokemon {
 	base_experience: number;
 	primaryType: PokemonType;
 	secondaryType?: PokemonType;
+	moves: MoveDto[];
+	evasiveness: number;
 }

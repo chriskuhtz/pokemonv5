@@ -58,7 +58,7 @@ export const PokemonSelectionScreen = ({
 											xp: 125,
 											damage: 0,
 											ownerId: data.playerId,
-											moves: (
+											moveNames: (
 												await getFirstFourMoves(c)
 											).map((move) => move.name),
 										},

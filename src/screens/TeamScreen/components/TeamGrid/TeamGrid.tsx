@@ -23,8 +23,8 @@ export const TeamGrid = ({ pokemon }: TeamGridProps): JSX.Element => {
 					.filter((p) => p.onTeam)
 					.map(async (p) => {
 						const data = await getPokemonByDexId(p.dexId).unwrap();
-
-						return createBattlePokemonFromOwned(p, data);
+						const constructedMon = await createBattlePokemonFromOwned(p, data);
+						return constructedMon;
 					})
 			);
 	}, [getPokemonByDexId, pokemon]);

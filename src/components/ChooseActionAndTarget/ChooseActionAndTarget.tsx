@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
+import { BattleAction } from '../../interfaces/BattleAction';
+import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
-import { BattleAction } from '../../interfaces/BattleAction';
 
 export const ChooseActionAndTarget = ({
 	actor,
@@ -21,13 +22,13 @@ export const ChooseActionAndTarget = ({
 	const [actionName, setActionName] = useState<
 		BattleAction['type'] | undefined
 	>();
-	const [moveName, setMoveName] = useState<string | undefined>();
+	const [move, setMove] = useState<MoveDto | undefined>();
 
 	useEffect(() => {
 		if (actionName === 'RUNAWAY_ATTEMPT') {
 			selectAction({
 				...actor,
-				nextAction: { type: 'RUNAWAY_ATTEMPT', target: actor.id },
+				nextAction: { type: 'RUNAWAY_ATTEMPT' },
 			});
 			setActionName(undefined);
 		}
@@ -44,17 +45,17 @@ export const ChooseActionAndTarget = ({
 		);
 	}
 
-	if (actionName === 'ATTACK' && !moveName) {
+	if (actionName === 'ATTACK' && !move) {
 		return (
 			<ChooseMove
 				open={actionName === 'ATTACK'}
 				name={actor.name}
-				setMoveName={setMoveName}
-				availableActions={actor.moves.map((m) => ({
-					displayName: m,
+				setMove={setMove}
+				availableMoves={actor.moves.map((m) => ({
+					displayName: m.name,
 					actionType: 'ATTACK',
 					disabled: false,
-					moveName: m,
+					move: m,
 				}))}
 			/>
 		);
@@ -63,11 +64,11 @@ export const ChooseActionAndTarget = ({
 	return (
 		<ChooseTarget
 			actionName={actionName}
-			moveName={moveName}
+			move={move}
 			selectAction={(x) => {
 				selectAction(x);
 				setActionName(undefined);
-				setMoveName(undefined);
+				setMove(undefined);
 			}}
 			availableTargets={availableTargets}
 			actor={actor}

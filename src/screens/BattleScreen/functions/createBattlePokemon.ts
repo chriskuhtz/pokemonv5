@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
 import { v4 } from 'uuid';
+import { fetchMove } from '../../../api/pokeApiFunctions/fetchMove';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { calculateStat } from '../../../functions/calculateStat';
 import { useGetFirstFourMoves } from '../../../hooks/useGetFirstFourMoves';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { MoveDto } from '../../../interfaces/Move';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { PokemonData, StatInfo } from '../../../interfaces/PokemonData';
 import { StatObject } from '../../../interfaces/StatObject';
@@ -43,10 +45,13 @@ export const useCreateBattlePokemonFromData = () => {
 				level
 			);
 
+			const firstFourMoves = await getFirstFourMoves(data.id);
+
 			return {
 				primaryType: data.types[0].type.name,
 				secondaryType: data.types[1]?.type.name,
-				moves: (await getFirstFourMoves(data.id)).map((m) => m.name),
+				moves: firstFourMoves,
+				moveNames: firstFourMoves.map((m) => m.name),
 				name: data.name,
 				dexId: data.id,
 				damage: 0,
@@ -61,16 +66,17 @@ export const useCreateBattlePokemonFromData = () => {
 				defence,
 				spdef,
 				speed,
+				evasiveness: 1,
 			};
 		},
 		[getFirstFourMoves]
 	);
 };
 
-export const createBattlePokemonFromOwned = (
+export const createBattlePokemonFromOwned = async (
 	existing: OwnedPokemon,
 	data: PokemonData
-): BattlePokemon => {
+): Promise<BattlePokemon> => {
 	const xp = existing.xp;
 	const { level } = calculateLevelData(xp);
 
@@ -78,6 +84,8 @@ export const createBattlePokemonFromOwned = (
 		data.stats,
 		level
 	);
+
+	const moves = await Promise.all(existing.moveNames.map((m) => fetchMove(m)));
 
 	return {
 		primaryType: data.types[0].type.name,
@@ -92,5 +100,7 @@ export const createBattlePokemonFromOwned = (
 		defence,
 		spdef,
 		speed,
+		evasiveness: 1,
+		moves: moves.filter((m) => m !== undefined) as MoveDto[],
 	};
 };
