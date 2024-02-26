@@ -1,5 +1,6 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
+import { PokemonType, typeEffectivenessChart } from '../interfaces/PokemonType';
 import { calculateLevelData } from './calculateLevelData';
 
 export interface DamageFactors {
@@ -20,17 +21,60 @@ export interface DamageFactors {
 	teraShieldFactor: number;
 }
 
+export const getTypeFactor = (
+	moveType: PokemonType,
+	primaryType: PokemonType,
+	secondaryType?: PokemonType
+): number => {
+	let typeFactor = 1;
+
+	const { none, superEffective, notvery } = typeEffectivenessChart[moveType];
+
+	console.log(
+		moveType,
+		primaryType,
+		secondaryType,
+		typeEffectivenessChart[moveType]
+	);
+	if (
+		none.includes(primaryType) ||
+		(secondaryType && none.includes(secondaryType))
+	) {
+		typeFactor = 0;
+		return typeFactor;
+	}
+	if (superEffective.includes(primaryType)) {
+		typeFactor *= 2;
+	}
+	if (secondaryType && superEffective.includes(secondaryType)) {
+		typeFactor *= 2;
+	}
+	if (notvery.includes(primaryType)) {
+		typeFactor /= 2;
+	}
+	if (secondaryType && notvery.includes(secondaryType)) {
+		typeFactor /= 2;
+	}
+
+	return typeFactor;
+};
+
 export const getDamageFactors = (
 	actor: BattlePokemon,
 	move: MoveDto,
 	target: BattlePokemon
 ): DamageFactors => {
 	const { level } = calculateLevelData(actor.xp);
-	const { damage_class, power } = move;
+	const { damage_class, power, type } = move;
+	const moveType = type.name;
 	const correctAttack =
 		damage_class.name === 'physical' ? actor.attack : actor.spatk;
 	const correctDefence =
 		damage_class.name === 'physical' ? target.defence : target.spdef;
+	const stabFactor =
+		moveType === actor.primaryType || moveType === actor.secondaryType
+			? 1.5
+			: 1;
 
 	return {
 		attackerLevel: level,
@@ -42,8 +86,12 @@ export const getDamageFactors = (
 		weatherFactor: 1,
 		glaiveRush: 1,
 		criticalFactor: 1,
-		stabFactor: 1,
-		typeFactor: 1,
+		stabFactor,
+		typeFactor: getTypeFactor(
+			moveType,
+			target.primaryType,
+			target.secondaryType
+		),
 		burnFactor: 1,
 		otherFactor: 1,
 		zMoveFactor: 1,
