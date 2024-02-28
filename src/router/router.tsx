@@ -80,7 +80,8 @@ export const router = createBrowserRouter([
 	{ path: RoutesEnum.market, element: <MarketScreen /> },
 	{
 		path: RoutesEnum.newGame,
-		element: <NewGameProcess />,
+		element:
+			import.meta.env.MODE === 'development' ? <NewGameProcess /> : <></>,
 	},
 	{
 		path: RoutesEnum.starterSelection,
