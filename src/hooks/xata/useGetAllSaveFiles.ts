@@ -8,7 +8,7 @@ export const staticSaveData: SaveFile = {
 	username: 'generic username',
 	position: {
 		x: 0,
-		y: 0,
+		y: 1,
 		forwardFoot: 0,
 		mapId: 'oaks-lab',
 		orientation: 0,
