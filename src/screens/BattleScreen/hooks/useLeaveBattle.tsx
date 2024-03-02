@@ -21,6 +21,7 @@ export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	usedBalls: number,
+	usedPotions: number,
 	trainerId?: UniqueOccupantIds
 ) => {
 	const saveFile = useGetCurrentSaveFile();
@@ -81,7 +82,7 @@ export const useLeaveBattle = (
 						? { [`${trainerId}`]: true }
 						: undefined,
 				pokemonUpdates: updatedOwnedPokemon,
-				inventoryChanges: { 'poke-ball': -usedBalls },
+				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
 				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
 				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
@@ -114,6 +115,7 @@ export const useLeaveBattle = (
 			trainerId,
 			updatedOwnedPokemon,
 			usedBalls,
+			usedPotions,
 		]
 	);
 };

@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
+import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
 import {
 	calculateDamage,
 	getDamageFactors,
@@ -168,13 +169,16 @@ export const useHandleAction = (
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
+							if (p.id !== target.id) {
 								return p;
 							}
 
 							return {
-								//@ts-expect-error : See typecheck in condition
-								...applyHealingItemToPokemon(p, action.item),
+								...applyHealingItemToPokemon(
+									p,
+									//@ts-expect-error : See typecheck in condition
+									action.item
+								),
 								nextAction: undefined,
 							};
 						}),

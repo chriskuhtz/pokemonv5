@@ -36,6 +36,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [usedBalls, setUsedBalls] = useState<number>(0);
+	const [usedPotions, setUsedPotions] = useState<number>(0);
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
 
@@ -48,6 +49,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		playerSide,
 		opponentSide,
 		usedBalls,
+		usedPotions,
 		trainerId,
 		nextPokemonWithoutAction
 	);
@@ -102,6 +104,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		playerSide,
 		opponentSide,
 		usedBalls,
+		usedPotions,
 		trainerId
 	);
 
@@ -127,7 +130,8 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		pokemonWithActions,
 		mode,
 		setOpponentSide,
-		setUsedBalls
+		setUsedBalls,
+		setUsedPotions
 	);
 	//check to leave battle
 	useEffect(() => {

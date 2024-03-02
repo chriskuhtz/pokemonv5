@@ -9,6 +9,7 @@ export const useAvailableActions = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	usedBalls: number,
+	usedPotions: number,
 	trainerId: string | undefined,
 	nextPokemonWithoutAction: BattlePokemon | undefined
 ) => {
@@ -16,8 +17,10 @@ export const useAvailableActions = (
 		if (!saveFile || !playerSide || !opponentSide) {
 			return [];
 		}
-		const catchingDisabled =
+		const noMorePokeBalls =
 			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
+		const noMorePotions =
+			usedPotions >= saveFile.inventory['potion'] || !!trainerId;
 
 		const switchTargets =
 			playerSide?.bench.filter((benchmon) =>
@@ -30,6 +33,7 @@ export const useAvailableActions = (
 			) ?? [];
 		const healingTargets = playerSide.field.filter((p) => p.damage > 0);
 		return [
+			//ATTACK
 			{
 				actionType: 'ATTACK',
 				displayName: 'Attack',
@@ -41,21 +45,23 @@ export const useAvailableActions = (
 					...opponentSide.field,
 				],
 			},
+			//RUN AWAY
 			{
 				actionType: 'RUNAWAY_ATTEMPT',
 				displayName: 'Run Away',
 				disabled: !!trainerId,
 				availableTargets: [],
 			},
+			//CATCH
 			{
 				actionType: 'CATCH_ATTEMPT',
 				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						Throw Pokeball (
-						{!catchingDisabled && saveFile.inventory['poke-ball'] - usedBalls})
+						{!noMorePokeBalls && saveFile.inventory['poke-ball'] - usedBalls})
 					</div>
 				),
-				disabled: catchingDisabled,
+				disabled: noMorePokeBalls,
 				availableTargets: opponentSide.field,
 			},
 			{
@@ -66,8 +72,13 @@ export const useAvailableActions = (
 			},
 			{
 				actionType: 'HEALING_ITEM',
-				displayName: 'use Potion',
-				disabled: healingTargets.length <= 0,
+				displayName: (
+					<div style={{ display: 'flex', alignItems: 'center' }}>
+						use Potion (
+						{!noMorePotions && saveFile.inventory['potion'] - usedBalls})
+					</div>
+				),
+				disabled: healingTargets.length <= 0 || noMorePotions,
 				availableTargets: healingTargets,
 			},
 		];
@@ -78,5 +89,6 @@ export const useAvailableActions = (
 		saveFile,
 		trainerId,
 		usedBalls,
+		usedPotions,
 	]);
 };
