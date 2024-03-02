@@ -33,7 +33,12 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			'Maybe you could even beat Brock.',
 		],
 		sprite: '093',
-		team: [{ dexId: 399, xp: 100 }],
+		team: [
+			{ dexId: 399, xp: 100 },
+			{ dexId: 15, xp: 100 },
+			{ dexId: 400, xp: 300 },
+		],
+		activePokemonPerside: 1,
 		questCondition: {
 			id: 'talkToNurseJoy',
 			status: 'completed',
@@ -85,6 +90,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		sprite: SpriteEnum['brock'],
 		team: [{ dexId: 95, xp: 1000 }],
+		activePokemonPerside: 1,
 		questCondition: {
 			id: 'talkToNurseJoy',
 			status: 'completed',

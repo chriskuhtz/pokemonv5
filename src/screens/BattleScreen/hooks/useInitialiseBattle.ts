@@ -14,11 +14,10 @@ import { BattleScreenProps } from './useBattleScreen';
 export const useInitialiseBattleSides = (
 	data: SaveFile,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	activePokemonPerSide: number
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
 ) => {
 	const { state } = useLocation();
-	const { opponents } = state as BattleScreenProps;
+	const { opponents, activePokemonPerSide } = state as BattleScreenProps;
 	const createBattlePokemonFromData = useCreateBattlePokemonFromData();
 
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();

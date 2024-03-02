@@ -33,7 +33,7 @@ export const useOverworldEvent = () => {
 				navigate(RoutesEnum.battle, {
 					state: {
 						opponents: opponents,
-						activePokemonPerside: opponents.length,
+						activePokemonPerSide: opponents.length,
 					},
 				});
 			}

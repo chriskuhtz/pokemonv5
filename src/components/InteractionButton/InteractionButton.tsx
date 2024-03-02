@@ -95,6 +95,7 @@ export const InteractionButton = () => {
 							state: {
 								opponents: focusedOccupant.team,
 								trainerId: focusedOccupant.id,
+								activePokemonPerSide: focusedOccupant.activePokemonPerside,
 							},
 						});
 					}
