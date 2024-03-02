@@ -16,7 +16,8 @@ interface BaseBattleAction {
 		| 'MISSED_ATTACK'
 		| 'NOT_VERY_EFFECTIVE'
 		| 'SUPER_EFFECTIVE'
-		| 'NO_EFFECT';
+		| 'NO_EFFECT'
+		| 'HEALING_ITEM';
 }
 
 interface BattleActionWithTarget extends BaseBattleAction {
@@ -40,10 +41,16 @@ interface BattleAttackAction extends BaseBattleAction {
 	move: MoveDto;
 	target: string;
 }
+interface BattleItemAction extends BaseBattleAction {
+	type: 'HEALING_ITEM';
+	item: string;
+	target: string;
+}
 export type BattleAction =
 	| BaseBattleAction
 	| BattleAttackAction
-	| BattleActionWithTarget;
+	| BattleActionWithTarget
+	| BattleItemAction;
 
 export function isBattleActionWithTarget(
 	x: BattleAction | undefined
@@ -61,6 +68,7 @@ export function isBattleActionWithTarget(
 			'NOT_VERY_EFFECTIVE',
 			'SUPER_EFFECTIVE',
 			'NO_EFFECT',
+			'HEALING_ITEM',
 		].includes(x?.type)
 	);
 }

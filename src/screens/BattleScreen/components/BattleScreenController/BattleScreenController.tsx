@@ -1,6 +1,5 @@
 import { ChooseActionAndTarget } from '../../../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { ChooseRefill } from '../../../../components/ChooseActionAndTarget/components/ChooseRefill';
-import { isBattleActionWithTarget } from '../../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../../store/selectors/dialogue/selectCurrentDialogue';
 import { useAppSelector } from '../../../../store/storeHooks';
@@ -11,7 +10,6 @@ import { SelectableAction } from '../../hooks/useBattleScreen';
 export const BattleScreenController = ({
 	nextPokemonWithoutAction,
 	mode,
-	opponentSide,
 	playerSide,
 	availableActions,
 	selectAction,
@@ -22,7 +20,6 @@ export const BattleScreenController = ({
 }: {
 	nextPokemonWithoutAction: BattlePokemon | undefined;
 	mode: BattleMode;
-	opponentSide: BattleSide;
 	playerSide: BattleSide;
 	availableActions: SelectableAction[];
 	hasOpenSpots: boolean;
@@ -45,17 +42,6 @@ export const BattleScreenController = ({
 		return (
 			<ChooseActionAndTarget
 				actor={nextPokemonWithoutAction}
-				availableTargets={opponentSide?.field ?? []}
-				availableSwitches={
-					playerSide?.bench.filter((benchmon) =>
-						playerSide.field.every(
-							(fieldmon) =>
-								fieldmon.nextAction === undefined ||
-								(isBattleActionWithTarget(fieldmon.nextAction) &&
-									fieldmon.nextAction.target !== benchmon.id)
-						)
-					) ?? []
-				}
 				availableActions={availableActions}
 				selectAction={selectAction}
 			/>

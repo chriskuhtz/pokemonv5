@@ -8,8 +8,8 @@ import { RoutesEnum } from '../../router/router';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
-import { useBattleScreen } from './hooks/useBattleScreen';
 import { BattleScreenController } from './components/BattleScreenController/BattleScreenController';
+import { useBattleScreen } from './hooks/useBattleScreen';
 
 export interface BattleSide {
 	field: BattlePokemon[];
@@ -106,7 +106,6 @@ export const BattleScreen = ({
 				<BattleScreenController
 					nextPokemonWithoutAction={nextPokemonWithoutAction}
 					mode={mode}
-					opponentSide={opponentSide}
 					playerSide={playerSide}
 					availableActions={availableActions}
 					hasOpenSpots={hasOpenSpots}

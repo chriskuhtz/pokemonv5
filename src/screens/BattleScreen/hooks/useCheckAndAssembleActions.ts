@@ -59,6 +59,13 @@ export const useCheckAndAssembleActions = (
 				);
 				return;
 			}
+			if (action?.type === 'HEALING_ITEM' && target) {
+				dispatch(
+					//@ts-expect-error : See typecheck in condition
+					concatDialogue([`You gave a ${action.item} to ${actor.name}`])
+				);
+				return;
+			}
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])

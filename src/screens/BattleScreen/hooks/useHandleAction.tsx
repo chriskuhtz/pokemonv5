@@ -35,6 +35,7 @@ export const useHandleAction = (
 		if (pokemonWithActions.length > 0) {
 			const actor = pokemonWithActions[0];
 			const action = actor.nextAction;
+			console.log(action);
 
 			const target = isBattleActionWithTarget(action)
 				? [...playerSide.field, ...opponentSide.field].find(
@@ -161,7 +162,29 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//SEND_OUT
+			//Healing Item
+			if (action?.type === 'HEALING_ITEM' && target) {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+
+							return {
+								//@ts-expect-error : See typecheck in condition
+								...applyHealingItemToPokemon(p, action.item),
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					console.error('Opponent Healing not implemented yet');
+				}
+				return;
+			}
 
 			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
 			if (

@@ -9,6 +9,7 @@ import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectC
 import { MapEncounter } from '../../../store/slices/MapSlice';
 import { useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { useAvailableActions } from './useAvailableActions';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
@@ -19,7 +20,9 @@ export interface SelectableAction {
 	displayName: ReactNode;
 	move?: MoveDto;
 	disabled: boolean;
+	availableTargets: BattlePokemon[];
 }
+
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
 	trainerId?: UniqueOccupantIds;
@@ -36,38 +39,18 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
 
-	const availableActions: SelectableAction[] = useMemo(() => {
-		if (!saveFile) {
-			return [];
-		}
-		const catchingDisabled =
-			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
+	const nextPokemonWithoutAction = useMemo(() => {
+		return playerSide?.field.find((p) => p.nextAction === undefined);
+	}, [playerSide]);
 
-		const switchingDisabled = !playerSide || playerSide?.bench.length < 1;
-		return [
-			{ actionType: 'ATTACK', displayName: 'Attack', disabled: false },
-			{
-				actionType: 'RUNAWAY_ATTEMPT',
-				displayName: 'Run Away',
-				disabled: !!trainerId,
-			},
-			{
-				actionType: 'CATCH_ATTEMPT',
-				displayName: (
-					<div style={{ display: 'flex', alignItems: 'center' }}>
-						Throw Pokeball (
-						{!catchingDisabled && saveFile.inventory['poke-ball'] - usedBalls})
-					</div>
-				),
-				disabled: catchingDisabled,
-			},
-			{
-				actionType: 'SWITCH',
-				displayName: 'Switch',
-				disabled: switchingDisabled,
-			},
-		];
-	}, [playerSide, saveFile, trainerId, usedBalls]);
+	const availableActions = useAvailableActions(
+		saveFile,
+		playerSide,
+		opponentSide,
+		usedBalls,
+		trainerId,
+		nextPokemonWithoutAction
+	);
 
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {
@@ -130,10 +113,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		setOpponentSide,
 		leaveBattle
 	);
-
-	const nextPokemonWithoutAction = useMemo(() => {
-		return playerSide?.field.find((p) => p.nextAction === undefined);
-	}, [playerSide]);
 
 	//initialise Battle
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(

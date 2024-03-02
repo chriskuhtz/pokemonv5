@@ -10,14 +10,10 @@ import { ChooseTarget } from './components/ChooseTarget';
 
 export const ChooseActionAndTarget = ({
 	actor,
-	availableTargets,
 	availableActions,
-	availableSwitches,
 	selectAction,
 }: {
 	actor: BattlePokemon;
-	availableTargets: BattlePokemon[];
-	availableSwitches: BattlePokemon[];
 	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
 }): JSX.Element => {
@@ -58,23 +54,8 @@ export const ChooseActionAndTarget = ({
 					actionType: 'ATTACK',
 					disabled: false,
 					move: m,
+					availableTargets: [],
 				}))}
-			/>
-		);
-	}
-
-	if (actionName === 'SWITCH') {
-		return (
-			<ChooseTarget
-				actionName={actionName}
-				move={move}
-				selectAction={(x) => {
-					selectAction(x);
-					setActionName(undefined);
-					setMove(undefined);
-				}}
-				availableTargets={availableSwitches}
-				actor={actor}
 			/>
 		);
 	}
@@ -84,11 +65,15 @@ export const ChooseActionAndTarget = ({
 			actionName={actionName}
 			move={move}
 			selectAction={(x) => {
+				console.log(x);
 				selectAction(x);
 				setActionName(undefined);
 				setMove(undefined);
 			}}
-			availableTargets={availableTargets}
+			availableTargets={
+				availableActions.find((a) => a.actionType === actionName)
+					?.availableTargets ?? []
+			}
 			actor={actor}
 		/>
 	);

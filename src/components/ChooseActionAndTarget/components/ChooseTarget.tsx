@@ -21,6 +21,35 @@ export const ChooseTarget = ({
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
 }) => {
+	const determineNextAction = (c: BattlePokemon) => {
+		if (actionName === 'ATTACK') {
+			return {
+				type: actionName,
+				target: c.id,
+				move: move,
+			};
+		}
+		if (actionName === 'HEALING_ITEM') {
+			return {
+				type: actionName,
+				target: c.id,
+				item: 'potion',
+			};
+		}
+		if (
+			isBattleActionWithTarget({
+				type: actionName,
+			})
+		) {
+			return {
+				type: actionName,
+
+				target: c.id,
+			};
+		}
+
+		return { type: actionName };
+	};
 	if (actionName) {
 		return (
 			<Banner
@@ -39,22 +68,7 @@ export const ChooseTarget = ({
 									onClick={() => {
 										selectAction({
 											...actor,
-											nextAction:
-												actionName === 'ATTACK'
-													? {
-															type: actionName,
-															target: c.id,
-															move: move,
-													  }
-													: isBattleActionWithTarget({
-															type: actionName,
-													  })
-													? {
-															type: actionName,
-															//@ts-expect-error this is correct
-															target: c.id,
-													  }
-													: { type: actionName },
+											nextAction: determineNextAction(c),
 										});
 									}}
 									content={c.name}
