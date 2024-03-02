@@ -1,4 +1,5 @@
 import {
+	House,
 	Occupant,
 	OccupantWithDialogue,
 	OccupantWithPossibleOnClick,
@@ -8,6 +9,9 @@ import {
 
 export function isTrainer(x: Occupant): x is Trainer {
 	return ['TRAINER'].includes(x.type);
+}
+export function isHouse(x: Occupant): x is House {
+	return ['HOUSE'].includes(x.type);
 }
 export function isOccupantWithDialogue(x: Occupant): x is OccupantWithDialogue {
 	return ['NPC', 'HEALER', 'MERCHANT', 'TRAINER'].includes(x.type);

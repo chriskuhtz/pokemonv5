@@ -15,6 +15,7 @@ export type OccupantType =
 	| 'OBSTACLE'
 	| 'INVISIBLE_BLOCKER'
 	| 'LARGE_OBSTACLE'
+	| 'HOUSE'
 	| 'TRAINER';
 
 export interface BaseOccupant {
@@ -73,11 +74,15 @@ export interface Obstacle extends BaseOccupant {
 }
 export interface LargeObstacle extends BaseOccupant {
 	sprite: string;
-	type: 'LARGE_OBSTACLE';
+	type: 'LARGE_OBSTACLE' | 'HOUSE';
 	height: number;
 	width: number;
 	clearanceBehind?: number;
 	onClick?: OverworldEvent;
+}
+export interface House extends LargeObstacle {
+	type: 'HOUSE';
+	doorPosition: { x: number; y: number };
 }
 export interface InvisibleBlocker extends BaseOccupant {
 	type: 'INVISIBLE_BLOCKER';
@@ -96,6 +101,7 @@ export type OccupantWithSprite =
 	| Healer
 	| Obstacle
 	| LargeObstacle
+	| House
 	| Trainer;
 export type Occupant =
 	| Npc
@@ -106,4 +112,5 @@ export type Occupant =
 	| Obstacle
 	| InvisibleBlocker
 	| LargeObstacle
+	| House
 	| Trainer;

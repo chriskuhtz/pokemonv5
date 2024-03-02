@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { checkQuestCondition } from '../../../functions/checkQuestCondition';
+import { getBlockersForLargeOccupants } from '../../../functions/getBlockersForLargeObstacles';
 import { selectObstacles } from '../map/selectObstacles';
 import { selectOccupants } from '../map/selectOccupants';
 import { selectHandledOccupants } from '../saveFile/selectHandledOccupants';
 import { selectQuests } from '../saveFile/selectQuests';
-import { getBlockersForLargeOccupants } from '../../../functions/getBlockersForLargeObstacles';
 
 export const selectActiveOccupants = createSelector(
 	[selectOccupants, selectQuests, selectObstacles, selectHandledOccupants],
@@ -31,7 +31,7 @@ export const selectActiveOccupants = createSelector(
 		return [
 			...activeOccupants,
 			...obstacles,
-			...getBlockersForLargeOccupants(activeOccupants),
+			...getBlockersForLargeOccupants([...obstacles, ...activeOccupants]),
 		];
 	}
 );

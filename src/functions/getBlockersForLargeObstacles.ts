@@ -1,8 +1,9 @@
 import {
-	Occupant,
 	InvisibleBlocker,
+	Occupant,
 } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { Position } from '../screens/OverworldScreen/interfaces/Position';
+import { isHouse } from './typeguards/isOccupantWithDialogue';
 
 export const getBlockersForLargeOccupants = (
 	occupants: Occupant[]
@@ -10,7 +11,7 @@ export const getBlockersForLargeOccupants = (
 	const res: InvisibleBlocker[] = [];
 
 	occupants.forEach((occupant) => {
-		if (occupant.type !== 'LARGE_OBSTACLE') {
+		if (occupant.type !== 'LARGE_OBSTACLE' && occupant.type !== 'HOUSE') {
 			return;
 		}
 		const positionsArray: Position[] = [];
@@ -33,7 +34,15 @@ export const getBlockersForLargeOccupants = (
 			i--;
 		}
 
-		positionsArray.forEach((p) =>
+		positionsArray.forEach((p) => {
+			//dont block house door
+			if (
+				isHouse(occupant) &&
+				p.y === occupant.doorPosition.y &&
+				p.x === occupant.doorPosition.x
+			) {
+				return;
+			}
 			res.push({
 				type: 'INVISIBLE_BLOCKER',
 				id: occupant.id,
@@ -41,10 +50,10 @@ export const getBlockersForLargeOccupants = (
 				position: {
 					...p,
 					orientation: 0,
-					mapId: 'starter-town',
+					mapId: occupant.position.mapId,
 				},
-			})
-		);
+			});
+		});
 	});
 
 	return res;
