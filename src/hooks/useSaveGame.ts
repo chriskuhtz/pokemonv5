@@ -29,6 +29,7 @@ export const useSaveGame = () => {
 			handledOccupants,
 			fundsUpdate,
 			newBadge,
+			teleportToLastHealer,
 		}: {
 			currentPosition?: CharacterPosition;
 			inventoryChanges?: Partial<Inventory>;
@@ -40,6 +41,7 @@ export const useSaveGame = () => {
 			handledOccupants?: Partial<Record<UniqueOccupantIds, boolean>>;
 			fundsUpdate?: number;
 			newBadge?: GymBadge;
+			teleportToLastHealer?: boolean;
 		}) => {
 			if (!data) {
 				return;
@@ -49,8 +51,19 @@ export const useSaveGame = () => {
 			let updatedInventory = inventoryChanges
 				? joinInventories(data.inventory, inventoryChanges)
 				: data.inventory;
-			const updatedPosition =
-				portalEvent?.to ?? currentPosition ?? data.position;
+			const updatedPosition = () => {
+				if (portalEvent?.to) {
+					return portalEvent?.to;
+				}
+				if (teleportToLastHealer) {
+					return data.lastHealPosition;
+				}
+				if (currentPosition) {
+					return currentPosition;
+				}
+
+				return data.position;
+			};
 
 			//if there are updates, filter out all mons whose ids are included in the updates, then concat updates
 			let updatedPokemon = pokemonUpdates
@@ -85,9 +98,12 @@ export const useSaveGame = () => {
 			await updateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
-				position: updatedPosition,
+				position: updatedPosition(),
 				quests: { ...data.quests, ...questUpdates },
 				handledOccupants: { ...data.handledOccupants, ...handledOccupants },
+				lastHealPosition: visitedNurse
+					? updatedPosition()
+					: data.lastHealPosition,
 				pokemon: updatedPokemon,
 				pokedex: updatedDex,
 				money: updatedMoney,

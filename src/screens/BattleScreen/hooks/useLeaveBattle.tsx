@@ -10,9 +10,8 @@ import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
-import { selectNearestHealer } from '../../../store/selectors/combination/selectNearestHealer';
 import { setDialogue } from '../../../store/slices/dialogueSlice';
-import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
+import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 
 export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
@@ -38,7 +37,6 @@ export const useLeaveBattle = (
 			...opponentSide.defeated.map((p) => ({ dexId: p.dexId, status: 'seen' })),
 		] as DexEntry[];
 	}, [opponentSide, playerSide]);
-	const nearestHealer = useAppSelector(selectNearestHealer);
 	const trainer = useMemo(() => {
 		const possibleOccupant = trainerId && UniqueOccupantRecord[trainerId];
 
@@ -83,13 +81,10 @@ export const useLeaveBattle = (
 						: undefined,
 				pokemonUpdates: updatedOwnedPokemon,
 				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
-				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
+				visitedNurse: reason === 'LOSS',
 				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
-				currentPosition:
-					reason === 'LOSS' && nearestHealer
-						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }
-						: undefined,
+				teleportToLastHealer: reason === 'LOSS',
 			}).then(() => {
 				navigate(RoutesEnum.overworld);
 				if (reason === 'RUNAWAY') {
@@ -109,7 +104,6 @@ export const useLeaveBattle = (
 			allDexUpdates,
 			dispatch,
 			navigate,
-			nearestHealer,
 			save,
 			trainer,
 			trainerId,

@@ -13,6 +13,13 @@ export const staticSaveData: SaveFile = {
 		mapId: 'oaks-lab',
 		orientation: 0,
 	},
+	lastHealPosition: {
+		x: 0,
+		y: 1,
+		forwardFoot: 0,
+		mapId: 'oaks-lab',
+		orientation: 0,
+	},
 	sprite: '135',
 	quests: { pickStarter: 'inactive', talkToNurseJoy: 'inactive' },
 	handledOccupants: {

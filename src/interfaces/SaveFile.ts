@@ -13,6 +13,7 @@ export interface SaveFile {
 	position: CharacterPosition;
 	sprite: string;
 	handledOccupants: Record<UniqueOccupantIds, boolean>;
+	lastHealPosition: CharacterPosition;
 	inventory: Inventory;
 	money: number;
 	pokemon: OwnedPokemon[];
