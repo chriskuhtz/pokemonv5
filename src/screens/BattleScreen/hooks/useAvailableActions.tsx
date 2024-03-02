@@ -3,6 +3,7 @@ import { isBattleActionWithTarget } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { BattleSide } from '../BattleScreen';
+import { SelectableAction } from './useBattleScreen';
 
 export const useAvailableActions = (
 	saveFile: SaveFile | undefined,
@@ -13,7 +14,7 @@ export const useAvailableActions = (
 	trainerId: string | undefined,
 	nextPokemonWithoutAction: BattlePokemon | undefined
 ) => {
-	return useMemo(() => {
+	return useMemo((): SelectableAction[] => {
 		if (!saveFile || !playerSide || !opponentSide) {
 			return [];
 		}
