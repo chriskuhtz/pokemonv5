@@ -1,20 +1,15 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
-import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
-import {
-	isBattleActionWithTarget,
-	isBattleAttack,
-} from '../../interfaces/BattleAction';
+import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
-import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
-import { useAppSelector } from '../../store/storeHooks';
-import { Banner } from '../../ui_components/Banner/Banner';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
 import { useBattleScreen } from './hooks/useBattleScreen';
+import { BattleScreenController } from './components/BattleScreenController/BattleScreenController';
 
 export interface BattleSide {
 	field: BattlePokemon[];
@@ -24,11 +19,15 @@ export interface BattleSide {
 	side: 'PLAYER' | 'OPPONENT';
 }
 
-export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'LOADING';
+export type BattleMode = 'COLLECTING' | 'EXECUTING';
 
-export const BattleScreen = (): JSX.Element => {
-	const currentDialogue = useAppSelector(selectCurrentDialogue);
+export const BattleScreen = ({
+	saveFile,
+}: {
+	saveFile: SaveFile;
+}): JSX.Element => {
 	const {
+		activePokemonPerside,
 		playerSide,
 		opponentSide,
 		handleAction,
@@ -40,14 +39,16 @@ export const BattleScreen = (): JSX.Element => {
 		opponentFetchStatus,
 		playerFetchStatus,
 		setMode,
-	} = useBattleScreen();
+		setPlayerSide,
+	} = useBattleScreen(saveFile);
 
-	if (
-		opponentFetchStatus === 'error' ||
-		playerFetchStatus === 'error' ||
-		(playerFetchStatus === 'success' && playerSide?.field.length === 0) ||
-		(opponentFetchStatus === 'success' && opponentSide?.field.length === 0)
-	) {
+	const hasOpenSpots: boolean = !!(
+		playerSide &&
+		playerSide.field.length < activePokemonPerside &&
+		playerSide.bench.length !== 0
+	);
+
+	if (opponentFetchStatus === 'error' || playerFetchStatus === 'error') {
 		return (
 			<div
 				style={{
@@ -102,36 +103,18 @@ export const BattleScreen = (): JSX.Element => {
 						))}
 					</div>
 				</div>
-				{currentDialogue.length === 0 &&
-					nextPokemonWithoutAction &&
-					mode === 'COLLECTING' && (
-						<ChooseActionAndTarget
-							actor={nextPokemonWithoutAction}
-							availableTargets={opponentSide?.field ?? []}
-							availableSwitches={
-								playerSide?.bench.filter((benchmon) =>
-									playerSide.field.every(
-										(fieldmon) =>
-											fieldmon.nextAction === undefined ||
-											(isBattleActionWithTarget(fieldmon.nextAction) &&
-												fieldmon.nextAction.target !== benchmon.id)
-									)
-								) ?? []
-							}
-							availableActions={availableActions}
-							selectAction={selectAction}
-						/>
-					)}
-				{currentDialogue.length > 0 && (
-					<Banner
-						content={currentDialogue[0]}
-						onClick={async () => {
-							setMode('LOADING');
-							await handleAction();
-							setMode('EXECUTING');
-						}}
-					/>
-				)}
+				<BattleScreenController
+					nextPokemonWithoutAction={nextPokemonWithoutAction}
+					mode={mode}
+					opponentSide={opponentSide}
+					playerSide={playerSide}
+					availableActions={availableActions}
+					hasOpenSpots={hasOpenSpots}
+					handleAction={handleAction}
+					selectAction={selectAction}
+					setPlayerSide={setPlayerSide}
+					setMode={setMode}
+				/>
 			</div>
 		);
 	}

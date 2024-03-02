@@ -27,7 +27,7 @@ export const useHandleAction = (
 ) => {
 	const dispatch = useAppDispatch();
 
-	return useCallback(async () => {
+	return useCallback(() => {
 		if (!playerSide || !opponentSide) {
 			return;
 		}
@@ -83,7 +83,6 @@ export const useHandleAction = (
 			}
 			//SWITCH
 			if (action?.type === 'SWITCH' && switchTarget) {
-				console.log('yaya', switchTarget);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -162,6 +161,8 @@ export const useHandleAction = (
 				}
 				return;
 			}
+			//SEND_OUT
+
 			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
 			if (
 				action &&
@@ -475,7 +476,7 @@ export const useHandleAction = (
 				return;
 			}
 
-			console.log('not sure what to do, bearing around', actor);
+			console.error('not sure what to do, bearing around', actor);
 		}
 	}, [
 		dispatch,

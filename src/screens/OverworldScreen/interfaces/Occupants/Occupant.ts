@@ -42,6 +42,7 @@ export interface Trainer extends BaseOccupant {
 	watching?: boolean;
 	type: 'TRAINER';
 	team: MapEncounter[];
+	activePokemonPerside: number;
 	rewardMoney: number;
 	rewardItems?: Partial<Inventory>;
 	rewardBadge?: GymBadge;

@@ -49,7 +49,6 @@ export const useCheckAndAssembleActions = (
 					? allPokemonOnBench.find((p) => p.id === action.target)
 					: undefined;
 
-			console.log('assemble', actor);
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
 				dispatch(
 					concatDialogue([

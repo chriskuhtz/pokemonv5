@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
-import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { SaveFile } from '../../../interfaces/SaveFile';
 import { BattleSide } from '../BattleScreen';
 import {
 	createBattlePokemonFromOwned,
@@ -12,11 +12,11 @@ import {
 import { BattleScreenProps } from './useBattleScreen';
 
 export const useInitialiseBattleSides = (
+	data: SaveFile,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	activePokemonPerSide: number
 ) => {
-	const data = useGetCurrentSaveFile();
 	const { state } = useLocation();
 	const { opponents } = state as BattleScreenProps;
 	const createBattlePokemonFromData = useCreateBattlePokemonFromData();
@@ -63,14 +63,19 @@ export const useInitialiseBattleSides = (
 			allOpponentPokemon?.length > 0
 		) {
 			setOpponentSide({
-				bench: [],
+				field: allOpponentPokemon.slice(0, activePokemonPerSide),
+				bench: allOpponentPokemon.slice(activePokemonPerSide),
 				defeated: [],
 				caught: [],
 				side: 'OPPONENT',
-				field: allOpponentPokemon,
 			});
 		}
-	}, [allOpponentPokemon, opponentFetchStatus, setOpponentSide]);
+	}, [
+		activePokemonPerSide,
+		allOpponentPokemon,
+		opponentFetchStatus,
+		setOpponentSide,
+	]);
 	useEffect(() => {
 		//initialise battle
 		if (

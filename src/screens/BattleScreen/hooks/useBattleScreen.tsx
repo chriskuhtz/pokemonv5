@@ -1,10 +1,10 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
-import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattleAction } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MoveDto } from '../../../interfaces/Move';
+import { SaveFile } from '../../../interfaces/SaveFile';
 import { MapEncounter } from '../../../store/slices/MapSlice';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
@@ -21,12 +21,12 @@ export interface SelectableAction {
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
 	trainerId?: UniqueOccupantIds;
+	activePokemonPerside: number;
 }
-export const useBattleScreen = () => {
+export const useBattleScreen = (saveFile: SaveFile) => {
 	const { state } = useLocation();
-	const { opponents, trainerId } = state as BattleScreenProps;
-	const activePokemonPerside = opponents.length;
-	const saveFile = useGetCurrentSaveFile();
+	const { trainerId, activePokemonPerside } = state as BattleScreenProps;
+
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [usedBalls, setUsedBalls] = useState<number>(0);
@@ -134,6 +134,7 @@ export const useBattleScreen = () => {
 
 	//initialise Battle
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
+		saveFile,
 		setPlayerSide,
 		setOpponentSide,
 		activePokemonPerside
@@ -151,9 +152,8 @@ export const useBattleScreen = () => {
 	useEffect(() => {
 		if (
 			playerSide &&
-			playerSide.field.length === 0
-			//ignore bench until switching is available
-			//&&playerSide.bench.length === 0
+			playerSide.field.length === 0 &&
+			playerSide.bench.length === 0
 		) {
 			void leaveBattle('LOSS');
 		}
@@ -229,5 +229,7 @@ export const useBattleScreen = () => {
 		opponentFetchStatus,
 		playerFetchStatus,
 		setMode,
+		activePokemonPerside,
+		setPlayerSide,
 	};
 };
