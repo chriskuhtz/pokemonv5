@@ -68,10 +68,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'brock',
 		type: 'TRAINER',
 		position: {
-			y: 14,
+			y: 1,
 			x: 4,
 			mapId: 'brocks-gym',
-			orientation: 3,
+			orientation: 0,
 		},
 		dialogue: [
 			'I am Brock, the Gym Leader of this area.',

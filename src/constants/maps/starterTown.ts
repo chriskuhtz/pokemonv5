@@ -23,7 +23,7 @@ export const starterTown: MapState = {
 			sprite: '',
 			onStep: {
 				type: 'PORTAL',
-				to: { orientation: 0, mapId: 'brocks-gym', y: 1, x: 4 },
+				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
 			},
 		},
 		{
@@ -32,7 +32,7 @@ export const starterTown: MapState = {
 			sprite: '',
 			onStep: {
 				type: 'PORTAL',
-				to: { orientation: 0, mapId: 'brocks-gym', y: 1, x: 4 },
+				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
 			},
 		},
 		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },

@@ -17,7 +17,7 @@ export const brocksGym: MapState = {
 		{
 			sprite: 'doormat',
 			x: 4,
-			y: 0,
+			y: 14,
 			onStep: {
 				type: 'PORTAL',
 				to: { mapId: 'starter-town', x: 5, y: 24, orientation: 0 },
