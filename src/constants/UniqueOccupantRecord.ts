@@ -16,7 +16,8 @@ export type UniqueOccupantIds =
 	| 'youngster-jimmy'
 	| 'brock'
 	| 'brocks-minion'
-	| 'youngster-jimmy-blocker';
+	| 'youngster-jimmy-blocker'
+	| 'oaks-assistant';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'youngster-jimmy': {
@@ -204,6 +205,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		questUpdates: {
 			talkToNurseJoy: 'completed',
+			secondPokemon: 'active',
 		},
 		sprite: '115',
 		questCondition: { id: 'talkToNurseJoy', status: 'active' },
@@ -270,5 +272,20 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			id: 'talkToNurseJoy',
 			status: 'completed',
 		},
+	},
+	'oaks-assistant': {
+		id: 'oaks-assistant',
+		type: 'NPC',
+		position: {
+			y: 24,
+			x: 3,
+			mapId: 'starter-town',
+			orientation: 1,
+		},
+		dialogue: [
+			'If you want to challenge Brock, you should have at least two pokemon',
+		],
+		sprite: SpriteEnum.scientistFemale,
+		questCondition: { id: 'secondPokemon', status: 'active' },
 	},
 };

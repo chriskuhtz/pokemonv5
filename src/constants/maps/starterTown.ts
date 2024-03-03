@@ -1,5 +1,6 @@
 import { MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
+export const starterTownEncounters: number[] = [19, 16, 17, 25, 216, 261];
 
 const mapId = 'starter-town';
 export const starterTown: MapState = {
@@ -308,20 +309,5 @@ export const starterTown: MapState = {
 			},
 		},
 	],
-	encounters: [
-		//rattata
-		{ dexId: 19, xp: 40 },
-		{ dexId: 19, xp: 60 },
-		//pidgey
-		{ dexId: 16, xp: 40 },
-		{ dexId: 16, xp: 60 },
-		//pidgeotto
-		{ dexId: 17, xp: 200 },
-		//pikachu
-		{ dexId: 25, xp: 60 },
-		//teddiursa
-		{ dexId: 216, xp: 60 },
-		// poochyena
-		{ dexId: 261, xp: 60 },
-	],
+	encounters: starterTownEncounters.map((dexId) => ({ dexId, xp: 60 })),
 };

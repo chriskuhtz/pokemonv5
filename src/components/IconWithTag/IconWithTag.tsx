@@ -15,7 +15,7 @@ export const IconWithTag = ({
 			style={{ marginBottom: tag ? '-1.5rem' : undefined }}
 		>
 			<img className="iconWithTag" src={src} />
-			{tag && <div className="tag">{tag}</div>}
+			{tag && <div className="iconTag">{tag}</div>}
 		</div>
 	);
 };

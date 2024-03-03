@@ -1,14 +1,10 @@
 import { useEffect } from 'react';
-import { TiThMenu } from 'react-icons/ti';
 import { InteractionButton } from '../../components/InteractionButton/InteractionButton';
+import { MenuButton } from '../../components/MenuButton/MenuButton';
 import { MovementButtonGroup } from '../../components/MovementButtonGroup/MovementButtonGroup';
 import { OverworldCanvas } from '../../components/OverworldCanvas/OverworldCanvas';
-import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
-import { RoutesEnum } from '../../router/router';
-import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectMap } from '../../store/selectors/map/selectMap';
-import { selectNextNotification } from '../../store/selectors/notification/selectNextNotification';
 import { setMapById } from '../../store/slices/MapSlice';
 import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
@@ -19,8 +15,6 @@ const isPortrait = ['portrait-secondary', 'portrait-primary'].includes(
 );
 
 export const Overworld = (): JSX.Element => {
-	const currentDialogue = useAppSelector(selectCurrentDialogue);
-	const noti = useAppSelector(selectNextNotification);
 	const saveFile = useGetCurrentSaveFile();
 	const { mapId } = useAppSelector(selectMap);
 	const dispatch = useAppDispatch();
@@ -40,13 +34,7 @@ export const Overworld = (): JSX.Element => {
 	}
 	return (
 		<>
-			{currentDialogue.length === 0 && !noti && (
-				<RouterButton
-					to={RoutesEnum.menu}
-					text={<TiThMenu style={{ height: '30px', width: '30px' }} />}
-					className="leftCorner"
-				/>
-			)}
+			<MenuButton />
 			<MovementButtonGroup />
 			<InteractionButton />
 			<OverworldCanvas />

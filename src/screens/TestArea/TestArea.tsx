@@ -1,5 +1,5 @@
-import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { Tag } from '../../ui_components/Tag/Tag';
 
 const testMon: BattlePokemon = {
 	primaryType: 'fire',
@@ -5954,7 +5954,11 @@ export const TestArea = (): JSX.Element => {
 				alignItems: 'center',
 			}}
 		>
-			<BattleSprite pokemon={testMon} />
+			{/* <BattleSprite pokemon={testMon} /> */}
+
+			<Tag tag={<strong>Butt</strong>}>
+				<strong>Hello</strong>
+			</Tag>
 		</div>
 	);
 };
