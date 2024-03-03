@@ -7,7 +7,8 @@ import { MoveDto } from '../../../interfaces/Move';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { MapEncounter } from '../../../store/slices/MapSlice';
-import { useAppSelector } from '../../../store/storeHooks';
+import { addNotification } from '../../../store/slices/notificationSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
 import { useAvailableActions } from './useAvailableActions';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
@@ -29,6 +30,7 @@ export interface BattleScreenProps {
 	activePokemonPerSide: number;
 }
 export const useBattleScreen = (saveFile: SaveFile) => {
+	const dispatch = useAppDispatch();
 	const { state } = useLocation();
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const { trainerId, activePokemonPerSide } = state as BattleScreenProps;
@@ -179,13 +181,24 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 			opponentSide.field.length < activePokemonPerSide &&
 			opponentSide.bench.length > 0
 		) {
+			dispatch(
+				addNotification(
+					`${trainerId ?? 'Opponent'} sent out ${opponentSide.bench[0].name}`
+				)
+			);
 			setOpponentSide({
 				...opponentSide,
 				field: opponentSide.field.concat(opponentSide.bench[0]),
 				bench: opponentSide.bench.slice(1),
 			});
 		}
-	}, [activePokemonPerSide, currentDialogue.length, opponentSide]);
+	}, [
+		activePokemonPerSide,
+		currentDialogue.length,
+		dispatch,
+		opponentSide,
+		trainerId,
+	]);
 	//assign actions to opponents
 	useEffect(() => {
 		if (

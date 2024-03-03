@@ -11,10 +11,8 @@ import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
 import { TbCircleLetterA } from 'react-icons/tb';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
-import {
-	useHandleTrainerChallenge,
-	useOverworldEvent,
-} from '../../hooks/useOverworldEvent';
+import { useHandleTrainerChallenge } from '../../hooks/useHandleTrainerChallenge';
+import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectNextNotification } from '../../store/selectors/notification/selectNextNotification';

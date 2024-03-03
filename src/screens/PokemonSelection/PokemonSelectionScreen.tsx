@@ -7,9 +7,11 @@ import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { Quest } from '../../interfaces/Quest';
 import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
-import { useAppSelector } from '../../store/storeHooks';
+import { addNotification } from '../../store/slices/notificationSlice';
+import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
+import { PokemonData } from '../../interfaces/PokemonData';
 
 export const PokemonSelectionScreen = ({
 	choices,
@@ -21,6 +23,7 @@ export const PokemonSelectionScreen = ({
 	quest?: Quest;
 }): JSX.Element => {
 	const data = useAppSelector(selectSaveFile);
+	const dispatch = useAppDispatch();
 	const save = useSaveGame();
 	const navigate = useNavigate();
 	const getFirstFourMoves = useGetFirstFourMoves();
@@ -47,8 +50,9 @@ export const PokemonSelectionScreen = ({
 						<PokemonCardWithImage
 							dexId={c}
 							key={c}
-							onClick={async () => {
+							onClick={async (pokemon: PokemonData) => {
 								setLoading(true);
+								dispatch(addNotification(`You chose ${pokemon.name}`));
 								await save({
 									pokemonUpdates: [
 										{

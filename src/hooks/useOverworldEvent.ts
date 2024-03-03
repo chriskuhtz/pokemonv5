@@ -1,32 +1,15 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { checkQuestCondition } from '../functions/checkQuestCondition';
-import { getBattleScreenPropsFromTrainer } from '../functions/getBattleScreenPropsFromTrainer';
 import { RoutesEnum } from '../router/router';
-import { Trainer } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectEncounters } from '../store/selectors/map/selectEncounters';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
 import { setDialogue } from '../store/slices/dialogueSlice';
 import { addNotification } from '../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
+import { useHandleTrainerChallenge } from './useHandleTrainerChallenge';
 import { useSaveGame } from './useSaveGame';
-
-export const useHandleTrainerChallenge = () => {
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
-
-	return useCallback(
-		(trainer: Trainer) => {
-			dispatch(addNotification(`${trainer.id} challenges you`));
-			navigate(RoutesEnum.battle, {
-				state: getBattleScreenPropsFromTrainer(trainer),
-			});
-		},
-		[dispatch, navigate]
-	);
-};
 
 export const useOverworldEvent = () => {
 	const dispatch = useAppDispatch();
@@ -69,6 +52,7 @@ export const useOverworldEvent = () => {
 						navigate(event.to);
 					}
 					if (event.type === 'PORTAL') {
+						dispatch(addNotification(event.to.mapId));
 						await saveGame({ portalEvent: event });
 					}
 				}
@@ -83,6 +67,6 @@ export const useOverworldEvent = () => {
 				}
 			}
 		},
-		[dispatch, encounters, navigate, quests, saveGame]
+		[dispatch, encounters, handleTrainerChallenge, navigate, quests, saveGame]
 	);
 };
