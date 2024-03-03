@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { brocksGym } from '../../constants/maps/brocksGym';
 import { oaksLab } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
@@ -47,6 +48,7 @@ export interface MapState {
 const mapsRecord: Record<string, MapState> = {
 	'starter-town': starterTown,
 	'oaks-lab': oaksLab,
+	'brocks-gym': brocksGym,
 };
 
 const initialState: MapState = starterTown;

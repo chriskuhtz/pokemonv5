@@ -4,7 +4,7 @@ import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
 const mapId = 'starter-town';
 export const starterTown: MapState = {
 	mapId,
-	height: 14,
+	height: 25,
 	width: 9,
 	baseTile: { id: 'grass', pattern: 'random5' },
 	decorators: [
@@ -15,6 +15,24 @@ export const starterTown: MapState = {
 			onStep: {
 				type: 'PORTAL',
 				to: { orientation: 3, mapId: 'oaks-lab', y: 4, x: 2 },
+			},
+		},
+		{
+			x: 6,
+			y: 23,
+			sprite: '',
+			onStep: {
+				type: 'PORTAL',
+				to: { orientation: 0, mapId: 'brocks-gym', y: 1, x: 4 },
+			},
+		},
+		{
+			x: 5,
+			y: 23,
+			sprite: '',
+			onStep: {
+				type: 'PORTAL',
+				to: { orientation: 0, mapId: 'brocks-gym', y: 1, x: 4 },
 			},
 		},
 		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -69,6 +87,21 @@ export const starterTown: MapState = {
 			height: 4,
 			width: 6,
 			clearanceBehind: 1,
+		},
+		{
+			type: 'LARGE_OBSTACLE',
+			id: 'brocks-gym-building',
+			sprite: 'houses/gym',
+			position: {
+				x: 3,
+				y: 23,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+			height: 7,
+			width: 6,
+			clearanceBehind: 2,
 		},
 		{
 			type: 'OBSTACLE',
