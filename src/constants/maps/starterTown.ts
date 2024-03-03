@@ -1,6 +1,6 @@
 import { MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
-export const starterTownEncounters: number[] = [19, 16, 17, 25, 216, 261];
+export const starterTownEncounters: number[] = [19, 16, 17, 25, 216, 261, 66];
 
 const mapId = 'starter-town';
 export const starterTown: MapState = {
