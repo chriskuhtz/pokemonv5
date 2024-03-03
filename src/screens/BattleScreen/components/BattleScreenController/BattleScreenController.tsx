@@ -9,7 +9,7 @@ import { BattleMode, BattleSide } from '../../BattleScreen';
 import { SelectableAction } from '../../hooks/useBattleScreen';
 
 export const BattleScreenController = ({
-	nextPokemonWithoutAction,
+	nextPlayerPokemonWithoutAction,
 	mode,
 	playerSide,
 	availableActions,
@@ -19,7 +19,7 @@ export const BattleScreenController = ({
 	setMode,
 	handleAction,
 }: {
-	nextPokemonWithoutAction: BattlePokemon | undefined;
+	nextPlayerPokemonWithoutAction: BattlePokemon | undefined;
 	mode: BattleMode;
 	playerSide: BattleSide;
 	availableActions: SelectableAction[];
@@ -42,12 +42,12 @@ export const BattleScreenController = ({
 	}
 	if (
 		currentDialogue.length === 0 &&
-		nextPokemonWithoutAction &&
+		nextPlayerPokemonWithoutAction &&
 		mode === 'COLLECTING'
 	) {
 		return (
 			<ChooseActionAndTarget
-				actor={nextPokemonWithoutAction}
+				actor={nextPlayerPokemonWithoutAction}
 				availableActions={availableActions}
 				selectAction={selectAction}
 			/>

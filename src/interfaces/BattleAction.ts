@@ -1,6 +1,7 @@
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
+	priority?: number;
 	type:
 		| 'CATCH_ATTEMPT'
 		| 'CATCH_SUCCESS'

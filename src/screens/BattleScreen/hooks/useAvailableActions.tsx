@@ -12,7 +12,7 @@ export const useAvailableActions = (
 	usedBalls: number,
 	usedPotions: number,
 	trainerId: string | undefined,
-	nextPokemonWithoutAction: BattlePokemon | undefined
+	nextPlayerPokemonWithoutAction: BattlePokemon | undefined
 ) => {
 	return useMemo((): SelectableAction[] => {
 		if (!saveFile || !playerSide || !opponentSide) {
@@ -41,7 +41,7 @@ export const useAvailableActions = (
 				disabled: false,
 				availableTargets: [
 					...playerSide.field.filter(
-						(p) => p.id !== nextPokemonWithoutAction?.id
+						(p) => p.id !== nextPlayerPokemonWithoutAction?.id
 					),
 					...opponentSide.field,
 				],
@@ -84,7 +84,7 @@ export const useAvailableActions = (
 			},
 		];
 	}, [
-		nextPokemonWithoutAction?.id,
+		nextPlayerPokemonWithoutAction?.id,
 		opponentSide,
 		playerSide,
 		saveFile,

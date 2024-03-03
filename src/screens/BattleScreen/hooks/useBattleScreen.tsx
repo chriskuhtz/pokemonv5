@@ -15,6 +15,7 @@ import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
 import { useLeaveBattle } from './useLeaveBattle';
+import { assignPriority } from '../../../functions/assignPriority';
 
 export interface SelectableAction {
 	actionType: BattleAction['type'];
@@ -42,10 +43,11 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
 
-	const nextPokemonWithoutAction = useMemo(() => {
+	const nextPlayerPokemonWithoutAction = useMemo(() => {
 		return playerSide?.field.find((p) => p.nextAction === undefined);
 	}, [playerSide]);
 
+	//available Action for nextPlayerPokemonWithoutAction
 	const availableActions = useAvailableActions(
 		saveFile,
 		playerSide,
@@ -53,19 +55,22 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		usedBalls,
 		usedPotions,
 		trainerId,
-		nextPokemonWithoutAction
+		nextPlayerPokemonWithoutAction
 	);
-
+	//array of Pokemon with actions, sorted by speed and action Prio
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {
 			return [];
 		}
-		return [
-			...playerSide.field.filter((p) => p.nextAction),
-			...opponentSide.field.filter((p) => p.nextAction),
-		];
-	}, [opponentSide, playerSide]);
 
+		return [
+			...playerSide.field.filter((p) => p.nextAction).map(assignPriority),
+			...opponentSide.field.filter((p) => p.nextAction).map(assignPriority),
+		].sort((a, b) => {
+			return (b.nextAction?.priority ?? 0) - (a.nextAction?.priority ?? 0);
+		});
+	}, [opponentSide, playerSide]);
+	//select Action
 	const selectAction = useCallback(
 		(updatedActor: BattlePokemon) => {
 			if (!playerSide) {
@@ -83,7 +88,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		},
 		[playerSide]
 	);
-
+	//reset Action
 	const resetAction = useCallback(
 		(actorId: string) => {
 			if (!playerSide) {
@@ -101,7 +106,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		},
 		[playerSide]
 	);
-
+	//leave Battle
 	const leaveBattle = useLeaveBattle(
 		playerSide,
 		opponentSide,
@@ -109,7 +114,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		usedPotions,
 		trainerId
 	);
-
+	//handle action
 	const handleAction = useHandleAction(
 		playerSide,
 		opponentSide,
@@ -118,7 +123,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		setOpponentSide,
 		leaveBattle
 	);
-
 	//initialise Battle
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
 		saveFile,
@@ -172,7 +176,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 			setMode('COLLECTING');
 		}
 	}, [mode, pokemonWithActions]);
-
 	//refill OpponentSide
 	useEffect(() => {
 		if (
@@ -237,7 +240,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		selectAction,
 		availableActions,
 		resetAction,
-		nextPokemonWithoutAction,
+		nextPlayerPokemonWithoutAction,
 		pokemonWithActions,
 		opponentFetchStatus,
 		playerFetchStatus,

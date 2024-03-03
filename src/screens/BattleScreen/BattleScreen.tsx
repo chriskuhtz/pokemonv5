@@ -35,7 +35,7 @@ export const BattleScreen = ({
 		selectAction,
 		resetAction,
 		availableActions,
-		nextPokemonWithoutAction,
+		nextPlayerPokemonWithoutAction,
 		opponentFetchStatus,
 		playerFetchStatus,
 		setMode,
@@ -104,7 +104,7 @@ export const BattleScreen = ({
 					</div>
 				</div>
 				<BattleScreenController
-					nextPokemonWithoutAction={nextPokemonWithoutAction}
+					nextPlayerPokemonWithoutAction={nextPlayerPokemonWithoutAction}
 					mode={mode}
 					playerSide={playerSide}
 					availableActions={availableActions}

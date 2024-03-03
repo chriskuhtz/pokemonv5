@@ -63,7 +63,11 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: { type: 'TARGET_NOT_ON_FIELD', target: p.id },
+								nextAction: {
+									type: 'TARGET_NOT_ON_FIELD',
+									target: p.id,
+									priority: action.priority,
+								},
 							};
 						}),
 					});
@@ -77,7 +81,11 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: { type: 'TARGET_NOT_ON_FIELD', target: p.id },
+								nextAction: {
+									type: 'TARGET_NOT_ON_FIELD',
+									target: p.id,
+									priority: action.priority,
+								},
 							};
 						}),
 					});
@@ -99,7 +107,10 @@ export const useHandleAction = (
 								) {
 									return {
 										...p,
-										nextAction: { ...p.nextAction, target: switchTarget.id },
+										nextAction: {
+											...p.nextAction,
+											target: switchTarget.id,
+										},
 									};
 								}
 								return p;
@@ -117,7 +128,10 @@ export const useHandleAction = (
 							) {
 								return {
 									...p,
-									nextAction: { ...p.nextAction, target: switchTarget.id },
+									nextAction: {
+										...p.nextAction,
+										target: switchTarget.id,
+									},
 								};
 							}
 							return p;
@@ -239,7 +253,11 @@ export const useHandleAction = (
 				let nextAction: BattleAction | undefined = undefined;
 
 				if (target.damage >= target.hp) {
-					nextAction = { type: 'DEFEATED_TARGET', target: target.id };
+					nextAction = {
+						type: 'DEFEATED_TARGET',
+						target: target.id,
+						priority: action.priority,
+					};
 				}
 
 				if (actor.side === 'PLAYER') {
@@ -273,7 +291,7 @@ export const useHandleAction = (
 				return;
 			}
 			//run away attempt
-			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
+			if (action?.type === 'RUNAWAY_ATTEMPT') {
 				const canRunAway = Math.random() > 0.5;
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -285,8 +303,16 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: canRunAway
-									? { type: 'RUNAWAY_SUCCESS', target: actor.id }
-									: { type: 'RUNAWAY_FAILURE', target: actor.id },
+									? {
+											type: 'RUNAWAY_SUCCESS',
+											target: actor.id,
+											priority: action.priority,
+									  }
+									: {
+											type: 'RUNAWAY_FAILURE',
+											target: actor.id,
+											priority: action.priority,
+									  },
 							};
 						}),
 					});
@@ -299,7 +325,7 @@ export const useHandleAction = (
 				return;
 			}
 			//catch attempt
-			if (actor.nextAction?.type === 'CATCH_ATTEMPT' && target) {
+			if (action?.type === 'CATCH_ATTEMPT' && target) {
 				const successfullyCaught = Math.random() > 0.5;
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -311,8 +337,16 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: successfullyCaught
-									? { type: 'CATCH_SUCCESS', target: target?.id }
-									: { type: 'CATCH_FAILURE', target: target?.id },
+									? {
+											type: 'CATCH_SUCCESS',
+											target: target?.id,
+											priority: action.priority,
+									  }
+									: {
+											type: 'CATCH_FAILURE',
+											target: target?.id,
+											priority: action.priority,
+									  },
 							};
 						}),
 					});
@@ -375,15 +409,15 @@ export const useHandleAction = (
 				return;
 			}
 			//attack
-			if (isBattleAttack(actor.nextAction) && target) {
-				const { move } = actor.nextAction;
+			if (isBattleAttack(action) && target) {
+				const { move } = action;
 
 				let nextAction: BattleAction | undefined = undefined;
 
 				const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
 
 				if (!passesAccuracyCheck) {
-					nextAction = { type: 'MISSED_ATTACK' };
+					nextAction = { type: 'MISSED_ATTACK', priority: action.priority };
 				}
 
 				const damageFactors = getDamageFactors(actor, move, target);
@@ -393,16 +427,32 @@ export const useHandleAction = (
 				const newTargetDamage = target.damage + attackDamage;
 
 				if (newTargetDamage >= target.hp && damageFactors.typeFactor === 1) {
-					nextAction = { type: 'DEFEATED_TARGET', target: target.id };
+					nextAction = {
+						type: 'DEFEATED_TARGET',
+						target: target.id,
+						priority: action.priority,
+					};
 				}
 				if (damageFactors.typeFactor === 0) {
-					nextAction = { type: 'NO_EFFECT', target: target.id };
+					nextAction = {
+						type: 'NO_EFFECT',
+						target: target.id,
+						priority: action.priority,
+					};
 				}
 				if (damageFactors.typeFactor > 1) {
-					nextAction = { type: 'SUPER_EFFECTIVE', target: target.id };
+					nextAction = {
+						type: 'SUPER_EFFECTIVE',
+						target: target.id,
+						priority: action.priority,
+					};
 				}
 				if (damageFactors.typeFactor < 1) {
-					nextAction = { type: 'NOT_VERY_EFFECTIVE', target: target.id };
+					nextAction = {
+						type: 'NOT_VERY_EFFECTIVE',
+						target: target.id,
+						priority: action.priority,
+					};
 				}
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
