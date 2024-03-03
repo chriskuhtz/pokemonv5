@@ -21,7 +21,12 @@ export const staticSaveData: SaveFile = {
 		orientation: 0,
 	},
 	sprite: '135',
-	quests: { pickStarter: 'inactive', talkToNurseJoy: 'inactive' },
+	quests: {
+		pickStarter: 'inactive',
+		talkToNurseJoy: 'inactive',
+		findPikachu: 'inactive',
+		secondPokemon: 'inactive',
+	},
 	handledOccupants: {
 		'youngster-jimmy': false,
 		'starter-town-item-1': false,
@@ -36,6 +41,8 @@ export const staticSaveData: SaveFile = {
 		'youngster-jimmy-blocker': false,
 		brock: false,
 		'brocks-minion': false,
+		'oaks-assistant': false,
+		'pikachu-fan': false,
 	},
 	pokedex: [],
 	pokemon: [],

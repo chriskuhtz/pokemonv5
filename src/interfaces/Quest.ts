@@ -41,6 +41,7 @@ export const questNames = [
 	'pickStarter',
 	'talkToNurseJoy',
 	'secondPokemon',
+	'findPikachu',
 ] as const;
 
 export type QuestName = (typeof questNames)[number];
@@ -83,9 +84,23 @@ export const SecondPokemonQuest: Quest = {
 		mode: 'SOME',
 	},
 };
+export const FindPikachuQuest: Quest = {
+	status: 'inactive',
+	id: 'findPikachu',
+	title: 'Find a Pikachu',
+	description: 'A young trainer asked you to find a pikachu',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ repel: 5 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: [25],
+		mode: 'SOME',
+	},
+};
 
 export const QuestRecord: Record<QuestName, Quest> = {
 	pickStarter: PickStarterQuest,
 	talkToNurseJoy: TalkToNurseJoyQuest,
 	secondPokemon: SecondPokemonQuest,
+	findPikachu: FindPikachuQuest,
 };

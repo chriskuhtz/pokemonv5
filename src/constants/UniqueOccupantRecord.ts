@@ -17,7 +17,8 @@ export type UniqueOccupantIds =
 	| 'brock'
 	| 'brocks-minion'
 	| 'youngster-jimmy-blocker'
-	| 'oaks-assistant';
+	| 'oaks-assistant'
+	| 'pikachu-fan';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'youngster-jimmy': {
@@ -287,5 +288,20 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		sprite: SpriteEnum.scientistFemale,
 		questCondition: { id: 'secondPokemon', status: 'active' },
+	},
+	'pikachu-fan': {
+		id: 'pikachu-fan',
+		type: 'NPC',
+		position: {
+			y: 17,
+			x: 0,
+			mapId: 'starter-town',
+			orientation: 2,
+		},
+		dialogue: ['Do you have a Pikachu?', 'Its the bees knees'],
+		sprite: SpriteEnum.child,
+		questUpdates: {
+			findPikachu: 'active',
+		},
 	},
 };

@@ -9,11 +9,13 @@ import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { GymBadge, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
+import { addNotification } from '../store/slices/notificationSlice';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
-import { useAppSelector } from '../store/storeHooks';
+import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
 
 export const useSaveGame = () => {
+	const dispatch = useAppDispatch();
 	const data = useAppSelector(selectSaveFile);
 	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
@@ -84,6 +86,9 @@ export const useSaveGame = () => {
 
 			Object.entries(questUpdates ?? {}).forEach((entry) => {
 				const [id, status] = entry;
+				if (status === 'active') {
+					dispatch(addNotification(`New Quest: ${id}`));
+				}
 				if (status === 'completed') {
 					const quest = QuestRecord[id as QuestName];
 					updatedMoney += quest.rewardMoney ?? 0;
@@ -112,6 +117,6 @@ export const useSaveGame = () => {
 					: data.gymBadges,
 			});
 		},
-		[updateSaveFile, data]
+		[data, updateSaveFile, dispatch]
 	);
 };
