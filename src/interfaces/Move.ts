@@ -46,10 +46,10 @@ export interface MoveMeta {
 	drain: number;
 	flinch_chance: number;
 	healing: number;
-	max_hits: number;
-	max_turns: number;
-	min_hits: number;
-	min_turns: number;
+	max_hits: number | null;
+	max_turns: number | null;
+	min_hits: number | null;
+	min_turns: number | null;
 	stat_chance: number;
 }
 
@@ -63,7 +63,7 @@ export interface StatChange {
 export interface MoveDto {
 	accuracy: number;
 	damage_class: DamageClass;
-	effect_chance: number;
+	effect_chance: number | null;
 	effect_changes: [];
 	effect_entries: EffectEntry[];
 	flavor_text_entries: FlavorTextEntry[];

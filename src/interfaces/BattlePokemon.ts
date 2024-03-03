@@ -7,6 +7,7 @@ import { StatObject } from './StatObject';
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
 	stats: StatObject;
+	statModifiers: StatObject;
 	nextAction?: BattleAction;
 	side: 'PLAYER' | 'OPPONENT';
 	status?: 'BEING_CAUGHT';

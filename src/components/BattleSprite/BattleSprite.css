@@ -88,11 +88,37 @@
 	height: 120px;
 }
 .tagWrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 160px;
+	height: 160px;
+	margin: -10px;
+}
+
+.tagWrapper .battleSpriteTag {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 40px;
+	height: 40px;
+	opacity: 0.9;
+	margin: calc(-40px / 2);
+	/* background: var(--main-bg-90); */
+	border-radius: 50%;
+	border: 1px solid;
+	font-size: x-small;
 	display: flex;
-	justify-content: flex-end;
-	align-items: flex-start;
-	width: 120px;
-	height: 120px;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.redTag {
+	background-color: red;
+}
+.greenTag {
+	background-color: green;
 }
 
 .battleSprite,
@@ -112,17 +138,4 @@
 	justify-content: center;
 	align-items: center;
 	z-index: 2;
-}
-.levelTag {
-	border-radius: var(--circular);
-	background-color: var(--main-bg-90);
-	position: relative;
-	padding: 0.25rem;
-	max-width: max-content;
-	height: min-content;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	z-index: 3;
 }

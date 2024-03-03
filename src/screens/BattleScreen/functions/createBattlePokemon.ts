@@ -11,6 +11,15 @@ import { PokemonData, StatInfo } from '../../../interfaces/PokemonData';
 import { StatObject } from '../../../interfaces/StatObject';
 import { OPPOID } from '../../../testing/constants/trainerIds';
 
+const modifiers: StatObject = {
+	hp: 0,
+	attack: 0,
+	def: 0,
+	spatk: 0,
+	spdef: 0,
+	speed: 0,
+};
+
 const getStats = (stats: StatInfo[], level: number): StatObject => {
 	const baseHp = stats.find((s) => s.stat.name === 'hp')?.base_stat ?? 100;
 	const baseAttack =
@@ -58,6 +67,7 @@ export const useCreateBattlePokemonFromData = () => {
 				side: 'OPPONENT',
 				base_experience: data.base_experience,
 				stats,
+				statModifiers: modifiers,
 				evasiveness: 1,
 			};
 		},
@@ -84,6 +94,7 @@ export const createBattlePokemonFromOwned = async (
 		side: 'PLAYER',
 		base_experience: data.base_experience,
 		stats,
+		statModifiers: modifiers,
 		evasiveness: 1,
 		moves: moves.filter((m) => m !== undefined) as MoveDto[],
 	};
