@@ -252,7 +252,7 @@ export const useHandleAction = (
 			) {
 				let nextAction: BattleAction | undefined = undefined;
 
-				if (target.damage >= target.hp) {
+				if (target.damage >= target.stats.hp) {
 					nextAction = {
 						type: 'DEFEATED_TARGET',
 						target: target.id,
@@ -426,7 +426,10 @@ export const useHandleAction = (
 					: 0;
 				const newTargetDamage = target.damage + attackDamage;
 
-				if (newTargetDamage >= target.hp && damageFactors.typeFactor === 1) {
+				if (
+					newTargetDamage >= target.stats.hp &&
+					damageFactors.typeFactor === 1
+				) {
 					nextAction = {
 						type: 'DEFEATED_TARGET',
 						target: target.id,

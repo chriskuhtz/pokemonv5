@@ -83,9 +83,11 @@ export const useInitialiseBattleSides = (
 			allPlayerPokemon &&
 			allPlayerPokemon?.length > 0
 		) {
-			const ablePlayerPokemon = allPlayerPokemon.filter((p) => p.damage < p.hp);
+			const ablePlayerPokemon = allPlayerPokemon.filter(
+				(p) => p.damage < p.stats.hp
+			);
 			const defeatedPlayerPokemon = allPlayerPokemon.filter(
-				(p) => p.damage >= p.hp
+				(p) => p.damage >= p.stats.hp
 			);
 			setPlayerSide({
 				field: ablePlayerPokemon.slice(0, activePokemonPerSide),

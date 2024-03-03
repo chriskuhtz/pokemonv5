@@ -35,6 +35,7 @@ export const staticSaveData: SaveFile = {
 		'oak-during-selection': false,
 		'youngster-jimmy-blocker': false,
 		brock: false,
+		'brocks-minion': false,
 	},
 	pokedex: [],
 	pokemon: [],

@@ -40,10 +40,7 @@ export const useCreateBattlePokemonFromData = () => {
 			const baseXp = xp ?? 100;
 			const { level } = calculateLevelData(baseXp);
 
-			const { hp, attack, spatk, defence, spdef, speed } = getStats(
-				data.stats,
-				level
-			);
+			const stats = getStats(data.stats, level);
 
 			const firstFourMoves = await getFirstFourMoves(data.id);
 
@@ -60,12 +57,7 @@ export const useCreateBattlePokemonFromData = () => {
 				id: v4(),
 				side: 'OPPONENT',
 				base_experience: data.base_experience,
-				hp,
-				attack,
-				spatk,
-				defence,
-				spdef,
-				speed,
+				stats,
 				evasiveness: 1,
 			};
 		},
@@ -80,10 +72,7 @@ export const createBattlePokemonFromOwned = async (
 	const xp = existing.xp;
 	const { level } = calculateLevelData(xp);
 
-	const { hp, attack, spatk, defence, spdef, speed } = getStats(
-		data.stats,
-		level
-	);
+	const stats = getStats(data.stats, level);
 
 	const moves = await Promise.all(existing.moveNames.map((m) => fetchMove(m)));
 
@@ -94,12 +83,7 @@ export const createBattlePokemonFromOwned = async (
 		name: data.name,
 		side: 'PLAYER',
 		base_experience: data.base_experience,
-		hp,
-		attack,
-		spatk,
-		defence,
-		spdef,
-		speed,
+		stats,
 		evasiveness: 1,
 		moves: moves.filter((m) => m !== undefined) as MoveDto[],
 	};

@@ -62,9 +62,11 @@ export const getDamageFactors = (
 	const { damage_class, power, type } = move;
 	const moveType = type.name;
 	const correctAttack =
-		damage_class.name === 'physical' ? actor.attack : actor.spatk;
+		damage_class.name === 'physical' ? actor.stats.attack : actor.stats.spatk;
 	const correctDefence =
-		damage_class.name === 'physical' ? target.defence : target.spdef;
+		damage_class.name === 'physical'
+			? target.stats.defence
+			: target.stats.spdef;
 	const stabFactor =
 		moveType === actor.primaryType || moveType === actor.secondaryType
 			? 1.5

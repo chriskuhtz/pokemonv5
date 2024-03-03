@@ -22,14 +22,7 @@ export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 				<div className="movesAndStats">
 					<MoveSection moves={pokemon.moves} />
 					<StatSection
-						baseStats={{
-							hp: pokemon.hp,
-							attack: pokemon.attack,
-							spatk: pokemon.spatk,
-							spdef: pokemon.spdef,
-							speed: pokemon.speed,
-							defence: pokemon.defence,
-						}}
+						baseStats={pokemon.stats}
 						type={pokemon.primaryType}
 						nature={'hardy'}
 						level={calculateLevelData(pokemon.xp).level}

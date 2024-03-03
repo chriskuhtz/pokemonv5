@@ -17,7 +17,7 @@ export const BattleSprite = ({
 }) => {
 	const healthPercentage = useMemo(() => {
 		const percentage = Math.round(
-			((pokemon.hp - pokemon.damage) / pokemon.hp) * 100
+			((pokemon.stats.hp - pokemon.damage) / pokemon.stats.hp) * 100
 		);
 
 		const degrees = Math.round(3.6 * percentage);
