@@ -11,9 +11,15 @@ import { PokemonSummary } from '../PokemonSummary/PokemonSummary';
 import './TeamGrid.css';
 export interface TeamGridProps {
 	pokemon: OwnedPokemon[];
+	noFocus?: boolean;
+	onGridItemClick?: (p: BattlePokemon) => void;
 }
 
-export const TeamGrid = ({ pokemon }: TeamGridProps): JSX.Element => {
+export const TeamGrid = ({
+	pokemon,
+	noFocus,
+	onGridItemClick,
+}: TeamGridProps): JSX.Element => {
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
 	const fetchPlayerPokemon = useMemo(() => {
@@ -51,16 +57,22 @@ export const TeamGrid = ({ pokemon }: TeamGridProps): JSX.Element => {
 			<div className="teamGridAndFocused">
 				<div className="teamGrid">
 					{team.map((p) => (
-						<div key={p.id} onClick={() => setFocused(p)}>
+						<div
+							key={p.id}
+							onClick={() => {
+								onGridItemClick && onGridItemClick(p);
+								setFocused(p);
+							}}
+						>
 							<BattleSprite
 								noAnimation={focused?.id !== p.id}
 								pokemon={p}
-								overlay={focused?.id === p.id && <div />}
+								overlay={focused?.id === p.id && !noFocus && <div />}
 							/>
 						</div>
 					))}
 				</div>
-				{focused && <PokemonSummary pokemon={focused} />}
+				{focused && !noFocus && <PokemonSummary pokemon={focused} />}
 			</div>
 		);
 	}

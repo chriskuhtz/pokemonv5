@@ -9,6 +9,7 @@ export const MoveSection = ({ moves }: { moves: MoveDto[] }): JSX.Element => {
 			<div>
 				{moves.map((move) => (
 					<MovePill
+						key={move.id}
 						name={move.name}
 						maxPP={move.pp}
 						type={move.type.name}

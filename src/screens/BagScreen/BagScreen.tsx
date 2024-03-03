@@ -1,14 +1,17 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Headline } from '../../components/Headline/Headline';
 import { useHydratedInventory } from '../../hooks/useHydratedInventory';
 import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
+import { ItemData } from '../../interfaces/ItemData';
 import { RoutesEnum } from '../../router/router';
 import { FetchingPill } from '../../ui_components/FetchingPill/FetchingPill';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
+import { ItemUsageModal } from './components/ItemUsageModal';
 
 export const BagScreen = (): JSX.Element => {
 	const saveFile = useGetCurrentSaveFile();
+	const [itemToUse, setItemToUse] = useState<ItemData | undefined>();
 
 	const inventory = useMemo(() => {
 		if (saveFile) {
@@ -22,8 +25,22 @@ export const BagScreen = (): JSX.Element => {
 
 	const { hydratedInventory, status } = useHydratedInventory(inventory);
 
+	const handleItemClick = useCallback((item: ItemData) => {
+		setItemToUse(item);
+	}, []);
+
 	if (!saveFile) {
 		return <ErrorScreen text="no save file" />;
+	}
+
+	if (itemToUse) {
+		return (
+			<ItemUsageModal
+				item={itemToUse}
+				saveFile={saveFile}
+				setItemToUse={setItemToUse}
+			/>
+		);
 	}
 	return (
 		<div className="container">
@@ -56,6 +73,7 @@ export const BagScreen = (): JSX.Element => {
 						key={item.name}
 						center={item.name}
 						rightSide={inventory[item.name]}
+						onClick={() => handleItemClick(item)}
 					/>
 				))
 			)}

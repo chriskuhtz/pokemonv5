@@ -90,6 +90,7 @@ export const useLeaveBattle = (
 				navigate(RoutesEnum.overworld);
 				if (reason === 'RUNAWAY') {
 					dispatch(addNotification('Phew, escaped'));
+					dispatch(setDialogue([]));
 				}
 				if (reason === 'WIN') {
 					dispatch(addNotification('You won the Battle'));
@@ -101,6 +102,7 @@ export const useLeaveBattle = (
 					dispatch(
 						addNotification('You lost the battle and scurried back to safety')
 					);
+					dispatch(setDialogue([]));
 				}
 			});
 		},
