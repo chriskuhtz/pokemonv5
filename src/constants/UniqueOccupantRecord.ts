@@ -15,6 +15,7 @@ export type UniqueOccupantIds =
 	| 'starter-town-item-1'
 	| 'youngster-jimmy'
 	| 'brock'
+	| 'brocks-minion'
 	| 'youngster-jimmy-blocker';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
@@ -91,12 +92,28 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		sprite: SpriteEnum['brock'],
 		team: [{ dexId: 95, xp: 1000 }],
 		activePokemonPerside: 1,
-		questCondition: {
-			id: 'talkToNurseJoy',
-			status: 'completed',
-		},
 		rewardMoney: 4000,
 		rewardBadge: 'stoneBadge',
+	},
+	'brocks-minion': {
+		id: 'brocks-minion',
+		type: 'TRAINER',
+		position: {
+			y: 3,
+			x: 6,
+			mapId: 'brocks-gym',
+			orientation: 1,
+		},
+		dialogue: ['Go, my Rock Pokemon!'],
+		dialogueAfterDefeat: ['Damn, you are too good!'],
+		sprite: '093',
+		team: [
+			{ dexId: 524, xp: 400 },
+			{ dexId: 299, xp: 400 },
+		],
+		activePokemonPerside: 2,
+		rewardMoney: 500,
+		viewRange: 2,
 	},
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',
