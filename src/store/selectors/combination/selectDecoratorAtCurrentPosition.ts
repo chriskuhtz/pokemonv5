@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { selectNextCoordinates } from './selectNextCoordinates';
 import { selectDecorators } from '../map/selectDecorators';
+import { selectNextCoordinates } from './selectNextCoordinates';
 
 export const selectDecoratorAtNextCoordinatess = createSelector(
 	[selectNextCoordinates, selectDecorators],

@@ -2,9 +2,10 @@ import { QuestIdAndStatus } from '../../../interfaces/QuestIdAndStatus';
 
 import { RoutesEnum } from '../../../router/router';
 import { CharacterPosition } from '../../../store/slices/saveFileSlice';
+import { Trainer } from './Occupants/Occupant';
 
 export interface BaseEvent {
-	type: 'ENCOUNTER' | 'PORTAL' | 'ROUTE';
+	type: 'ENCOUNTER' | 'PORTAL' | 'ROUTE' | 'SPOTTED';
 }
 
 export interface EncounterEvent extends BaseEvent {
@@ -24,4 +25,13 @@ export interface RouterEvent extends BaseEvent {
 	conditionFailMessage?: string[];
 }
 
-export type OverworldEvent = EncounterEvent | PortalEvent | RouterEvent;
+export interface SpottedEvent extends BaseEvent {
+	type: 'SPOTTED';
+	trainer: Trainer;
+}
+
+export type OverworldEvent =
+	| EncounterEvent
+	| PortalEvent
+	| RouterEvent
+	| SpottedEvent;

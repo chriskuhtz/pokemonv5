@@ -34,9 +34,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		sprite: '093',
 		team: [
-			{ dexId: 399, xp: 100 },
-			{ dexId: 15, xp: 100 },
-			{ dexId: 400, xp: 300 },
+			{ dexId: 399, xp: 40 },
+			{ dexId: 13, xp: 40 },
 		],
 		activePokemonPerside: 1,
 		questCondition: {
@@ -44,6 +43,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			status: 'completed',
 		},
 		rewardMoney: 300,
+		viewRange: 1,
 	},
 	'youngster-jimmy-blocker': {
 		id: 'youngster-jimmy-blocker',

@@ -37,7 +37,10 @@ export const useUpdatePosition = () => {
 		}
 		if (decorator?.onStep) {
 			const random = Math.random();
-			if (decorator?.onStep?.type === 'PORTAL') {
+			if (
+				decorator?.onStep?.type === 'PORTAL' ||
+				decorator?.onStep?.type === 'SPOTTED'
+			) {
 				handleEvent(decorator.onStep);
 			}
 			if (decorator?.onStep?.type === 'ENCOUNTER' && encounterChance < random) {

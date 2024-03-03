@@ -8,6 +8,7 @@ import { selectQuests } from '../store/selectors/saveFile/selectQuests';
 import { setDialogue } from '../store/slices/dialogueSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useSaveGame } from './useSaveGame';
+import { getBattleScreenPropsFromTrainer } from '../functions/getBattleScreenPropsFromTrainer';
 
 export const useOverworldEvent = () => {
 	const dispatch = useAppDispatch();
@@ -35,6 +36,11 @@ export const useOverworldEvent = () => {
 						opponents: opponents,
 						activePokemonPerSide: opponents.length,
 					},
+				});
+			}
+			if (event.type === 'SPOTTED') {
+				navigate(RoutesEnum.battle, {
+					state: getBattleScreenPropsFromTrainer(event.trainer),
 				});
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {

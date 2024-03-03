@@ -11,6 +11,7 @@ import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
 import { TbCircleLetterA } from 'react-icons/tb';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { getBattleScreenPropsFromTrainer } from '../../functions/getBattleScreenPropsFromTrainer';
 import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
@@ -92,11 +93,7 @@ export const InteractionButton = () => {
 						: false;
 					if (!handled) {
 						navigate(RoutesEnum.battle, {
-							state: {
-								opponents: focusedOccupant.team,
-								trainerId: focusedOccupant.id,
-								activePokemonPerSide: focusedOccupant.activePokemonPerside,
-							},
+							state: getBattleScreenPropsFromTrainer(focusedOccupant),
 						});
 					}
 				}

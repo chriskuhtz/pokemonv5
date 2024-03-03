@@ -40,7 +40,6 @@ export interface Trainer extends BaseOccupant {
 	sprite: string;
 	movement?: Movement;
 	viewRange?: number;
-	watching?: boolean;
 	type: 'TRAINER';
 	team: MapEncounter[];
 	activePokemonPerside: number;
