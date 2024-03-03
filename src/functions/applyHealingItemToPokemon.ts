@@ -6,7 +6,6 @@ export const applyHealingItemToPokemon = (
 ): BattlePokemon => {
 	const copy = { ...pokemon };
 
-	console.log(itemName);
 	if (itemName === 'potion') {
 		copy.damage = Math.max(0, copy.damage - 20);
 	}

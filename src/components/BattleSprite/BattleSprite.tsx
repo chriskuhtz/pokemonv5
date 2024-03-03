@@ -72,7 +72,7 @@ export const BattleSprite = ({
 				}px) rotate(-${angle}deg)`;
 			}
 		});
-	}, []);
+	}, [pokemon]);
 
 	return (
 		<div

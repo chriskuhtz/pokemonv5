@@ -14,7 +14,7 @@ import { OPPOID } from '../../../testing/constants/trainerIds';
 const modifiers: StatObject = {
 	hp: 0,
 	attack: 0,
-	def: 0,
+	defence: 0,
 	spatk: 0,
 	spdef: 0,
 	speed: 0,

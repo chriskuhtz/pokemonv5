@@ -1,4 +1,5 @@
 import { PokemonType } from './PokemonType';
+import { Stat } from './StatObject';
 
 export interface Move {
 	pp: number;
@@ -56,7 +57,7 @@ export interface MoveMeta {
 export interface StatChange {
 	change: number;
 	stat: {
-		name: string;
+		name: Stat;
 	};
 }
 
@@ -76,7 +77,23 @@ export interface MoveDto {
 	priority: number;
 	stat_changes: StatChange[];
 	target: {
-		name: string;
+		name:
+			| 'specific-move'
+			| 'selected-pokemon-me-first'
+			| 'ally'
+			| 'users-field'
+			| 'user-or-ally'
+			| 'opponents-field'
+			| 'user'
+			| 'random-opponent'
+			| 'all-other-pokemon'
+			| 'selected-pokemon'
+			| 'entire-field'
+			| 'user-and-allies'
+			| 'all-opponents'
+			| 'all-pokemon'
+			| 'all-allies'
+			| 'fainting-pokemon';
 	};
 	type: {
 		name: PokemonType;

@@ -412,6 +412,24 @@ export const useHandleAction = (
 			if (isBattleAttack(action) && target) {
 				const { move } = action;
 
+				const updatedActorStatMods = { ...actor.statModifiers };
+				if (move.stat_changes.length > 0 && move.target.name === 'user') {
+					move.stat_changes.forEach((statChange) => {
+						if (statChange.change > 0) {
+							updatedActorStatMods[statChange.stat.name] = Math.min(
+								updatedActorStatMods[statChange.stat.name] + statChange.change,
+								6
+							);
+						}
+						if (statChange.change < 0) {
+							updatedActorStatMods[statChange.stat.name] = Math.max(
+								updatedActorStatMods[statChange.stat.name] + statChange.change,
+								-6
+							);
+						}
+					});
+				}
+
 				let nextAction: BattleAction | undefined = undefined;
 
 				const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
@@ -467,6 +485,7 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction,
+								statModifiers: updatedActorStatMods,
 							};
 						}),
 					});
@@ -505,6 +524,7 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction,
+								statModifiers: updatedActorStatMods,
 							};
 						}),
 					});

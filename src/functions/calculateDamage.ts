@@ -61,12 +61,21 @@ export const getDamageFactors = (
 	const { level } = calculateLevelData(actor.xp);
 	const { damage_class, power, type } = move;
 	const moveType = type.name;
-	const correctAttack =
-		damage_class.name === 'physical' ? actor.stats.attack : actor.stats.spatk;
-	const correctDefence =
-		damage_class.name === 'physical'
-			? target.stats.defence
-			: target.stats.spdef;
+	const correctAttackKey =
+		damage_class.name === 'physical' ? 'attack' : 'spatk';
+	const correctAttack: number =
+		actor.stats[correctAttackKey] +
+		0.5 * actor.statModifiers[correctAttackKey] * actor.stats[correctAttackKey];
+
+	const correctDefenceKey =
+		damage_class.name === 'physical' ? 'defence' : 'spdef';
+
+	const correctDefence: number =
+		target.stats[correctDefenceKey] +
+		0.5 *
+			target.statModifiers[correctDefenceKey] *
+			target.stats[correctDefenceKey];
+
 	const stabFactor =
 		moveType === actor.primaryType || moveType === actor.secondaryType
 			? 1.5
@@ -137,5 +146,6 @@ export const calculateDamage = ({
 		zMoveFactor *
 		teraShieldFactor;
 
+	console.log(Math.round(total));
 	return Math.round(total);
 };

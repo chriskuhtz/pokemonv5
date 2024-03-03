@@ -17,7 +17,9 @@ export const assignPriority = (pokemon: BattlePokemon): BattlePokemon => {
 	}
 
 	//priority moves have prio 1, so speed must be smaller than 1 for comparison
-	let prio = pokemon.stats.speed * 0.00001;
+	let prio =
+		pokemon.stats.speed * 0.00001 +
+		0.5 * pokemon.statModifiers.speed * pokemon.stats.speed;
 
 	if (pokemon.nextAction.type === 'SWITCH') {
 		prio += prioIndex['SWITCH'];
