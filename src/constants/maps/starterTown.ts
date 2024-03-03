@@ -1,46 +1,149 @@
 import { MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
+export const starterTownEncounters: number[] = [19, 16, 17, 25, 216, 261, 66];
 
+const mapId = 'starter-town';
 export const starterTown: MapState = {
-	mapId: 'starter-town',
-	height: 13,
+	mapId,
+	height: 25,
 	width: 9,
-	baseTile: 'grass',
+	baseTile: { id: 'grass', pattern: 'random5' },
 	decorators: [
+		{
+			x: 5,
+			y: 3,
+			sprite: '',
+			onStep: {
+				type: 'PORTAL',
+				to: { orientation: 3, mapId: 'oaks-lab', y: 4, x: 2 },
+			},
+		},
+		{
+			x: 6,
+			y: 23,
+			sprite: '',
+			onStep: {
+				type: 'PORTAL',
+				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
+			},
+		},
+		{
+			x: 5,
+			y: 23,
+			sprite: '',
+			onStep: {
+				type: 'PORTAL',
+				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
+			},
+		},
+		{ x: 0, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 1, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 2, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 3, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 8, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
+		{ x: 0, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 4, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 5, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 8, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
+		{ x: 0, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 4, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 5, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 8, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
+		{ x: 0, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 4, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 5, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 8, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+
+		{ x: 0, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 1, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 2, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 3, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 5, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 6, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 7, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 8, y: 13, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+
+		{ x: 0, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 1, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 2, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 3, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 5, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 6, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 7, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 8, y: 14, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+
+		{ x: 0, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 1, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 2, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 3, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 5, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 6, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 7, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 8, y: 15, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+
+		{ x: 0, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 1, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 2, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 3, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 5, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 6, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 7, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+		{ x: 8, y: 16, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 	],
-	interactives: UniqueOccupantRecord,
+	interactives: Object.fromEntries(
+		Object.entries(UniqueOccupantRecord).filter(
+			(entry) => entry[1].position.mapId === mapId
+		)
+	),
 	obstacles: [
+		{
+			type: 'LARGE_OBSTACLE',
+			id: 'oaks-house',
+			sprite: 'houses/largeHouse',
+			position: {
+				x: 3,
+				y: 3,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+			height: 4,
+			width: 6,
+			clearanceBehind: 1,
+		},
+		{
+			type: 'LARGE_OBSTACLE',
+			id: 'brocks-gym-building',
+			sprite: 'houses/gym',
+			position: {
+				x: 3,
+				y: 23,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+			height: 7,
+			width: 6,
+			clearanceBehind: 2,
+		},
 		{
 			type: 'OBSTACLE',
 			id: 'greenRock0/8',
@@ -137,17 +240,21 @@ export const starterTown: MapState = {
 				forwardFoot: 0,
 			},
 		},
+		{
+			type: 'OBSTACLE',
+			id: 'greenRock0/8',
+			sprite: 'greenRock',
+			position: {
+				x: 0,
+				y: 8,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+		},
 	],
-	encounters: [
-		//rattata
-		{ dexId: 19, xp: 70 },
-		{ dexId: 19, xp: 100 },
-		//pidgey
-		{ dexId: 19, xp: 70 },
-		{ dexId: 16, xp: 100 },
-		//pidgeotto
-		{ dexId: 17, xp: 200 },
-		//pikachu
-		{ dexId: 25, xp: 100 },
-	],
+	encounters: starterTownEncounters.map((dexId) => ({
+		dexId,
+		xp: 60,
+	})),
 };

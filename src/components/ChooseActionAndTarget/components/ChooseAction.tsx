@@ -1,7 +1,7 @@
-import { BattleAction } from '../../../interfaces/BattlePokemon';
+import { BattleAction } from '../../../interfaces/BattleAction';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
-import { Banner } from '../../BottomBanner/Banner';
-import { Slanted } from '../../Slanted/Slanted';
+import { Banner } from '../../../ui_components/Banner/Banner';
+import { Slanted } from '../../../ui_components/Slanted/Slanted';
 
 export const ChooseAction = ({
 	open,
@@ -35,12 +35,12 @@ export const ChooseAction = ({
 										border: '1px solid',
 										backgroundColor: 'var(--main-bg-color)',
 									}}
-									key={a.action}
+									key={a.actionType}
 									disabled={a.disabled}
 									onClick={() => {
-										setActionName(a.action);
+										setActionName(a.actionType);
 									}}
-									content={a.name}
+									content={a.displayName}
 								/>
 							))}
 						</div>

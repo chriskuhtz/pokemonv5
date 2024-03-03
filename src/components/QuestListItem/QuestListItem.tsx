@@ -1,8 +1,8 @@
 import { useIsConditionFulfilled } from '../../hooks/useIsConditionFulfilled';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { Quest } from '../../interfaces/Quest';
-import { IconWithTag } from '../../shared/components/IconWithTag/IconWithTag';
 import { Pill } from '../../ui_components/Pill/Pill';
+import { IconWithTag } from '../IconWithTag/IconWithTag';
 
 export const QuestListItem = ({ quest }: { quest: Quest }) => {
 	const isConditionFulfilled = useIsConditionFulfilled();
@@ -14,7 +14,9 @@ export const QuestListItem = ({ quest }: { quest: Quest }) => {
 				quest.status === 'active' && isConditionFulfilled(quest.condition) ? (
 					<Pill
 						style={{ backgroundColor: 'green' }}
-						onClick={() => save({ questUpdates: { [quest.id]: 'completed' } })}
+						onClick={async () =>
+							await save({ questUpdates: { [quest.id]: 'completed' } })
+						}
 						center={'claim'}
 					/>
 				) : (

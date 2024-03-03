@@ -24,19 +24,27 @@ export const useUpdatePosition = () => {
 	const [encounterChance, setEncounterChance] = useState<number>(0);
 
 	return useCallback(() => {
+		if (nextOrientation === undefined || position === undefined) {
+			return;
+		}
+
 		if (nextOrientation === undefined && position?.forwardFoot !== 0) {
 			dispatch(stopWalking());
 			return;
 		}
-		if (nextOrientation === undefined || position === undefined) {
-			return;
-		}
+
 		if (nextOrientation !== position.orientation) {
 			dispatch(updatePosition({ ...position, orientation: nextOrientation }));
 			return;
 		}
 		if (decorator?.onStep) {
 			const random = Math.random();
+			if (
+				decorator?.onStep?.type === 'PORTAL' ||
+				decorator?.onStep?.type === 'SPOTTED'
+			) {
+				handleEvent(decorator.onStep);
+			}
 			if (decorator?.onStep?.type === 'ENCOUNTER' && encounterChance < random) {
 				setEncounterChance(encounterChance + 0.05);
 			}

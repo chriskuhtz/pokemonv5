@@ -1,9 +1,10 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ItemName } from '../interfaces/Item';
-import { ItemData } from '../shared/interfaces/ItemData';
-import { PokemonData } from '../shared/interfaces/PokemonData';
-import { PokemonSpeciesData } from '../shared/interfaces/PokemonSpeciesData';
+import { ItemData } from '../interfaces/ItemData';
+import { MoveDto } from '../interfaces/Move';
+import { PokemonData } from '../interfaces/PokemonData';
+import { PokemonSpeciesData } from '../interfaces/PokemonSpeciesData';
 
 // Define a service using a base URL and expected endpoints
 
@@ -20,6 +21,12 @@ export const pokeApi = createApi({
 		getItemDataByName: builder.query<ItemData, ItemName>({
 			query: (itemName: ItemName) => `/item/${itemName}`,
 		}),
+		getMoveDataByName: builder.query<MoveDto, string>({
+			query: (name: string) => {
+				const parsedName = name.toLowerCase().replace(' ', '-');
+				return `/move/${parsedName}`;
+			},
+		}),
 	}),
 });
 
@@ -32,4 +39,6 @@ export const {
 	useGetSpeciesDataByDexIdQuery,
 	useLazyGetPokemonDataByDexIdQuery,
 	useLazyGetSpeciesDataByDexIdQuery,
+	useGetMoveDataByNameQuery,
+	useLazyGetMoveDataByNameQuery,
 } = pokeApi;

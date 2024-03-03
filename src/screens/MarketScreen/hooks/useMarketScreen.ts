@@ -6,7 +6,7 @@ import { useHydratedInventory } from '../../../hooks/useHydratedInventory';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { Inventory, generateInventory } from '../../../interfaces/Inventory';
 import { ItemName } from '../../../interfaces/Item';
-import { ItemData } from '../../../shared/interfaces/ItemData';
+import { ItemData } from '../../../interfaces/ItemData';
 import { selectSaveFile } from '../../../store/selectors/saveFile/selectSaveFile';
 import { useAppSelector } from '../../../store/storeHooks';
 
@@ -35,12 +35,12 @@ export const useMarketScreen = () => {
 		}, 0);
 	}, [cart, hydratedInventory]);
 
-	const purchase = useCallback(() => {
+	const purchase = useCallback(async () => {
 		if (!data) {
 			return;
 		}
 
-		void save({ fundsUpdate: -totalCost, inventoryChanges: cart });
+		await save({ fundsUpdate: -totalCost, inventoryChanges: cart });
 		setCart(generateInventory({}));
 	}, [cart, data, save, totalCost]);
 

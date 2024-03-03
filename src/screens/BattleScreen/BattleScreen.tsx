@@ -1,15 +1,14 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
-import { Banner } from '../../components/BottomBanner/Banner';
-import { ChooseActionAndTarget } from '../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
+import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
-import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
-import { useAppSelector } from '../../store/storeHooks';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
+import { BattleScreenController } from './components/BattleScreenController/BattleScreenController';
 import { useBattleScreen } from './hooks/useBattleScreen';
 
 export interface BattleSide {
@@ -22,9 +21,13 @@ export interface BattleSide {
 
 export type BattleMode = 'COLLECTING' | 'EXECUTING';
 
-export const BattleScreen = (): JSX.Element => {
-	const currentDialogue = useAppSelector(selectCurrentDialogue);
+export const BattleScreen = ({
+	saveFile,
+}: {
+	saveFile: SaveFile;
+}): JSX.Element => {
 	const {
+		activePokemonPerside,
 		playerSide,
 		opponentSide,
 		handleAction,
@@ -32,18 +35,20 @@ export const BattleScreen = (): JSX.Element => {
 		selectAction,
 		resetAction,
 		availableActions,
-		nextPokemonWithoutAction,
-		pokemonWithActions,
+		nextPlayerPokemonWithoutAction,
 		opponentFetchStatus,
 		playerFetchStatus,
-	} = useBattleScreen();
+		setMode,
+		setPlayerSide,
+	} = useBattleScreen(saveFile);
 
-	if (
-		opponentFetchStatus === 'error' ||
-		playerFetchStatus === 'error' ||
-		(playerFetchStatus === 'success' && playerSide?.field.length === 0) ||
-		(opponentFetchStatus === 'success' && opponentSide?.field.length === 0)
-	) {
+	const hasOpenSpots: boolean = !!(
+		playerSide &&
+		playerSide.field.length < activePokemonPerside &&
+		playerSide.bench.length !== 0
+	);
+
+	if (opponentFetchStatus === 'error' || playerFetchStatus === 'error') {
 		return (
 			<div
 				style={{
@@ -68,10 +73,6 @@ export const BattleScreen = (): JSX.Element => {
 								key={p.id}
 								back
 								pokemon={p}
-								active={
-									pokemonWithActions.length > 0 &&
-									pokemonWithActions[0].id === p.id
-								}
 								overlay={
 									p.nextAction && (
 										<div
@@ -81,7 +82,9 @@ export const BattleScreen = (): JSX.Element => {
 												alignItems: 'center',
 											}}
 										>
-											{p.nextAction?.type}{' '}
+											{isBattleAttack(p.nextAction)
+												? p.nextAction.move.name
+												: p.nextAction.type}{' '}
 											{mode === 'COLLECTING' && (
 												<IoIosCloseCircle
 													style={{ height: '40px', width: '40px' }}
@@ -96,29 +99,21 @@ export const BattleScreen = (): JSX.Element => {
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<BattleSprite
-								key={p.id}
-								pokemon={p}
-								active={
-									mode === 'EXECUTING' &&
-									pokemonWithActions.length > 0 &&
-									pokemonWithActions[0].id === p.id
-								}
-							/>
+							<BattleSprite key={p.id} pokemon={p} />
 						))}
 					</div>
 				</div>
-				{nextPokemonWithoutAction && mode === 'COLLECTING' && (
-					<ChooseActionAndTarget
-						actor={nextPokemonWithoutAction}
-						availableTargets={opponentSide?.field ?? []}
-						availableActions={availableActions}
-						selectAction={selectAction}
-					/>
-				)}
-				{currentDialogue.length > 0 && (
-					<Banner content={currentDialogue[0]} onClick={handleAction} />
-				)}
+				<BattleScreenController
+					nextPlayerPokemonWithoutAction={nextPlayerPokemonWithoutAction}
+					mode={mode}
+					playerSide={playerSide}
+					availableActions={availableActions}
+					hasOpenSpots={hasOpenSpots}
+					handleAction={handleAction}
+					selectAction={selectAction}
+					setPlayerSide={setPlayerSide}
+					setMode={setMode}
+				/>
 			</div>
 		);
 	}

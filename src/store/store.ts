@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { pokeApi } from '../api/pokeApi';
 import { mapSlice } from './slices/MapSlice';
 import { dialogueSlice } from './slices/dialogueSlice';
+import { notificationSlice } from './slices/notificationSlice';
 import { saveFileSlice } from './slices/saveFileSlice';
 // ...
 
@@ -10,6 +11,7 @@ export const store = configureStore({
 		saveFile: saveFileSlice.reducer,
 		map: mapSlice.reducer,
 		dialogue: dialogueSlice.reducer,
+		notification: notificationSlice.reducer,
 
 		[pokeApi.reducerPath]: pokeApi.reducer,
 	},

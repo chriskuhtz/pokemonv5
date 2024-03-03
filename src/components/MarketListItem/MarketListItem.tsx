@@ -1,4 +1,4 @@
-import { ItemData } from '../../shared/interfaces/ItemData';
+import { ItemData } from '../../interfaces/ItemData';
 import { Pill } from '../../ui_components/Pill/Pill';
 
 export const MarketListItem = ({

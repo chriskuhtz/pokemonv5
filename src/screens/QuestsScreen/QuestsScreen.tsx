@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Headline, HeadlineProps } from '../../components/Headline/Headline';
 import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
-import { useHasUnclaimedQuests } from '../../hooks/useHasUnclaimedQuests';
+import { useNumberOfUnclaimedQuests } from '../../hooks/useNumberOfUnclaimedQuests';
 import { QuestName, QuestRecord } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
 import { selectNotInactiveQuests } from '../../store/selectors/combination/selectNotInactiveQuests';
@@ -17,13 +17,13 @@ export const QuestsScreen = ({
 }): JSX.Element => {
 	const navigate = useNavigate();
 	const quests = useAppSelector(selectNotInactiveQuests);
-	const hasUnclaimedQuests = useHasUnclaimedQuests();
+	const numberOfUnclaimedQuests = useNumberOfUnclaimedQuests();
 
 	useEffect(() => {
-		if (routeAwayAfterAllClaimed && !hasUnclaimedQuests) {
+		if (routeAwayAfterAllClaimed && numberOfUnclaimedQuests === 0) {
 			navigate(routeAwayAfterAllClaimed.to);
 		}
-	}, [hasUnclaimedQuests, navigate, routeAwayAfterAllClaimed]);
+	}, [numberOfUnclaimedQuests, navigate, routeAwayAfterAllClaimed]);
 
 	return (
 		<div className="container">

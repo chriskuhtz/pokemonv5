@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { QuestRecord } from '../interfaces/Quest';
 import { BagScreen } from '../screens/BagScreen/BagScreen';
-import { BattleScreen } from '../screens/BattleScreen/BattleScreen';
+import { BattleScreenWrapper } from '../screens/BattleScreen/components/BattleScreenWrapper/BattleScreenWrapper';
 import { LoginScreen } from '../screens/LoginScreen/LoginScreen';
 import { MarketScreen } from '../screens/MarketScreen/MarketScreen';
 import { NewGameProcess } from '../screens/NewGameProcessScreen/NewGameProcess';
@@ -44,7 +43,7 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: RoutesEnum.battle,
-		element: <BattleScreen />,
+		element: <BattleScreenWrapper />,
 	},
 	{
 		path: RoutesEnum.menu,
@@ -80,7 +79,8 @@ export const router = createBrowserRouter([
 	{ path: RoutesEnum.market, element: <MarketScreen /> },
 	{
 		path: RoutesEnum.newGame,
-		element: <NewGameProcess />,
+		element:
+			import.meta.env.MODE === 'development' ? <NewGameProcess /> : <></>,
 	},
 	{
 		path: RoutesEnum.starterSelection,
@@ -88,7 +88,6 @@ export const router = createBrowserRouter([
 			<PokemonSelectionScreen
 				choices={[1, 4, 7]}
 				headline={'Select your First Pokemon'}
-				quest={QuestRecord.pickStarter}
 			/>
 		),
 	},

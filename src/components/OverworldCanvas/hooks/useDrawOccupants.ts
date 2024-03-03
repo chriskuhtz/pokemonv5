@@ -16,8 +16,6 @@ export const useDrawOccupants = () => {
 	const decorators = useSelector(selectDecorators);
 
 	const drawOccupants = useCallback(() => {
-		console.log('drawOccupants', occupantsToDraw);
-
 		Array.from({ length: height }).forEach((_, i) => {
 			const canvas: HTMLCanvasElement | null = document.querySelector(
 				`#${occupantCanvas}${i}`
@@ -36,6 +34,7 @@ export const useDrawOccupants = () => {
 				return;
 			}
 			//clear entire canvas to remove stale
+
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 		});
 
@@ -146,6 +145,6 @@ export const useDrawOccupants = () => {
 			};
 			img.src = `mapObjects/${o.sprite}.png`;
 		});
-	}, [decorators, occupantsToDraw]);
-	return { hasChanges: false, drawOccupants };
+	}, [decorators, height, occupantsToDraw]);
+	return { drawOccupants };
 };
