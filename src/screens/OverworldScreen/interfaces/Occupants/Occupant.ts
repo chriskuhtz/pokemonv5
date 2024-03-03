@@ -15,6 +15,7 @@ export type OccupantType =
 	| 'OBSTACLE'
 	| 'INVISIBLE_BLOCKER'
 	| 'LARGE_OBSTACLE'
+	| 'HOUSE'
 	| 'TRAINER';
 
 export interface BaseOccupant {
@@ -39,9 +40,9 @@ export interface Trainer extends BaseOccupant {
 	sprite: string;
 	movement?: Movement;
 	viewRange?: number;
-	watching?: boolean;
 	type: 'TRAINER';
 	team: MapEncounter[];
+	activePokemonPerside: number;
 	rewardMoney: number;
 	rewardItems?: Partial<Inventory>;
 	rewardBadge?: GymBadge;

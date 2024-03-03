@@ -4,22 +4,25 @@ import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupa
 
 //every occupant that can be handled should be unique
 export type UniqueOccupantIds =
-	| 'starter-town-oak-before-selection'
-	| 'starter-town-oak-during-selection'
-	| 'starter-town-oak-after-selection'
+	| 'oak-before-selection'
+	| 'oak-during-selection'
+	| 'oak-after-selection'
 	| 'starter-town-nurse-quest'
 	| 'starter-town-merchant'
 	| 'starter-town-nurse'
-	| 'starter-town-ballMachine'
+	| 'ballMachine'
 	| 'starter-town-grass-blocker'
 	| 'starter-town-item-1'
-	| 'starter-town-youngster-jimmy'
+	| 'youngster-jimmy'
 	| 'brock'
-	| 'starter-town-youngster-jimmy-blocker';
+	| 'brocks-minion'
+	| 'youngster-jimmy-blocker'
+	| 'oaks-assistant'
+	| 'pikachu-fan';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
-	'starter-town-youngster-jimmy': {
-		id: 'starter-town-youngster-jimmy',
+	'youngster-jimmy': {
+		id: 'youngster-jimmy',
 		type: 'TRAINER',
 		position: {
 			y: 7,
@@ -33,15 +36,20 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			'Maybe you could even beat Brock.',
 		],
 		sprite: '093',
-		team: [{ dexId: 399, xp: 100 }],
+		team: [
+			{ dexId: 399, xp: 40 },
+			{ dexId: 13, xp: 40 },
+		],
+		activePokemonPerside: 1,
 		questCondition: {
 			id: 'talkToNurseJoy',
 			status: 'completed',
 		},
 		rewardMoney: 300,
+		viewRange: 1,
 	},
-	'starter-town-youngster-jimmy-blocker': {
-		id: 'starter-town-youngster-jimmy-blocker',
+	'youngster-jimmy-blocker': {
+		id: 'youngster-jimmy-blocker',
 		type: 'NPC',
 		position: {
 			y: 8,
@@ -63,10 +71,10 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		id: 'brock',
 		type: 'TRAINER',
 		position: {
-			y: 12,
-			x: 0,
-			mapId: 'starter-town',
-			orientation: 3,
+			y: 1,
+			x: 4,
+			mapId: 'brocks-gym',
+			orientation: 0,
 		},
 		dialogue: [
 			'I am Brock, the Gym Leader of this area.',
@@ -85,12 +93,29 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		sprite: SpriteEnum['brock'],
 		team: [{ dexId: 95, xp: 1000 }],
-		questCondition: {
-			id: 'talkToNurseJoy',
-			status: 'completed',
-		},
+		activePokemonPerside: 1,
 		rewardMoney: 4000,
 		rewardBadge: 'stoneBadge',
+	},
+	'brocks-minion': {
+		id: 'brocks-minion',
+		type: 'TRAINER',
+		position: {
+			y: 3,
+			x: 6,
+			mapId: 'brocks-gym',
+			orientation: 1,
+		},
+		dialogue: ['Go, my Rock Pokemon!'],
+		dialogueAfterDefeat: ['Damn, you are too good!'],
+		sprite: '093',
+		team: [
+			{ dexId: 524, xp: 400 },
+			{ dexId: 299, xp: 400 },
+		],
+		activePokemonPerside: 2,
+		rewardMoney: 500,
+		viewRange: 2,
 	},
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',
@@ -103,13 +128,13 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			orientation: 0,
 		},
 	},
-	'starter-town-oak-before-selection': {
-		id: 'starter-town-oak-before-selection',
+	'oak-before-selection': {
+		id: 'oak-before-selection',
 		type: 'NPC',
 		position: {
 			y: 2,
-			x: 4,
-			mapId: 'starter-town',
+			x: 2,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		dialogue: [
@@ -126,13 +151,13 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		},
 		questCondition: { id: 'pickStarter', status: 'inactive' },
 	},
-	'starter-town-oak-during-selection': {
-		id: 'starter-town-oak-during-selection',
+	'oak-during-selection': {
+		id: 'oak-during-selection',
 		type: 'NPC',
 		position: {
 			y: 2,
-			x: 4,
-			mapId: 'starter-town',
+			x: 2,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		dialogue: [
@@ -142,20 +167,20 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		sprite: '136',
 		questCondition: { id: 'pickStarter', status: 'active' },
 	},
-	'starter-town-oak-after-selection': {
-		id: 'starter-town-oak-after-selection',
+	'oak-after-selection': {
+		id: 'oak-after-selection',
 		type: 'NPC',
 		position: {
 			y: 2,
-			x: 4,
-			mapId: 'starter-town',
+			x: 2,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		dialogue: [
 			'Aah, what an excellent choice',
 			'I am sure this Pokemon will become an excellent Partner',
 			'I look forward to hearing about your many adventures',
-			'You should talk to Nurse Joy next',
+			'You should talk to Nurse Joy outside',
 			'She will provide you with some starting equipment',
 		],
 		sprite: '136',
@@ -181,6 +206,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		],
 		questUpdates: {
 			talkToNurseJoy: 'completed',
+			secondPokemon: 'active',
 		},
 		sprite: '115',
 		questCondition: { id: 'talkToNurseJoy', status: 'active' },
@@ -211,13 +237,13 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		dialogue: ['Let me heal your Pokemon'],
 		questCondition: { id: 'talkToNurseJoy', status: 'completed' },
 	},
-	'starter-town-ballMachine': {
-		id: 'starter-town-ballMachine',
+	ballMachine: {
+		id: 'ballMachine',
 		type: 'LARGE_OBSTACLE',
 		position: {
 			y: 2,
-			x: 5,
-			mapId: 'starter-town',
+			x: 3,
+			mapId: 'oaks-lab',
 			orientation: 0,
 		},
 		sprite: 'pokeballMachine',
@@ -246,6 +272,36 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		questCondition: {
 			id: 'talkToNurseJoy',
 			status: 'completed',
+		},
+	},
+	'oaks-assistant': {
+		id: 'oaks-assistant',
+		type: 'NPC',
+		position: {
+			y: 24,
+			x: 3,
+			mapId: 'starter-town',
+			orientation: 1,
+		},
+		dialogue: [
+			'If you want to challenge Brock, you should have at least two pokemon',
+		],
+		sprite: SpriteEnum.scientistFemale,
+		questCondition: { id: 'secondPokemon', status: 'active' },
+	},
+	'pikachu-fan': {
+		id: 'pikachu-fan',
+		type: 'NPC',
+		position: {
+			y: 17,
+			x: 0,
+			mapId: 'starter-town',
+			orientation: 2,
+		},
+		dialogue: ['Do you have a Pikachu?', 'Its the bees knees'],
+		sprite: SpriteEnum.child,
+		questUpdates: {
+			findPikachu: 'active',
 		},
 	},
 };

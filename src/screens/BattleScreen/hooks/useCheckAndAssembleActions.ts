@@ -1,4 +1,8 @@
 import { useEffect, useMemo } from 'react';
+import {
+	isBattleActionWithTarget,
+	isBattleAttack,
+} from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
@@ -11,7 +15,8 @@ export const useCheckAndAssembleActions = (
 	pokemonWithActions: BattlePokemon[],
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setUsedBalls: React.Dispatch<React.SetStateAction<number>>
+	setUsedBalls: React.Dispatch<React.SetStateAction<number>>,
+	setUsedPotions: React.Dispatch<React.SetStateAction<number>>
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
@@ -22,6 +27,12 @@ export const useCheckAndAssembleActions = (
 		}
 		return [...playerSide.field, ...opponentSide.field];
 	}, [opponentSide, playerSide]);
+	const allPokemonOnBench = useMemo(() => {
+		if (!playerSide || !opponentSide) {
+			return [];
+		}
+		return [...playerSide.bench, ...opponentSide.bench];
+	}, [opponentSide, playerSide]);
 	useEffect(() => {
 		if (
 			mode === 'EXECUTING' &&
@@ -30,14 +41,41 @@ export const useCheckAndAssembleActions = (
 			currentDialogue.length === 0
 		) {
 			const actor = pokemonWithActions[0];
-			const target = allPokemonOnField.find(
-				(p) => p.id === actor.nextAction?.target
-			);
-			//console.log('assemble', actor);
+			const action = actor.nextAction;
+			const target = isBattleActionWithTarget(action)
+				? allPokemonOnField.find((p) => p.id === action.target)
+				: undefined;
+			const switchTarget =
+				isBattleActionWithTarget(action) && action?.type === 'SWITCH'
+					? allPokemonOnBench.find((p) => p.id === action.target)
+					: undefined;
+
+			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
+				dispatch(
+					concatDialogue([
+						`${actor.side === 'PLAYER' ? 'You' : 'Opponent'} withdrew ${
+							actor.name
+						} and sent out ${switchTarget.name}`,
+					])
+				);
+				return;
+			}
+			if (action?.type === 'HEALING_ITEM' && target) {
+				setUsedPotions((potions) => potions + 1);
+				dispatch(
+					//@ts-expect-error : See typecheck in condition
+					concatDialogue([`You gave a ${action.item} to ${actor.name}`])
+				);
+				return;
+			}
 			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
 				dispatch(
 					concatDialogue([`There is no target for ${actor?.name}s action!`])
 				);
+				return;
+			}
+			if (actor.nextAction?.type === 'MISSED_ATTACK') {
+				dispatch(concatDialogue([`${actor.name} missed`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
@@ -89,6 +127,28 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`${target?.name} fainted!`]));
 				return;
 			}
+			if (actor.nextAction?.type === 'NOT_VERY_EFFECTIVE') {
+				dispatch(
+					concatDialogue([`It is not very effective against ${target?.name}`])
+				);
+				return;
+			}
+			if (actor.nextAction?.type === 'SUPER_EFFECTIVE') {
+				dispatch(
+					concatDialogue([`It is very effective against ${target?.name}`])
+				);
+				return;
+			}
+			if (actor.nextAction?.type === 'NO_EFFECT') {
+				dispatch(concatDialogue([`It has no effect on ${target?.name}`]));
+				return;
+			}
+			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
+				dispatch(
+					concatDialogue([`${actor.name} used ${actor.nextAction?.move.name}`])
+				);
+				return;
+			}
 			dispatch(
 				concatDialogue([`${actor.name} used ${actor.nextAction?.type}`])
 			);
@@ -101,5 +161,7 @@ export const useCheckAndAssembleActions = (
 		pokemonWithActions,
 		setUsedBalls,
 		setOpponentSide,
+		allPokemonOnBench,
+		setUsedPotions,
 	]);
 };

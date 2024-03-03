@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Headline } from '../../components/Headline/Headline';
+import { IconWithTag } from '../../components/IconWithTag/IconWithTag';
 import { calculateLevelData } from '../../functions/calculateLevelData';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
 import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { OwnedPokemon } from '../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../router/router';
-import { IconWithTag } from '../../shared/components/IconWithTag/IconWithTag';
 
 export const StorageScreen = (): JSX.Element => {
 	const data = useGetCurrentSaveFile();

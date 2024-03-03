@@ -1,0 +1,16 @@
+.movePill {
+	display: grid;
+	grid-template-columns: 1fr 4fr 1fr;
+	align-items: center;
+	border: 1px solid;
+	border-radius: 9000px;
+	padding: 0 0.5rem;
+}
+
+.movePillCenter {
+	justify-self: start;
+}
+
+.movePillPP {
+	justify-self: center;
+}

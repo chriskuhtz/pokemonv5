@@ -2,23 +2,23 @@ import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
-import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { SaveFile } from '../../../interfaces/SaveFile';
 import { BattleSide } from '../BattleScreen';
 import {
-	createBattlePokemonFromData,
 	createBattlePokemonFromOwned,
+	useCreateBattlePokemonFromData,
 } from '../functions/createBattlePokemon';
 import { BattleScreenProps } from './useBattleScreen';
 
 export const useInitialiseBattleSides = (
+	data: SaveFile,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	activePokemonPerSide: number
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
 ) => {
-	const data = useGetCurrentSaveFile();
 	const { state } = useLocation();
-	const { opponents } = state as BattleScreenProps;
+	const { opponents, activePokemonPerSide } = state as BattleScreenProps;
+	const createBattlePokemonFromData = useCreateBattlePokemonFromData();
 
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
@@ -28,7 +28,7 @@ export const useInitialiseBattleSides = (
 		Promise.all(
 			opponents.map(async (e) => {
 				const data = await getPokemonByDexId(e.dexId).unwrap();
-				return createBattlePokemonFromData(data, e.xp);
+				return await createBattlePokemonFromData(data, e.xp);
 			})
 		)
 	);
@@ -45,7 +45,8 @@ export const useInitialiseBattleSides = (
 					.map(async (p) => {
 						const data = await getPokemonByDexId(p.dexId).unwrap();
 
-						return createBattlePokemonFromOwned(p, data);
+						const pokemon = await createBattlePokemonFromOwned(p, data);
+						return pokemon;
 					})
 			);
 	}, [data, getPokemonByDexId]);
@@ -61,14 +62,19 @@ export const useInitialiseBattleSides = (
 			allOpponentPokemon?.length > 0
 		) {
 			setOpponentSide({
-				bench: [],
+				field: allOpponentPokemon.slice(0, activePokemonPerSide),
+				bench: allOpponentPokemon.slice(activePokemonPerSide),
 				defeated: [],
 				caught: [],
 				side: 'OPPONENT',
-				field: allOpponentPokemon,
 			});
 		}
-	}, [allOpponentPokemon, opponentFetchStatus, setOpponentSide]);
+	}, [
+		activePokemonPerSide,
+		allOpponentPokemon,
+		opponentFetchStatus,
+		setOpponentSide,
+	]);
 	useEffect(() => {
 		//initialise battle
 		if (
@@ -78,10 +84,10 @@ export const useInitialiseBattleSides = (
 			allPlayerPokemon?.length > 0
 		) {
 			const ablePlayerPokemon = allPlayerPokemon.filter(
-				(p) => p.damage < p.maxHp
+				(p) => p.damage < p.stats.hp
 			);
 			const defeatedPlayerPokemon = allPlayerPokemon.filter(
-				(p) => p.damage >= p.maxHp
+				(p) => p.damage >= p.stats.hp
 			);
 			setPlayerSide({
 				field: ablePlayerPokemon.slice(0, activePokemonPerSide),

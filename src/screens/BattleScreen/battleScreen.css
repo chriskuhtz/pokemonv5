@@ -9,7 +9,7 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	flex-grow: 1;
-	padding: 1rem 0.5rem 0;
+	padding: 2rem 0.5rem 0;
 }
 .opponentField {
 	display: flex;

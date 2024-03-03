@@ -1,0 +1,14 @@
+.iconWithTag {
+	height: 80px;
+	width: 80px;
+}
+.iconTag {
+	background-color: rgba(0, 0, 0, 0.5);
+	position: relative;
+	top: -68px;
+	left: 40px;
+	width: 1.5rem;
+	line-height: 1.5rem;
+	text-align: center;
+	border-radius: var(--rounded);
+}

@@ -1,4 +1,5 @@
 import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
+import { starterTownEncounters } from '../constants/maps/starterTown';
 import { Inventory, generateInventory } from './Inventory';
 
 export interface OwnedPokemonCondition {
@@ -36,7 +37,12 @@ export interface Quest {
 	condition: Condition;
 }
 
-export const questNames = ['pickStarter', 'talkToNurseJoy'] as const;
+export const questNames = [
+	'pickStarter',
+	'talkToNurseJoy',
+	'secondPokemon',
+	'findPikachu',
+] as const;
 
 export type QuestName = (typeof questNames)[number];
 
@@ -65,8 +71,36 @@ export const TalkToNurseJoyQuest: Quest = {
 		id: 'starter-town-nurse-quest',
 	},
 };
+export const SecondPokemonQuest: Quest = {
+	status: 'inactive',
+	id: 'secondPokemon',
+	title: 'Catch a second Pokemon',
+	description: 'Every Trainer should have multiple Pokemon',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ 'poke-ball': 5 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: starterTownEncounters,
+		mode: 'SOME',
+	},
+};
+export const FindPikachuQuest: Quest = {
+	status: 'inactive',
+	id: 'findPikachu',
+	title: 'Find a Pikachu',
+	description: 'A young trainer asked you to find a pikachu',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ repel: 5 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: [25],
+		mode: 'SOME',
+	},
+};
 
 export const QuestRecord: Record<QuestName, Quest> = {
 	pickStarter: PickStarterQuest,
 	talkToNurseJoy: TalkToNurseJoyQuest,
+	secondPokemon: SecondPokemonQuest,
+	findPikachu: FindPikachuQuest,
 };

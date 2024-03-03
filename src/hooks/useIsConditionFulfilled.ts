@@ -2,8 +2,7 @@ import { useCallback } from 'react';
 import { isOwnedPokemonConditionFulfilled } from '../functions/isOwnedPokemonQuestFulfilled';
 import { Condition } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
-import { useAppSelector } from '../store/storeHooks';
-import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
+import { useGetCurrentSaveFile } from './xata/useCurrentSaveFile';
 
 export const isHandledOccupantConditionFulfilled = (
 	condition: Condition,
@@ -17,10 +16,10 @@ export const isHandledOccupantConditionFulfilled = (
 	return saveFile.handledOccupants[id];
 };
 export const useIsConditionFulfilled = () => {
-	const data = useAppSelector(selectSaveFile);
+	const data = useGetCurrentSaveFile();
 
 	return useCallback(
-		(condition: Condition) => {
+		(condition: Condition): boolean => {
 			if (!data) {
 				return false;
 			}

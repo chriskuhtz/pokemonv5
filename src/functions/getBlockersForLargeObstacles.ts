@@ -1,6 +1,6 @@
 import {
-	Occupant,
 	InvisibleBlocker,
+	Occupant,
 } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { Position } from '../screens/OverworldScreen/interfaces/Position';
 
@@ -33,7 +33,7 @@ export const getBlockersForLargeOccupants = (
 			i--;
 		}
 
-		positionsArray.forEach((p) =>
+		positionsArray.forEach((p) => {
 			res.push({
 				type: 'INVISIBLE_BLOCKER',
 				id: occupant.id,
@@ -41,10 +41,10 @@ export const getBlockersForLargeOccupants = (
 				position: {
 					...p,
 					orientation: 0,
-					mapId: 'starter-town',
+					mapId: occupant.position.mapId,
 				},
-			})
-		);
+			});
+		});
 	});
 
 	return res;

@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { Headline } from '../../components/Headline/Headline';
-import { TeamGrid } from '../../components/TeamGrid/TeamGrid';
+import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { RoutesEnum } from '../../router/router';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
-import { useAppSelector } from '../../store/storeHooks';
+import { TeamGrid } from './components/TeamGrid/TeamGrid';
 
 export const TeamScreen = (): JSX.Element => {
-	const data = useAppSelector(selectSaveFile);
+	const data = useGetCurrentSaveFile();
 
 	const teamMembers = useMemo(() => {
 		return data?.pokemon.filter((p) => p.onTeam);
@@ -18,16 +17,7 @@ export const TeamScreen = (): JSX.Element => {
 				text={'Team'}
 				routerButtonProps={{ to: RoutesEnum.menu, text: 'Menu' }}
 			/>
-			{teamMembers && (
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-					}}
-				>
-					<TeamGrid pokemon={teamMembers} />
-				</div>
-			)}
+			{teamMembers && <TeamGrid pokemon={teamMembers} />}
 		</div>
 	);
 };

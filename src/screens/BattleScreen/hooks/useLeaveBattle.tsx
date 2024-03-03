@@ -10,9 +10,9 @@ import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
-import { selectNearestHealer } from '../../../store/selectors/combination/selectNearestHealer';
 import { setDialogue } from '../../../store/slices/dialogueSlice';
-import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
+import { addNotification } from '../../../store/slices/notificationSlice';
+import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 
 export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
@@ -21,6 +21,7 @@ export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	usedBalls: number,
+	usedPotions: number,
 	trainerId?: UniqueOccupantIds
 ) => {
 	const saveFile = useGetCurrentSaveFile();
@@ -37,7 +38,6 @@ export const useLeaveBattle = (
 			...opponentSide.defeated.map((p) => ({ dexId: p.dexId, status: 'seen' })),
 		] as DexEntry[];
 	}, [opponentSide, playerSide]);
-	const nearestHealer = useAppSelector(selectNearestHealer);
 	const trainer = useMemo(() => {
 		const possibleOccupant = trainerId && UniqueOccupantRecord[trainerId];
 
@@ -81,26 +81,28 @@ export const useLeaveBattle = (
 						? { [`${trainerId}`]: true }
 						: undefined,
 				pokemonUpdates: updatedOwnedPokemon,
-				inventoryChanges: { 'poke-ball': -usedBalls },
-				visitedNurse: !!(reason === 'LOSS' && nearestHealer),
+				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
+				visitedNurse: reason === 'LOSS',
 				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
-				currentPosition:
-					reason === 'LOSS' && nearestHealer
-						? { ...nearestHealer.position, y: nearestHealer.position.y + 1 }
-						: undefined,
+				teleportToLastHealer: reason === 'LOSS',
 			}).then(() => {
 				navigate(RoutesEnum.overworld);
 				if (reason === 'RUNAWAY') {
-					dispatch(setDialogue(['Phew, escaped']));
+					dispatch(addNotification('Phew, escaped'));
+					dispatch(setDialogue([]));
 				}
 				if (reason === 'WIN') {
+					dispatch(addNotification('You won the Battle'));
 					if (trainer) {
 						dispatch(setDialogue(trainer.dialogueAfterDefeat));
-					} else dispatch(setDialogue(['You won the Battle']));
+					}
 				}
 				if (reason === 'LOSS') {
-					dispatch(setDialogue(['You lost the Battle']));
+					dispatch(
+						addNotification('You lost the battle and scurried back to safety')
+					);
+					dispatch(setDialogue([]));
 				}
 			});
 		},
@@ -108,12 +110,12 @@ export const useLeaveBattle = (
 			allDexUpdates,
 			dispatch,
 			navigate,
-			nearestHealer,
 			save,
 			trainer,
 			trainerId,
 			updatedOwnedPokemon,
 			usedBalls,
+			usedPotions,
 		]
 	);
 };

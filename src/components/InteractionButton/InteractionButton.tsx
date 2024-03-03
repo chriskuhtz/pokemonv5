@@ -11,23 +11,27 @@ import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
 import { TbCircleLetterA } from 'react-icons/tb';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { useHandleTrainerChallenge } from '../../hooks/useHandleTrainerChallenge';
 import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
+import { selectNextNotification } from '../../store/selectors/notification/selectNextNotification';
 import { selectHandledOccupants } from '../../store/selectors/saveFile/selectHandledOccupants';
 import { selectOrientation } from '../../store/selectors/saveFile/selectOrientation';
 import {
 	continueDialogue,
 	setDialogue,
 } from '../../store/slices/dialogueSlice';
+import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
-import { Banner } from '../BottomBanner/Banner';
+import { Banner } from '../../ui_components/Banner/Banner';
 import './InteractionButton.css';
 
 export const InteractionButton = () => {
 	const occupant = useAppSelector(selectOccupantAtNextCoordinates);
 	const playerOrientation = useAppSelector(selectOrientation);
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
+	const noti = useAppSelector(selectNextNotification);
 	const handledOccupants = useAppSelector(selectHandledOccupants);
 	const dispatch = useAppDispatch();
 	const saveGame = useSaveGame();
@@ -36,8 +40,9 @@ export const InteractionButton = () => {
 		OccupantWithDialogue | undefined
 	>();
 	const handleEvent = useOverworldEvent();
+	const handleTrainerChallenge = useHandleTrainerChallenge();
 
-	const handleClick = useCallback(() => {
+	const handleClick = useCallback(async () => {
 		if (
 			occupant &&
 			isOccupantWithPossibleOnClick(occupant) &&
@@ -47,14 +52,14 @@ export const InteractionButton = () => {
 		}
 		if (occupant && occupant.type === 'ITEM') {
 			dispatch(
-				setDialogue([
+				addNotification(
 					`You found ${Object.entries(occupant.inventory)
 						.filter((e) => e[1] > 0)
 						.map((e) => `${e[1]} ${e[0]}`)
-						.join(' and ')}.`,
-				])
+						.join(' and ')}.`
+				)
 			);
-			saveGame({
+			await saveGame({
 				inventoryChanges: occupant.inventory,
 				handledOccupants: { [`${occupant.id}`]: true },
 			});
@@ -91,16 +96,11 @@ export const InteractionButton = () => {
 						? handledOccupants[focusedOccupant.id as UniqueOccupantIds]
 						: false;
 					if (!handled) {
-						navigate(RoutesEnum.battle, {
-							state: {
-								opponents: focusedOccupant.team,
-								trainerId: focusedOccupant.id,
-							},
-						});
+						handleTrainerChallenge(focusedOccupant);
 					}
 				}
 
-				saveGame({
+				await saveGame({
 					questUpdates: focusedOccupant.questUpdates,
 					visitedNurse: focusedOccupant.type === 'HEALER',
 				});
@@ -112,12 +112,17 @@ export const InteractionButton = () => {
 		dispatch,
 		focusedOccupant,
 		handleEvent,
+		handleTrainerChallenge,
 		handledOccupants,
 		navigate,
 		occupant,
 		playerOrientation,
 		saveGame,
 	]);
+
+	if (noti) {
+		return <></>;
+	}
 	if (currentDialogue.length > 0) {
 		return <Banner content={currentDialogue[0]} onClick={handleClick} bottom />;
 	}

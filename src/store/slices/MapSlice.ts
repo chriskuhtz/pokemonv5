@@ -1,5 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { brocksGym } from '../../constants/maps/brocksGym';
+import { oaksLab } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
@@ -10,7 +12,24 @@ import {
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
-export type BaseTileId = 'beach' | 'caveFloor' | 'cobblestone' | 'grass';
+export type BaseTileId =
+	| 'beach'
+	| 'caveFloor'
+	| 'cobblestone'
+	| 'grass'
+	| 'gray';
+export type BaseTilePattern =
+	| 'uniform'
+	| 'checkered'
+	| 'random3'
+	| 'random4'
+	| 'random5'
+	| 'random6';
+
+export interface BaseTile {
+	id: BaseTileId;
+	pattern: BaseTilePattern;
+}
 export interface MapEncounter {
 	dexId: number;
 	xp: number;
@@ -18,13 +37,19 @@ export interface MapEncounter {
 export interface MapState {
 	height: number;
 	width: number;
-	baseTile: BaseTileId;
+	baseTile: BaseTile;
 	interactives: Partial<Record<UniqueOccupantIds, Occupant>>;
 	obstacles: (Obstacle | LargeObstacle)[];
 	decorators: Decorator[];
 	mapId: string;
 	encounters: MapEncounter[];
 }
+
+const mapsRecord: Record<string, MapState> = {
+	'starter-town': starterTown,
+	'oaks-lab': oaksLab,
+	'brocks-gym': brocksGym,
+};
 
 const initialState: MapState = starterTown;
 
@@ -33,6 +58,14 @@ export const mapSlice = createSlice({
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
+		setMapById: (state, action: PayloadAction<string>) => {
+			if (state.mapId === action.payload) {
+				return;
+			}
+			if (mapsRecord[action.payload]) {
+				return mapsRecord[action.payload];
+			} else console.error('invalid mapId, cant set state');
+		},
 		turnNpcTowardsPlayer: (
 			state,
 			action: PayloadAction<{
@@ -66,6 +99,6 @@ export const mapSlice = createSlice({
 	},
 });
 
-export const { turnNpcTowardsPlayer } = mapSlice.actions;
+export const { turnNpcTowardsPlayer, setMapById } = mapSlice.actions;
 
 export default mapSlice.reducer;

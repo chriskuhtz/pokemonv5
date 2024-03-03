@@ -9,11 +9,13 @@ import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { GymBadge, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
+import { addNotification } from '../store/slices/notificationSlice';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
-import { useAppSelector } from '../store/storeHooks';
+import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
 
 export const useSaveGame = () => {
+	const dispatch = useAppDispatch();
 	const data = useAppSelector(selectSaveFile);
 	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
@@ -29,6 +31,7 @@ export const useSaveGame = () => {
 			handledOccupants,
 			fundsUpdate,
 			newBadge,
+			teleportToLastHealer,
 		}: {
 			currentPosition?: CharacterPosition;
 			inventoryChanges?: Partial<Inventory>;
@@ -40,6 +43,7 @@ export const useSaveGame = () => {
 			handledOccupants?: Partial<Record<UniqueOccupantIds, boolean>>;
 			fundsUpdate?: number;
 			newBadge?: GymBadge;
+			teleportToLastHealer?: boolean;
 		}) => {
 			if (!data) {
 				return;
@@ -49,8 +53,19 @@ export const useSaveGame = () => {
 			let updatedInventory = inventoryChanges
 				? joinInventories(data.inventory, inventoryChanges)
 				: data.inventory;
-			const updatedPosition =
-				portalEvent?.to ?? currentPosition ?? data.position;
+			const updatedPosition = () => {
+				if (portalEvent?.to) {
+					return portalEvent?.to;
+				}
+				if (teleportToLastHealer) {
+					return data.lastHealPosition;
+				}
+				if (currentPosition) {
+					return currentPosition;
+				}
+
+				return data.position;
+			};
 
 			//if there are updates, filter out all mons whose ids are included in the updates, then concat updates
 			let updatedPokemon = pokemonUpdates
@@ -71,6 +86,9 @@ export const useSaveGame = () => {
 
 			Object.entries(questUpdates ?? {}).forEach((entry) => {
 				const [id, status] = entry;
+				if (status === 'active') {
+					dispatch(addNotification(`New Quest: ${id}`));
+				}
 				if (status === 'completed') {
 					const quest = QuestRecord[id as QuestName];
 					updatedMoney += quest.rewardMoney ?? 0;
@@ -85,9 +103,12 @@ export const useSaveGame = () => {
 			await updateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
-				position: updatedPosition,
+				position: updatedPosition(),
 				quests: { ...data.quests, ...questUpdates },
 				handledOccupants: { ...data.handledOccupants, ...handledOccupants },
+				lastHealPosition: visitedNurse
+					? updatedPosition()
+					: data.lastHealPosition,
 				pokemon: updatedPokemon,
 				pokedex: updatedDex,
 				money: updatedMoney,
@@ -96,6 +117,6 @@ export const useSaveGame = () => {
 					: data.gymBadges,
 			});
 		},
-		[updateSaveFile, data]
+		[data, updateSaveFile, dispatch]
 	);
 };

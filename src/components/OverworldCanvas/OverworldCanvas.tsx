@@ -9,29 +9,31 @@ import { useDrawBackGroundCanvas } from './hooks/useDrawBackgroundCanvas';
 import { useDrawOccupants } from './hooks/useDrawOccupants';
 import { useDrawPlayerCanvas } from './hooks/useDrawPlayerCanvas';
 
-export const fps = 15;
+export const fps = 10;
 export const playerCanvas = 'playerCanvas';
 export const overworldCanvas = 'overworldCanvas';
 export const occupantCanvas = 'occupantCanvas';
 export const OverworldCanvas = (): JSX.Element => {
 	const drawPlayer = useDrawPlayerCanvas();
 	const drawBackground = useDrawBackGroundCanvas();
-	const { hasChanges, drawOccupants } = useDrawOccupants();
+	const { drawOccupants } = useDrawOccupants();
 
 	useAnimationFrame(() => {
 		drawPlayer();
-		if (hasChanges) {
-			drawOccupants();
-		}
 	}, fps);
 	useEffect(() => {
-		drawBackground();
 		drawOccupants();
-	}, [drawBackground, drawOccupants]);
+	}, [drawOccupants]);
+	useEffect(() => {
+		drawBackground();
+	}, [drawBackground]);
 	const { x, y } = useAppSelector(selectPosition) ?? { x: 0, y: 0 };
 	const { height, width } = useAppSelector(selectMap);
+	const { mapId } = useAppSelector(selectMap);
+
 	return (
 		<div
+			key={mapId}
 			className="overworld"
 			style={
 				{

@@ -1,27 +1,19 @@
+import { BattleAction } from './BattleAction';
+import { MoveDto } from './Move';
 import { OwnedPokemon } from './OwnedPokemon';
-
-export interface BattleAction {
-	type:
-		| 'CATCH_ATTEMPT'
-		| 'CATCH_SUCCESS'
-		| 'CATCH_FAILURE'
-		| 'ATTACK'
-		| 'SWITCH'
-		| 'ITEM'
-		| 'RUNAWAY_ATTEMPT'
-		| 'RUNAWAY_SUCCESS'
-		| 'RUNAWAY_FAILURE'
-		| 'TARGET_NOT_ON_FIELD'
-		| 'DEFEATED_TARGET';
-	target: string;
-}
+import { PokemonType } from './PokemonType';
+import { StatObject } from './StatObject';
 
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
-	maxHp: number;
-	attack: number;
+	stats: StatObject;
+	statModifiers: StatObject;
 	nextAction?: BattleAction;
 	side: 'PLAYER' | 'OPPONENT';
 	status?: 'BEING_CAUGHT';
 	base_experience: number;
+	primaryType: PokemonType;
+	secondaryType?: PokemonType;
+	moves: MoveDto[];
+	evasiveness: number;
 }

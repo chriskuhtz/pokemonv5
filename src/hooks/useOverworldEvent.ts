@@ -6,7 +6,9 @@ import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldE
 import { selectEncounters } from '../store/selectors/map/selectEncounters';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
 import { setDialogue } from '../store/slices/dialogueSlice';
+import { addNotification } from '../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
+import { useHandleTrainerChallenge } from './useHandleTrainerChallenge';
 import { useSaveGame } from './useSaveGame';
 
 export const useOverworldEvent = () => {
@@ -15,9 +17,10 @@ export const useOverworldEvent = () => {
 	const quests = useAppSelector(selectQuests);
 	const saveGame = useSaveGame();
 	const encounters = useAppSelector(selectEncounters);
+	const handleTrainerChallenge = useHandleTrainerChallenge();
 
 	return useCallback(
-		(event: OverworldEvent) => {
+		async (event: OverworldEvent) => {
 			if (!quests) {
 				return;
 			}
@@ -30,18 +33,26 @@ export const useOverworldEvent = () => {
 						encounters[Math.round(Math.random() * encounters.length)]
 					);
 				}
+				dispatch(addNotification('A wild Pokemon attacks!'));
 				navigate(RoutesEnum.battle, {
 					state: {
 						opponents: opponents,
+						activePokemonPerSide: opponents.length,
 					},
 				});
+			}
+			if (event.type === 'SPOTTED') {
+				handleTrainerChallenge(event.trainer);
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {
 				if (checkQuestCondition(quests, event.questCondition)) {
 					//handle quests
 					if (event.type === 'ROUTE') {
-						saveGame({});
+						await saveGame({});
 						navigate(event.to);
+					}
+					if (event.type === 'PORTAL') {
+						await saveGame({ portalEvent: event });
 					}
 				}
 				if (!checkQuestCondition(quests, event.questCondition)) {
@@ -55,6 +66,6 @@ export const useOverworldEvent = () => {
 				}
 			}
 		},
-		[dispatch, encounters, navigate, quests, saveGame]
+		[dispatch, encounters, handleTrainerChallenge, navigate, quests, saveGame]
 	);
 };

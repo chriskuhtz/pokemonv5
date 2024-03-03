@@ -1,0 +1,20 @@
+.nameAndSpriteSection {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+
+	@media (max-aspect-ratio: 1/1) {
+		flex-direction: column-reverse;
+	}
+}
+
+.sprite {
+	height: 30vh;
+	width: 30vh;
+}
+
+.nameAndTypes {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}

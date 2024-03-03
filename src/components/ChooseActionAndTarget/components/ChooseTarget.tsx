@@ -1,18 +1,55 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { IoIosCloseCircle } from 'react-icons/io';
-import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { Banner } from '../../BottomBanner/Banner';
-import { Slanted } from '../../Slanted/Slanted';
+import {
+	BattleAction,
+	isBattleActionWithTarget,
+} from '../../../interfaces/BattleAction';
+import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { MoveDto } from '../../../interfaces/Move';
+import { Banner } from '../../../ui_components/Banner/Banner';
+import { Slanted } from '../../../ui_components/Slanted/Slanted';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,
 	actionName,
+	move,
 	actor,
 }: {
 	actionName: BattleAction['type'];
+	move?: MoveDto;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
 }) => {
+	const determineNextAction = (c: BattlePokemon) => {
+		if (actionName === 'ATTACK') {
+			return {
+				type: actionName,
+				target: c.id,
+				move: move,
+			};
+		}
+		if (actionName === 'HEALING_ITEM') {
+			return {
+				type: actionName,
+				target: c.id,
+				item: 'potion',
+			};
+		}
+		if (
+			isBattleActionWithTarget({
+				type: actionName,
+			})
+		) {
+			return {
+				type: actionName,
+
+				target: c.id,
+			};
+		}
+
+		return { type: actionName };
+	};
 	if (actionName) {
 		return (
 			<Banner
@@ -31,10 +68,7 @@ export const ChooseTarget = ({
 									onClick={() => {
 										selectAction({
 											...actor,
-											nextAction: {
-												type: actionName,
-												target: c.id,
-											},
+											nextAction: determineNextAction(c),
 										});
 									}}
 									content={c.name}

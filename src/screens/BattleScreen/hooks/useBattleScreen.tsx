@@ -1,61 +1,76 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
-import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
-import { BattleAction, BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { BattleAction } from '../../../interfaces/BattleAction';
+import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { MoveDto } from '../../../interfaces/Move';
+import { SaveFile } from '../../../interfaces/SaveFile';
+import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { MapEncounter } from '../../../store/slices/MapSlice';
+import { addNotification } from '../../../store/slices/notificationSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { useAvailableActions } from './useAvailableActions';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
 import { useLeaveBattle } from './useLeaveBattle';
+import { assignPriority } from '../../../functions/assignPriority';
 
 export interface SelectableAction {
-	action: BattleAction['type'];
-	name: string;
+	actionType: BattleAction['type'];
+	displayName: ReactNode;
+	move?: MoveDto;
 	disabled: boolean;
+	availableTargets: BattlePokemon[];
 }
+
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
 	trainerId?: UniqueOccupantIds;
+	activePokemonPerSide: number;
 }
-export const useBattleScreen = () => {
+export const useBattleScreen = (saveFile: SaveFile) => {
+	const dispatch = useAppDispatch();
 	const { state } = useLocation();
-	const { opponents, trainerId } = state as BattleScreenProps;
-	const activePokemonPerside = opponents.length;
-	const saveFile = useGetCurrentSaveFile();
+	const currentDialogue = useAppSelector(selectCurrentDialogue);
+	const { trainerId, activePokemonPerSide } = state as BattleScreenProps;
+
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [usedBalls, setUsedBalls] = useState<number>(0);
+	const [usedPotions, setUsedPotions] = useState<number>(0);
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
 
-	const availableActions: SelectableAction[] = useMemo(() => {
-		if (!saveFile) {
-			return [];
-		}
-		return [
-			{ action: 'ATTACK', name: 'Attack', disabled: false },
-			{ action: 'RUNAWAY_ATTEMPT', name: 'Run Away', disabled: !!trainerId },
-			{
-				action: 'CATCH_ATTEMPT',
-				name: 'Throw Pokeball',
-				disabled: usedBalls > saveFile.inventory['poke-ball'] || !!trainerId,
-			},
-			{ action: 'SWITCH', name: 'Switch', disabled: true },
-		];
-	}, [saveFile, trainerId, usedBalls]);
+	const nextPlayerPokemonWithoutAction = useMemo(() => {
+		return playerSide?.field.find((p) => p.nextAction === undefined);
+	}, [playerSide]);
 
+	//available Action for nextPlayerPokemonWithoutAction
+	const availableActions = useAvailableActions(
+		saveFile,
+		playerSide,
+		opponentSide,
+		usedBalls,
+		usedPotions,
+		trainerId,
+		nextPlayerPokemonWithoutAction
+	);
+	//array of Pokemon with actions, sorted by speed and action Prio
 	const pokemonWithActions = useMemo(() => {
 		if (!playerSide || !opponentSide) {
 			return [];
 		}
-		return [
-			...playerSide.field.filter((p) => p.nextAction),
-			...opponentSide.field.filter((p) => p.nextAction),
-		];
-	}, [opponentSide, playerSide]);
 
+		return [
+			...playerSide.field.filter((p) => p.nextAction).map(assignPriority),
+			...opponentSide.field.filter((p) => p.nextAction).map(assignPriority),
+		].sort((a, b) => {
+			return (b.nextAction?.priority ?? 0) - (a.nextAction?.priority ?? 0);
+		});
+	}, [opponentSide, playerSide]);
+	//select Action
 	const selectAction = useCallback(
 		(updatedActor: BattlePokemon) => {
 			if (!playerSide) {
@@ -73,7 +88,7 @@ export const useBattleScreen = () => {
 		},
 		[playerSide]
 	);
-
+	//reset Action
 	const resetAction = useCallback(
 		(actorId: string) => {
 			if (!playerSide) {
@@ -91,14 +106,15 @@ export const useBattleScreen = () => {
 		},
 		[playerSide]
 	);
-
+	//leave Battle
 	const leaveBattle = useLeaveBattle(
 		playerSide,
 		opponentSide,
 		usedBalls,
+		usedPotions,
 		trainerId
 	);
-
+	//handle action
 	const handleAction = useHandleAction(
 		playerSide,
 		opponentSide,
@@ -107,15 +123,11 @@ export const useBattleScreen = () => {
 		setOpponentSide,
 		leaveBattle
 	);
-
-	const nextPokemonWithoutAction = useMemo(() => {
-		return playerSide?.field.find((p) => p.nextAction === undefined);
-	}, [playerSide]);
 	//initialise Battle
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
+		saveFile,
 		setPlayerSide,
-		setOpponentSide,
-		activePokemonPerside
+		setOpponentSide
 	);
 	//assemble actions
 	useCheckAndAssembleActions(
@@ -124,23 +136,22 @@ export const useBattleScreen = () => {
 		pokemonWithActions,
 		mode,
 		setOpponentSide,
-		setUsedBalls
+		setUsedBalls,
+		setUsedPotions
 	);
 	//check to leave battle
 	useEffect(() => {
 		if (
 			playerSide &&
-			playerSide.field.length === 0
-			//ignore bench until switching is available
-			//&&playerSide.bench.length === 0
+			playerSide.field.length === 0 &&
+			playerSide.bench.length === 0
 		) {
 			void leaveBattle('LOSS');
 		}
 		if (
 			opponentSide &&
-			opponentSide.field.length === 0
-			//ignore bench until switching is available
-			//&&opponentSide.bench.length === 0
+			opponentSide.field.length === 0 &&
+			opponentSide.bench.length === 0
 		) {
 			void leaveBattle('WIN');
 		}
@@ -165,6 +176,32 @@ export const useBattleScreen = () => {
 			setMode('COLLECTING');
 		}
 	}, [mode, pokemonWithActions]);
+	//refill OpponentSide
+	useEffect(() => {
+		if (
+			currentDialogue.length === 0 &&
+			opponentSide &&
+			opponentSide.field.length < activePokemonPerSide &&
+			opponentSide.bench.length > 0
+		) {
+			dispatch(
+				addNotification(
+					`${trainerId ?? 'Opponent'} sent out ${opponentSide.bench[0].name}`
+				)
+			);
+			setOpponentSide({
+				...opponentSide,
+				field: opponentSide.field.concat(opponentSide.bench[0]),
+				bench: opponentSide.bench.slice(1),
+			});
+		}
+	}, [
+		activePokemonPerSide,
+		currentDialogue.length,
+		dispatch,
+		opponentSide,
+		trainerId,
+	]);
 	//assign actions to opponents
 	useEffect(() => {
 		if (
@@ -185,7 +222,11 @@ export const useBattleScreen = () => {
 				...opponentSide,
 				field: opponentSide?.field.map((p) => ({
 					...p,
-					nextAction: { type: 'ATTACK', target: optimalTarget },
+					nextAction: {
+						type: 'ATTACK',
+						target: optimalTarget,
+						move: p.moves[Math.floor(Math.random() * 4)] ?? 'splash',
+					},
 				})),
 			});
 		}
@@ -199,9 +240,12 @@ export const useBattleScreen = () => {
 		selectAction,
 		availableActions,
 		resetAction,
-		nextPokemonWithoutAction,
+		nextPlayerPokemonWithoutAction,
 		pokemonWithActions,
 		opponentFetchStatus,
 		playerFetchStatus,
+		setMode,
+		activePokemonPerside: activePokemonPerSide,
+		setPlayerSide,
 	};
 };
