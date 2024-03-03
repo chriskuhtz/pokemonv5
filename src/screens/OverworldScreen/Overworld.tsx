@@ -10,6 +10,7 @@ import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurr
 import { selectMap } from '../../store/selectors/map/selectMap';
 import { selectNextNotification } from '../../store/selectors/notification/selectNextNotification';
 import { setMapById } from '../../store/slices/MapSlice';
+import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 
@@ -25,6 +26,7 @@ export const Overworld = (): JSX.Element => {
 	const dispatch = useAppDispatch();
 	useEffect(() => {
 		if (saveFile && saveFile?.position.mapId !== mapId) {
+			dispatch(addNotification(`${saveFile?.position.mapId}`));
 			dispatch(setMapById(saveFile?.position.mapId));
 		}
 	}, [dispatch, mapId, saveFile]);

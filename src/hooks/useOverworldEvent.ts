@@ -52,7 +52,6 @@ export const useOverworldEvent = () => {
 						navigate(event.to);
 					}
 					if (event.type === 'PORTAL') {
-						dispatch(addNotification(event.to.mapId));
 						await saveGame({ portalEvent: event });
 					}
 				}
