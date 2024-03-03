@@ -65,7 +65,6 @@ export const ChooseActionAndTarget = ({
 			actionName={actionName}
 			move={move}
 			selectAction={(x) => {
-				console.log(x);
 				selectAction(x);
 				setActionName(undefined);
 				setMove(undefined);

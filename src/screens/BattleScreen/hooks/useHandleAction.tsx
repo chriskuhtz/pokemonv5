@@ -6,6 +6,7 @@ import {
 	getDamageFactors,
 } from '../../../functions/calculateDamage';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
+import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { makeAccuracyCheck } from '../../../functions/makeAccuracyCheck';
 import {
 	BattleAction,
@@ -14,6 +15,7 @@ import {
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
+import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import { BattleEndReason } from './useLeaveBattle';
@@ -36,7 +38,6 @@ export const useHandleAction = (
 		if (pokemonWithActions.length > 0) {
 			const actor = pokemonWithActions[0];
 			const action = actor.nextAction;
-			console.log(action);
 
 			const target = isBattleActionWithTarget(action)
 				? [...playerSide.field, ...opponentSide.field].find(
@@ -465,6 +466,18 @@ export const useHandleAction = (
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
+							const { level } = calculateLevelData(p.xp);
+							const { level: newlevel } = calculateLevelData(
+								p.xp + xpPerPokemon
+							);
+							dispatch(
+								addNotification(
+									`${p.name} gained ${xpPerPokemon}XP. ${
+										newlevel > level ? `${p.name} reached a new level` : ''
+									} `
+								)
+							);
+
 							if (p.id !== actor.id) {
 								return { ...p, xp: p.xp + xpPerPokemon };
 							}

@@ -11,6 +11,7 @@ import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
 import { setDialogue } from '../../../store/slices/dialogueSlice';
+import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 
@@ -88,15 +89,18 @@ export const useLeaveBattle = (
 			}).then(() => {
 				navigate(RoutesEnum.overworld);
 				if (reason === 'RUNAWAY') {
-					dispatch(setDialogue(['Phew, escaped']));
+					dispatch(addNotification('Phew, escaped'));
 				}
 				if (reason === 'WIN') {
+					dispatch(addNotification('You won the Battle'));
 					if (trainer) {
 						dispatch(setDialogue(trainer.dialogueAfterDefeat));
-					} else dispatch(setDialogue(['You won the Battle']));
+					}
 				}
 				if (reason === 'LOSS') {
-					dispatch(setDialogue(['You lost the Battle']));
+					dispatch(
+						addNotification('You lost the battle and scurried back to safety')
+					);
 				}
 			});
 		},

@@ -2,6 +2,7 @@ import { ChooseActionAndTarget } from '../../../../components/ChooseActionAndTar
 import { ChooseRefill } from '../../../../components/ChooseActionAndTarget/components/ChooseRefill';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../../store/selectors/dialogue/selectCurrentDialogue';
+import { selectNextNotification } from '../../../../store/selectors/notification/selectNextNotification';
 import { useAppSelector } from '../../../../store/storeHooks';
 import { Banner } from '../../../../ui_components/Banner/Banner';
 import { BattleMode, BattleSide } from '../../BattleScreen';
@@ -29,6 +30,11 @@ export const BattleScreenController = ({
 	setMode: React.Dispatch<React.SetStateAction<BattleMode>>;
 }): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
+	const noti = useAppSelector(selectNextNotification);
+
+	if (noti) {
+		return <></>;
+	}
 	if (currentDialogue.length === 0 && hasOpenSpots) {
 		return (
 			<ChooseRefill playerSide={playerSide} setPlayerSide={setPlayerSide} />
