@@ -16,25 +16,24 @@ export const occupantCanvas = 'occupantCanvas';
 export const OverworldCanvas = (): JSX.Element => {
 	const drawPlayer = useDrawPlayerCanvas();
 	const drawBackground = useDrawBackGroundCanvas();
-	const { hasChanges, drawOccupants } = useDrawOccupants();
+	const { drawOccupants } = useDrawOccupants();
 
 	useAnimationFrame(() => {
 		drawPlayer();
-		if (hasChanges) {
-			drawOccupants();
-		}
 	}, fps);
 	useEffect(() => {
 		drawOccupants();
-	}, [drawBackground, drawOccupants]);
+	}, [drawOccupants]);
 	useEffect(() => {
 		drawBackground();
 	}, [drawBackground]);
 	const { x, y } = useAppSelector(selectPosition) ?? { x: 0, y: 0 };
 	const { height, width } = useAppSelector(selectMap);
+	const { mapId } = useAppSelector(selectMap);
 
 	return (
 		<div
+			key={mapId}
 			className="overworld"
 			style={
 				{
