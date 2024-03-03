@@ -20,8 +20,7 @@ export const useAvailableActions = (
 		}
 		const noMorePokeBalls =
 			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
-		const noMorePotions =
-			usedPotions >= saveFile.inventory['potion'] || !!trainerId;
+		const noMorePotions = usedPotions >= saveFile.inventory['potion'];
 
 		const switchTargets =
 			playerSide?.bench.filter((benchmon) =>
