@@ -49,6 +49,9 @@ export const ChooseActionAndTarget = ({
 				open={actionName === 'ATTACK'}
 				name={actor.name}
 				setMove={setMove}
+				resetActor={() => {
+					setActionName(undefined);
+				}}
 				availableMoves={actor.moves.map((m) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
