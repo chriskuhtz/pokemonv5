@@ -25,6 +25,19 @@ export interface TypeInfo {
 	slot: number;
 	type: { name: PokemonType; url: string };
 }
+export type LearnMethod =
+	| 'egg'
+	| 'machine'
+	| 'level-up'
+	| 'tutor'
+	| 'form-change'
+	| 'zygarde-cube'
+	| 'xd-purification'
+	| 'xd-shadow'
+	| 'colosseum-purification'
+	| 'colosseum-shadow'
+	| 'light-ball-egg'
+	| 'stadium-surfing-pikachu';
 
 export interface PokemonData {
 	abilities: AbilitySlot[];
@@ -42,6 +55,12 @@ export interface PokemonData {
 			name: string;
 			url: string;
 		};
+		version_group_details: {
+			level_learned_at: number;
+			move_learn_method: {
+				name: LearnMethod;
+			};
+		}[];
 	}[];
 	name: string;
 	order: number;

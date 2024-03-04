@@ -5,13 +5,13 @@ import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
 import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
 import { useSaveGame } from '../../hooks/useSaveGame';
+import { PokemonData } from '../../interfaces/PokemonData';
 import { Quest } from '../../interfaces/Quest';
 import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
-import { PokemonData } from '../../interfaces/PokemonData';
 
 export const PokemonSelectionScreen = ({
 	choices,
@@ -63,7 +63,7 @@ export const PokemonSelectionScreen = ({
 											damage: 0,
 											ownerId: data.playerId,
 											moveNames: (
-												await getFirstFourMoves(c)
+												await getFirstFourMoves(c, 'level-up')
 											).map((move) => move.name),
 										},
 									],
