@@ -13,7 +13,6 @@ export const MenuButton = () => {
 	const numberOfUnclaimed = useNumberOfUnclaimedQuests();
 
 	if (currentDialogue.length === 0 && !noti) {
-		console.log(numberOfUnclaimed);
 		return (
 			<div className="leftCorner">
 				<Tag
