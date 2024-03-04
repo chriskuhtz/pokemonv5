@@ -1,6 +1,7 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
+import { assignPriority } from '../../../functions/assignPriority';
 import { BattleAction } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MoveDto } from '../../../interfaces/Move';
@@ -15,7 +16,6 @@ import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
 import { useLeaveBattle } from './useLeaveBattle';
-import { assignPriority } from '../../../functions/assignPriority';
 
 export interface SelectableAction {
 	actionType: BattleAction['type'];
@@ -225,7 +225,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 					nextAction: {
 						type: 'ATTACK',
 						target: optimalTarget,
-						move: p.moves[Math.floor(Math.random() * 4)] ?? 'splash',
+						move: p.moves[Math.floor(Math.random() * p.moves.length)],
 					},
 				})),
 			});
