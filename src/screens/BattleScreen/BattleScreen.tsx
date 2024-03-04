@@ -74,6 +74,7 @@ export const BattleScreen = ({
 								back
 								pokemon={p}
 								overlay={
+									mode === 'COLLECTING' &&
 									p.nextAction && (
 										<div
 											style={{
@@ -84,13 +85,11 @@ export const BattleScreen = ({
 										>
 											{isBattleAttack(p.nextAction)
 												? p.nextAction.move.name
-												: p.nextAction.type}{' '}
-											{mode === 'COLLECTING' && (
-												<IoIosCloseCircle
-													style={{ height: '40px', width: '40px' }}
-													onClick={() => resetAction(p.id)}
-												/>
-											)}
+												: p.nextAction.type}
+											<IoIosCloseCircle
+												style={{ height: '40px', width: '40px' }}
+												onClick={() => resetAction(p.id)}
+											/>
 										</div>
 									)
 								}

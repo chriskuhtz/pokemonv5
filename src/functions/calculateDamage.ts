@@ -146,6 +146,5 @@ export const calculateDamage = ({
 		zMoveFactor *
 		teraShieldFactor;
 
-	console.log(Math.round(total));
 	return Math.round(total);
 };

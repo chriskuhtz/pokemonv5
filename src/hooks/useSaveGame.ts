@@ -86,9 +86,7 @@ export const useSaveGame = () => {
 
 			Object.entries(questUpdates ?? {}).forEach((entry) => {
 				const [id, status] = entry;
-				if (status === 'active') {
-					dispatch(addNotification(`New Quest: ${id}`));
-				}
+
 				if (status === 'completed') {
 					const quest = QuestRecord[id as QuestName];
 					updatedMoney += quest.rewardMoney ?? 0;
@@ -100,11 +98,28 @@ export const useSaveGame = () => {
 				}
 			});
 
+			const updatedQuestList = () => {
+				if (!questUpdates) {
+					return data.quests;
+				}
+				const res: SaveFile['quests'] = { ...data.quests };
+				Object.entries(questUpdates).forEach(([key, value]) => {
+					if (res[key as QuestName] === 'completed') {
+						return;
+					}
+					if (value === 'active') {
+						dispatch(addNotification(`New Quest: ${key}`));
+					}
+					res[key as QuestName] = value;
+				});
+				return res;
+			};
+
 			await updateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
 				position: updatedPosition(),
-				quests: { ...data.quests, ...questUpdates },
+				quests: updatedQuestList(),
 				handledOccupants: { ...data.handledOccupants, ...handledOccupants },
 				lastHealPosition: visitedNurse
 					? updatedPosition()

@@ -1,3 +1,4 @@
+import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
 import { MoveDto } from '../../../interfaces/Move';
 import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
@@ -10,11 +11,13 @@ export const ChooseMove = ({
 	setMove,
 	availableMoves,
 	name,
+	resetActor,
 }: {
 	open: boolean;
 	setMove: (x: MoveDto | undefined) => void;
 	availableMoves: SelectableAction[];
 	name: string;
+	resetActor: () => void;
 }) => {
 	if (open) {
 		return (
@@ -54,6 +57,10 @@ export const ChooseMove = ({
 									}
 								/>
 							))}
+							<IoIosCloseCircle
+								style={{ height: '40px', width: '40px' }}
+								onClick={resetActor}
+							/>
 						</div>
 					</div>
 				}

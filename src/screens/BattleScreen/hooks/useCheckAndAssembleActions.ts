@@ -64,7 +64,7 @@ export const useCheckAndAssembleActions = (
 				setUsedPotions((potions) => potions + 1);
 				dispatch(
 					//@ts-expect-error : See typecheck in condition
-					concatDialogue([`You gave a ${action.item} to ${actor.name}`])
+					concatDialogue([`You gave a ${action.item} to ${target.name}`])
 				);
 				return;
 			}

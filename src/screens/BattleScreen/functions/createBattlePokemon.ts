@@ -51,7 +51,7 @@ export const useCreateBattlePokemonFromData = () => {
 
 			const stats = getStats(data.stats, level);
 
-			const firstFourMoves = await getFirstFourMoves(data.id);
+			const firstFourMoves = await getFirstFourMoves(data.id, 'level-up');
 
 			return {
 				primaryType: data.types[0].type.name,

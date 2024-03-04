@@ -13,10 +13,12 @@ export const MenuButton = () => {
 	const numberOfUnclaimed = useNumberOfUnclaimedQuests();
 
 	if (currentDialogue.length === 0 && !noti) {
-		console.log(numberOfUnclaimed);
 		return (
 			<div className="leftCorner">
-				<Tag tag={numberOfUnclaimed > 0 ? numberOfUnclaimed : undefined}>
+				<Tag
+					color="orange"
+					tag={numberOfUnclaimed > 0 ? numberOfUnclaimed : undefined}
+				>
 					<RouterButton
 						to={RoutesEnum.menu}
 						text={<TiThMenu style={{ height: '30px', width: '30px' }} />}
