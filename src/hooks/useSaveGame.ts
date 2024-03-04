@@ -86,9 +86,7 @@ export const useSaveGame = () => {
 
 			Object.entries(questUpdates ?? {}).forEach((entry) => {
 				const [id, status] = entry;
-				if (status === 'active') {
-					dispatch(addNotification(`New Quest: ${id}`));
-				}
+
 				if (status === 'completed') {
 					const quest = QuestRecord[id as QuestName];
 					updatedMoney += quest.rewardMoney ?? 0;
@@ -108,6 +106,9 @@ export const useSaveGame = () => {
 				Object.entries(questUpdates).forEach(([key, value]) => {
 					if (res[key as QuestName] === 'completed') {
 						return;
+					}
+					if (value === 'active') {
+						dispatch(addNotification(`New Quest: ${key}`));
 					}
 					res[key as QuestName] = value;
 				});
