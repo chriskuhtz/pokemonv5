@@ -5,7 +5,7 @@ import { Inventory } from './Inventory';
 import { OwnedPokemon } from './OwnedPokemon';
 import { QuestName, QuestStatus } from './Quest';
 
-export type GymBadge = 'stoneBadge';
+export type GymBadge = 'boulderBadge';
 export type GymBadgeRecord = Record<GymBadge, boolean>;
 
 export interface SaveFile {

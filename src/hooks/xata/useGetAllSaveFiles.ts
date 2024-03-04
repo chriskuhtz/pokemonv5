@@ -48,7 +48,7 @@ export const staticSaveData: SaveFile = {
 	pokemon: [],
 	money: 5000,
 	inventory: { potion: 0, repel: 0, 'poke-ball': 0 },
-	gymBadges: { stoneBadge: false },
+	gymBadges: { boulderBadge: false },
 };
 
 export interface SaveFileDBEntry {
