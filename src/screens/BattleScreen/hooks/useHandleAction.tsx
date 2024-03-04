@@ -184,18 +184,33 @@ export const useHandleAction = (
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
+							//apply heal to self
+							if (target.id === actor.id && p.id === target.id) {
+								return {
+									...applyHealingItemToPokemon(
+										p,
+										//@ts-expect-error : See typecheck in condition
+										action.item
+									),
+									nextAction: undefined,
+								};
 							}
-
-							return {
-								...applyHealingItemToPokemon(
-									p,
-									//@ts-expect-error : See typecheck in condition
-									action.item
-								),
-								nextAction: undefined,
-							};
+							if (target.id === p.id) {
+								return {
+									...applyHealingItemToPokemon(
+										p,
+										//@ts-expect-error : See typecheck in condition
+										action.item
+									),
+								};
+							}
+							if (actor.id === p.id) {
+								return {
+									...p,
+									nextAction: undefined,
+								};
+							}
+							return p;
 						}),
 					});
 				}
