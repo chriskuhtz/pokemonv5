@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Headline, HeadlineProps } from '../../components/Headline/Headline';
 import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
@@ -7,6 +7,7 @@ import { QuestName, QuestRecord } from '../../interfaces/Quest';
 import { RoutesEnum } from '../../router/router';
 import { selectNotInactiveQuests } from '../../store/selectors/combination/selectNotInactiveQuests';
 import { useAppSelector } from '../../store/storeHooks';
+import { Collapse } from '../../ui_components/Collapse/Collapse';
 
 export const QuestsScreen = ({
 	headlineProps,
@@ -18,6 +19,8 @@ export const QuestsScreen = ({
 	const navigate = useNavigate();
 	const quests = useAppSelector(selectNotInactiveQuests);
 	const numberOfUnclaimedQuests = useNumberOfUnclaimedQuests();
+	const [activeOpen, setActiveOpen] = useState(true);
+	const [completedOpen, setCompletedOpen] = useState(false);
 
 	useEffect(() => {
 		if (routeAwayAfterAllClaimed && numberOfUnclaimedQuests === 0) {
@@ -34,16 +37,60 @@ export const QuestsScreen = ({
 				className={headlineProps.className}
 			/>
 			{quests.length > 0 ? (
-				<div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
-					{quests.map((questEntry) => {
-						const key = questEntry[0];
-						const status = questEntry[1];
+				<>
+					<Collapse
+						open={activeOpen}
+						setOpen={setActiveOpen}
+						headline={'Active Quests'}
+						content={
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '.5rem',
+								}}
+							>
+								{quests.map((questEntry) => {
+									const key = questEntry[0];
+									const status = questEntry[1];
 
-						const quest = { ...QuestRecord[key as QuestName], status };
+									if (status !== 'active') {
+										return <></>;
+									}
 
-						return <QuestListItem quest={quest} key={key} />;
-					})}
-				</div>
+									const quest = { ...QuestRecord[key as QuestName], status };
+
+									return <QuestListItem quest={quest} key={key} />;
+								})}
+							</div>
+						}
+					/>
+					<Collapse
+						open={completedOpen}
+						setOpen={setCompletedOpen}
+						headline={'Completed Quests'}
+						content={
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '.5rem',
+								}}
+							>
+								{quests.map((questEntry) => {
+									const key = questEntry[0];
+									const status = questEntry[1];
+									if (status !== 'completed') {
+										return <></>;
+									}
+									const quest = { ...QuestRecord[key as QuestName], status };
+
+									return <QuestListItem quest={quest} key={key} />;
+								})}
+							</div>
+						}
+					/>
+				</>
 			) : (
 				<h3>No active quests</h3>
 			)}

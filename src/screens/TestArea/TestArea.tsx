@@ -1,6 +1,8 @@
-import { Tag } from '../../ui_components/Tag/Tag';
+import { useState } from 'react';
+import { Collapse } from '../../ui_components/Collapse/Collapse';
 
 export const TestArea = (): JSX.Element => {
+	const [open, setOpen] = useState(false);
 	return (
 		<div
 			style={{
@@ -10,9 +12,12 @@ export const TestArea = (): JSX.Element => {
 				alignItems: 'center',
 			}}
 		>
-			<Tag tag={<strong>Butt</strong>}>
-				<strong>Hello</strong>
-			</Tag>
+			<Collapse
+				open={open}
+				setOpen={setOpen}
+				headline={'YAYAYA'}
+				content={<div>BULLU</div>}
+			/>
 		</div>
 	);
 };

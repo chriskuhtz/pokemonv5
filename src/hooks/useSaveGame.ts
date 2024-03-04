@@ -100,11 +100,25 @@ export const useSaveGame = () => {
 				}
 			});
 
+			const updatedQuestList = () => {
+				if (!questUpdates) {
+					return data.quests;
+				}
+				const res: SaveFile['quests'] = { ...data.quests };
+				Object.entries(questUpdates).forEach(([key, value]) => {
+					if (res[key as QuestName] === 'completed') {
+						return;
+					}
+					res[key as QuestName] = value;
+				});
+				return res;
+			};
+
 			await updateSaveFile({
 				...updatedData,
 				inventory: updatedInventory,
 				position: updatedPosition(),
-				quests: { ...data.quests, ...questUpdates },
+				quests: updatedQuestList(),
 				handledOccupants: { ...data.handledOccupants, ...handledOccupants },
 				lastHealPosition: visitedNurse
 					? updatedPosition()
