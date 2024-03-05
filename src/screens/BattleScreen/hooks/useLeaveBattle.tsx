@@ -46,31 +46,41 @@ export const useLeaveBattle = (
 		}
 	}, [trainerId]);
 
-	const updatedOwnedPokemon: OwnedPokemon[] = useMemo(() => {
-		if (!playerSide || !opponentSide || !saveFile) {
-			return [];
-		}
+	const updateOwnedPokemonFromBattlePokemon = useCallback(
+		(playerSide?: BattleSide, opponentSide?: BattleSide): OwnedPokemon[] => {
+			if (!playerSide || !opponentSide || !saveFile) {
+				return [];
+			}
 
-		const teamMembersAfterBattle = [
-			...playerSide.field,
-			...playerSide.bench,
-			...playerSide.defeated,
-		];
-		const numberOfPreviousTeamMembers = teamMembersAfterBattle.length;
+			const teamMembersAfterBattle = [
+				...playerSide.field,
+				...playerSide.bench,
+				...playerSide.defeated,
+			];
+			const numberOfPreviousTeamMembers = teamMembersAfterBattle.length;
 
-		return [
-			...saveFile.pokemon.map((p) => {
-				//update, but dont change team order
-				return teamMembersAfterBattle.find((t) => t.id === p.id) ?? p;
-			}),
-			...playerSide.caught.map((p, i) => ({
-				...p,
-				onTeam: numberOfPreviousTeamMembers + i < 6,
-			})),
-		].map((p) => {
-			return { ...p, nextAction: undefined, status: undefined };
-		});
-	}, [opponentSide, playerSide, saveFile]);
+			return [
+				...saveFile.pokemon.map((p) => {
+					//update, but dont change team order
+					return teamMembersAfterBattle.find((t) => t.id === p.id) ?? p;
+				}),
+				...playerSide.caught.map((p, i) => ({
+					...p,
+					onTeam: numberOfPreviousTeamMembers + i < 6,
+				})),
+			].map((p) => {
+				return {
+					...p,
+					nextAction: undefined,
+					status: undefined,
+					moves: undefined,
+					stats: undefined,
+					statModifiers: undefined,
+				};
+			});
+		},
+		[saveFile]
+	);
 
 	return useCallback(
 		async (reason: BattleEndReason) => {
@@ -80,7 +90,10 @@ export const useLeaveBattle = (
 					reason === 'WIN' && trainerId
 						? { [`${trainerId}`]: true }
 						: undefined,
-				pokemonUpdates: updatedOwnedPokemon,
+				pokemonUpdates: updateOwnedPokemonFromBattlePokemon(
+					playerSide,
+					opponentSide
+				),
 				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
 				visitedNurse: reason === 'LOSS',
 				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
@@ -110,10 +123,12 @@ export const useLeaveBattle = (
 			allDexUpdates,
 			dispatch,
 			navigate,
+			opponentSide,
+			playerSide,
 			save,
 			trainer,
 			trainerId,
-			updatedOwnedPokemon,
+			updateOwnedPokemonFromBattlePokemon,
 			usedBalls,
 			usedPotions,
 		]
