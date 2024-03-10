@@ -14,8 +14,16 @@ export const abilities: {
 		url: 'https://pokeapi.co/api/v2/ability/2/',
 		handled: true,
 	},
-	{ name: 'speed-boost', url: 'https://pokeapi.co/api/v2/ability/3/' },
-	{ name: 'battle-armor', url: 'https://pokeapi.co/api/v2/ability/4/' },
+	{
+		name: 'speed-boost',
+		url: 'https://pokeapi.co/api/v2/ability/3/',
+		handled: true,
+	},
+	{
+		name: 'battle-armor',
+		url: 'https://pokeapi.co/api/v2/ability/4/',
+		handled: true,
+	},
 	{ name: 'sturdy', url: 'https://pokeapi.co/api/v2/ability/5/' },
 	{ name: 'damp', url: 'https://pokeapi.co/api/v2/ability/6/' },
 	{ name: 'limber', url: 'https://pokeapi.co/api/v2/ability/7/' },
