@@ -23,6 +23,13 @@ export const CircularSprite = ({
 				<div className="content">
 					<div className="battleSprite">
 						<img
+							style={
+								pokemon.damage >= pokemon.stats.hp
+									? {
+											filter: 'grayscale(100%)',
+									  }
+									: undefined
+							}
 							height={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
 							width={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
 							src={
