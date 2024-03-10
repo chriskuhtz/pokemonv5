@@ -131,6 +131,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		pokemonWithActions,
 		mode,
 		setOpponentSide,
+		setPlayerSide,
 		setUsedBalls,
 		setUsedPotions
 	);

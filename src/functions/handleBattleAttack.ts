@@ -1,10 +1,18 @@
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
+import { Stat } from '../interfaces/StatObject';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { calculateDamage } from './calculateDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
+
+export const canRaiseStat = (actor: BattlePokemon, stat: Stat) => {
+	return actor.statModifiers[stat] < 6;
+};
+export const canLowerStat = (actor: BattlePokemon, stat: Stat) => {
+	return actor.statModifiers[stat] > -6;
+};
 
 export const handleBattleAttack = (
 	actor: BattlePokemon,
@@ -26,22 +34,23 @@ export const handleBattleAttack = (
 		move.meta.flinch_chance
 	);
 
-	const willFlinch = Math.random() <= flinch_chance;
+	const willFlinch = target.nextAction && Math.random() <= flinch_chance;
 
 	const updatedActorStatMods = { ...actor.statModifiers };
 	if (move.stat_changes.length > 0 && move.target.name === 'user') {
 		move.stat_changes.forEach((statChange) => {
-			if (statChange.change > 0) {
-				updatedActorStatMods[statChange.stat.name] = Math.min(
-					updatedActorStatMods[statChange.stat.name] + statChange.change,
-					6
-				);
+			if (statChange.change > 0 && canRaiseStat(actor, statChange.stat.name)) {
+				updatedActorStatMods[statChange.stat.name] =
+					updatedActorStatMods[statChange.stat.name] + statChange.change;
+				if (updatedActorStatMods[statChange.stat.name] > 6) {
+					updatedActorStatMods[statChange.stat.name] = 6;
+				}
 			}
-			if (statChange.change < 0) {
-				updatedActorStatMods[statChange.stat.name] = Math.max(
-					updatedActorStatMods[statChange.stat.name] + statChange.change,
-					-6
-				);
+			if (statChange.change < 0 && canLowerStat(actor, statChange.stat.name)) {
+				updatedActorStatMods[statChange.stat.name] -= statChange.change;
+				if (updatedActorStatMods[statChange.stat.name] < -6) {
+					updatedActorStatMods[statChange.stat.name] = -6;
+				}
 			}
 		});
 	}

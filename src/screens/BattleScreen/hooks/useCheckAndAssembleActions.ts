@@ -1,11 +1,14 @@
 import { useEffect, useMemo } from 'react';
+import { canRaiseStat } from '../../../functions/handleBattleAttack';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isPrimaryAction,
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
+import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
 
@@ -15,6 +18,7 @@ export const useCheckAndAssembleActions = (
 	pokemonWithActions: BattlePokemon[],
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setUsedBalls: React.Dispatch<React.SetStateAction<number>>,
 	setUsedPotions: React.Dispatch<React.SetStateAction<number>>
 ) => {
@@ -40,6 +44,9 @@ export const useCheckAndAssembleActions = (
 			pokemonWithActions.length > 0 &&
 			currentDialogue.length === 0
 		) {
+			if (!playerSide || !opponentSide) {
+				return;
+			}
 			const actor = pokemonWithActions[0];
 			const action = actor.nextAction;
 			const target = isBattleActionWithTarget(action)
@@ -49,6 +56,50 @@ export const useCheckAndAssembleActions = (
 				isBattleActionWithTarget(action) && action?.type === 'SWITCH'
 					? allPokemonOnBench.find((p) => p.id === action.target)
 					: undefined;
+
+			if (
+				actor.ability === 'speed-boost' &&
+				canRaiseStat(actor, 'speed') &&
+				isPrimaryAction(actor.nextAction)
+			) {
+				dispatch(
+					addNotification(`${actor.name} increased its speed with speed-boost`)
+				);
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							} else
+								return {
+									...p,
+									statModifiers: {
+										...p.statModifiers,
+										speed: p.statModifiers.speed + 1,
+									},
+								};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							} else
+								return {
+									...p,
+									statModifiers: {
+										...p.statModifiers,
+										speed: p.statModifiers.speed + 1,
+									},
+								};
+						}),
+					});
+				}
+			}
 
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
 				dispatch(

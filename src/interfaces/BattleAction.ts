@@ -75,6 +75,20 @@ export function isBattleActionWithTarget(
 	);
 }
 
+export function isPrimaryAction(x: BattleAction | undefined): boolean {
+	return !!(
+		x &&
+		[
+			'CATCH_ATTEMPT',
+			'ATTACK',
+			'ITEM',
+			'RUNAWAY_ATTEMPT',
+			'HEALING_ITEM',
+			'FLINCH',
+		].includes(x?.type)
+	);
+}
+
 export function isBattleAttack(
 	x: BattleAction | undefined
 ): x is BattleAttackAction {
