@@ -19,7 +19,7 @@ export interface BattleSide {
 	side: 'PLAYER' | 'OPPONENT';
 }
 
-export type BattleMode = 'COLLECTING' | 'EXECUTING';
+export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'HANDLING_ENVIRONMENT';
 
 export const BattleScreen = ({
 	saveFile,
@@ -40,6 +40,7 @@ export const BattleScreen = ({
 		playerFetchStatus,
 		setMode,
 		setPlayerSide,
+		environment,
 	} = useBattleScreen(saveFile);
 
 	const hasOpenSpots: boolean = !!(
@@ -112,6 +113,7 @@ export const BattleScreen = ({
 					selectAction={selectAction}
 					setPlayerSide={setPlayerSide}
 					setMode={setMode}
+					environment={environment}
 				/>
 			</div>
 		);

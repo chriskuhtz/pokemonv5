@@ -1,3 +1,5 @@
+import { Ability } from '../constants/abilityCheckList';
+
 export interface OwnedPokemon {
 	dexId: number;
 	id: string;

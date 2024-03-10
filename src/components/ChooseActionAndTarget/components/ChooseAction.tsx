@@ -1,5 +1,5 @@
 import { BattleAction } from '../../../interfaces/BattleAction';
-import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
+import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 

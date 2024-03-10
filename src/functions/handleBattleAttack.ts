@@ -1,4 +1,5 @@
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
+import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { calculateDamage } from './calculateDamage';
@@ -12,7 +13,8 @@ export const handleBattleAttack = (
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide,
-	opponentSide: BattleSide
+	opponentSide: BattleSide,
+	environment: BattleEnvironment
 ) => {
 	if (!isBattleAttack(action)) {
 		console.error('this is no attack', action);
@@ -52,7 +54,7 @@ export const handleBattleAttack = (
 		nextAction = { type: 'MISSED_ATTACK', priority: action.priority };
 	}
 
-	const damageFactors = getDamageFactors(actor, move, target);
+	const damageFactors = getDamageFactors(actor, move, target, environment);
 	const attackDamage = passesAccuracyCheck ? calculateDamage(damageFactors) : 0;
 	const newTargetDamage = target.damage + attackDamage;
 	const newTargetAction: BattleAction | undefined = willFlinch

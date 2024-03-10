@@ -1,12 +1,13 @@
 import { ChooseActionAndTarget } from '../../../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { ChooseRefill } from '../../../../components/ChooseActionAndTarget/components/ChooseRefill';
+import { BattleEnvironment } from '../../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
+import { SelectableAction } from '../../../../interfaces/SelectableAction';
 import { selectCurrentDialogue } from '../../../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectNextNotification } from '../../../../store/selectors/notification/selectNextNotification';
 import { useAppSelector } from '../../../../store/storeHooks';
 import { Banner } from '../../../../ui_components/Banner/Banner';
 import { BattleMode, BattleSide } from '../../BattleScreen';
-import { SelectableAction } from '../../hooks/useBattleScreen';
 
 export const BattleScreenController = ({
 	nextPlayerPokemonWithoutAction,
@@ -18,6 +19,7 @@ export const BattleScreenController = ({
 	setPlayerSide,
 	setMode,
 	handleAction,
+	environment,
 }: {
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined;
 	mode: BattleMode;
@@ -28,12 +30,23 @@ export const BattleScreenController = ({
 	selectAction: (updatedActor: BattlePokemon) => void;
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>;
 	setMode: React.Dispatch<React.SetStateAction<BattleMode>>;
+	environment: BattleEnvironment;
 }): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const noti = useAppSelector(selectNextNotification);
 
 	if (noti) {
 		return <></>;
+	}
+	if (mode === 'HANDLING_ENVIRONMENT') {
+		return (
+			<Banner
+				content={`The Weather is: ${environment.weather?.type}`}
+				onClick={() => {
+					setMode('EXECUTING');
+				}}
+			/>
+		);
 	}
 	if (currentDialogue.length === 0 && hasOpenSpots) {
 		return (

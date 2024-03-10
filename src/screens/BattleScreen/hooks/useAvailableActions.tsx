@@ -3,7 +3,7 @@ import { isBattleActionWithTarget } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { BattleSide } from '../BattleScreen';
-import { SelectableAction } from './useBattleScreen';
+import { SelectableAction } from '../../../interfaces/SelectableAction';
 
 export const useAvailableActions = (
 	saveFile: SaveFile | undefined,

@@ -2,8 +2,11 @@ import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
+import { addNotification } from '../../../store/slices/notificationSlice';
+import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import {
 	createBattlePokemonFromOwned,
@@ -14,9 +17,11 @@ import { BattleScreenProps } from './useBattleScreen';
 export const useInitialiseBattleSides = (
 	data: SaveFile,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>
 ) => {
 	const { state } = useLocation();
+	const dispatch = useAppDispatch();
 	const { opponents, activePokemonPerSide } = state as BattleScreenProps;
 	const createBattlePokemonFromData = useCreateBattlePokemonFromData();
 
@@ -61,13 +66,20 @@ export const useInitialiseBattleSides = (
 			allOpponentPokemon &&
 			allOpponentPokemon?.length > 0
 		) {
+			const monsOnField = allOpponentPokemon.slice(0, activePokemonPerSide);
 			setOpponentSide({
-				field: allOpponentPokemon.slice(0, activePokemonPerSide),
+				field: monsOnField,
 				bench: allOpponentPokemon.slice(activePokemonPerSide),
 				defeated: [],
 				caught: [],
 				side: 'OPPONENT',
 			});
+
+			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
+			if (weatherman) {
+				setEnvironment({ weather: { type: 'rain', duration: -1 } });
+				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
+			}
 		}
 	}, [
 		activePokemonPerSide,
@@ -89,13 +101,20 @@ export const useInitialiseBattleSides = (
 			const defeatedPlayerPokemon = allPlayerPokemon.filter(
 				(p) => p.damage >= p.stats.hp
 			);
+			const monsOnField = ablePlayerPokemon.slice(0, activePokemonPerSide);
 			setPlayerSide({
-				field: ablePlayerPokemon.slice(0, activePokemonPerSide),
+				field: monsOnField,
 				bench: ablePlayerPokemon.slice(activePokemonPerSide),
 				defeated: defeatedPlayerPokemon,
 				caught: [],
 				side: 'PLAYER',
 			});
+
+			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
+			if (weatherman) {
+				setEnvironment({ weather: { type: 'rain', duration: -1 } });
+				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
+			}
 		}
 	}, [
 		activePokemonPerSide,

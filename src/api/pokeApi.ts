@@ -6,6 +6,7 @@ import { ItemData } from '../interfaces/ItemData';
 import { MoveDto } from '../interfaces/Move';
 import { PokemonData } from '../interfaces/PokemonData';
 import { PokemonSpeciesData } from '../interfaces/PokemonSpeciesData';
+import { Ability } from '../constants/abilityCheckList';
 
 // Define a service using a base URL and expected endpoints
 

@@ -3,10 +3,10 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { BattleAction } from '../../interfaces/BattleAction';
 import { MoveDto } from '../../interfaces/Move';
-import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
+import { SelectableAction } from '../../interfaces/SelectableAction';
 
 export const ChooseActionAndTarget = ({
 	actor,

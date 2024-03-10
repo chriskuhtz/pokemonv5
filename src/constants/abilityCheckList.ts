@@ -9,7 +9,11 @@ export const abilities: {
 		url: 'https://pokeapi.co/api/v2/ability/1/',
 		handled: true,
 	},
-	{ name: 'drizzle', url: 'https://pokeapi.co/api/v2/ability/2/' },
+	{
+		name: 'drizzle',
+		url: 'https://pokeapi.co/api/v2/ability/2/',
+		handled: true,
+	},
 	{ name: 'speed-boost', url: 'https://pokeapi.co/api/v2/ability/3/' },
 	{ name: 'battle-armor', url: 'https://pokeapi.co/api/v2/ability/4/' },
 	{ name: 'sturdy', url: 'https://pokeapi.co/api/v2/ability/5/' },

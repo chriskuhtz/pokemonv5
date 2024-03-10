@@ -9,6 +9,7 @@ import {
 	isBattleActionWithTarget,
 	isBattleAttack,
 } from '../../../interfaces/BattleAction';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
@@ -22,7 +23,9 @@ export const useHandleAction = (
 	pokemonWithActions: BattlePokemon[],
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	leaveBattle: (reason: BattleEndReason) => void
+	leaveBattle: (reason: BattleEndReason) => void,
+	environment: BattleEnvironment,
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>
 ) => {
 	const dispatch = useAppDispatch();
 
@@ -171,6 +174,11 @@ export const useHandleAction = (
 							return p;
 						}),
 					});
+				}
+
+				if (target?.ability === 'drizzle') {
+					setEnvironment({ weather: { type: 'rain', duration: -1 } });
+					dispatch(addNotification(`${target.name}´s ability made it rain`));
 				}
 				return;
 			}
@@ -431,7 +439,8 @@ export const useHandleAction = (
 					setPlayerSide,
 					setOpponentSide,
 					playerSide,
-					opponentSide
+					opponentSide,
+					environment
 				);
 				return;
 			}

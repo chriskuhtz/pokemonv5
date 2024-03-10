@@ -1,13 +1,16 @@
+import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
 import { DamageFactors } from './calculateDamage';
 import { calculateLevelData } from './calculateLevelData';
+import { determineWeatherFactor } from './determineWeatherFactor';
 import { getTypeFactor } from './getTypeFactor';
 
 export const getDamageFactors = (
 	actor: BattlePokemon,
 	move: MoveDto,
-	target: BattlePokemon
+	target: BattlePokemon,
+	environment: BattleEnvironment
 ): DamageFactors => {
 	const { level } = calculateLevelData(actor.xp);
 	const { damage_class, power, type } = move;
@@ -31,6 +34,7 @@ export const getDamageFactors = (
 		moveType === actor.primaryType || moveType === actor.secondaryType
 			? 1.5
 			: 1;
+	const weatherFactor = determineWeatherFactor(moveType, environment.weather);
 
 	return {
 		attackerLevel: level,
@@ -39,7 +43,7 @@ export const getDamageFactors = (
 		movePower: power ?? 0,
 		targetsFactor: 1,
 		parentalBondFactor: 1,
-		weatherFactor: 1,
+		weatherFactor,
 		glaiveRush: 1,
 		criticalFactor: 1,
 		stabFactor,
