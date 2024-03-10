@@ -1,5 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { AbilityDto } from '../interfaces/AbilityDto';
 import { ItemName } from '../interfaces/Item';
 import { ItemData } from '../interfaces/ItemData';
 import { MoveDto } from '../interfaces/Move';
@@ -27,6 +28,12 @@ export const pokeApi = createApi({
 				return `/move/${parsedName}`;
 			},
 		}),
+		getAbilityByName: builder.query<AbilityDto, Ability>({
+			query: (name: string) => {
+				const parsedName = name.toLowerCase().replace(' ', '-');
+				return `/ability/${parsedName}`;
+			},
+		}),
 	}),
 });
 
@@ -41,4 +48,5 @@ export const {
 	useLazyGetSpeciesDataByDexIdQuery,
 	useGetMoveDataByNameQuery,
 	useLazyGetMoveDataByNameQuery,
+	useGetAbilityByNameQuery,
 } = pokeApi;

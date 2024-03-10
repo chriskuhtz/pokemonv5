@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useGetPokemonDataByDexIdQuery } from '../../../../api/pokeApi';
+import { AbilityPill } from '../../../../components/AbilityPill/AbilityPill';
 import { calculateLevelData } from '../../../../functions/calculateLevelData';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { addAudio } from '../../../../store/slices/audioSlice';
@@ -9,6 +10,7 @@ import { MoveSection } from '../MoveSection/MoveSection';
 import { NameAndSpriteSection } from '../NameAndSpriteSection/NameAndSpriteSection';
 import { StatSection } from '../StatSection/StatSection';
 import './PokemonSummary.css';
+
 export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 	const { data } = useGetPokemonDataByDexIdQuery(pokemon.dexId);
 	const dispatch = useAppDispatch();
@@ -29,6 +31,7 @@ export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 					name={pokemon.name}
 					level={calculateLevelData(pokemon.xp).level}
 				/>
+				<AbilityPill abilityName={pokemon.ability} />
 				<div className="movesAndStats">
 					<MoveSection moves={pokemon.moves} />
 					<StatSection
