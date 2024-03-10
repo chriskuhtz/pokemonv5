@@ -1,11 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
-import { calculateDamage } from '../../../functions/calculateDamage';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
-import { getDamageFactors } from '../../../functions/getDamageFactors';
-import { makeAccuracyCheck } from '../../../functions/makeAccuracyCheck';
+import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import {
 	BattleAction,
 	isBattleActionWithTarget,
@@ -426,135 +424,15 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(action) && target) {
-				const { move } = action;
-				let flinch_chance = Math.max(
-					actor.ability === 'stench' ? 0.1 : 0,
-					move.meta.flinch_chance
+				handleBattleAttack(
+					actor,
+					target,
+					action,
+					setPlayerSide,
+					setOpponentSide,
+					playerSide,
+					opponentSide
 				);
-
-				const willFlinch = Math.random() <= flinch_chance;
-
-				const updatedActorStatMods = { ...actor.statModifiers };
-				if (move.stat_changes.length > 0 && move.target.name === 'user') {
-					move.stat_changes.forEach((statChange) => {
-						if (statChange.change > 0) {
-							updatedActorStatMods[statChange.stat.name] = Math.min(
-								updatedActorStatMods[statChange.stat.name] + statChange.change,
-								6
-							);
-						}
-						if (statChange.change < 0) {
-							updatedActorStatMods[statChange.stat.name] = Math.max(
-								updatedActorStatMods[statChange.stat.name] + statChange.change,
-								-6
-							);
-						}
-					});
-				}
-
-				let nextAction: BattleAction | undefined = undefined;
-
-				const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
-
-				if (!passesAccuracyCheck) {
-					nextAction = { type: 'MISSED_ATTACK', priority: action.priority };
-				}
-
-				const damageFactors = getDamageFactors(actor, move, target);
-				const attackDamage = passesAccuracyCheck
-					? calculateDamage(damageFactors)
-					: 0;
-				const newTargetDamage = target.damage + attackDamage;
-
-				if (
-					newTargetDamage >= target.stats.hp &&
-					damageFactors.typeFactor === 1
-				) {
-					nextAction = {
-						type: 'DEFEATED_TARGET',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (damageFactors.typeFactor === 0) {
-					nextAction = {
-						type: 'NO_EFFECT',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (damageFactors.typeFactor > 1) {
-					nextAction = {
-						type: 'SUPER_EFFECTIVE',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (damageFactors.typeFactor < 1) {
-					nextAction = {
-						type: 'NOT_VERY_EFFECTIVE',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction,
-								statModifiers: updatedActorStatMods,
-							};
-						}),
-					});
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
-							}
-							return {
-								...p,
-								damage: newTargetDamage,
-								nextAction:
-									p.nextAction && willFlinch ? { type: 'FLINCH' } : undefined,
-							};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
-							}
-							return {
-								...p,
-								damage: newTargetDamage,
-								nextAction:
-									p.nextAction && willFlinch ? { type: 'FLINCH' } : undefined,
-							};
-						}),
-					});
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction,
-								statModifiers: updatedActorStatMods,
-							};
-						}),
-					});
-				}
 				return;
 			}
 			//defeated target
