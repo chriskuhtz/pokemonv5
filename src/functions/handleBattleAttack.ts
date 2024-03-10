@@ -1,18 +1,14 @@
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import { Stat } from '../interfaces/StatObject';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
+import { useAppDispatch } from '../store/storeHooks';
 import { calculateDamage } from './calculateDamage';
+import { canLowerStat } from './canLowerStat';
+import { canRaiseStat } from './canRaiseStat';
+import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
-
-export const canRaiseStat = (actor: BattlePokemon, stat: Stat) => {
-	return actor.statModifiers[stat] < 6;
-};
-export const canLowerStat = (actor: BattlePokemon, stat: Stat) => {
-	return actor.statModifiers[stat] > -6;
-};
 
 export const handleBattleAttack = (
 	actor: BattlePokemon,
@@ -24,6 +20,7 @@ export const handleBattleAttack = (
 	opponentSide: BattleSide,
 	environment: BattleEnvironment
 ) => {
+	const dispatch = useAppDispatch();
 	if (!isBattleAttack(action)) {
 		console.error('this is no attack', action);
 		return;
@@ -65,7 +62,11 @@ export const handleBattleAttack = (
 
 	const damageFactors = getDamageFactors(actor, move, target, environment);
 	const attackDamage = passesAccuracyCheck ? calculateDamage(damageFactors) : 0;
-	const newTargetDamage = target.damage + attackDamage;
+	const newTargetDamage = determineNewTargetDamage(
+		target,
+		attackDamage,
+		dispatch
+	);
 	const newTargetAction: BattleAction | undefined = willFlinch
 		? { type: 'FLINCH' }
 		: target.nextAction;
