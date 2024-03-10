@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
+import { isOccupantWithSprite } from '../../../functions/typeguards/occupantTypeGuards';
 
 import { selectActiveOccupants } from './selectActiveOccupants';
 

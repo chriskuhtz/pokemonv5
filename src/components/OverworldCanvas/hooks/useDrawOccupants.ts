@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
+import { isOccupantWithSprite } from '../../../functions/typeguards/occupantTypeGuards';
 import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
 
 import { selectDecorators } from '../../../store/selectors/map/selectDecorators';

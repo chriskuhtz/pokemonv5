@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
 	isOccupantWithDialogue,
 	isOccupantWithPossibleOnClick,
-} from '../../functions/typeguards/isOccupantWithDialogue';
+} from '../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { RoutesEnum } from '../../router/router';
 import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';

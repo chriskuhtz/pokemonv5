@@ -4,7 +4,7 @@ import {
 	UniqueOccupantIds,
 	UniqueOccupantRecord,
 } from '../../../constants/UniqueOccupantRecord';
-import { isTrainer } from '../../../functions/typeguards/isOccupantWithDialogue';
+import { isTrainer } from '../../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { DexEntry } from '../../../interfaces/DexEntry';
