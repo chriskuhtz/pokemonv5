@@ -20,6 +20,7 @@ export const BattleScreenController = ({
 	setMode,
 	handleAction,
 	environment,
+	setEnvironment,
 }: {
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined;
 	mode: BattleMode;
@@ -31,6 +32,7 @@ export const BattleScreenController = ({
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>;
 	setMode: React.Dispatch<React.SetStateAction<BattleMode>>;
 	environment: BattleEnvironment;
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>;
 }): JSX.Element => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const noti = useAppSelector(selectNextNotification);
@@ -50,7 +52,11 @@ export const BattleScreenController = ({
 	}
 	if (currentDialogue.length === 0 && hasOpenSpots) {
 		return (
-			<ChooseRefill playerSide={playerSide} setPlayerSide={setPlayerSide} />
+			<ChooseRefill
+				playerSide={playerSide}
+				setPlayerSide={setPlayerSide}
+				setEnvironment={setEnvironment}
+			/>
 		);
 	}
 	if (

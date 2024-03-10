@@ -258,5 +258,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		activePokemonPerside: activePokemonPerSide,
 		setPlayerSide,
 		environment,
+		setEnvironment,
 	};
 };

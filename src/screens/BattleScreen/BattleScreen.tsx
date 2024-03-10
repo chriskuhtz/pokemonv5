@@ -41,6 +41,7 @@ export const BattleScreen = ({
 		setMode,
 		setPlayerSide,
 		environment,
+		setEnvironment,
 	} = useBattleScreen(saveFile);
 
 	const hasOpenSpots: boolean = !!(
@@ -114,6 +115,7 @@ export const BattleScreen = ({
 					setPlayerSide={setPlayerSide}
 					setMode={setMode}
 					environment={environment}
+					setEnvironment={setEnvironment}
 				/>
 			</div>
 		);
