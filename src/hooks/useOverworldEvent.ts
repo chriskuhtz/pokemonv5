@@ -5,6 +5,7 @@ import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectEncounters } from '../store/selectors/map/selectEncounters';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
+import { MapEncounter } from '../store/slices/MapSlice';
 import { setDialogue } from '../store/slices/dialogueSlice';
 import { addNotification } from '../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
@@ -25,12 +26,25 @@ export const useOverworldEvent = () => {
 				return;
 			}
 			if (event.type === 'ENCOUNTER') {
+				const assembledEncounters: MapEncounter[] = [];
+				encounters.forEach((p) => {
+					let i = 0;
+					while (i < p.rarity) {
+						assembledEncounters.push({ ...p, rarity: 1 });
+						i += 1;
+					}
+				});
+
 				const opponents = [
-					encounters[Math.round(Math.random() * encounters.length)],
+					assembledEncounters[
+						Math.round(Math.random() * assembledEncounters.length)
+					],
 				];
 				if (Math.random() > 0.8) {
 					opponents.push(
-						encounters[Math.round(Math.random() * encounters.length)]
+						assembledEncounters[
+							Math.round(Math.random() * assembledEncounters.length)
+						]
 					);
 				}
 				dispatch(addNotification('A wild Pokemon attacks!'));

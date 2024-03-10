@@ -1,6 +1,14 @@
-import { MapState } from '../../store/slices/MapSlice';
+import { MapEncounter, MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
-export const starterTownEncounters: number[] = [19, 16, 17, 25, 216, 261, 66];
+export const starterTownEncounters: MapEncounter[] = [
+	{ xp: 60, dexId: 19, rarity: 2 },
+	{ xp: 60, dexId: 17, rarity: 1 },
+	{ xp: 60, dexId: 25, rarity: 1 },
+	{ xp: 60, dexId: 216, rarity: 2 },
+	{ xp: 60, dexId: 261, rarity: 2 },
+	{ xp: 60, dexId: 16, rarity: 5 },
+	{ xp: 60, dexId: 66, rarity: 2 },
+];
 
 const mapId = 'starter-town';
 export const starterTown: MapState = {
@@ -253,8 +261,5 @@ export const starterTown: MapState = {
 			},
 		},
 	],
-	encounters: starterTownEncounters.map((dexId) => ({
-		dexId,
-		xp: 60,
-	})),
+	encounters: starterTownEncounters,
 };
