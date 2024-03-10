@@ -6,4 +6,5 @@ export interface OwnedPokemon {
 	damage: number;
 	ownerId: string;
 	moveNames: string[];
+	ability: Ability;
 }

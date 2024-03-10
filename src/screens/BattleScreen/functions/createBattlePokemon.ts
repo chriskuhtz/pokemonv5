@@ -69,6 +69,7 @@ export const useCreateBattlePokemonFromData = () => {
 				stats,
 				statModifiers: modifiers,
 				evasiveness: 1,
+				ability: data.abilities[0].ability.name,
 			};
 		},
 		[getFirstFourMoves]
