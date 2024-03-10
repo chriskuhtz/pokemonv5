@@ -8,21 +8,34 @@ export const HealthIndicator = ({
 	children: JSX.Element;
 	pokemon: BattlePokemon;
 }) => {
-	const healthPercentage = useMemo(() => {
-		const percentage = Math.round(
+	const percentage = useMemo(() => {
+		return Math.round(
 			((pokemon.stats.hp - pokemon.damage) / pokemon.stats.hp) * 100
 		);
+	}, [pokemon]);
 
+	const healthDegrees = useMemo(() => {
 		const degrees = Math.round(3.6 * percentage);
 
 		return `${degrees}deg`;
-	}, [pokemon]);
+	}, [percentage]);
+
+	const healthBarColor = useMemo(() => {
+		if (percentage > 50) {
+			return 'green';
+		}
+		if (percentage > 25) {
+			return 'orange';
+		}
+		return 'red';
+	}, [percentage]);
 
 	return (
 		<div
 			style={
 				{
-					'--healthPercentage': healthPercentage,
+					'--healthPercentage': healthDegrees,
+					'--healthBarColor': healthBarColor,
 				} as CSSProperties
 			}
 			className="healthIndicator"
