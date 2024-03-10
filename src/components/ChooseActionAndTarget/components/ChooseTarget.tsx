@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import {
 	BattleAction,
@@ -50,6 +51,16 @@ export const ChooseTarget = ({
 
 		return { type: actionName };
 	};
+
+	useEffect(() => {
+		if (availableTargets.length === 1 && actionName !== 'SWITCH') {
+			selectAction({
+				...actor,
+				nextAction: determineNextAction(availableTargets[0]),
+			});
+		}
+	}, []);
+
 	if (actionName) {
 		return (
 			<Banner
