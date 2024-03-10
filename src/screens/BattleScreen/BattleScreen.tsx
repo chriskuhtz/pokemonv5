@@ -1,5 +1,5 @@
 import { IoIosCloseCircle } from 'react-icons/io';
-import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
+import { CircularSprite } from '../../components/CircularSprite/CircularSprite';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
@@ -69,7 +69,7 @@ export const BattleScreen = ({
 				<div className="battleField">
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
-							<BattleSprite
+							<CircularSprite
 								key={p.id}
 								back
 								pokemon={p}
@@ -98,7 +98,7 @@ export const BattleScreen = ({
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<BattleSprite key={p.id} pokemon={p} />
+							<CircularSprite key={p.id} pokemon={p} />
 						))}
 					</div>
 				</div>

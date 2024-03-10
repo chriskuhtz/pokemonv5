@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../../api/pokeApi';
-import { BattleSprite } from '../../../../components/BattleSprite/BattleSprite';
+import { CircularSprite } from '../../../../components/CircularSprite/CircularSprite';
 import { useFetch } from '../../../../hooks/useFetch';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { OwnedPokemon } from '../../../../interfaces/OwnedPokemon';
@@ -64,7 +64,7 @@ export const TeamGrid = ({
 								setFocused(p);
 							}}
 						>
-							<BattleSprite
+							<CircularSprite
 								noAnimation={focused?.id !== p.id}
 								pokemon={p}
 								overlay={focused?.id === p.id && !noFocus && <div />}
