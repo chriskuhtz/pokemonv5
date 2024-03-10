@@ -29,7 +29,7 @@ export const useOverworldEvent = () => {
 				const assembledEncounters: MapEncounter[] = [];
 				encounters.forEach((p) => {
 					let i = 0;
-					while (i < p.rarity) {
+					while (i < (p.rarity ?? 1)) {
 						assembledEncounters.push({ ...p, rarity: 1 });
 						i += 1;
 					}

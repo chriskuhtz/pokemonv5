@@ -33,7 +33,7 @@ export interface BaseTile {
 export interface MapEncounter {
 	dexId: number;
 	xp: number;
-	rarity: number;
+	rarity?: number;
 }
 export interface MapState {
 	height: number;
