@@ -78,6 +78,10 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`${actor.name} missed`]));
 				return;
 			}
+			if (actor.nextAction?.type === 'FLINCH') {
+				dispatch(concatDialogue([`${actor.name} flinched`]));
+				return;
+			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
 				return;

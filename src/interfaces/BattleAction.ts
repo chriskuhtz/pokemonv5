@@ -18,7 +18,8 @@ interface BaseBattleAction {
 		| 'NOT_VERY_EFFECTIVE'
 		| 'SUPER_EFFECTIVE'
 		| 'NO_EFFECT'
-		| 'HEALING_ITEM';
+		| 'HEALING_ITEM'
+		| 'FLINCH';
 }
 
 interface BattleActionWithTarget extends BaseBattleAction {

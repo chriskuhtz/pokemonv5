@@ -221,9 +221,12 @@ export const useHandleAction = (
 			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
 			if (
 				action &&
-				['MISSED_ATTACK', 'TARGET_NOT_ON_FIELD', 'RUNAWAY_FAILURE'].includes(
-					action.type
-				)
+				[
+					'MISSED_ATTACK',
+					'TARGET_NOT_ON_FIELD',
+					'RUNAWAY_FAILURE',
+					'FLINCH',
+				].includes(action.type)
 			) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -424,6 +427,12 @@ export const useHandleAction = (
 			//attack
 			if (isBattleAttack(action) && target) {
 				const { move } = action;
+				let flinch_chance = Math.max(
+					actor.ability === 'stench' ? 0.1 : 0,
+					move.meta.flinch_chance
+				);
+
+				const willFlinch = Math.random() <= flinch_chance;
 
 				const updatedActorStatMods = { ...actor.statModifiers };
 				if (move.stat_changes.length > 0 && move.target.name === 'user') {
@@ -511,6 +520,8 @@ export const useHandleAction = (
 							return {
 								...p,
 								damage: newTargetDamage,
+								nextAction:
+									p.nextAction && willFlinch ? { type: 'FLINCH' } : undefined,
 							};
 						}),
 					});
@@ -525,6 +536,8 @@ export const useHandleAction = (
 							return {
 								...p,
 								damage: newTargetDamage,
+								nextAction:
+									p.nextAction && willFlinch ? { type: 'FLINCH' } : undefined,
 							};
 						}),
 					});

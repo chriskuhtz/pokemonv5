@@ -1,8 +1,13 @@
-const abilities = [
+export const abilities: {
+	name: string;
+	url: string;
+	todos?: string[];
+	handled?: boolean;
+}[] = [
 	{
 		name: 'stench',
 		url: 'https://pokeapi.co/api/v2/ability/1/',
-		todos: ['increase flinch chance'],
+		handled: true,
 	},
 	{ name: 'drizzle', url: 'https://pokeapi.co/api/v2/ability/2/' },
 	{ name: 'speed-boost', url: 'https://pokeapi.co/api/v2/ability/3/' },
@@ -372,4 +377,5 @@ const abilities = [
 	{ name: 'shield', url: 'https://pokeapi.co/api/v2/ability/10060/' },
 ];
 const abilityNames = abilities.map((a) => a.name);
-type Ability = (typeof abilityNames)[number];
+
+export type Ability = (typeof abilityNames)[number];
