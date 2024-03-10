@@ -1,5 +1,9 @@
 const abilities = [
-	{ name: 'stench', url: 'https://pokeapi.co/api/v2/ability/1/' },
+	{
+		name: 'stench',
+		url: 'https://pokeapi.co/api/v2/ability/1/',
+		todos: ['increase flinch chance'],
+	},
 	{ name: 'drizzle', url: 'https://pokeapi.co/api/v2/ability/2/' },
 	{ name: 'speed-boost', url: 'https://pokeapi.co/api/v2/ability/3/' },
 	{ name: 'battle-armor', url: 'https://pokeapi.co/api/v2/ability/4/' },
