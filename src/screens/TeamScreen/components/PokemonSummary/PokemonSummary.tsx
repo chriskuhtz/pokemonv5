@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { useGetPokemonDataByDexIdQuery } from '../../../../api/pokeApi';
 import { calculateLevelData } from '../../../../functions/calculateLevelData';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
+import { addAudio } from '../../../../store/slices/audioSlice';
+import { useAppDispatch } from '../../../../store/storeHooks';
 import { ErrorScreen } from '../../../ErrorScreen/ErrorScreen';
 import { MoveSection } from '../MoveSection/MoveSection';
 import { NameAndSpriteSection } from '../NameAndSpriteSection/NameAndSpriteSection';
@@ -8,6 +11,13 @@ import { StatSection } from '../StatSection/StatSection';
 import './PokemonSummary.css';
 export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 	const { data } = useGetPokemonDataByDexIdQuery(pokemon.dexId);
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (data) {
+			dispatch(addAudio(data.cries.latest));
+		}
+	}, [data, dispatch]);
 
 	if (data) {
 		return (

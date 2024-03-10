@@ -1,12 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
-import {
-	calculateDamage,
-	getDamageFactors,
-} from '../../../functions/calculateDamage';
+import { calculateDamage } from '../../../functions/calculateDamage';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
+import { getDamageFactors } from '../../../functions/getDamageFactors';
 import { makeAccuracyCheck } from '../../../functions/makeAccuracyCheck';
 import {
 	BattleAction,
