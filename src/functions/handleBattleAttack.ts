@@ -1,8 +1,10 @@
 import { Dispatch } from 'react';
+import { crashDamageMoves } from '../constants/crashDamageMoves';
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
+import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
 import { calculateDamage } from './calculateDamage';
 import { canLowerStat } from './canLowerStat';
@@ -73,6 +75,13 @@ export const handleBattleAttack = (
 		move,
 		environment.weather
 	);
+	const crashDamage =
+		!passesAccuracyCheck && crashDamageMoves.includes(move.name)
+			? Math.round(target.stats.hp / 2)
+			: 0;
+	if (crashDamage) {
+		dispatch(addNotification(`${actor.name} crashed and hurt itself`));
+	}
 
 	const damageFactors = getDamageFactors(
 		actor,
@@ -137,6 +146,7 @@ export const handleBattleAttack = (
 					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
 					multiHits: newMultihits,
+					damage: p.damage + crashDamage,
 					preparedMove: undefined,
 					location: undefined,
 				};
@@ -176,6 +186,7 @@ export const handleBattleAttack = (
 					multiHits: newMultihits,
 					preparedMove: undefined,
 					location: undefined,
+					damage: p.damage + crashDamage,
 				};
 			}),
 		});
