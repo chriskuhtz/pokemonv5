@@ -1,10 +1,10 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
 import { MoveDto } from '../../../interfaces/Move';
+import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 import { TypeIcon } from '../../TypeIcon/TypeIcon';
-import { SelectableAction } from '../../../interfaces/SelectableAction';
 
 export const ChooseMove = ({
 	open,

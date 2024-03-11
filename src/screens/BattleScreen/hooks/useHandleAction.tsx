@@ -440,7 +440,8 @@ export const useHandleAction = (
 					setOpponentSide,
 					playerSide,
 					opponentSide,
-					environment
+					environment,
+					dispatch
 				);
 				return;
 			}

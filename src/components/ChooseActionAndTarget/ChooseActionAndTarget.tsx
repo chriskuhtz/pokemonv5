@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
+import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
 import { MoveDto } from '../../interfaces/Move';
+import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
-import { SelectableAction } from '../../interfaces/SelectableAction';
 
 export const ChooseActionAndTarget = ({
 	actor,
 	availableActions,
 	selectAction,
+	pokemonOnField,
 }: {
 	actor: BattlePokemon;
 	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
+	pokemonOnField: BattlePokemon[];
 }): JSX.Element => {
 	const [actionName, setActionName] = useState<
 		BattleAction['type'] | undefined
@@ -55,7 +58,7 @@ export const ChooseActionAndTarget = ({
 				availableMoves={actor.moves.map((m) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
-					disabled: false,
+					disabled: isMoveDisabled(pokemonOnField, m),
 					move: m,
 					availableTargets: [],
 				}))}

@@ -13,6 +13,7 @@ export const BattleScreenController = ({
 	nextPlayerPokemonWithoutAction,
 	mode,
 	playerSide,
+	opponentSide,
 	availableActions,
 	selectAction,
 	hasOpenSpots,
@@ -25,6 +26,7 @@ export const BattleScreenController = ({
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined;
 	mode: BattleMode;
 	playerSide: BattleSide;
+	opponentSide: BattleSide;
 	availableActions: SelectableAction[];
 	hasOpenSpots: boolean;
 	handleAction: () => void;
@@ -69,6 +71,7 @@ export const BattleScreenController = ({
 				actor={nextPlayerPokemonWithoutAction}
 				availableActions={availableActions}
 				selectAction={selectAction}
+				pokemonOnField={[...playerSide.field, ...opponentSide.field]}
 			/>
 		);
 	}

@@ -108,6 +108,7 @@ export const BattleScreen = ({
 					nextPlayerPokemonWithoutAction={nextPlayerPokemonWithoutAction}
 					mode={mode}
 					playerSide={playerSide}
+					opponentSide={opponentSide}
 					availableActions={availableActions}
 					hasOpenSpots={hasOpenSpots}
 					handleAction={handleAction}

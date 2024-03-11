@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-import { canRaiseStat } from '../../../functions/handleBattleAttack';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
@@ -11,6 +10,7 @@ import { concatDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { canRaiseStat } from '../../../functions/canRaiseStat';
 
 export const useCheckAndAssembleActions = (
 	playerSide: BattleSide | undefined,

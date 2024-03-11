@@ -1,8 +1,8 @@
+import { Dispatch } from 'react';
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
-import { useAppDispatch } from '../store/storeHooks';
 import { calculateDamage } from './calculateDamage';
 import { canLowerStat } from './canLowerStat';
 import { canRaiseStat } from './canRaiseStat';
@@ -18,9 +18,9 @@ export const handleBattleAttack = (
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide,
 	opponentSide: BattleSide,
-	environment: BattleEnvironment
+	environment: BattleEnvironment,
+	dispatch: Dispatch<unknown>
 ) => {
-	const dispatch = useAppDispatch();
 	if (!isBattleAttack(action)) {
 		console.error('this is no attack', action);
 		return;
@@ -62,6 +62,7 @@ export const handleBattleAttack = (
 
 	const damageFactors = getDamageFactors(actor, move, target, environment);
 	const attackDamage = passesAccuracyCheck ? calculateDamage(damageFactors) : 0;
+
 	const newTargetDamage = determineNewTargetDamage(
 		target,
 		attackDamage,
