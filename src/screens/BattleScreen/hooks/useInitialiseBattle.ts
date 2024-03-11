@@ -77,7 +77,10 @@ export const useInitialiseBattleSides = (
 
 			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
 			if (weatherman) {
-				setEnvironment({ weather: { type: 'rain', duration: -1 } });
+				setEnvironment({
+					weather: { type: 'rain', duration: -1 },
+					paydayCounter: 0,
+				});
 				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
 			}
 		}
@@ -112,7 +115,10 @@ export const useInitialiseBattleSides = (
 
 			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
 			if (weatherman) {
-				setEnvironment({ weather: { type: 'rain', duration: -1 } });
+				setEnvironment((environment) => ({
+					...environment,
+					weather: { type: 'rain', duration: -1 },
+				}));
 				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
 			}
 		}

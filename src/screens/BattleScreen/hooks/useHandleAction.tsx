@@ -177,7 +177,10 @@ export const useHandleAction = (
 				}
 
 				if (target?.ability === 'drizzle') {
-					setEnvironment({ weather: { type: 'rain', duration: -1 } });
+					setEnvironment({
+						...environment,
+						weather: { type: 'rain', duration: -1 },
+					});
 					dispatch(addNotification(`${target.name}´s ability made it rain`));
 				}
 				return;
@@ -432,6 +435,14 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(action) && target) {
+				if (action.move.name === 'pay-day') {
+					dispatch(addNotification('coins scatter around the battleField'));
+					const { level } = calculateLevelData(actor.xp);
+					setEnvironment({
+						...environment,
+						paydayCounter: environment.paydayCounter + level * 5,
+					});
+				}
 				handleBattleAttack(
 					actor,
 					target,

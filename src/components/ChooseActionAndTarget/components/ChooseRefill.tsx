@@ -38,7 +38,10 @@ export const ChooseRefill = ({
 										bench: playerSide.bench.filter((p) => p.id !== c.id),
 									});
 									if (c.ability === 'drizzle') {
-										setEnvironment({ weather: { type: 'rain', duration: -1 } });
+										setEnvironment((environment) => ({
+											...environment,
+											weather: { type: 'rain', duration: -1 },
+										}));
 										dispatch(
 											addNotification(`${c.name}´s ability made it rain`)
 										);

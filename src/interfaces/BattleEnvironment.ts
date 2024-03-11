@@ -7,4 +7,5 @@ export interface BattleEnvironment {
 		type: string;
 		duration: number;
 	};
+	paydayCounter: number;
 }

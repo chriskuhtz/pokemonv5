@@ -7,6 +7,7 @@ import {
 import { isTrainer } from '../../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
@@ -22,6 +23,7 @@ export const useLeaveBattle = (
 	opponentSide: BattleSide | undefined,
 	usedBalls: number,
 	usedPotions: number,
+	environment: BattleEnvironment,
 	trainerId?: UniqueOccupantIds
 ) => {
 	const saveFile = useGetCurrentSaveFile();
@@ -84,6 +86,10 @@ export const useLeaveBattle = (
 
 	return useCallback(
 		async (reason: BattleEndReason) => {
+			const fundsUpdate =
+				environment.paydayCounter +
+				(reason === 'WIN' && trainer ? trainer?.rewardMoney : 0);
+
 			await save({
 				dexUpdates: allDexUpdates,
 				handledOccupants:
@@ -96,7 +102,7 @@ export const useLeaveBattle = (
 				),
 				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
 				visitedNurse: reason === 'LOSS',
-				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
+				fundsUpdate,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				teleportToLastHealer: reason === 'LOSS',
 			}).then(() => {

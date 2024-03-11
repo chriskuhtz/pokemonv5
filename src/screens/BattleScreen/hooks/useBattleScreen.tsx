@@ -31,7 +31,9 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [usedBalls, setUsedBalls] = useState<number>(0);
 	const [usedPotions, setUsedPotions] = useState<number>(0);
-	const [environment, setEnvironment] = useState<BattleEnvironment>({});
+	const [environment, setEnvironment] = useState<BattleEnvironment>({
+		paydayCounter: 0,
+	});
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
 
@@ -104,6 +106,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		opponentSide,
 		usedBalls,
 		usedPotions,
+		environment,
 		trainerId
 	);
 	//handle action
@@ -173,7 +176,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 						  }
 						: undefined;
 					if (updatedWeather?.duration === 0) {
-						return {};
+						return { ...environment, weather: undefined };
 					} else return { ...environment, weather: updatedWeather };
 				});
 				setMode('HANDLING_ENVIRONMENT');
