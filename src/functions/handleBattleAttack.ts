@@ -7,6 +7,8 @@ import { applyAilments } from './applyAilments';
 import { calculateDamage } from './calculateDamage';
 import { canLowerStat } from './canLowerStat';
 import { canRaiseStat } from './canRaiseStat';
+import { determineFollowUpAction } from './determineFollowUpAction';
+import { determineNewAilment } from './determineNewAilment';
 import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
@@ -53,18 +55,12 @@ export const handleBattleAttack = (
 		});
 	}
 
-	let nextAction: BattleAction | undefined = undefined;
-
 	const passesAccuracyCheck = makeAccuracyCheck(
 		actor,
 		target,
 		move,
 		environment.weather
 	);
-
-	if (!passesAccuracyCheck) {
-		nextAction = { type: 'MISSED_ATTACK', priority: action.priority };
-	}
 
 	const damageFactors = getDamageFactors(actor, move, target, environment);
 	const attackDamage = passesAccuracyCheck ? calculateDamage(damageFactors) : 0;
@@ -78,41 +74,22 @@ export const handleBattleAttack = (
 		? { type: 'FLINCH' }
 		: target.nextAction;
 
-	if (newTargetDamage >= target.stats.hp && damageFactors.typeFactor === 1) {
-		nextAction = {
-			type: 'DEFEATED_TARGET',
-			target: target.id,
-			priority: action.priority,
-		};
-	}
-	if (damageFactors.typeFactor === 0) {
-		nextAction = {
-			type: 'NO_EFFECT',
-			target: target.id,
-			priority: action.priority,
-		};
-	}
-	if (damageFactors.typeFactor > 1) {
-		nextAction = {
-			type: 'SUPER_EFFECTIVE',
-			target: target.id,
-			priority: action.priority,
-		};
-	}
-	if (damageFactors.typeFactor < 1) {
-		nextAction = {
-			type: 'NOT_VERY_EFFECTIVE',
-			target: target.id,
-			priority: action.priority,
-		};
-	}
-
 	let updatedTarget: BattlePokemon = {
 		...target,
 		damage: newTargetDamage,
 		nextAction: newTargetAction,
 	};
 	updatedTarget = applyAilments(updatedTarget, move, dispatch);
+
+	const nextAction = determineFollowUpAction(
+		newTargetDamage,
+		target,
+		damageFactors,
+		action,
+		passesAccuracyCheck
+	);
+
+	const newPrimaryAilment = determineNewAilment(actor, target, move, dispatch);
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({
@@ -124,6 +101,7 @@ export const handleBattleAttack = (
 				return {
 					...p,
 					nextAction,
+					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
 				};
 			}),
@@ -157,6 +135,7 @@ export const handleBattleAttack = (
 				return {
 					...p,
 					nextAction,
+					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
 				};
 			}),

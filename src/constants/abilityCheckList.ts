@@ -35,8 +35,16 @@ export const abilities: {
 		url: 'https://pokeapi.co/api/v2/ability/7/',
 		handled: true,
 	},
-	{ name: 'sand-veil', url: 'https://pokeapi.co/api/v2/ability/8/' },
-	{ name: 'static', url: 'https://pokeapi.co/api/v2/ability/9/' },
+	{
+		name: 'sand-veil',
+		url: 'https://pokeapi.co/api/v2/ability/8/',
+		handled: true,
+	},
+	{
+		name: 'static',
+		url: 'https://pokeapi.co/api/v2/ability/9/',
+		handled: true,
+	},
 	{ name: 'volt-absorb', url: 'https://pokeapi.co/api/v2/ability/10/' },
 	{ name: 'water-absorb', url: 'https://pokeapi.co/api/v2/ability/11/' },
 	{ name: 'oblivious', url: 'https://pokeapi.co/api/v2/ability/12/' },
