@@ -28,6 +28,9 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 		if (pokemon.multiHits) {
 			res.push(`${pokemon.multiHits} hits remaining`);
 		}
+		pokemon.secondaryAilments?.forEach((a) => {
+			res.push(`${a.type}: ${a.duration} turns`);
+		});
 
 		return res;
 	}, [pokemon]);

@@ -98,7 +98,9 @@ export const handleBattleAttack = (
 		damage: newTargetDamage,
 		nextAction: newTargetAction,
 	};
-	updatedTarget = applyAilments(updatedTarget, move, dispatch);
+	updatedTarget = passesAccuracyCheck
+		? applyAilments(updatedTarget, move, dispatch)
+		: updatedTarget;
 
 	const getNewMultihits = () => {
 		if (inititialMultihits) {

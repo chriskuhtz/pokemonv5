@@ -3,6 +3,7 @@ import {
 	BURN_DAMAGE_FACTOR,
 	PARA_CHANCE,
 	SANDSTORM_DAMAGE_FACTOR,
+	TRAP_DAMAGE_FACTOR,
 } from '../interfaces/Ailment';
 import { isPrimaryAction } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
@@ -86,6 +87,30 @@ export const applyAbilitiesWeatherAndAilments = (
 			};
 		}
 	}
+	if (updatedActor.secondaryAilments?.some((a) => a.type === 'trap')) {
+		dispatch(addNotification(`${actor.name} is hurt by trap`));
+		updatedActor = {
+			...updatedActor,
+			damage:
+				updatedActor.damage +
+				Math.round(updatedActor.stats.hp * TRAP_DAMAGE_FACTOR),
+		};
+	}
+
+	updatedActor = {
+		...updatedActor,
+		secondaryAilments: updatedActor.secondaryAilments
+			?.map((a) => ({ ...a, duration: a.duration - 1 }))
+			.map((a) => {
+				if (a.duration === 0) {
+					dispatch(
+						addNotification(`${updatedActor.name} was freed from ${a.type}`)
+					);
+				}
+				return a;
+			})
+			.filter((a) => a.duration !== 0),
+	};
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({
