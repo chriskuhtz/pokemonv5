@@ -38,27 +38,27 @@ export const handleBattleAttack = (
 		move.meta.category.name === 'damage+raise' ||
 		move.target.name === 'user'
 	) {
-		updatedActor = applyStatMods(actor, move, dispatch);
+		updatedActor = applyStatMods(updatedActor, move, dispatch);
 	}
 
-	updatedActor = determineMultiHits(actor, move);
+	updatedActor = determineMultiHits(updatedActor, move);
 
 	let flinch_chance = Math.max(
-		actor.ability === 'stench' ? 0.1 : 0,
+		updatedActor.ability === 'stench' ? 0.1 : 0,
 		move.meta.flinch_chance
 	);
 
 	const willFlinch = target.nextAction && Math.random() <= flinch_chance;
 
 	const passesAccuracyCheck = makeAccuracyCheck(
-		actor,
+		updatedActor,
 		target,
 		move,
 		environment.weather
 	);
 
 	updatedActor = applyCrashDamage(
-		actor,
+		updatedActor,
 		target,
 		move,
 		dispatch,
@@ -66,7 +66,7 @@ export const handleBattleAttack = (
 	);
 
 	const damageFactors = getDamageFactors(
-		actor,
+		updatedActor,
 		move,
 		target,
 		environment,
@@ -99,15 +99,15 @@ export const handleBattleAttack = (
 			: updatedTarget;
 
 	const newActorAction = determineFollowUpAction(
-		newTargetDamage,
+		updatedActor,
 		target,
 		damageFactors,
 		action,
-		passesAccuracyCheck,
-		!!updatedActor.multiHits
+		passesAccuracyCheck
 	);
 
-	updatedActor = determineNewActorAilment(actor, target, move, dispatch);
+	updatedActor = determineNewActorAilment(updatedActor, target, move, dispatch);
+	console.log({ ...updatedActor });
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({

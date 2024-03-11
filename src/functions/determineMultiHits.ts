@@ -15,10 +15,10 @@ export const determineMultiHits = (
 		move.meta.max_hits &&
 		move.meta.max_hits > 0 &&
 		move.meta.min_hits &&
-		move.meta.min_hits > 0 &&
-		!pokemon.multiHits
+		move.meta.min_hits > 0
 			? move.meta.min_hits +
-			  Math.round(Math.random() * move.meta.max_hits - move.meta.min_hits)
+			  Math.round(Math.random() * (move.meta.max_hits - move.meta.min_hits)) -
+			  1
 			: undefined;
 
 	return { ...pokemon, multiHits: inititialMultihits };

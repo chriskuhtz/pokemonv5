@@ -3,25 +3,24 @@ import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { DamageFactors } from './calculateDamage';
 
 export const determineFollowUpAction = (
-	newTargetDamage: number,
+	actor: BattlePokemon,
 	target: BattlePokemon,
 	damageFactors: DamageFactors,
 	action: BattleAction,
-	passesAccuracyCheck: boolean,
-	multiHitAttack?: boolean
+	passesAccuracyCheck: boolean
 ): BattleAction | undefined => {
-	if (!passesAccuracyCheck && !multiHitAttack) {
+	if (!passesAccuracyCheck && !actor.multiHits) {
 		return { type: 'MISSED_ATTACK', priority: action.priority };
 	}
 
-	if (newTargetDamage >= target.stats.hp && damageFactors.typeFactor === 1) {
+	if (target.damage >= target.stats.hp && damageFactors.typeFactor === 1) {
 		return {
 			type: 'DEFEATED_TARGET',
 			target: target.id,
 			priority: action.priority,
 		};
 	}
-	if (multiHitAttack) {
+	if (actor.multiHits && actor.multiHits > 0) {
 		return action;
 	}
 
