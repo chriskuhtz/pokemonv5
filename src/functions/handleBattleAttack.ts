@@ -29,6 +29,13 @@ export const handleBattleAttack = (
 		return;
 	}
 	const { move } = action;
+
+	const inititialMultihits =
+		move.meta.max_hits && move.meta.min_hits && !actor.multiHits
+			? move.meta.min_hits +
+			  Math.round(Math.random() * move.meta.max_hits - move.meta.min_hits)
+			: undefined;
+
 	let flinch_chance = Math.max(
 		actor.ability === 'stench' ? 0.1 : 0,
 		move.meta.flinch_chance
@@ -88,12 +95,24 @@ export const handleBattleAttack = (
 	};
 	updatedTarget = applyAilments(updatedTarget, move, dispatch);
 
-	const nextAction = determineFollowUpAction(
+	const getNewMultihits = () => {
+		if (inititialMultihits) {
+			return inititialMultihits;
+		}
+		if (actor.multiHits && actor.multiHits > 1) {
+			return actor.multiHits - 1;
+		}
+		return undefined;
+	};
+	const newMultihits = getNewMultihits();
+
+	const newActorAction = determineFollowUpAction(
 		newTargetDamage,
 		target,
 		damageFactors,
 		action,
-		passesAccuracyCheck
+		passesAccuracyCheck,
+		!!newMultihits
 	);
 
 	const newPrimaryAilment = determineNewAilment(actor, target, move, dispatch);
@@ -107,9 +126,10 @@ export const handleBattleAttack = (
 				}
 				return {
 					...p,
-					nextAction,
+					nextAction: newActorAction,
 					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
+					multiHits: newMultihits,
 				};
 			}),
 		});
@@ -141,9 +161,10 @@ export const handleBattleAttack = (
 				}
 				return {
 					...p,
-					nextAction,
+					nextAction: newActorAction,
 					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
+					multiHits: newMultihits,
 				};
 			}),
 		});

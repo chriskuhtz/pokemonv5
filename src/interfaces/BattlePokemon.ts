@@ -18,4 +18,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	moves: MoveDto[];
 	evasiveness: number;
 	secondaryAilments?: Ailment[];
+	multiHits?: number;
 }

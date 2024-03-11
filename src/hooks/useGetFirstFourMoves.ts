@@ -19,6 +19,7 @@ export const useGetFirstFourMoves = () => {
 				)
 				.slice(0, 4)
 				.map(({ move }) => move.name);
+			//.concat(['double-slap']);
 
 			const moves = await getMovesData(moveNames);
 			return moves;

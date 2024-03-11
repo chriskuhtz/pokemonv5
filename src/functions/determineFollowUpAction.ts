@@ -7,9 +7,10 @@ export const determineFollowUpAction = (
 	target: BattlePokemon,
 	damageFactors: DamageFactors,
 	action: BattleAction,
-	passesAccuracyCheck: boolean
+	passesAccuracyCheck: boolean,
+	multiHitAttack?: boolean
 ): BattleAction | undefined => {
-	if (!passesAccuracyCheck) {
+	if (!passesAccuracyCheck && !multiHitAttack) {
 		return { type: 'MISSED_ATTACK', priority: action.priority };
 	}
 
@@ -20,6 +21,10 @@ export const determineFollowUpAction = (
 			priority: action.priority,
 		};
 	}
+	if (multiHitAttack) {
+		return action;
+	}
+
 	if (damageFactors.typeFactor === 0) {
 		return {
 			type: 'NO_EFFECT',
@@ -27,6 +32,7 @@ export const determineFollowUpAction = (
 			priority: action.priority,
 		};
 	}
+
 	if (damageFactors.typeFactor > 1) {
 		return {
 			type: 'SUPER_EFFECTIVE',
