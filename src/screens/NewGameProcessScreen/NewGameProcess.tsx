@@ -4,16 +4,14 @@ import { CharacterSprite } from '../../components/CharacterSprite/CharacterSprit
 import { isValidSaveFile } from '../../functions/isValidSaveFile';
 import { useRotate } from '../../hooks/useRotate';
 import { useCreateOrUpdateSaveFile } from '../../hooks/xata/useCreateOrUpdateSaveFile';
-import {
-	staticSaveData,
-	useGetAllSaveFiles,
-} from '../../hooks/xata/useGetAllSaveFiles';
+import { useGetAllSaveFiles } from '../../hooks/xata/useGetAllSaveFiles';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import { SpriteSelection } from './components/SpriteSelection';
+import { staticSaveData } from '../../constants/staticSaveData';
 
 export const NewGameProcess = (): JSX.Element => {
 	const currentOrientation = useRotate();

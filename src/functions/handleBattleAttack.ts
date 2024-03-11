@@ -107,7 +107,6 @@ export const handleBattleAttack = (
 	);
 
 	updatedActor = determineNewActorAilment(updatedActor, target, move, dispatch);
-	console.log({ ...updatedActor });
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({

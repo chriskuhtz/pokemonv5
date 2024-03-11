@@ -1,0 +1,52 @@
+import { v4 } from 'uuid';
+import { SaveFile } from '../interfaces/SaveFile';
+
+export const staticSaveData: SaveFile = {
+	playerId: v4(),
+	username: 'generic username',
+	position: {
+		x: 0,
+		y: 1,
+		forwardFoot: 0,
+		mapId: 'oaks-lab',
+		orientation: 0,
+	},
+	lastHealPosition: {
+		x: 0,
+		y: 1,
+		forwardFoot: 0,
+		mapId: 'oaks-lab',
+		orientation: 0,
+	},
+	sprite: '135',
+	quests: {
+		pickStarter: 'inactive',
+		talkToNurseJoy: 'inactive',
+		findPikachu: 'inactive',
+		secondPokemon: 'inactive',
+		catchAllStarterTown: 'inactive',
+		defeatAllTrainers: 'inactive',
+	},
+	handledOccupants: {
+		'youngster-jimmy': false,
+		'starter-town-item-1': false,
+		ballMachine: false,
+		'starter-town-grass-blocker': false,
+		'starter-town-merchant': false,
+		'starter-town-nurse-quest': false,
+		'starter-town-nurse': false,
+		'oak-after-selection': false,
+		'oak-before-selection': false,
+		'oak-during-selection': false,
+		'youngster-jimmy-blocker': false,
+		brock: false,
+		'brocks-minion': false,
+		'oaks-assistant': false,
+		'pikachu-fan': false,
+	},
+	pokedex: [],
+	pokemon: [],
+	money: 5000,
+	inventory: { potion: 0, repel: 0, 'poke-ball': 0 },
+	gymBadges: { boulderBadge: false },
+};

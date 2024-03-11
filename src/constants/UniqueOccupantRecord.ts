@@ -139,6 +139,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		questUpdates: {
 			talkToNurseJoy: 'completed',
 			secondPokemon: 'active',
+			catchAllStarterTown: 'active',
 		},
 		sprite: '115',
 		questCondition: { id: 'talkToNurseJoy', status: 'active' },

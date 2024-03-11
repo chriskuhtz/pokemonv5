@@ -55,10 +55,12 @@ export const youngsterJimmy: Trainer = {
 		id: 'talkToNurseJoy',
 		status: 'completed',
 	},
+	questUpdates: {
+		defeatAllTrainers: 'active',
+	},
 	rewardMoney: 300,
 	viewRange: 1,
 };
-
 export const brocksMinion: Trainer = {
 	id: 'brocks-minion',
 	type: 'TRAINER',
