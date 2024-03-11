@@ -70,7 +70,10 @@ export const useAvailableActions = (
 				displayName: 'Switch',
 				disabled:
 					switchTargets.length <= 0 ||
-					!!nextPlayerPokemonWithoutAction?.preparedMove,
+					!!nextPlayerPokemonWithoutAction?.preparedMove ||
+					!!nextPlayerPokemonWithoutAction?.secondaryAilments?.some(
+						(a) => a.type === 'trap'
+					),
 				availableTargets: switchTargets,
 			},
 			{
