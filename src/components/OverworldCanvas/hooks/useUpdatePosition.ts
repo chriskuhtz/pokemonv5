@@ -41,13 +41,24 @@ export const useUpdatePosition = () => {
 			dispatch(updatePosition({ ...position, orientation: nextOrientation }));
 			return;
 		}
+
 		if (decorator?.onStep) {
 			const encounterThreshold = Math.random() + (stinky ? 0.5 : 0);
 			if (
 				decorator?.onStep?.type === 'PORTAL' ||
 				decorator?.onStep?.type === 'SPOTTED'
 			) {
+				dispatch(
+					updatePosition({
+						...position,
+						x: decorator.x,
+						y: decorator.y,
+					})
+				);
+				dispatch(stopWalking());
+
 				handleEvent(decorator.onStep);
+				return;
 			}
 			if (
 				decorator?.onStep?.type === 'ENCOUNTER' &&
@@ -60,8 +71,15 @@ export const useUpdatePosition = () => {
 					encounterChance > encounterThreshold) ||
 				decorator?.onStep?.type !== 'ENCOUNTER'
 			) {
-				dispatch(stopWalking());
 				handleEvent(decorator.onStep);
+				dispatch(
+					updatePosition({
+						...position,
+						x: decorator.x,
+						y: decorator.y,
+					})
+				);
+				dispatch(stopWalking());
 				return;
 			}
 		}

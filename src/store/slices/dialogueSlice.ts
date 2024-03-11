@@ -9,6 +9,7 @@ import {
 
 export interface DialogueSlice {
 	dialogue: string[];
+	focusedOccupantId?: string;
 }
 const initialState: DialogueSlice = {
 	dialogue: [],
@@ -19,12 +20,18 @@ export const dialogueSlice = createSlice({
 	reducers: {
 		setDialogue: (state, action: PayloadAction<string[]>) => {
 			state.dialogue = action.payload;
+			if (state.dialogue.length === 0) {
+				state.focusedOccupantId = undefined;
+			}
 		},
 		concatDialogue: (state, action: PayloadAction<string[]>) => {
 			state.dialogue = [...state.dialogue, ...action.payload];
 		},
 		continueDialogue: (state) => {
 			state.dialogue = [...state.dialogue.slice(1)];
+			if (state.dialogue.length === 0) {
+				state.focusedOccupantId = undefined;
+			}
 		},
 		initiateEncounterDialogue: (state) => {
 			state.dialogue = [`a wild Pokemon jumps out of the high grass`];
@@ -34,7 +41,6 @@ export const dialogueSlice = createSlice({
 				`You found a ${Object.keys(action.payload).join(' and a ')}`,
 			];
 		},
-
 		initiateMerchantDialogue: (state, action: PayloadAction<Merchant>) => {
 			state.dialogue = action.payload.dialogue;
 		},
@@ -50,6 +56,12 @@ export const dialogueSlice = createSlice({
 				'You can see your active and completed quests in the Quests tab of the menu.',
 			];
 		},
+		setFocusedOccupantId: (
+			state,
+			action: PayloadAction<string | undefined>
+		) => {
+			state.focusedOccupantId = action.payload;
+		},
 	},
 });
 
@@ -63,4 +75,5 @@ export const {
 	initiateNpcDialogue,
 	initiateQuestDialogue,
 	concatDialogue,
+	setFocusedOccupantId,
 } = dialogueSlice.actions;

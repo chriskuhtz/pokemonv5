@@ -6,7 +6,10 @@ import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldE
 import { selectEncounters } from '../store/selectors/map/selectEncounters';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
 import { MapEncounter } from '../store/slices/MapSlice';
-import { setDialogue } from '../store/slices/dialogueSlice';
+import {
+	setDialogue,
+	setFocusedOccupantId,
+} from '../store/slices/dialogueSlice';
 import { addNotification } from '../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useHandleTrainerChallenge } from './useHandleTrainerChallenge';
@@ -56,7 +59,8 @@ export const useOverworldEvent = () => {
 				});
 			}
 			if (event.type === 'SPOTTED') {
-				handleTrainerChallenge(event.trainer);
+				dispatch(setFocusedOccupantId(event.trainer.id));
+				dispatch(setDialogue(event.trainer.dialogue));
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {
 				if (checkQuestCondition(quests, event.questCondition)) {
