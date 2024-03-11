@@ -98,3 +98,83 @@ export const brocksMinion2: Trainer = {
 	rewardMoney: 500,
 	viewRange: 3,
 };
+
+export const bugcatcherBarry: Trainer = {
+	id: 'bugcatcher-barry',
+	type: 'TRAINER',
+	position: {
+		y: 4,
+		x: 3,
+		mapId: 'berry-patch',
+		orientation: 2,
+	},
+	dialogue: ['Bugs, Bugs, BUGS', 'BUUUUUGS'],
+	dialogueAfterDefeat: ['bugs ...'],
+	sprite: SpriteEnum.bugCatcher,
+	team: [{ dexId: 48, xp: 300 }],
+	activePokemonPerside: 1,
+	rewardMoney: 500,
+	viewRange: 1,
+};
+export const bugcatcherCisco: Trainer = {
+	id: 'bugcatcher-cisco',
+	type: 'TRAINER',
+	position: {
+		y: 7,
+		x: 4,
+		mapId: 'berry-patch',
+		orientation: 0,
+	},
+	dialogue: ['Bug Pokemon are the coolest'],
+	dialogueAfterDefeat: ['Maybe other types are also cool'],
+	sprite: SpriteEnum.bugCatcherTan,
+	team: [
+		{ dexId: 165, xp: 100 },
+		{ dexId: 165, xp: 200 },
+		{ dexId: 165, xp: 300 },
+	],
+	activePokemonPerside: 1,
+	rewardMoney: 500,
+	viewRange: 1,
+};
+export const bugcatcherRalph: Trainer = {
+	id: 'bugcatcher-ralph',
+	type: 'TRAINER',
+	position: {
+		y: 2,
+		x: 8,
+		mapId: 'berry-patch',
+		orientation: 0,
+	},
+	dialogue: ['Dont bug me', 'Hah, get it?'],
+	dialogueAfterDefeat: ['Bugger off'],
+	sprite: SpriteEnum.bugCatcherTan,
+	team: [
+		{ dexId: 401, xp: 100 },
+		{ dexId: 402, xp: 300 },
+	],
+	activePokemonPerside: 2,
+	rewardMoney: 500,
+	viewRange: 3,
+};
+export const bugcatcherNash: Trainer = {
+	id: 'bugcatcher-nash',
+	type: 'TRAINER',
+	position: {
+		y: 9,
+		x: 6,
+		mapId: 'berry-patch',
+		orientation: 3,
+	},
+	dialogue: ['Bugs evolve really quickly'],
+	dialogueAfterDefeat: ['But they dont get much stronger'],
+	sprite: SpriteEnum.bugCatcher,
+	team: [
+		{ dexId: 10, xp: 100 },
+		{ dexId: 11, xp: 200 },
+		{ dexId: 12, xp: 400 },
+	],
+	activePokemonPerside: 1,
+	rewardMoney: 500,
+	viewRange: 2,
+};

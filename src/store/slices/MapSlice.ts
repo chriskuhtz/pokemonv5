@@ -11,6 +11,7 @@ import {
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import { berryPatch } from '../../constants/maps/berryPatch';
 
 export type BaseTileId =
 	| 'beach'
@@ -50,6 +51,7 @@ const mapsRecord: Record<string, MapState> = {
 	'starter-town': starterTown,
 	'oaks-lab': oaksLab,
 	'brocks-gym': brocksGym,
+	'berry-patch': berryPatch,
 };
 
 const initialState: MapState = starterTown;

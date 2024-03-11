@@ -4,7 +4,16 @@ import {
 	Npc,
 	Occupant,
 } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { brock, brocksMinion, brocksMinion2, youngsterJimmy } from './trainers';
+import {
+	brock,
+	brocksMinion,
+	brocksMinion2,
+	bugcatcherBarry,
+	bugcatcherCisco,
+	bugcatcherNash,
+	bugcatcherRalph,
+	youngsterJimmy,
+} from './trainers';
 
 //every occupant that can be handled should be unique
 export type UniqueOccupantIds =
@@ -23,7 +32,11 @@ export type UniqueOccupantIds =
 	| 'brocks-minion2'
 	| 'youngster-jimmy-blocker'
 	| 'oaks-assistant'
-	| 'pikachu-fan';
+	| 'pikachu-fan'
+	| 'bugCatcher-barry'
+	| 'bugCatcher-nash'
+	| 'bugCatcher-ralph'
+	| 'bugCatcher-cisco';
 
 export const youngsterJimmyBlocker: Npc = {
 	id: 'youngster-jimmy-blocker',
@@ -239,4 +252,8 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			findPikachu: 'active',
 		},
 	},
+	'bugCatcher-barry': bugcatcherBarry,
+	'bugCatcher-cisco': bugcatcherCisco,
+	'bugCatcher-nash': bugcatcherNash,
+	'bugCatcher-ralph': bugcatcherRalph,
 };

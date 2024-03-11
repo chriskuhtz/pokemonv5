@@ -44,14 +44,19 @@ export const starterTown: MapState = {
 				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
 			},
 		},
+		{
+			sprite: '',
+			x: 8,
+			y: 9,
+			onStep: {
+				type: 'PORTAL',
+				to: { mapId: 'berry-patch', x: 0, y: 6, orientation: 2 },
+			},
+		},
 		{ x: 0, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 6, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 7, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 8, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
 		{ x: 0, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -59,8 +64,6 @@ export const starterTown: MapState = {
 		{ x: 3, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 5, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 7, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 8, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
 		{ x: 0, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -255,6 +258,30 @@ export const starterTown: MapState = {
 			position: {
 				x: 0,
 				y: 8,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+		},
+		{
+			type: 'OBSTACLE',
+			id: 'greenRock7/10',
+			sprite: 'greenRock',
+			position: {
+				x: 7,
+				y: 10,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+		},
+		{
+			type: 'OBSTACLE',
+			id: 'greenRock8/10',
+			sprite: 'greenRock',
+			position: {
+				x: 8,
+				y: 10,
 				orientation: 0,
 				mapId: 'starter-town',
 				forwardFoot: 0,
