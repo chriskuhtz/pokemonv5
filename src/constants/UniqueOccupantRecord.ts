@@ -4,7 +4,7 @@ import {
 	Npc,
 	Occupant,
 } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { brock, brocksMinion, youngsterJimmy } from './trainers';
+import { brock, brocksMinion, brocksMinion2, youngsterJimmy } from './trainers';
 
 //every occupant that can be handled should be unique
 export type UniqueOccupantIds =
@@ -20,6 +20,7 @@ export type UniqueOccupantIds =
 	| 'youngster-jimmy'
 	| 'brock'
 	| 'brocks-minion'
+	| 'brocks-minion2'
 	| 'youngster-jimmy-blocker'
 	| 'oaks-assistant'
 	| 'pikachu-fan';
@@ -49,6 +50,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'youngster-jimmy-blocker': youngsterJimmyBlocker,
 	brock,
 	'brocks-minion': brocksMinion,
+	'brocks-minion2': brocksMinion2,
 	'starter-town-item-1': {
 		id: 'starter-town-item-1',
 		type: 'ITEM',

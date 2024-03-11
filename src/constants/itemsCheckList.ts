@@ -7,7 +7,11 @@ export const itemsCheckList: {
 	{ name: 'master-ball', url: 'https://pokeapi.co/api/v2/item/1/' },
 	{ name: 'ultra-ball', url: 'https://pokeapi.co/api/v2/item/2/' },
 	{ name: 'great-ball', url: 'https://pokeapi.co/api/v2/item/3/' },
-	{ name: 'poke-ball', url: 'https://pokeapi.co/api/v2/item/4/' },
+	{
+		name: 'poke-ball',
+		url: 'https://pokeapi.co/api/v2/item/4/',
+		handled: true,
+	},
 	{ name: 'safari-ball', url: 'https://pokeapi.co/api/v2/item/5/' },
 	{ name: 'net-ball', url: 'https://pokeapi.co/api/v2/item/6/' },
 	{ name: 'dive-ball', url: 'https://pokeapi.co/api/v2/item/7/' },
