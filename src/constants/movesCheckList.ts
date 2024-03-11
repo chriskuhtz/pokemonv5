@@ -4,8 +4,12 @@ const movesCheckList: {
 	todos?: string[];
 	handled?: boolean;
 }[] = [
-	{ name: 'pound', url: 'https://pokeapi.co/api/v2/move/1/' },
-	{ name: 'karate-chop', url: 'https://pokeapi.co/api/v2/move/2/' },
+	{ name: 'pound', url: 'https://pokeapi.co/api/v2/move/1/', handled: true },
+	{
+		name: 'karate-chop',
+		url: 'https://pokeapi.co/api/v2/move/2/',
+		handled: true,
+	},
 	{ name: 'double-slap', url: 'https://pokeapi.co/api/v2/move/3/' },
 	{ name: 'comet-punch', url: 'https://pokeapi.co/api/v2/move/4/' },
 	{ name: 'mega-punch', url: 'https://pokeapi.co/api/v2/move/5/' },

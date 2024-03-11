@@ -1,3 +1,4 @@
+import { Dispatch } from 'react';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
@@ -11,7 +12,8 @@ export const getDamageFactors = (
 	actor: BattlePokemon,
 	move: MoveDto,
 	target: BattlePokemon,
-	environment: BattleEnvironment
+	environment: BattleEnvironment,
+	dispatch: Dispatch<unknown>
 ): DamageFactors => {
 	const { level } = calculateLevelData(actor.xp);
 	const { damage_class, power, type } = move;
@@ -36,7 +38,7 @@ export const getDamageFactors = (
 			? 1.5
 			: 1;
 	const weatherFactor = determineWeatherFactor(moveType, environment.weather);
-	const criticalFactor = determineCritFactor(target);
+	const criticalFactor = determineCritFactor(move, target, dispatch);
 
 	return {
 		attackerLevel: level,

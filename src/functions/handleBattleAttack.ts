@@ -62,7 +62,13 @@ export const handleBattleAttack = (
 		environment.weather
 	);
 
-	const damageFactors = getDamageFactors(actor, move, target, environment);
+	const damageFactors = getDamageFactors(
+		actor,
+		move,
+		target,
+		environment,
+		dispatch
+	);
 	const attackDamage = passesAccuracyCheck ? calculateDamage(damageFactors) : 0;
 
 	const newTargetDamage = determineNewTargetDamage(
