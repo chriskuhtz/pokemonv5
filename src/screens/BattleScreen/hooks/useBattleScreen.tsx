@@ -133,7 +133,8 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		setOpponentSide,
 		setPlayerSide,
 		setUsedBalls,
-		setUsedPotions
+		setUsedPotions,
+		environment
 	);
 	//check to leave battle
 	useEffect(() => {

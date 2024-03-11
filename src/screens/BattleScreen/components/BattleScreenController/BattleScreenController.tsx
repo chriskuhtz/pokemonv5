@@ -5,7 +5,8 @@ import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../../interfaces/SelectableAction';
 import { selectCurrentDialogue } from '../../../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectNextNotification } from '../../../../store/selectors/notification/selectNextNotification';
-import { useAppSelector } from '../../../../store/storeHooks';
+import { addNotification } from '../../../../store/slices/notificationSlice';
+import { useAppDispatch, useAppSelector } from '../../../../store/storeHooks';
 import { Banner } from '../../../../ui_components/Banner/Banner';
 import { BattleMode, BattleSide } from '../../BattleScreen';
 
@@ -36,6 +37,7 @@ export const BattleScreenController = ({
 	environment: BattleEnvironment;
 	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>;
 }): JSX.Element => {
+	const dispatch = useAppDispatch();
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const noti = useAppSelector(selectNextNotification);
 
@@ -43,14 +45,9 @@ export const BattleScreenController = ({
 		return <></>;
 	}
 	if (mode === 'HANDLING_ENVIRONMENT') {
-		return (
-			<Banner
-				content={`The Weather is: ${environment.weather?.type}`}
-				onClick={() => {
-					setMode('EXECUTING');
-				}}
-			/>
-		);
+		dispatch(addNotification(`The Weather is: ${environment.weather?.type}`));
+		setMode('EXECUTING');
+		return <></>;
 	}
 	if (currentDialogue.length === 0 && hasOpenSpots) {
 		return (

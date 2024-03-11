@@ -1,16 +1,16 @@
 import { useEffect, useMemo } from 'react';
+import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilitiesWeatherAndAilments';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
 	isPrimaryAction,
 } from '../../../interfaces/BattleAction';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
-import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
-import { canRaiseStat } from '../../../functions/canRaiseStat';
 
 export const useCheckAndAssembleActions = (
 	playerSide: BattleSide | undefined,
@@ -20,7 +20,8 @@ export const useCheckAndAssembleActions = (
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setUsedBalls: React.Dispatch<React.SetStateAction<number>>,
-	setUsedPotions: React.Dispatch<React.SetStateAction<number>>
+	setUsedPotions: React.Dispatch<React.SetStateAction<number>>,
+	environment: BattleEnvironment
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
@@ -57,48 +58,16 @@ export const useCheckAndAssembleActions = (
 					? allPokemonOnBench.find((p) => p.id === action.target)
 					: undefined;
 
-			if (
-				actor.ability === 'speed-boost' &&
-				canRaiseStat(actor, 'speed') &&
-				isPrimaryAction(actor.nextAction)
-			) {
-				dispatch(
-					addNotification(`${actor.name} increased its speed with speed-boost`)
+			if (isPrimaryAction(actor.nextAction)) {
+				applyAbilitiesWeatherAndAilments(
+					actor,
+					playerSide,
+					opponentSide,
+					setPlayerSide,
+					setOpponentSide,
+					dispatch,
+					environment
 				);
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							} else
-								return {
-									...p,
-									statModifiers: {
-										...p.statModifiers,
-										speed: p.statModifiers.speed + 1,
-									},
-								};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							} else
-								return {
-									...p,
-									statModifiers: {
-										...p.statModifiers,
-										speed: p.statModifiers.speed + 1,
-									},
-								};
-						}),
-					});
-				}
 			}
 
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {

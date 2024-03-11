@@ -55,7 +55,12 @@ export const handleBattleAttack = (
 
 	let nextAction: BattleAction | undefined = undefined;
 
-	const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
+	const passesAccuracyCheck = makeAccuracyCheck(
+		actor,
+		target,
+		move,
+		environment.weather
+	);
 
 	if (!passesAccuracyCheck) {
 		nextAction = { type: 'MISSED_ATTACK', priority: action.priority };
@@ -116,7 +121,11 @@ export const handleBattleAttack = (
 				if (p.id !== actor.id) {
 					return p;
 				}
-				return updatedTarget;
+				return {
+					...p,
+					nextAction,
+					statModifiers: updatedActorStatMods,
+				};
 			}),
 		});
 		setOpponentSide({
@@ -136,11 +145,7 @@ export const handleBattleAttack = (
 				if (p.id !== target.id) {
 					return p;
 				}
-				return {
-					...p,
-					damage: newTargetDamage,
-					nextAction: newTargetAction,
-				};
+				return updatedTarget;
 			}),
 		});
 		setOpponentSide({
