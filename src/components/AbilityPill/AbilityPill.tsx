@@ -8,7 +8,7 @@ export const AbilityPill = ({ abilityName }: { abilityName: Ability }) => {
 
 	const handled = useMemo(
 		() => abilities.find((a) => a.name === abilityName)?.handled,
-		[]
+		[abilityName]
 	);
 	if (data) {
 		return (
