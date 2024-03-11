@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { Ailment } from '../interfaces/Ailment';
+import { PrimaryAilment } from '../interfaces/Ailment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
 import { addNotification } from '../store/slices/notificationSlice';
@@ -9,7 +9,7 @@ export const determineNewAilment = (
 	target: BattlePokemon,
 	move: MoveDto,
 	dispatch: Dispatch<unknown>
-): Ailment | undefined => {
+): PrimaryAilment | undefined => {
 	if (actor.primaryAilment) {
 		return actor.primaryAilment;
 	}

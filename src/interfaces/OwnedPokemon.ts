@@ -1,5 +1,5 @@
 import { Ability } from '../constants/abilityCheckList';
-import { Ailment } from './Ailment';
+import { PrimaryAilment } from './Ailment';
 
 export interface OwnedPokemon {
 	dexId: number;
@@ -10,5 +10,5 @@ export interface OwnedPokemon {
 	ownerId: string;
 	moveNames: string[];
 	ability: Ability;
-	primaryAilment?: Ailment;
+	primaryAilment?: PrimaryAilment;
 }

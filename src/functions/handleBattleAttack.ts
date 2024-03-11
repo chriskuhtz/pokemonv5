@@ -31,7 +31,11 @@ export const handleBattleAttack = (
 	const { move } = action;
 
 	const inititialMultihits =
-		move.meta.max_hits && move.meta.min_hits && !actor.multiHits
+		move.meta.max_hits &&
+		move.meta.max_hits > 0 &&
+		move.meta.min_hits &&
+		move.meta.min_hits > 0 &&
+		!actor.multiHits
 			? move.meta.min_hits +
 			  Math.round(Math.random() * move.meta.max_hits - move.meta.min_hits)
 			: undefined;

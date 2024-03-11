@@ -8,7 +8,7 @@ export const useGetFirstFourMoves = () => {
 	const getMovesData = useGetMovesData();
 
 	return useCallback(
-		async (dexId: number, learnMethod?: LearnMethod) => {
+		async (dexId: number, learnMethod?: LearnMethod, overRides?: string[]) => {
 			const pokemonData = await getPokemonData(dexId).unwrap();
 
 			const moveNames = pokemonData.moves
@@ -18,8 +18,9 @@ export const useGetFirstFourMoves = () => {
 						: true
 				)
 				.slice(0, 4)
-				.map(({ move }) => move.name);
-			//.concat(['double-slap']);
+				.map(({ move }) => move.name)
+				.concat(overRides ?? [])
+				.slice(-4);
 
 			const moves = await getMovesData(moveNames);
 			return moves;
