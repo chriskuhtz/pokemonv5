@@ -45,7 +45,11 @@ export const abilities: {
 		url: 'https://pokeapi.co/api/v2/ability/9/',
 		handled: true,
 	},
-	{ name: 'volt-absorb', url: 'https://pokeapi.co/api/v2/ability/10/' },
+	{
+		name: 'volt-absorb',
+		url: 'https://pokeapi.co/api/v2/ability/10/',
+		handled: true,
+	},
 	{ name: 'water-absorb', url: 'https://pokeapi.co/api/v2/ability/11/' },
 	{ name: 'oblivious', url: 'https://pokeapi.co/api/v2/ability/12/' },
 	{ name: 'cloud-nine', url: 'https://pokeapi.co/api/v2/ability/13/' },

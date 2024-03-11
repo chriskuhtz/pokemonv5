@@ -67,6 +67,7 @@ export const handleBattleAttack = (
 
 	const newTargetDamage = determineNewTargetDamage(
 		target,
+		move,
 		attackDamage,
 		dispatch
 	);
