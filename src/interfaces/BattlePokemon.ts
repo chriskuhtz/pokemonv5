@@ -22,4 +22,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	multiHits?: number;
 	preparedMove?: string;
 	location?: BattlePokemonLocation;
+	accuracyModifier: number;
 }

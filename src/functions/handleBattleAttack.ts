@@ -1,16 +1,15 @@
 import { Dispatch } from 'react';
-import { crashDamageMoves } from '../constants/crashDamageMoves';
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
-import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
+import { applyCrashDamage } from './applyCrashDamage';
+import { applyStatMods } from './applyStatMods';
 import { calculateDamage } from './calculateDamage';
-import { canLowerStat } from './canLowerStat';
-import { canRaiseStat } from './canRaiseStat';
 import { determineFollowUpAction } from './determineFollowUpAction';
-import { determineNewAilment } from './determineNewAilment';
+import { determineMultiHits } from './determineMultiHits';
+import { determineNewActorAilment } from './determineNewActorAilment';
 import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
@@ -33,15 +32,16 @@ export const handleBattleAttack = (
 
 	const { move } = action;
 
-	const inititialMultihits =
-		move.meta.max_hits &&
-		move.meta.max_hits > 0 &&
-		move.meta.min_hits &&
-		move.meta.min_hits > 0 &&
-		!actor.multiHits
-			? move.meta.min_hits +
-			  Math.round(Math.random() * move.meta.max_hits - move.meta.min_hits)
-			: undefined;
+	let updatedActor = { ...actor };
+
+	if (
+		move.meta.category.name === 'damage+raise' ||
+		move.target.name === 'user'
+	) {
+		updatedActor = applyStatMods(actor, move, dispatch);
+	}
+
+	updatedActor = determineMultiHits(actor, move);
 
 	let flinch_chance = Math.max(
 		actor.ability === 'stench' ? 0.1 : 0,
@@ -50,38 +50,20 @@ export const handleBattleAttack = (
 
 	const willFlinch = target.nextAction && Math.random() <= flinch_chance;
 
-	const updatedActorStatMods = { ...actor.statModifiers };
-	if (move.stat_changes.length > 0 && move.target.name === 'user') {
-		move.stat_changes.forEach((statChange) => {
-			if (statChange.change > 0 && canRaiseStat(actor, statChange.stat.name)) {
-				updatedActorStatMods[statChange.stat.name] =
-					updatedActorStatMods[statChange.stat.name] + statChange.change;
-				if (updatedActorStatMods[statChange.stat.name] > 6) {
-					updatedActorStatMods[statChange.stat.name] = 6;
-				}
-			}
-			if (statChange.change < 0 && canLowerStat(actor, statChange.stat.name)) {
-				updatedActorStatMods[statChange.stat.name] -= statChange.change;
-				if (updatedActorStatMods[statChange.stat.name] < -6) {
-					updatedActorStatMods[statChange.stat.name] = -6;
-				}
-			}
-		});
-	}
-
 	const passesAccuracyCheck = makeAccuracyCheck(
 		actor,
 		target,
 		move,
 		environment.weather
 	);
-	const crashDamage =
-		!passesAccuracyCheck && crashDamageMoves.includes(move.name)
-			? Math.round(target.stats.hp / 2)
-			: 0;
-	if (crashDamage) {
-		dispatch(addNotification(`${actor.name} crashed and hurt itself`));
-	}
+
+	updatedActor = applyCrashDamage(
+		actor,
+		target,
+		move,
+		dispatch,
+		passesAccuracyCheck
+	);
 
 	const damageFactors = getDamageFactors(
 		actor,
@@ -111,16 +93,10 @@ export const handleBattleAttack = (
 		? applyAilments(updatedTarget, move, dispatch)
 		: updatedTarget;
 
-	const getNewMultihits = () => {
-		if (inititialMultihits) {
-			return inititialMultihits;
-		}
-		if (actor.multiHits && actor.multiHits > 1) {
-			return actor.multiHits - 1;
-		}
-		return undefined;
-	};
-	const newMultihits = getNewMultihits();
+	updatedTarget =
+		passesAccuracyCheck && move.target.name === 'selected-pokemon'
+			? applyStatMods(updatedTarget, move, dispatch)
+			: updatedTarget;
 
 	const newActorAction = determineFollowUpAction(
 		newTargetDamage,
@@ -128,10 +104,10 @@ export const handleBattleAttack = (
 		damageFactors,
 		action,
 		passesAccuracyCheck,
-		!!newMultihits
+		!!updatedActor.multiHits
 	);
 
-	const newPrimaryAilment = determineNewAilment(actor, target, move, dispatch);
+	updatedActor = determineNewActorAilment(actor, target, move, dispatch);
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({
@@ -141,12 +117,8 @@ export const handleBattleAttack = (
 					return p;
 				}
 				return {
-					...p,
+					...updatedActor,
 					nextAction: newActorAction,
-					primaryAilment: newPrimaryAilment,
-					statModifiers: updatedActorStatMods,
-					multiHits: newMultihits,
-					damage: p.damage + crashDamage,
 					preparedMove: undefined,
 					location: undefined,
 				};
@@ -179,14 +151,10 @@ export const handleBattleAttack = (
 					return p;
 				}
 				return {
-					...p,
+					...updatedActor,
 					nextAction: newActorAction,
-					primaryAilment: newPrimaryAilment,
-					statModifiers: updatedActorStatMods,
-					multiHits: newMultihits,
 					preparedMove: undefined,
 					location: undefined,
-					damage: p.damage + crashDamage,
 				};
 			}),
 		});

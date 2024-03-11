@@ -18,10 +18,11 @@ export const makeAccuracyCheck = (
 	const random = Math.random();
 	const sandVeilFactor =
 		weather?.type === 'sandstorm' && target.ability === 'sand-veil' ? 0.8 : 1;
+	const evasivenessFactor = 7 - target.evasiveness;
+	const accuracyFactor = 7 + actor.accuracyModifier;
 	const totalAccuracy =
 		(move.accuracy / 100) *
-		actor.evasiveness *
-		target.evasiveness *
+		((evasivenessFactor * accuracyFactor) / 49) *
 		sandVeilFactor;
 
 	if (random < totalAccuracy) {

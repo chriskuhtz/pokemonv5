@@ -1,4 +1,4 @@
-const contactMoves = [
+export const contactMoves = [
 	'accelerock',
 	'acrobatics',
 	'aerial-ace',

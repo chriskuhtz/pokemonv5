@@ -68,8 +68,9 @@ export const useCreateBattlePokemonFromData = () => {
 				base_experience: data.base_experience,
 				stats,
 				statModifiers: modifiers,
-				evasiveness: 1,
+				evasiveness: 0,
 				ability: data.abilities[0].ability.name,
+				accuracyModifier: 0,
 			};
 		},
 		[getFirstFourMoves]
@@ -96,7 +97,8 @@ export const createBattlePokemonFromOwned = async (
 		base_experience: data.base_experience,
 		stats,
 		statModifiers: modifiers,
-		evasiveness: 1,
+		evasiveness: 0,
 		moves: moves.filter((m) => m !== undefined) as MoveDto[],
+		accuracyModifier: 0,
 	};
 };
