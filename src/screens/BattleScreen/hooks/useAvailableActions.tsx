@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { isBattleActionWithTarget } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
-import { BattleSide } from '../BattleScreen';
 import { SelectableAction } from '../../../interfaces/SelectableAction';
+import { BattleSide } from '../BattleScreen';
 
 export const useAvailableActions = (
 	saveFile: SaveFile | undefined,
@@ -49,7 +49,7 @@ export const useAvailableActions = (
 			{
 				actionType: 'RUNAWAY_ATTEMPT',
 				displayName: 'Run Away',
-				disabled: !!trainerId,
+				disabled: !!trainerId || !!nextPlayerPokemonWithoutAction?.preparedMove,
 				availableTargets: [],
 			},
 			//CATCH
@@ -61,13 +61,16 @@ export const useAvailableActions = (
 						{!noMorePokeBalls && saveFile.inventory['poke-ball'] - usedBalls})
 					</div>
 				),
-				disabled: noMorePokeBalls,
+				disabled:
+					noMorePokeBalls || !!nextPlayerPokemonWithoutAction?.preparedMove,
 				availableTargets: opponentSide.field,
 			},
 			{
 				actionType: 'SWITCH',
 				displayName: 'Switch',
-				disabled: switchTargets.length <= 0,
+				disabled:
+					switchTargets.length <= 0 ||
+					!!nextPlayerPokemonWithoutAction?.preparedMove,
 				availableTargets: switchTargets,
 			},
 			{
@@ -78,7 +81,10 @@ export const useAvailableActions = (
 						{!noMorePotions && saveFile.inventory['potion'] - usedBalls})
 					</div>
 				),
-				disabled: healingTargets.length <= 0 || noMorePotions,
+				disabled:
+					healingTargets.length <= 0 ||
+					noMorePotions ||
+					!!nextPlayerPokemonWithoutAction?.preparedMove,
 				availableTargets: healingTargets,
 			},
 		];

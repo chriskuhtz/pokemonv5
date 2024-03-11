@@ -5,6 +5,7 @@ import { OwnedPokemon } from './OwnedPokemon';
 import { PokemonType } from './PokemonType';
 import { StatObject } from './StatObject';
 
+export type BattlePokemonLocation = 'UNDERWATER' | 'FLYING' | 'UNDERGROUND';
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
 	stats: StatObject;
@@ -20,4 +21,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	secondaryAilments?: SecondaryAilment[];
 	multiHits?: number;
 	preparedMove?: string;
+	location?: BattlePokemonLocation;
 }

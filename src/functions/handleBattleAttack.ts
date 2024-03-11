@@ -136,6 +136,7 @@ export const handleBattleAttack = (
 					statModifiers: updatedActorStatMods,
 					multiHits: newMultihits,
 					preparedMove: undefined,
+					location: undefined,
 				};
 			}),
 		});
@@ -172,6 +173,7 @@ export const handleBattleAttack = (
 					statModifiers: updatedActorStatMods,
 					multiHits: newMultihits,
 					preparedMove: undefined,
+					location: undefined,
 				};
 			}),
 		});

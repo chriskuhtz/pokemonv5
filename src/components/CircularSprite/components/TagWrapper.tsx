@@ -22,6 +22,12 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 		if (pokemon.preparedMove) {
 			res.push(pokemon.preparedMove);
 		}
+		if (pokemon.location) {
+			res.push(pokemon.location);
+		}
+		if (pokemon.multiHits) {
+			res.push(`${pokemon.multiHits} hits remaining`);
+		}
 
 		return res;
 	}, [pokemon]);

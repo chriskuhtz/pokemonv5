@@ -13,12 +13,31 @@ import {
 	isBattleAttack,
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
-import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import {
+	BattlePokemon,
+	BattlePokemonLocation,
+} from '../../../interfaces/BattlePokemon';
+import { MoveDto } from '../../../interfaces/Move';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import { BattleEndReason } from './useLeaveBattle';
+
+export const inferLocationFromMove = (
+	move: MoveDto
+): BattlePokemonLocation | undefined => {
+	if (move.name === 'fly' || move.name === 'bounce') {
+		return 'FLYING';
+	}
+	if (move.name === 'dive') {
+		return 'UNDERWATER';
+	}
+	if (move.name === 'dig') {
+		return 'UNDERGROUND';
+	}
+	return undefined;
+};
 
 export const useHandleAction = (
 	playerSide: BattleSide | undefined,
@@ -286,6 +305,7 @@ export const useHandleAction = (
 								...p,
 								nextAction: undefined,
 								preparedMove: action.move.name,
+								location: inferLocationFromMove(action.move),
 							};
 						}),
 					});
@@ -301,6 +321,7 @@ export const useHandleAction = (
 								...p,
 								nextAction: undefined,
 								preparedMove: action.move.name,
+								location: inferLocationFromMove(action.move),
 							};
 						}),
 					});
