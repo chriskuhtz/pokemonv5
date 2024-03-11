@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { secondTurnMoves } from '../../../constants/secondTurnMoves';
 import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilitiesWeatherAndAilments';
 import {
 	isBattleActionWithTarget,
@@ -59,7 +60,7 @@ export const useCheckAndAssembleActions = (
 					: undefined;
 
 			if (isPrimaryAction(actor.nextAction)) {
-				applyAbilitiesWeatherAndAilments(
+				const skipAction = applyAbilitiesWeatherAndAilments(
 					actor,
 					playerSide,
 					opponentSide,
@@ -68,6 +69,9 @@ export const useCheckAndAssembleActions = (
 					dispatch,
 					environment
 				);
+				if (skipAction) {
+					return;
+				}
 			}
 
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
@@ -168,6 +172,17 @@ export const useCheckAndAssembleActions = (
 				return;
 			}
 			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
+				if (
+					secondTurnMoves.includes(actor.nextAction.move.name) &&
+					!actor.preparedMove
+				) {
+					dispatch(
+						concatDialogue([
+							`${actor.name} is preparing ${actor.nextAction?.move.name}`,
+						])
+					);
+					return;
+				}
 				dispatch(
 					concatDialogue([`${actor.name} used ${actor.nextAction?.move.name}`])
 				);

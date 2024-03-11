@@ -1,9 +1,33 @@
 import { Dispatch } from 'react';
-import { isPrimaryAilment } from '../interfaces/Ailment';
+import { PrimaryAilment, isPrimaryAilment } from '../interfaces/Ailment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
 import { addNotification } from '../store/slices/notificationSlice';
 
+export const isAilmentApplicableToPokemon = (
+	ailment: PrimaryAilment,
+	pokemon: BattlePokemon
+): boolean => {
+	if (
+		ailment.type === 'paralysis' &&
+		(pokemon.primaryType === 'electric' || pokemon.secondaryType === 'electric')
+	) {
+		return false;
+	}
+	if (
+		ailment.type === 'burn' &&
+		(pokemon.primaryType === 'fire' || pokemon.secondaryType === 'fire')
+	) {
+		return false;
+	}
+	if (
+		ailment.type === 'freeze' &&
+		(pokemon.primaryType === 'ice' || pokemon.secondaryType === 'ice')
+	) {
+		return false;
+	}
+	return true;
+};
 export const applyAilments = (
 	pokemon: BattlePokemon,
 	move: MoveDto,
@@ -18,7 +42,10 @@ export const applyAilments = (
 	}
 	if (Math.random() < move.meta.ailment_chance) {
 		const possibleAilment = { type: move.meta.ailment.name };
-		if (isPrimaryAilment(possibleAilment)) {
+		if (
+			isPrimaryAilment(possibleAilment) &&
+			isAilmentApplicableToPokemon(possibleAilment, pokemon)
+		) {
 			dispatch(
 				addNotification(
 					`${pokemon.name} is afflicted with ${possibleAilment.type}`

@@ -19,10 +19,11 @@ export const applyAbilitiesWeatherAndAilments = (
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	dispatch: Dispatch<unknown>,
 	environment: BattleEnvironment
-) => {
+): boolean => {
 	if (!isPrimaryAction(actor.nextAction)) {
-		return;
+		return false;
 	}
+	let shouldSkip = false;
 	let updatedActor = { ...actor };
 	if (actor.ability === 'speed-boost' && canRaiseStat(actor, 'speed')) {
 		dispatch(
@@ -62,6 +63,7 @@ export const applyAbilitiesWeatherAndAilments = (
 		Math.random() < PARA_CHANCE
 	) {
 		dispatch(addNotification(`${actor.name} is paralyzed`));
+		shouldSkip = true;
 		updatedActor = {
 			...updatedActor,
 			nextAction: undefined,
@@ -71,6 +73,7 @@ export const applyAbilitiesWeatherAndAilments = (
 		const random = Math.random();
 		if (Math.random() >= random) {
 			dispatch(addNotification(`${actor.name} frozen solid`));
+			shouldSkip = true;
 			updatedActor = {
 				...updatedActor,
 				nextAction: undefined,
@@ -104,4 +107,5 @@ export const applyAbilitiesWeatherAndAilments = (
 			}),
 		});
 	}
+	return shouldSkip;
 };

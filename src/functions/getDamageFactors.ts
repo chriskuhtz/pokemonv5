@@ -57,7 +57,7 @@ export const getDamageFactors = (
 			target.primaryType,
 			target.secondaryType
 		),
-		burnFactor: 1,
+		burnFactor: actor.primaryAilment?.type === 'burn' ? 0.5 : 1,
 		otherFactor: 1,
 		zMoveFactor: 1,
 		teraShieldFactor: 1,

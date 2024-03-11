@@ -28,6 +28,7 @@ export const handleBattleAttack = (
 		console.error('this is no attack', action);
 		return;
 	}
+
 	const { move } = action;
 
 	const inititialMultihits =
@@ -134,6 +135,7 @@ export const handleBattleAttack = (
 					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
 					multiHits: newMultihits,
+					preparedMove: undefined,
 				};
 			}),
 		});
@@ -169,6 +171,7 @@ export const handleBattleAttack = (
 					primaryAilment: newPrimaryAilment,
 					statModifiers: updatedActorStatMods,
 					multiHits: newMultihits,
+					preparedMove: undefined,
 				};
 			}),
 		});

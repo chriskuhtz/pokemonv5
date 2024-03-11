@@ -1,3 +1,4 @@
+import { PARA_SPEED_FACTOR } from '../interfaces/Ailment';
 import { isBattleAttack } from '../interfaces/BattleAction';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 
@@ -17,9 +18,12 @@ export const assignPriority = (pokemon: BattlePokemon): BattlePokemon => {
 	}
 
 	//priority moves have prio 1, so speed must be smaller than 1 for comparison
+	const paraFactor =
+		pokemon.primaryAilment?.type === 'paralysis' ? PARA_SPEED_FACTOR : 1;
 	let prio =
-		pokemon.stats.speed * 0.00001 +
-		0.5 * pokemon.statModifiers.speed * pokemon.stats.speed;
+		(pokemon.stats.speed * 0.00001 +
+			0.5 * pokemon.statModifiers.speed * pokemon.stats.speed) *
+		paraFactor;
 
 	if (pokemon.nextAction.type === 'SWITCH') {
 		prio += prioIndex['SWITCH'];

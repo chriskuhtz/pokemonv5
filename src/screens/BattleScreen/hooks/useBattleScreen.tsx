@@ -240,7 +240,9 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 					nextAction: {
 						type: 'ATTACK',
 						target: optimalTarget,
-						move: p.moves[Math.floor(Math.random() * p.moves.length)],
+						move:
+							p.moves.find((m) => m.name === p.preparedMove) ??
+							p.moves[Math.floor(Math.random() * p.moves.length)],
 					},
 				})),
 			});

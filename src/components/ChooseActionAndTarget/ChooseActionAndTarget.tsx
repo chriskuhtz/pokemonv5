@@ -58,7 +58,7 @@ export const ChooseActionAndTarget = ({
 				availableMoves={actor.moves.map((m) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
-					disabled: isMoveDisabled(pokemonOnField, m),
+					disabled: isMoveDisabled(actor, pokemonOnField, m),
 					move: m,
 					availableTargets: [],
 				}))}

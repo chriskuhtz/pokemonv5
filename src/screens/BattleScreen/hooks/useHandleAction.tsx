@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
+import { secondTurnMoves } from '../../../constants/secondTurnMoves';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
@@ -261,6 +262,44 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//PREPARE MOVE
+			if (
+				isBattleAttack(action) &&
+				secondTurnMoves.includes(action.move.name) &&
+				!actor.preparedMove
+			) {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+								preparedMove: action.move.name,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+								preparedMove: action.move.name,
 							};
 						}),
 					});
