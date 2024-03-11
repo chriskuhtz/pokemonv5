@@ -30,7 +30,11 @@ export const abilities: {
 		handled: true,
 	},
 	{ name: 'damp', url: 'https://pokeapi.co/api/v2/ability/6/', handled: true },
-	{ name: 'limber', url: 'https://pokeapi.co/api/v2/ability/7/' },
+	{
+		name: 'limber',
+		url: 'https://pokeapi.co/api/v2/ability/7/',
+		handled: true,
+	},
 	{ name: 'sand-veil', url: 'https://pokeapi.co/api/v2/ability/8/' },
 	{ name: 'static', url: 'https://pokeapi.co/api/v2/ability/9/' },
 	{ name: 'volt-absorb', url: 'https://pokeapi.co/api/v2/ability/10/' },

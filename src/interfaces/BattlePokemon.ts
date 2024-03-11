@@ -1,3 +1,4 @@
+import { Ailment } from './Ailment';
 import { BattleAction } from './BattleAction';
 import { MoveDto } from './Move';
 import { OwnedPokemon } from './OwnedPokemon';
@@ -16,4 +17,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	secondaryType?: PokemonType;
 	moves: MoveDto[];
 	evasiveness: number;
+	secondaryAilments?: Ailment[];
 }

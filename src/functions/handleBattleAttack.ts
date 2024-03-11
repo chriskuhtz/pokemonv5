@@ -3,6 +3,7 @@ import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
+import { applyAilments } from './applyAilments';
 import { calculateDamage } from './calculateDamage';
 import { canLowerStat } from './canLowerStat';
 import { canRaiseStat } from './canRaiseStat';
@@ -100,6 +101,14 @@ export const handleBattleAttack = (
 			priority: action.priority,
 		};
 	}
+
+	let updatedTarget: BattlePokemon = {
+		...target,
+		damage: newTargetDamage,
+		nextAction: newTargetAction,
+	};
+	updatedTarget = applyAilments(updatedTarget, move, dispatch);
+
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({
 			...playerSide,
@@ -107,11 +116,7 @@ export const handleBattleAttack = (
 				if (p.id !== actor.id) {
 					return p;
 				}
-				return {
-					...p,
-					nextAction,
-					statModifiers: updatedActorStatMods,
-				};
+				return updatedTarget;
 			}),
 		});
 		setOpponentSide({
@@ -120,11 +125,7 @@ export const handleBattleAttack = (
 				if (p.id !== target.id) {
 					return p;
 				}
-				return {
-					...p,
-					damage: newTargetDamage,
-					nextAction: newTargetAction,
-				};
+				return updatedTarget;
 			}),
 		});
 	}
