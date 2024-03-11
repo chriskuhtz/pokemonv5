@@ -47,7 +47,11 @@ const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/11/',
 		handled: true,
 	},
-	{ name: 'guillotine', url: 'https://pokeapi.co/api/v2/move/12/' },
+	{
+		name: 'guillotine',
+		url: 'https://pokeapi.co/api/v2/move/12/',
+		handled: true,
+	},
 	{ name: 'razor-wind', url: 'https://pokeapi.co/api/v2/move/13/' },
 	{ name: 'swords-dance', url: 'https://pokeapi.co/api/v2/move/14/' },
 	{ name: 'cut', url: 'https://pokeapi.co/api/v2/move/15/' },

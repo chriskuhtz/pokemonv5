@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { ohkoMoves } from '../constants/ohkoMoves';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
@@ -60,5 +61,6 @@ export const getDamageFactors = (
 		otherFactor: 1,
 		zMoveFactor: 1,
 		teraShieldFactor: 1,
+		ohko: ohkoMoves.includes(move.name),
 	};
 };
