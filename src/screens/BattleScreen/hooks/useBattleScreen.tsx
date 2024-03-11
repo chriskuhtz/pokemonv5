@@ -33,6 +33,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	const [usedPotions, setUsedPotions] = useState<number>(0);
 	const [environment, setEnvironment] = useState<BattleEnvironment>({
 		paydayCounter: 0,
+		trainerId: trainerId,
 	});
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');

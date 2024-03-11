@@ -1,10 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
+import { forceSwitchMoves } from '../../../constants/forceSwitchMoves';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { handleBattleAttack } from '../../../functions/handleBattleAttack';
+import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import {
 	BattleAction,
 	isBattleActionWithTarget,
@@ -227,7 +229,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
 			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
 			if (
 				action &&
@@ -474,6 +475,21 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(action) && target) {
+				if (forceSwitchMoves.includes(action.move.name)) {
+					handleForceSwitchMove(
+						action,
+						environment,
+						leaveBattle,
+						target,
+						actor,
+						opponentSide,
+						playerSide,
+						dispatch,
+						setPlayerSide,
+						setOpponentSide
+					);
+					return;
+				}
 				if (action.move.name === 'pay-day') {
 					dispatch(addNotification('coins scatter around the battleField'));
 					const { level } = calculateLevelData(actor.xp);
@@ -482,6 +498,7 @@ export const useHandleAction = (
 						paydayCounter: environment.paydayCounter + level * 5,
 					});
 				}
+
 				handleBattleAttack(
 					actor,
 					target,

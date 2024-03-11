@@ -8,4 +8,5 @@ export interface BattleEnvironment {
 		duration: number;
 	};
 	paydayCounter: number;
+	trainerId?: string;
 }

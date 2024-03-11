@@ -9,7 +9,11 @@ export const determineNewTargetDamage = (
 	attackDamage: number,
 	dispatch: Dispatch<unknown>
 ) => {
-	if (target.damage === 0 && target.ability === 'sturdy') {
+	if (
+		target.damage === 0 &&
+		target.ability === 'sturdy' &&
+		attackDamage >= target.stats.hp
+	) {
 		dispatch(addNotification(`${target.name} hung on with sturdy`));
 		return target.stats.hp - 1;
 	}
