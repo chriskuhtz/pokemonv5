@@ -246,7 +246,8 @@ export const useHandleAction = (
 			if (
 				isBattleAttack(action) &&
 				secondTurnMoves.includes(action.move.name) &&
-				!actor.preparedMove
+				!actor.preparedMove &&
+				target
 			) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -258,7 +259,10 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
-								preparedMove: action.move.name,
+								preparedMove: {
+									moveName: action.move.name,
+									targetId: target?.id,
+								},
 								location: inferLocationFromMove(action.move),
 							};
 						}),
@@ -274,7 +278,10 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
-								preparedMove: action.move.name,
+								preparedMove: {
+									moveName: action.move.name,
+									targetId: target?.id,
+								},
 								location: inferLocationFromMove(action.move),
 							};
 						}),

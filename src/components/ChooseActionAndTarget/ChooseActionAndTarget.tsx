@@ -35,6 +35,22 @@ export const ChooseActionAndTarget = ({
 		}
 	}, [actionName, actor, selectAction]);
 
+	useEffect(() => {
+		const move = actor.moves.find(
+			(m) => m.name === actor.preparedMove?.moveName
+		);
+		if (move) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'ATTACK',
+					move,
+					target: actor.preparedMove?.targetId,
+				},
+			});
+		}
+	}, []);
+
 	if (!actionName) {
 		return (
 			<ChooseAction

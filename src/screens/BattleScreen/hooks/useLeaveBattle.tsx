@@ -80,6 +80,8 @@ export const useLeaveBattle = (
 					moves: undefined,
 					stats: undefined,
 					statModifiers: undefined,
+					multiHits: undefined,
+					preparedMove: undefined,
 				};
 			});
 		},

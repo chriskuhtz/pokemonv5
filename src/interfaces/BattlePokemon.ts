@@ -20,7 +20,7 @@ export interface BattlePokemon extends OwnedPokemon {
 	evasiveness: number;
 	secondaryAilments?: SecondaryAilment[];
 	multiHits?: number;
-	preparedMove?: string;
+	preparedMove?: { moveName: string; targetId: string };
 	location?: BattlePokemonLocation;
 	accuracyModifier: number;
 }

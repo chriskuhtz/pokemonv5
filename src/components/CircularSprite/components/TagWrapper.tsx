@@ -27,7 +27,7 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 			res.push(pokemon.primaryAilment.type.slice(0, 4));
 		}
 		if (pokemon.preparedMove) {
-			res.push(pokemon.preparedMove);
+			res.push(pokemon.preparedMove.moveName);
 		}
 		if (pokemon.location) {
 			res.push(pokemon.location);

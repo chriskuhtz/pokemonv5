@@ -7,7 +7,7 @@ export const isMoveDisabled = (
 	pokemonOnField: BattlePokemon[],
 	move: MoveDto
 ) => {
-	if (actor.preparedMove && move.name !== actor.preparedMove) {
+	if (actor.preparedMove && move.name !== actor.preparedMove.moveName) {
 		return true;
 	}
 	if (
