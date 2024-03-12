@@ -19,6 +19,8 @@ import { BattleSide } from '../BattleScreen';
 export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS' | 'FORCE_SWITCH';
 
 export const useLeaveBattle = (
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	usedBalls: number,
@@ -89,45 +91,44 @@ export const useLeaveBattle = (
 			const fundsUpdate =
 				environment.paydayCounter +
 				(reason === 'WIN' && trainer ? trainer?.rewardMoney : 0);
-
+			const pokemonUpdates = updateOwnedPokemonFromBattlePokemon(
+				playerSide,
+				opponentSide
+			);
+			setOpponentSide(undefined);
+			setPlayerSide(undefined);
 			await save({
 				dexUpdates: allDexUpdates,
 				handledOccupants:
 					reason === 'WIN' && trainerId
 						? { [`${trainerId}`]: true }
 						: undefined,
-				pokemonUpdates: updateOwnedPokemonFromBattlePokemon(
-					playerSide,
-					opponentSide
-				),
+				pokemonUpdates,
 				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
 				visitedNurse: reason === 'LOSS',
 				fundsUpdate,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				teleportToLastHealer: reason === 'LOSS',
-			}).then(() => {
-				navigate(RoutesEnum.overworld);
-				if (reason === 'RUNAWAY') {
-					dispatch(addNotification('Phew, escaped'));
-					dispatch(setDialogue([]));
-				}
-				if (reason === 'FORCE_SWITCH') {
-					dispatch(addNotification('The wild Pokemon ran away'));
-					dispatch(setDialogue([]));
-				}
-				if (reason === 'WIN') {
-					dispatch(addNotification('You won the Battle'));
-					if (trainer) {
-						dispatch(setDialogue(trainer.dialogueAfterDefeat));
-					}
-				}
-				if (reason === 'LOSS') {
-					dispatch(
-						addNotification('You lost the battle and scurried back to safety')
-					);
-					dispatch(setDialogue([]));
-				}
 			});
+
+			navigate(RoutesEnum.overworld);
+			if (reason === 'RUNAWAY') {
+				dispatch(addNotification('Phew, escaped'));
+			}
+			if (reason === 'FORCE_SWITCH') {
+				dispatch(addNotification('The wild Pokemon ran away'));
+			}
+			if (reason === 'WIN') {
+				dispatch(addNotification('You won the Battle'));
+				if (trainer) {
+					dispatch(setDialogue(trainer.dialogueAfterDefeat));
+				}
+			}
+			if (reason === 'LOSS') {
+				dispatch(
+					addNotification('You lost the battle and scurried back to safety')
+				);
+			}
 		},
 		[
 			allDexUpdates,

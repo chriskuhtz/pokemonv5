@@ -103,6 +103,8 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	);
 	//leave Battle
 	const leaveBattle = useLeaveBattle(
+		setOpponentSide,
+		setPlayerSide,
 		playerSide,
 		opponentSide,
 		usedBalls,
