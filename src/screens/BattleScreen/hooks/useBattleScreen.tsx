@@ -6,7 +6,7 @@ import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
-import { MapEncounter } from '../../../store/slices/MapSlice';
+import { MapEncounter, MapEnvironment } from '../../../store/slices/MapSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
@@ -20,12 +20,14 @@ export interface BattleScreenProps {
 	opponents: MapEncounter[];
 	trainerId?: UniqueOccupantIds;
 	activePokemonPerSide: number;
+	outside: MapEnvironment;
 }
 export const useBattleScreen = (saveFile: SaveFile) => {
 	const dispatch = useAppDispatch();
 	const { state } = useLocation();
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
-	const { trainerId, activePokemonPerSide } = state as BattleScreenProps;
+	const { trainerId, activePokemonPerSide, outside } =
+		state as BattleScreenProps;
 
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
@@ -34,6 +36,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		paydayCounter: 0,
 		trainerId: trainerId,
 		battleRounds: 0,
+		outside: outside,
 	});
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');

@@ -36,6 +36,15 @@ export interface MapEncounter {
 	xp: number;
 	rarity?: number;
 }
+
+export type MapEnvironment =
+	| 'city'
+	| 'field'
+	| 'forest'
+	| 'water'
+	| 'cave'
+	| 'desert'
+	| 'building';
 export interface MapState {
 	height: number;
 	width: number;
@@ -45,14 +54,7 @@ export interface MapState {
 	decorators: Decorator[];
 	mapId: string;
 	encounters: MapEncounter[];
-	environment:
-		| 'city'
-		| 'field'
-		| 'forest'
-		| 'water'
-		| 'cave'
-		| 'desert'
-		| 'building';
+	environment: MapEnvironment;
 }
 
 const mapsRecord: Record<string, MapState> = {

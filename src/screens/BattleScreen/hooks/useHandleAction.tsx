@@ -321,6 +321,7 @@ export const useHandleAction = (
 						action.ball,
 						target,
 						environment.battleRounds,
+						environment.outside === 'cave',
 						!!saveFile?.pokedex.some(
 							(p) => p.status === 'owned' && p.dexId === target.dexId
 						)

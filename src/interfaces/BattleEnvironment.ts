@@ -1,3 +1,5 @@
+import { MapEnvironment } from '../store/slices/MapSlice';
+
 export interface BattleEnvironment {
 	weather?: {
 		type: 'rain' | 'sandstorm' | 'hail' | 'harsh_sunlight';
@@ -10,4 +12,5 @@ export interface BattleEnvironment {
 	paydayCounter: number;
 	trainerId?: string;
 	battleRounds: number;
+	outside: MapEnvironment;
 }

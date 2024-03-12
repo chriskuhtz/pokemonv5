@@ -77,11 +77,12 @@ export const useInitialiseBattleSides = (
 
 			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
 			if (weatherman) {
-				setEnvironment({
+				setEnvironment((environment) => ({
+					...environment,
 					weather: { type: 'rain', duration: -1 },
 					paydayCounter: 0,
 					battleRounds: 0,
-				});
+				}));
 				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
 			}
 		}

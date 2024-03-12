@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkQuestCondition } from '../functions/checkQuestCondition';
 import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
-import { selectEncounters } from '../store/selectors/map/selectEncounters';
+import { selectMap } from '../store/selectors/map/selectMap';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
 import { MapEncounter } from '../store/slices/MapSlice';
 import {
@@ -20,7 +20,8 @@ export const useOverworldEvent = () => {
 	const navigate = useNavigate();
 	const quests = useAppSelector(selectQuests);
 	const saveGame = useSaveGame();
-	const encounters = useAppSelector(selectEncounters);
+	const { environment, encounters } = useAppSelector(selectMap);
+
 	const handleTrainerChallenge = useHandleTrainerChallenge();
 
 	return useCallback(
@@ -55,6 +56,7 @@ export const useOverworldEvent = () => {
 					state: {
 						opponents: opponents,
 						activePokemonPerSide: opponents.length,
+						outside: environment,
 					},
 				});
 			}
