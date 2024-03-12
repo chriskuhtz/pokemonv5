@@ -57,6 +57,9 @@ export const handleBattleAttack = (
 		move,
 		environment.weather
 	);
+	if (!passesAccuracyCheck) {
+		dispatch(addNotification(`${actor.name} missed`));
+	}
 
 	updatedActor = applyCrashDamage(
 		updatedActor,
@@ -74,22 +77,23 @@ export const handleBattleAttack = (
 		environment
 	);
 
-	if (damageFactors.criticalFactor > 1) {
-		dispatch(addNotification('critical hit!'));
-	}
-
-	if (damageFactors.typeFactor === 0) {
-		dispatch(addNotification(`It has no effect on ${target.name}`));
-	}
-
-	if (damageFactors.typeFactor > 1) {
-		dispatch(addNotification(`It is very effective`));
-	}
-	if (damageFactors.typeFactor < 1) {
-		dispatch(addNotification(`It is not very effective`));
-	}
-
 	const attackDamage = calculateDamage(damageFactors);
+
+	if (attackDamage > 0 && passesAccuracyCheck) {
+		if (damageFactors.criticalFactor > 1) {
+			dispatch(addNotification('critical hit!'));
+		}
+		if (damageFactors.typeFactor === 0) {
+			dispatch(addNotification(`It has no effect on ${target.name}`));
+		}
+
+		if (damageFactors.typeFactor > 1) {
+			dispatch(addNotification(`It is very effective`));
+		}
+		if (damageFactors.typeFactor < 1) {
+			dispatch(addNotification(`It is not very effective`));
+		}
+	}
 
 	const newTargetDamage = determineNewTargetDamage(
 		target,
