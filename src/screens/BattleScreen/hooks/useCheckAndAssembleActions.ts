@@ -4,6 +4,7 @@ import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilit
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isCatchAttempt,
 	isPrimaryAction,
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
@@ -20,7 +21,7 @@ export const useCheckAndAssembleActions = (
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setUsedBalls: React.Dispatch<React.SetStateAction<number>>,
+
 	setUsedPotions: React.Dispatch<React.SetStateAction<number>>,
 	environment: BattleEnvironment
 ) => {
@@ -100,9 +101,9 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
-				dispatch(concatDialogue([`You throw a Pokeball`]));
-				setUsedBalls((balls) => balls + 1);
+			if (isCatchAttempt(actor.nextAction)) {
+				const { ball } = actor.nextAction;
+				dispatch(concatDialogue([`You throw a ${ball}`]));
 				if (!target) {
 					return;
 				}
@@ -118,7 +119,10 @@ export const useCheckAndAssembleActions = (
 							}
 							return {
 								...target,
-								status: 'BEING_CAUGHT',
+								status: {
+									name: 'BEING_CAUGHT',
+									ball: ball,
+								},
 							};
 						}),
 					};
@@ -165,7 +169,6 @@ export const useCheckAndAssembleActions = (
 		dispatch,
 		mode,
 		pokemonWithActions,
-		setUsedBalls,
 		setOpponentSide,
 		allPokemonOnBench,
 		setUsedPotions,

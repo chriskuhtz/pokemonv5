@@ -9,7 +9,7 @@ export const useAvailableActions = (
 	saveFile: SaveFile | undefined,
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
-	usedBalls: number,
+
 	usedPotions: number,
 	trainerId: string | undefined,
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined
@@ -18,8 +18,6 @@ export const useAvailableActions = (
 		if (!saveFile || !playerSide || !opponentSide) {
 			return [];
 		}
-		const noMorePokeBalls =
-			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
 		const noMorePotions = usedPotions >= saveFile.inventory['potion'];
 
 		const switchTargets =
@@ -57,12 +55,10 @@ export const useAvailableActions = (
 				actionType: 'CATCH_ATTEMPT',
 				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
-						Throw Pokeball (
-						{!noMorePokeBalls && saveFile.inventory['poke-ball'] - usedBalls})
+						Throw Pokeball
 					</div>
 				),
-				disabled:
-					noMorePokeBalls || !!nextPlayerPokemonWithoutAction?.preparedMove,
+				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove || !!trainerId,
 				availableTargets: opponentSide.field,
 			},
 			{
@@ -81,7 +77,7 @@ export const useAvailableActions = (
 				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						use Potion (
-						{!noMorePotions && saveFile.inventory['potion'] - usedBalls})
+						{!noMorePotions && saveFile.inventory['potion'] - usedPotions})
 					</div>
 				),
 				disabled:
@@ -97,7 +93,6 @@ export const useAvailableActions = (
 		playerSide,
 		saveFile,
 		trainerId,
-		usedBalls,
 		usedPotions,
 	]);
 };

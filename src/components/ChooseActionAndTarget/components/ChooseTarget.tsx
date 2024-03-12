@@ -6,6 +6,7 @@ import {
 	isBattleActionWithTarget,
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { PokeballType } from '../../../interfaces/Inventory';
 import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
@@ -14,10 +15,12 @@ export const ChooseTarget = ({
 	selectAction,
 	actionName,
 	move,
+	ball,
 	actor,
 }: {
 	actionName: BattleAction['type'];
 	move?: MoveDto;
+	ball?: PokeballType;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
@@ -35,6 +38,13 @@ export const ChooseTarget = ({
 				type: actionName,
 				target: c.id,
 				item: 'potion',
+			};
+		}
+		if (actionName === 'CATCH_ATTEMPT') {
+			return {
+				type: actionName,
+				target: c.id,
+				ball: ball,
 			};
 		}
 		if (

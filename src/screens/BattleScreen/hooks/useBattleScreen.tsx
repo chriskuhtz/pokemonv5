@@ -29,7 +29,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
-	const [usedBalls, setUsedBalls] = useState<number>(0);
 	const [usedPotions, setUsedPotions] = useState<number>(0);
 	const [environment, setEnvironment] = useState<BattleEnvironment>({
 		paydayCounter: 0,
@@ -47,7 +46,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		saveFile,
 		playerSide,
 		opponentSide,
-		usedBalls,
 		usedPotions,
 		trainerId,
 		nextPlayerPokemonWithoutAction
@@ -107,7 +105,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		setPlayerSide,
 		playerSide,
 		opponentSide,
-		usedBalls,
 		usedPotions,
 		environment,
 		trainerId
@@ -138,7 +135,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		mode,
 		setOpponentSide,
 		setPlayerSide,
-		setUsedBalls,
+
 		setUsedPotions,
 		environment
 	);

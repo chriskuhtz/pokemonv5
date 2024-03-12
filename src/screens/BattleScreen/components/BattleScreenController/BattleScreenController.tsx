@@ -1,5 +1,6 @@
 import { ChooseActionAndTarget } from '../../../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { ChooseRefill } from '../../../../components/ChooseActionAndTarget/components/ChooseRefill';
+import { useGetCurrentSaveFile } from '../../../../hooks/xata/useCurrentSaveFile';
 import { BattleEnvironment } from '../../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { SelectableAction } from '../../../../interfaces/SelectableAction';
@@ -40,8 +41,9 @@ export const BattleScreenController = ({
 	const dispatch = useAppDispatch();
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const noti = useAppSelector(selectNextNotification);
+	const saveFile = useGetCurrentSaveFile();
 
-	if (noti) {
+	if (noti || !saveFile) {
 		return <></>;
 	}
 	if (mode === 'HANDLING_ENVIRONMENT') {
@@ -69,6 +71,7 @@ export const BattleScreenController = ({
 				availableActions={availableActions}
 				selectAction={selectAction}
 				pokemonOnField={[...playerSide.field, ...opponentSide.field]}
+				inventory={saveFile.inventory}
 			/>
 		);
 	}

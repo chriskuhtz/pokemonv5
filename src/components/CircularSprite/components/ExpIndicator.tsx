@@ -19,7 +19,7 @@ export const ExpIndicator = ({
 	}, [pokemon]);
 
 	const animationName = useMemo(() => {
-		if (pokemon.status === 'BEING_CAUGHT') {
+		if (pokemon.status?.name === 'BEING_CAUGHT') {
 			return 'shakingBall';
 		}
 		if (noAnimation) {

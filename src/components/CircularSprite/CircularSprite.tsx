@@ -30,11 +30,13 @@ export const CircularSprite = ({
 									  }
 									: undefined
 							}
-							height={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
-							width={pokemon.status === 'BEING_CAUGHT' ? '60px' : '120px'}
+							height={
+								pokemon.status?.name === 'BEING_CAUGHT' ? '60px' : '120px'
+							}
+							width={pokemon.status?.name === 'BEING_CAUGHT' ? '60px' : '120px'}
 							src={
-								pokemon.status === 'BEING_CAUGHT'
-									? `mapObjects/pokeball.png`
+								pokemon.status?.name === 'BEING_CAUGHT'
+									? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pokemon.status.ball}.png`
 									: getPokemonSpriteUrl(pokemon.dexId, back)
 							}
 						/>

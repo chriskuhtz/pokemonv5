@@ -23,7 +23,6 @@ export const useLeaveBattle = (
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
-	usedBalls: number,
 	usedPotions: number,
 	environment: BattleEnvironment,
 	trainerId?: UniqueOccupantIds
@@ -106,7 +105,7 @@ export const useLeaveBattle = (
 						? { [`${trainerId}`]: true }
 						: undefined,
 				pokemonUpdates,
-				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
+				inventoryChanges: { potion: -usedPotions },
 				visitedNurse: reason === 'LOSS',
 				fundsUpdate,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
@@ -142,7 +141,7 @@ export const useLeaveBattle = (
 			trainer,
 			trainerId,
 			updateOwnedPokemonFromBattlePokemon,
-			usedBalls,
+
 			usedPotions,
 		]
 	);

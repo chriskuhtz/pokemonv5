@@ -4,7 +4,11 @@ export const itemsCheckList: {
 	todos?: string[];
 	handled?: boolean;
 }[] = [
-	{ name: 'master-ball', url: 'https://pokeapi.co/api/v2/item/1/' },
+	{
+		name: 'master-ball',
+		url: 'https://pokeapi.co/api/v2/item/1/',
+		handled: true,
+	},
 	{ name: 'ultra-ball', url: 'https://pokeapi.co/api/v2/item/2/' },
 	{ name: 'great-ball', url: 'https://pokeapi.co/api/v2/item/3/' },
 	{

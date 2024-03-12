@@ -5,38 +5,22 @@ import { secondTurnMoves } from '../../../constants/secondTurnMoves';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
+import { determineCatchRate } from '../../../functions/determineCatchRate';
 import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
+import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isCatchAttempt,
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
-import {
-	BattlePokemon,
-	BattlePokemonLocation,
-} from '../../../interfaces/BattlePokemon';
-import { MoveDto } from '../../../interfaces/Move';
+import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import { BattleEndReason } from './useLeaveBattle';
-
-export const inferLocationFromMove = (
-	move: MoveDto
-): BattlePokemonLocation | undefined => {
-	if (move.name === 'fly' || move.name === 'bounce') {
-		return 'FLYING';
-	}
-	if (move.name === 'dive') {
-		return 'UNDERWATER';
-	}
-	if (move.name === 'dig') {
-		return 'UNDERGROUND';
-	}
-	return undefined;
-};
 
 export const useHandleAction = (
 	playerSide: BattleSide | undefined,
@@ -328,8 +312,9 @@ export const useHandleAction = (
 			}
 
 			//catch attempt
-			if (action?.type === 'CATCH_ATTEMPT' && target) {
-				const successfullyCaught = Math.random() > 0.5;
+			if (isCatchAttempt(action) && target) {
+				const successfullyCaught =
+					Math.random() < determineCatchRate(action.ball, target);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,

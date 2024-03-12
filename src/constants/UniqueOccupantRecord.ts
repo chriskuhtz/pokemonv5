@@ -168,7 +168,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			mapId: 'starter-town',
 			orientation: 0,
 		},
-		inventory: { potion: 100, 'poke-ball': 100, repel: 100 },
+		inventory: { potion: 100, 'poke-ball': 100, repel: 100, 'master-ball': 0 },
 		dialogue: ['What do you need?'],
 		sprite: '113',
 	},

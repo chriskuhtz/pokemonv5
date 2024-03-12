@@ -3,28 +3,34 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
+import { Inventory, PokeballType } from '../../interfaces/Inventory';
 import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
+import { ChooseBall } from './components/ChooseBall';
 
 export const ChooseActionAndTarget = ({
 	actor,
 	availableActions,
 	selectAction,
 	pokemonOnField,
+	inventory,
 }: {
 	actor: BattlePokemon;
 	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
 	pokemonOnField: BattlePokemon[];
+	inventory: Inventory;
 }): JSX.Element => {
 	const [actionName, setActionName] = useState<
 		BattleAction['type'] | undefined
 	>();
 	const [move, setMove] = useState<MoveDto | undefined>();
+	const [ball, setBall] = useState<PokeballType | undefined>();
 
+	//no target needed for runAway
 	useEffect(() => {
 		if (actionName === 'RUNAWAY_ATTEMPT') {
 			selectAction({
@@ -35,6 +41,7 @@ export const ChooseActionAndTarget = ({
 		}
 	}, [actionName, actor, selectAction]);
 
+	//auto select target for prepared move
 	useEffect(() => {
 		const move = actor.moves.find(
 			(m) => m.name === actor.preparedMove?.moveName
@@ -81,15 +88,29 @@ export const ChooseActionAndTarget = ({
 			/>
 		);
 	}
+	if (actionName === 'CATCH_ATTEMPT' && !ball) {
+		return (
+			<ChooseBall
+				open={actionName === 'CATCH_ATTEMPT'}
+				setBall={setBall}
+				inventory={inventory}
+				resetActor={() => {
+					setActionName(undefined);
+				}}
+			/>
+		);
+	}
 
 	return (
 		<ChooseTarget
 			actionName={actionName}
 			move={move}
+			ball={ball}
 			selectAction={(x) => {
 				selectAction(x);
 				setActionName(undefined);
 				setMove(undefined);
+				setBall(undefined);
 			}}
 			availableTargets={
 				availableActions.find((a) => a.actionType === actionName)

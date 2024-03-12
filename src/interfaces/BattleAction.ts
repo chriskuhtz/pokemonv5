@@ -1,3 +1,4 @@
+import { PokeballType } from './Inventory';
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
@@ -38,11 +39,17 @@ interface BattleItemAction extends BaseBattleAction {
 	item: string;
 	target: string;
 }
+interface CatchAttempt extends BaseBattleAction {
+	type: 'CATCH_ATTEMPT';
+	ball: PokeballType;
+	target: string;
+}
 export type BattleAction =
 	| BaseBattleAction
 	| BattleAttackAction
 	| BattleActionWithTarget
-	| BattleItemAction;
+	| BattleItemAction
+	| CatchAttempt;
 
 export function isBattleActionWithTarget(
 	x: BattleAction | undefined
@@ -83,4 +90,7 @@ export function isBattleAttack(
 	x: BattleAction | undefined
 ): x is BattleAttackAction {
 	return !!(x && x.type === 'ATTACK');
+}
+export function isCatchAttempt(x: BattleAction | undefined): x is CatchAttempt {
+	return !!(x && x.type === 'CATCH_ATTEMPT');
 }
