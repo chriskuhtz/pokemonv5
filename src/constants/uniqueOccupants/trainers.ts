@@ -1,5 +1,5 @@
-import { SpriteEnum } from '../interfaces/SpriteEnum';
-import { Trainer } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import { SpriteEnum } from '../../interfaces/SpriteEnum';
+import { Trainer } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 
 export const brock: Trainer = {
 	id: 'brock',

@@ -1,9 +1,12 @@
-import { generateInventory } from '../interfaces/Inventory';
 import { SpriteEnum } from '../interfaces/SpriteEnum';
 import {
 	Npc,
 	Occupant,
 } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import {
+	berryPatchItem1,
+	starterTownItem1,
+} from './uniqueOccupants/overworldItems';
 import {
 	brock,
 	brocksMinion,
@@ -13,7 +16,7 @@ import {
 	bugcatcherNash,
 	bugcatcherRalph,
 	youngsterJimmy,
-} from './trainers';
+} from './uniqueOccupants/trainers';
 
 //every occupant that can be handled should be unique
 export type UniqueOccupantIds =
@@ -36,7 +39,8 @@ export type UniqueOccupantIds =
 	| 'bugCatcher-barry'
 	| 'bugCatcher-nash'
 	| 'bugCatcher-ralph'
-	| 'bugCatcher-cisco';
+	| 'bugCatcher-cisco'
+	| 'berry-patch-item-1';
 
 export const youngsterJimmyBlocker: Npc = {
 	id: 'youngster-jimmy-blocker',
@@ -64,17 +68,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	brock,
 	'brocks-minion': brocksMinion,
 	'brocks-minion2': brocksMinion2,
-	'starter-town-item-1': {
-		id: 'starter-town-item-1',
-		type: 'ITEM',
-		inventory: generateInventory({ repel: 7 }),
-		position: {
-			y: 7,
-			x: 0,
-			mapId: 'starter-town',
-			orientation: 0,
-		},
-	},
+	'starter-town-item-1': starterTownItem1,
 	'oak-before-selection': {
 		id: 'oak-before-selection',
 		type: 'NPC',
@@ -262,4 +256,5 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'bugCatcher-cisco': bugcatcherCisco,
 	'bugCatcher-nash': bugcatcherNash,
 	'bugCatcher-ralph': bugcatcherRalph,
+	'berry-patch-item-1': berryPatchItem1,
 };
