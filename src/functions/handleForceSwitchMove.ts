@@ -22,7 +22,7 @@ export const handleForceSwitchMove = (
 		return;
 	}
 	if (!environment.trainerId) {
-		leaveBattle('RUNAWAY');
+		leaveBattle('FORCE_SWITCH');
 		return;
 	}
 	const targetSide = target.side === 'OPPONENT' ? opponentSide : playerSide;

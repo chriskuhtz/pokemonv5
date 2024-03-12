@@ -16,7 +16,7 @@ import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 
-export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
+export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS' | 'FORCE_SWITCH';
 
 export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
@@ -109,6 +109,10 @@ export const useLeaveBattle = (
 				navigate(RoutesEnum.overworld);
 				if (reason === 'RUNAWAY') {
 					dispatch(addNotification('Phew, escaped'));
+					dispatch(setDialogue([]));
+				}
+				if (reason === 'FORCE_SWITCH') {
+					dispatch(addNotification('The wild Pokemon ran away'));
 					dispatch(setDialogue([]));
 				}
 				if (reason === 'WIN') {
