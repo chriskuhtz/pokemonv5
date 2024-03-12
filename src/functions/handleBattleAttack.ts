@@ -3,6 +3,7 @@ import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
+import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
 import { applyCrashDamage } from './applyCrashDamage';
 import { applyStatMods } from './applyStatMods';
@@ -65,14 +66,30 @@ export const handleBattleAttack = (
 		passesAccuracyCheck
 	);
 
+	//only get damage factors on hit
 	const damageFactors = getDamageFactors(
 		updatedActor,
 		move,
 		target,
-		environment,
-		dispatch
+		environment
 	);
-	const attackDamage = passesAccuracyCheck ? calculateDamage(damageFactors) : 0;
+
+	if (damageFactors.criticalFactor > 1) {
+		dispatch(addNotification('critical hit!'));
+	}
+
+	if (damageFactors.typeFactor === 0) {
+		dispatch(addNotification(`It has no effect on ${target.name}`));
+	}
+
+	if (damageFactors.typeFactor > 1) {
+		dispatch(addNotification(`It is very effective`));
+	}
+	if (damageFactors.typeFactor < 1) {
+		dispatch(addNotification(`It is not very effective`));
+	}
+
+	const attackDamage = calculateDamage(damageFactors);
 
 	const newTargetDamage = determineNewTargetDamage(
 		target,
@@ -100,13 +117,16 @@ export const handleBattleAttack = (
 
 	const newActorAction = determineFollowUpAction(
 		updatedActor,
-		target,
-		damageFactors,
-		action,
-		passesAccuracyCheck
+		updatedTarget,
+		action
 	);
 
-	updatedActor = determineNewActorAilment(updatedActor, target, move, dispatch);
+	updatedActor = determineNewActorAilment(
+		updatedActor,
+		updatedTarget,
+		move,
+		dispatch
+	);
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({

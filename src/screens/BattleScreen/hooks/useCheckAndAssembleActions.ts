@@ -92,30 +92,12 @@ export const useCheckAndAssembleActions = (
 				);
 				return;
 			}
-			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
-				dispatch(
-					concatDialogue([`There is no target for ${actor?.name}s action!`])
-				);
-				return;
-			}
-			if (actor.nextAction?.type === 'MISSED_ATTACK') {
-				dispatch(concatDialogue([`${actor.name} missed`]));
-				return;
-			}
 			if (actor.nextAction?.type === 'FLINCH') {
 				dispatch(concatDialogue([`${actor.name} flinched`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
-				return;
-			}
-			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
-				dispatch(concatDialogue([`Got away safely`]));
-				return;
-			}
-			if (actor.nextAction?.type === 'RUNAWAY_FAILURE') {
-				dispatch(concatDialogue([`Could not escape`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
@@ -155,22 +137,7 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`${target?.name} fainted!`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'NOT_VERY_EFFECTIVE') {
-				dispatch(
-					concatDialogue([`It is not very effective against ${target?.name}`])
-				);
-				return;
-			}
-			if (actor.nextAction?.type === 'SUPER_EFFECTIVE') {
-				dispatch(
-					concatDialogue([`It is very effective against ${target?.name}`])
-				);
-				return;
-			}
-			if (actor.nextAction?.type === 'NO_EFFECT') {
-				dispatch(concatDialogue([`It has no effect on ${target?.name}`]));
-				return;
-			}
+
 			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
 				if (
 					secondTurnMoves.includes(actor.nextAction.move.name) &&

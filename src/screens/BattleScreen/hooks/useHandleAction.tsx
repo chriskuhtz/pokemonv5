@@ -8,7 +8,6 @@ import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import {
-	BattleAction,
 	isBattleActionWithTarget,
 	isBattleAttack,
 } from '../../../interfaces/BattleAction';
@@ -75,6 +74,9 @@ export const useHandleAction = (
 			dispatch(continueDialogue());
 			//no target
 			if (isBattleActionWithTarget(action) && !target && !switchTarget) {
+				dispatch(
+					addNotification(`There is no target for ${actor.name}'s move`)
+				);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -84,11 +86,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: {
-									type: 'TARGET_NOT_ON_FIELD',
-									target: p.id,
-									priority: action.priority,
-								},
+								nextAction: undefined,
 							};
 						}),
 					});
@@ -102,11 +100,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: {
-									type: 'TARGET_NOT_ON_FIELD',
-									target: p.id,
-									priority: action.priority,
-								},
+								nextAction: undefined,
 							};
 						}),
 					});
@@ -248,46 +242,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
-			if (
-				action &&
-				[
-					'MISSED_ATTACK',
-					'TARGET_NOT_ON_FIELD',
-					'RUNAWAY_FAILURE',
-					'FLINCH',
-				].includes(action.type)
-			) {
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
-				return;
-			}
 			//PREPARE MOVE
 			if (
 				isBattleAttack(action) &&
@@ -328,88 +282,32 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			// EFFECTIVESS NOTIFICATIONS,
-			if (
-				action &&
-				['NO_EFFECT', 'NOT_VERY_EFFECTIVE', 'SUPER_EFFECTIVE'].includes(
-					action.type
-				) &&
-				target
-			) {
-				let nextAction: BattleAction | undefined = undefined;
-
-				if (target.damage >= target.stats.hp) {
-					nextAction = {
-						type: 'DEFEATED_TARGET',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction,
-							};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction,
-							};
-						}),
-					});
-				}
-				return;
-			}
 			//run away attempt
 			if (action?.type === 'RUNAWAY_ATTEMPT') {
 				const canRunAway = Math.random() > 0.5;
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: canRunAway
-									? {
-											type: 'RUNAWAY_SUCCESS',
-											target: actor.id,
-											priority: action.priority,
-									  }
-									: {
-											type: 'RUNAWAY_FAILURE',
-											target: actor.id,
-											priority: action.priority,
-									  },
-							};
-						}),
-					});
+
+				if (canRunAway) {
+					void leaveBattle('RUNAWAY');
+				} else {
+					if (actor.side === 'PLAYER') {
+						dispatch(addNotification('could not escape'));
+						setPlayerSide({
+							...playerSide,
+							field: playerSide.field.map((p) => {
+								if (p.id !== actor.id) {
+									return p;
+								}
+								return {
+									...p,
+									nextAction: undefined,
+								};
+							}),
+						});
+					}
 				}
 				return;
 			}
-			//run away success
-			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
-				void leaveBattle('RUNAWAY');
-				return;
-			}
+
 			//catch attempt
 			if (action?.type === 'CATCH_ATTEMPT' && target) {
 				const successfullyCaught = Math.random() > 0.5;

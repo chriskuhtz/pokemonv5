@@ -10,14 +10,7 @@ interface BaseBattleAction {
 		| 'SWITCH'
 		| 'ITEM'
 		| 'RUNAWAY_ATTEMPT'
-		| 'RUNAWAY_SUCCESS'
-		| 'RUNAWAY_FAILURE'
-		| 'TARGET_NOT_ON_FIELD'
 		| 'DEFEATED_TARGET'
-		| 'MISSED_ATTACK'
-		| 'NOT_VERY_EFFECTIVE'
-		| 'SUPER_EFFECTIVE'
-		| 'NO_EFFECT'
 		| 'HEALING_ITEM'
 		| 'FLINCH';
 }
@@ -31,9 +24,6 @@ interface BattleActionWithTarget extends BaseBattleAction {
 		| 'SWITCH'
 		| 'ITEM'
 		| 'DEFEATED_TARGET'
-		| 'NOT_VERY_EFFECTIVE'
-		| 'SUPER_EFFECTIVE'
-		| 'NO_EFFECT'
 		| 'SWITCH';
 
 	target: string;
