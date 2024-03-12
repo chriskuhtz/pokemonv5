@@ -9,4 +9,5 @@ export interface BattleEnvironment {
 	};
 	paydayCounter: number;
 	trainerId?: string;
+	battleRounds: number;
 }

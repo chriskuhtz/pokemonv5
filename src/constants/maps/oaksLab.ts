@@ -3,6 +3,7 @@ import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
 
 const mapId = 'oaks-lab';
 export const oaksLab: MapState = {
+	environment: 'building',
 	mapId,
 	height: 6,
 	width: 6,

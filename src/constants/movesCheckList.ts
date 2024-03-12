@@ -1,4 +1,4 @@
-const movesCheckList: {
+export const movesCheckList: {
 	name: string;
 	url: string;
 	todos?: string[];

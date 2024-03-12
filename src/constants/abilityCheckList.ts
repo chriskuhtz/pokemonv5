@@ -1,4 +1,4 @@
-export const abilities: {
+export const abilityCheckList: {
 	name: string;
 	url: string;
 	todos?: string[];
@@ -408,6 +408,6 @@ export const abilities: {
 	{ name: 'decoy', url: 'https://pokeapi.co/api/v2/ability/10059/' },
 	{ name: 'shield', url: 'https://pokeapi.co/api/v2/ability/10060/' },
 ];
-const abilityNames = abilities.map((a) => a.name);
+const abilityNames = abilityCheckList.map((a) => a.name);
 
 export type Ability = (typeof abilityNames)[number];

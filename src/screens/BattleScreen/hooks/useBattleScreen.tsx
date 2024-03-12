@@ -33,6 +33,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	const [environment, setEnvironment] = useState<BattleEnvironment>({
 		paydayCounter: 0,
 		trainerId: trainerId,
+		battleRounds: 0,
 	});
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
@@ -246,6 +247,10 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 					},
 				})),
 			});
+			setEnvironment((environment) => ({
+				...environment,
+				battleRounds: environment.battleRounds + 1,
+			}));
 		}
 	}, [mode, opponentSide, playerSide]);
 

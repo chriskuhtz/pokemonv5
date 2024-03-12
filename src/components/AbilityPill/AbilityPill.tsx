@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { useGetAbilityByNameQuery } from '../../api/pokeApi';
-import { Ability, abilities } from '../../constants/abilityCheckList';
+import { Ability, abilityCheckList } from '../../constants/abilityCheckList';
 import { Pill } from '../../ui_components/Pill/Pill';
 
 export const AbilityPill = ({ abilityName }: { abilityName: Ability }) => {
 	const { data } = useGetAbilityByNameQuery(abilityName);
 
 	const handled = useMemo(
-		() => abilities.find((a) => a.name === abilityName)?.handled,
+		() => abilityCheckList.find((a) => a.name === abilityName)?.handled,
 		[abilityName]
 	);
 	if (data) {

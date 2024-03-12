@@ -5,6 +5,7 @@ import { calculateLevelData } from '../../../../functions/calculateLevelData';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { addAudio } from '../../../../store/slices/audioSlice';
 import { useAppDispatch } from '../../../../store/storeHooks';
+import { Pill } from '../../../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../../../ErrorScreen/ErrorScreen';
 import { MoveSection } from '../MoveSection/MoveSection';
 import { NameAndSpriteSection } from '../NameAndSpriteSection/NameAndSpriteSection';
@@ -32,6 +33,16 @@ export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 					level={calculateLevelData(pokemon.xp).level}
 				/>
 				<AbilityPill abilityName={pokemon.ability} />
+				<Pill
+					leftSide={
+						<img
+							height={'60px'}
+							width={'60px'}
+							src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pokemon.ball}.png`}
+						/>
+					}
+					center={pokemon.ball}
+				/>
 				<div className="movesAndStats">
 					<MoveSection moves={pokemon.moves} />
 					<StatSection

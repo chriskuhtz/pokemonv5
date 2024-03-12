@@ -71,6 +71,7 @@ export const useCreateBattlePokemonFromData = () => {
 				evasiveness: 0,
 				ability: data.abilities[0].ability.name,
 				accuracyModifier: 0,
+				ball: 'poke-ball',
 			};
 		},
 		[getFirstFourMoves]

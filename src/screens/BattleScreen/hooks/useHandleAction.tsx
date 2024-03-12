@@ -9,6 +9,7 @@ import { determineCatchRate } from '../../../functions/determineCatchRate';
 import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
+import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
@@ -32,6 +33,7 @@ export const useHandleAction = (
 	environment: BattleEnvironment,
 	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>
 ) => {
+	const saveFile = useGetCurrentSaveFile();
 	const dispatch = useAppDispatch();
 
 	return useCallback(() => {
@@ -314,7 +316,15 @@ export const useHandleAction = (
 			//catch attempt
 			if (isCatchAttempt(action) && target) {
 				const successfullyCaught =
-					Math.random() < determineCatchRate(action.ball, target);
+					Math.random() <
+					determineCatchRate(
+						action.ball,
+						target,
+						environment.battleRounds,
+						!!saveFile?.pokedex.some(
+							(p) => p.status === 'owned' && p.dexId === target.dexId
+						)
+					);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -356,7 +366,10 @@ export const useHandleAction = (
 								nextAction: undefined,
 							};
 						}),
-						caught: [...playerSide.caught, target],
+						caught: [
+							...playerSide.caught,
+							{ ...target, ball: target.status?.ball ?? 'poke-ball' },
+						],
 					});
 					setOpponentSide({
 						...opponentSide,

@@ -1,4 +1,5 @@
 import { v4 } from 'uuid';
+import { EmptyInventory } from '../interfaces/Inventory';
 import { SaveFile } from '../interfaces/SaveFile';
 
 export const staticSaveData: SaveFile = {
@@ -48,17 +49,11 @@ export const staticSaveData: SaveFile = {
 		'bugCatcher-cisco': false,
 		'bugCatcher-nash': false,
 		'bugCatcher-ralph': false,
+		'berry-patch-item-1': false,
 	},
 	pokedex: [],
 	pokemon: [],
 	money: 5000,
-	inventory: {
-		'master-ball': 0,
-		'poke-ball': 0,
-		potion: 0,
-		repel: 0,
-		'great-ball': 0,
-		'ultra-ball': 0,
-	},
+	inventory: EmptyInventory,
 	gymBadges: { boulderBadge: false },
 };

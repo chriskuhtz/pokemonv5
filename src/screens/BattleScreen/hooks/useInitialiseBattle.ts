@@ -80,6 +80,7 @@ export const useInitialiseBattleSides = (
 				setEnvironment({
 					weather: { type: 'rain', duration: -1 },
 					paydayCounter: 0,
+					battleRounds: 0,
 				});
 				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
 			}

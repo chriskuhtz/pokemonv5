@@ -70,6 +70,8 @@ export const useLeaveBattle = (
 				...playerSide.caught.map((p, i) => ({
 					...p,
 					onTeam: numberOfPreviousTeamMembers + i < 6,
+					damage: p.ball === 'heal-ball' ? 0 : p.damage,
+					primaryAilment: p.ball === 'heal-ball' ? undefined : p.primaryAilment,
 				})),
 			].map((p) => {
 				return {

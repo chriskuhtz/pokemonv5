@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
 import { oaksLab } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
@@ -11,7 +12,6 @@ import {
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { berryPatch } from '../../constants/maps/berryPatch';
 
 export type BaseTileId =
 	| 'beach'
@@ -45,6 +45,14 @@ export interface MapState {
 	decorators: Decorator[];
 	mapId: string;
 	encounters: MapEncounter[];
+	environment:
+		| 'city'
+		| 'field'
+		| 'forest'
+		| 'water'
+		| 'cave'
+		| 'desert'
+		| 'building';
 }
 
 const mapsRecord: Record<string, MapState> = {

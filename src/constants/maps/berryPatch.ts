@@ -14,6 +14,7 @@ export const berryPatchEncounters: MapEncounter[] = [
 
 const mapId = 'berry-patch';
 export const berryPatch: MapState = {
+	environment: 'forest',
 	mapId,
 	height: 12,
 	width: 12,

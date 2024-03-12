@@ -12,6 +12,7 @@ export const starterTownEncounters: MapEncounter[] = [
 
 const mapId = 'starter-town';
 export const starterTown: MapState = {
+	environment: 'city',
 	mapId,
 	height: 25,
 	width: 9,
