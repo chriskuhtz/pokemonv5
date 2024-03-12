@@ -7,6 +7,9 @@ import { NotificationBanner } from './components/NotificationBanner/Notification
 import './index.css';
 import { router } from './router/router.tsx';
 import { store } from './store/store.ts';
+import { itemsCheckList } from './constants/itemsCheckList.ts';
+
+console.log('handled items', itemsCheckList.filter((i) => i.handled).length);
 
 export const size =
 	window.innerHeight > window.innerWidth

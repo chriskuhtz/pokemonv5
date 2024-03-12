@@ -3,6 +3,7 @@ import {
 	Npc,
 	Occupant,
 } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import { starterTownMerchant } from './uniqueOccupants/merchants';
 import {
 	berryPatchItem1,
 	starterTownItem1,
@@ -153,25 +154,7 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		sprite: '115',
 		questCondition: { id: 'talkToNurseJoy', status: 'active' },
 	},
-	'starter-town-merchant': {
-		id: 'starter-town-merchant',
-		type: 'MERCHANT',
-		position: {
-			y: 4,
-			x: 8,
-			mapId: 'starter-town',
-			orientation: 0,
-		},
-		inventory: {
-			potion: 1000,
-			'poke-ball': 1000,
-			repel: 1000,
-			'great-ball': 1000,
-			'ultra-ball': 1000,
-		},
-		dialogue: ['What do you need?'],
-		sprite: '113',
-	},
+	'starter-town-merchant': starterTownMerchant,
 	'starter-town-nurse': {
 		id: 'starter-town-nurse',
 		type: 'HEALER',
