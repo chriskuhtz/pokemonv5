@@ -12,6 +12,7 @@ export const starterTownMerchant: Merchant = {
 	inventory: {
 		potion: 1000,
 		'poke-ball': 1000,
+		antidote: 1000,
 	},
 	dialogue: ['What do you need?'],
 	sprite: '113',

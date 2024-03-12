@@ -25,6 +25,29 @@ export function isPokeball(x: string | undefined): x is PokeballType {
 	return (balltypes as unknown as string[]).includes(x ?? '');
 }
 
+export const healingItemTypes = [
+	'potion',
+	'super-potion',
+	'hyper-potion',
+	'max-potion',
+	'full-restore',
+	'full-heal',
+	'fresh-water',
+	'antidote',
+	'burn-heal',
+	'paralyze-heal',
+	'ice-heal',
+	'awakening',
+	'revive',
+	'max-revive',
+] as const;
+
+export type HealingItemType = (typeof healingItemTypes)[number];
+
+export function isHealingItem(x: string | undefined): x is HealingItemType {
+	return (healingItemTypes as unknown as string[]).includes(x ?? '');
+}
+
 export type Inventory = Record<ItemName, number>;
 
 export const EmptyInventory: Inventory = {
@@ -45,6 +68,19 @@ export const EmptyInventory: Inventory = {
 	'cherish-ball': 0,
 	potion: 0,
 	repel: 0,
+	antidote: 0,
+	'burn-heal': 0,
+	awakening: 0,
+	'ice-heal': 0,
+	'paralyze-heal': 0,
+	'full-restore': 0,
+	'hyper-potion': 0,
+	'max-potion': 0,
+	'super-potion': 0,
+	'full-heal': 0,
+	'max-revive': 0,
+	revive: 0,
+	'fresh-water': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

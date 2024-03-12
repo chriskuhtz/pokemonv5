@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { isHealingItem } from '../../../interfaces/Inventory';
 import { ItemData } from '../../../interfaces/ItemData';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { Modal } from '../../../ui_components/Modal/Modal';
@@ -21,7 +22,7 @@ export const ItemUsageModal = ({
 	const team = saveFile.pokemon.filter((p) => p.onTeam);
 	const applyItemToPokemon = useCallback(
 		async (pokemon: BattlePokemon, item: ItemData) => {
-			if (item.name === 'potion') {
+			if (isHealingItem(item.name)) {
 				await save({
 					inventoryChanges: { [`${item.name}`]: -1 },
 					pokemonUpdates: team.map((p) => {

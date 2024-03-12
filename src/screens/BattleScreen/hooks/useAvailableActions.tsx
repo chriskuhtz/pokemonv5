@@ -9,8 +9,6 @@ export const useAvailableActions = (
 	saveFile: SaveFile | undefined,
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
-
-	usedPotions: number,
 	trainerId: string | undefined,
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined
 ) => {
@@ -18,7 +16,6 @@ export const useAvailableActions = (
 		if (!saveFile || !playerSide || !opponentSide) {
 			return [];
 		}
-		const noMorePotions = usedPotions >= saveFile.inventory['potion'];
 
 		const switchTargets =
 			playerSide?.bench.filter((benchmon) =>
@@ -75,14 +72,10 @@ export const useAvailableActions = (
 			{
 				actionType: 'HEALING_ITEM',
 				displayName: (
-					<div style={{ display: 'flex', alignItems: 'center' }}>
-						use Potion (
-						{!noMorePotions && saveFile.inventory['potion'] - usedPotions})
-					</div>
+					<div style={{ display: 'flex', alignItems: 'center' }}>use Item</div>
 				),
 				disabled:
 					healingTargets.length <= 0 ||
-					noMorePotions ||
 					!!nextPlayerPokemonWithoutAction?.preparedMove,
 				availableTargets: healingTargets,
 			},
@@ -93,6 +86,5 @@ export const useAvailableActions = (
 		playerSide,
 		saveFile,
 		trainerId,
-		usedPotions,
 	]);
 };

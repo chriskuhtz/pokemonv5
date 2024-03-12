@@ -21,8 +21,6 @@ export const useCheckAndAssembleActions = (
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-
-	setUsedPotions: React.Dispatch<React.SetStateAction<number>>,
 	environment: BattleEnvironment
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
@@ -86,7 +84,6 @@ export const useCheckAndAssembleActions = (
 				return;
 			}
 			if (action?.type === 'HEALING_ITEM' && target) {
-				setUsedPotions((potions) => potions + 1);
 				dispatch(
 					//@ts-expect-error : See typecheck in condition
 					concatDialogue([`You gave a ${action.item} to ${target.name}`])
@@ -171,6 +168,5 @@ export const useCheckAndAssembleActions = (
 		pokemonWithActions,
 		setOpponentSide,
 		allPokemonOnBench,
-		setUsedPotions,
 	]);
 };

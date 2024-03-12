@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import {
 	BURN_DAMAGE_FACTOR,
 	PARA_CHANCE,
+	POISON_DAMAGE_FACTOR,
 	SANDSTORM_DAMAGE_FACTOR,
 	TRAP_DAMAGE_FACTOR,
 } from '../interfaces/Ailment';
@@ -57,6 +58,19 @@ export const applyAbilitiesWeatherAndAilments = (
 			damage:
 				updatedActor.damage +
 				Math.round(updatedActor.stats.hp * BURN_DAMAGE_FACTOR),
+		};
+	}
+	if (
+		updatedActor.primaryAilment?.type === 'poison' ||
+		updatedActor.primaryAilment?.type === 'toxic'
+	) {
+		dispatch(addNotification(`${actor.name} is hurt by poison`));
+		updatedActor = {
+			...updatedActor,
+			damage:
+				updatedActor.damage +
+				//TODO: implement toxic damage scale
+				Math.round(updatedActor.stats.hp * POISON_DAMAGE_FACTOR),
 		};
 	}
 	if (

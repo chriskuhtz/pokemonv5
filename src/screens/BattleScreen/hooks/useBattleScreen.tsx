@@ -31,7 +31,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
-	const [usedPotions, setUsedPotions] = useState<number>(0);
 	const [environment, setEnvironment] = useState<BattleEnvironment>({
 		paydayCounter: 0,
 		trainerId: trainerId,
@@ -50,7 +49,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		saveFile,
 		playerSide,
 		opponentSide,
-		usedPotions,
+
 		trainerId,
 		nextPlayerPokemonWithoutAction
 	);
@@ -109,7 +108,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		setPlayerSide,
 		playerSide,
 		opponentSide,
-		usedPotions,
 		environment,
 		trainerId
 	);
@@ -139,8 +137,6 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		mode,
 		setOpponentSide,
 		setPlayerSide,
-
-		setUsedPotions,
 		environment
 	);
 	//check to leave battle

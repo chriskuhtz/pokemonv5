@@ -1,4 +1,4 @@
-import { PokeballType } from './Inventory';
+import { HealingItemType, PokeballType } from './Inventory';
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
@@ -36,7 +36,7 @@ interface BattleAttackAction extends BaseBattleAction {
 }
 interface BattleItemAction extends BaseBattleAction {
 	type: 'HEALING_ITEM';
-	item: string;
+	item: HealingItemType;
 	target: string;
 }
 interface CatchAttempt extends BaseBattleAction {
@@ -93,4 +93,9 @@ export function isBattleAttack(
 }
 export function isCatchAttempt(x: BattleAction | undefined): x is CatchAttempt {
 	return !!(x && x.type === 'CATCH_ATTEMPT');
+}
+export function isBattleItemAction(
+	x: BattleAction | undefined
+): x is BattleItemAction {
+	return !!(x && x.type === 'HEALING_ITEM');
 }
