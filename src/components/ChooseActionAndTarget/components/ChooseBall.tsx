@@ -1,8 +1,8 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
 import {
-	PokeballType,
 	Inventory,
+	PokeballType,
 	isPokeball,
 } from '../../../interfaces/Inventory';
 import { Banner } from '../../../ui_components/Banner/Banner';
@@ -45,7 +45,7 @@ export const ChooseBall = ({
 											backgroundColor: 'var(--main-bg-color)',
 											borderColor: typeColors['normal'],
 										}}
-										key={key}
+										key={key + amount}
 										onClick={() => {
 											setBall(key);
 										}}

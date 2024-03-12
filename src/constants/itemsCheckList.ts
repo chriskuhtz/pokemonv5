@@ -9,8 +9,16 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/1/',
 		handled: true,
 	},
-	{ name: 'ultra-ball', url: 'https://pokeapi.co/api/v2/item/2/' },
-	{ name: 'great-ball', url: 'https://pokeapi.co/api/v2/item/3/' },
+	{
+		name: 'ultra-ball',
+		url: 'https://pokeapi.co/api/v2/item/2/',
+		handled: true,
+	},
+	{
+		name: 'great-ball',
+		url: 'https://pokeapi.co/api/v2/item/3/',
+		handled: true,
+	},
 	{
 		name: 'poke-ball',
 		url: 'https://pokeapi.co/api/v2/item/4/',

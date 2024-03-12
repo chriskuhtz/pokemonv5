@@ -52,6 +52,13 @@ export const staticSaveData: SaveFile = {
 	pokedex: [],
 	pokemon: [],
 	money: 5000,
-	inventory: { 'master-ball': 0, 'poke-ball': 0, potion: 0, repel: 0 },
+	inventory: {
+		'master-ball': 0,
+		'poke-ball': 0,
+		potion: 0,
+		repel: 0,
+		'great-ball': 0,
+		'ultra-ball': 0,
+	},
 	gymBadges: { boulderBadge: false },
 };

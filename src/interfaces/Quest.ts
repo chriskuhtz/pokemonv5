@@ -95,7 +95,7 @@ export const CatchAllStarterTownQuest: Quest = {
 	title: 'Catch all different Species in Starter Town',
 	description: 'A true Pokemon Master values all different pokemon',
 	rewardMoney: 100,
-	rewardItems: generateInventory({ 'poke-ball': 20 }),
+	rewardItems: generateInventory({ 'great-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
 		ids: starterTownEncounters.map((s) => s.dexId),
@@ -108,7 +108,7 @@ export const FindPikachuQuest: Quest = {
 	title: 'Find a Pikachu',
 	description: 'A young trainer asked you to find a pikachu',
 	rewardMoney: 100,
-	rewardItems: generateInventory({ repel: 5 }),
+	rewardItems: generateInventory({ 'ultra-ball': 5 }),
 	condition: {
 		type: 'OWNED_POKEMON',
 		ids: [25],

@@ -51,7 +51,7 @@ export interface Merchant extends BaseOccupant {
 	type: 'MERCHANT';
 	dialogue: string[];
 	sprite: string;
-	inventory: Inventory;
+	inventory: Partial<Inventory>;
 }
 export interface Healer extends BaseOccupant {
 	type: 'HEALER';
