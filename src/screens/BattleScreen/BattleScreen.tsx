@@ -88,10 +88,12 @@ export const BattleScreen = ({
 											{isBattleAttack(p.nextAction)
 												? p.nextAction.move.name
 												: p.nextAction.type}
-											<IoIosCloseCircle
-												style={{ height: '40px', width: '40px' }}
-												onClick={() => resetAction(p.id)}
-											/>
+											{!p.preparedMove && (
+												<IoIosCloseCircle
+													style={{ height: '40px', width: '40px' }}
+													onClick={() => resetAction(p.id)}
+												/>
+											)}
 										</div>
 									)
 								}

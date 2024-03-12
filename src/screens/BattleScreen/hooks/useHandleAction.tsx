@@ -132,7 +132,13 @@ export const useHandleAction = (
 							}),
 						bench: playerSide.bench
 							.filter((p) => p.id !== switchTarget.id)
-							.concat({ ...actor, nextAction: undefined }),
+							.concat({
+								...actor,
+								nextAction: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+							}),
 					});
 					setOpponentSide({
 						...opponentSide,
@@ -173,7 +179,13 @@ export const useHandleAction = (
 							}),
 						bench: opponentSide.bench
 							.filter((p) => p.id !== switchTarget.id)
-							.concat({ ...actor, nextAction: undefined }),
+							.concat({
+								...actor,
+								nextAction: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+							}),
 					});
 					setPlayerSide({
 						...playerSide,
