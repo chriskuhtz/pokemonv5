@@ -1,5 +1,6 @@
 import { MapEncounter, MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
+import { berryPatchToStarterTown } from './portals';
 
 export const berryPatchEncounters: MapEncounter[] = [
 	{ xp: 100, dexId: 10, rarity: 3 },
@@ -31,15 +32,7 @@ export const berryPatch: MapState = {
 		)
 	),
 	decorators: [
-		{
-			sprite: '',
-			x: 0,
-			y: 6,
-			onStep: {
-				type: 'PORTAL',
-				to: { mapId: 'starter-town', x: 8, y: 9, orientation: 1 },
-			},
-		},
+		berryPatchToStarterTown,
 		//y 0
 		{ x: 0, y: 0, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 0, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },

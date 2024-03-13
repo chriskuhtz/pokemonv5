@@ -1,5 +1,6 @@
 import { MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
+import { brocksGymToStarterTown } from './portals';
 
 const mapId = 'brocks-gym';
 export const brocksGym: MapState = {
@@ -14,17 +15,7 @@ export const brocksGym: MapState = {
 			(entry) => entry[1].position.mapId === mapId
 		)
 	),
-	decorators: [
-		{
-			sprite: 'doormat',
-			x: 4,
-			y: 14,
-			onStep: {
-				type: 'PORTAL',
-				to: { mapId: 'starter-town', x: 5, y: 24, orientation: 0 },
-			},
-		},
-	],
+	decorators: [brocksGymToStarterTown],
 	obstacles: [
 		{
 			type: 'LARGE_OBSTACLE',

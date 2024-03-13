@@ -1,5 +1,11 @@
 import { MapEncounter, MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
+import {
+	starterTownToBerryPatch,
+	starterTownToBrockLeft,
+	starterTownToBrockRight,
+	starterTownToOaksLab,
+} from './portals';
 export const starterTownEncounters: MapEncounter[] = [
 	{ xp: 60, dexId: 19, rarity: 2 },
 	{ xp: 60, dexId: 17, rarity: 1, customMoves: ['steel-wing'] },
@@ -24,42 +30,10 @@ export const starterTown: MapState = {
 	width: 9,
 	baseTile: { id: 'grass', pattern: 'random5' },
 	decorators: [
-		{
-			x: 5,
-			y: 3,
-			sprite: '',
-			onStep: {
-				type: 'PORTAL',
-				to: { orientation: 3, mapId: 'oaks-lab', y: 4, x: 2 },
-			},
-		},
-		{
-			x: 6,
-			y: 23,
-			sprite: '',
-			onStep: {
-				type: 'PORTAL',
-				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
-			},
-		},
-		{
-			x: 5,
-			y: 23,
-			sprite: '',
-			onStep: {
-				type: 'PORTAL',
-				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
-			},
-		},
-		{
-			sprite: '',
-			x: 8,
-			y: 9,
-			onStep: {
-				type: 'PORTAL',
-				to: { mapId: 'berry-patch', x: 0, y: 6, orientation: 2 },
-			},
-		},
+		starterTownToOaksLab,
+		starterTownToBrockLeft,
+		starterTownToBrockRight,
+		starterTownToBerryPatch,
 		{ x: 0, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
