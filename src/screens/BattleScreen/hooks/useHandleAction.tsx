@@ -211,6 +211,38 @@ export const useHandleAction = (
 				}
 				return;
 			}
+			//flinch
+			if (action?.type === 'FLINCH') {
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
 			//Healing Item
 			if (isBattleItemAction(action) && target) {
 				if (actor.side === 'PLAYER') {
