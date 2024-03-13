@@ -81,7 +81,7 @@ export const brocksMinion: Trainer = {
 	sprite: '093',
 	team: [
 		{ dexId: 524, xp: 400 },
-		{ dexId: 299, xp: 400 },
+		{ dexId: 299, xp: 700 },
 	],
 	activePokemonPerside: 2,
 	rewardMoney: 500,
@@ -91,7 +91,7 @@ export const brocksMinion2: Trainer = {
 	id: 'brocks-minion2',
 	type: 'TRAINER',
 	position: {
-		y: 4,
+		y: 5,
 		x: 3,
 		mapId: 'brocks-gym',
 		orientation: 2,
@@ -99,7 +99,13 @@ export const brocksMinion2: Trainer = {
 	dialogue: ['Lets see how tough you are!'],
 	dialogueAfterDefeat: ['Tougher than me!'],
 	sprite: SpriteEnum.youngster2,
-	team: [{ dexId: 744, xp: 400 }],
+	team: [
+		{
+			dexId: 744,
+			xp: 1000,
+			customMoves: ['accelerock', 'swords-dance', 'accelerock', 'swords-dance'],
+		},
+	],
 	activePokemonPerside: 1,
 	rewardMoney: 500,
 	viewRange: 3,
