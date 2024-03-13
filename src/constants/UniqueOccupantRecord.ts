@@ -1,6 +1,23 @@
-import { generateInventory } from '../interfaces/Inventory';
 import { SpriteEnum } from '../interfaces/SpriteEnum';
-import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import {
+	Npc,
+	Occupant,
+} from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import { starterTownMerchant } from './uniqueOccupants/merchants';
+import {
+	berryPatchItem1,
+	starterTownItem1,
+} from './uniqueOccupants/overworldItems';
+import {
+	brock,
+	brocksMinion,
+	brocksMinion2,
+	bugcatcherBarry,
+	bugcatcherCisco,
+	bugcatcherNash,
+	bugcatcherRalph,
+	youngsterJimmy,
+} from './uniqueOccupants/trainers';
 
 //every occupant that can be handled should be unique
 export type UniqueOccupantIds =
@@ -16,118 +33,43 @@ export type UniqueOccupantIds =
 	| 'youngster-jimmy'
 	| 'brock'
 	| 'brocks-minion'
+	| 'brocks-minion2'
 	| 'youngster-jimmy-blocker'
 	| 'oaks-assistant'
-	| 'pikachu-fan';
+	| 'pikachu-fan'
+	| 'bugCatcher-barry'
+	| 'bugCatcher-nash'
+	| 'bugCatcher-ralph'
+	| 'bugCatcher-cisco'
+	| 'berry-patch-item-1';
+
+export const youngsterJimmyBlocker: Npc = {
+	id: 'youngster-jimmy-blocker',
+	type: 'NPC',
+	position: {
+		y: 8,
+		x: 4,
+		mapId: 'starter-town',
+		orientation: 3,
+	},
+	dialogue: [
+		'You should talk to the Professor and Nurse Joy before heading into the wilderness',
+	],
+	sprite: '093',
+	questCondition: {
+		id: 'talkToNurseJoy',
+		status: 'completed',
+		negate: true,
+	},
+};
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
-	'youngster-jimmy': {
-		id: 'youngster-jimmy',
-		type: 'TRAINER',
-		position: {
-			y: 7,
-			x: 3,
-			mapId: 'starter-town',
-			orientation: 2,
-		},
-		dialogue: ['Think you got what it takes, Big Dog?'],
-		dialogueAfterDefeat: [
-			'You definitely got it, Large Canine.',
-			'Maybe you could even beat Brock.',
-		],
-		sprite: '093',
-		team: [
-			{ dexId: 399, xp: 40 },
-			{ dexId: 13, xp: 40 },
-		],
-		activePokemonPerside: 1,
-		questCondition: {
-			id: 'talkToNurseJoy',
-			status: 'completed',
-		},
-		rewardMoney: 300,
-		viewRange: 1,
-	},
-	'youngster-jimmy-blocker': {
-		id: 'youngster-jimmy-blocker',
-		type: 'NPC',
-		position: {
-			y: 8,
-			x: 4,
-			mapId: 'starter-town',
-			orientation: 3,
-		},
-		dialogue: [
-			'You should talk to the Professor and Nurse Joy before heading into the wilderness',
-		],
-		sprite: '093',
-		questCondition: {
-			id: 'talkToNurseJoy',
-			status: 'completed',
-			negate: true,
-		},
-	},
-	brock: {
-		id: 'brock',
-		type: 'TRAINER',
-		position: {
-			y: 1,
-			x: 4,
-			mapId: 'brocks-gym',
-			orientation: 0,
-		},
-		dialogue: [
-			'I am Brock, the Gym Leader of this area.',
-			'My speciality are Rock Pokemon.',
-			'As Gym Leader, it is my responsibility to test the new trainers that come through here.',
-			'Should you defeat me, i will award you the Rock Badge.',
-			'Badges are a sign of your skill as a Pokemon trainer.',
-			'You should travel far and wide to collect them all.',
-			'But first, you need to get past me and Onix!',
-		],
-		dialogueAfterDefeat: [
-			'You have proven yourself worthy.',
-			'I wish you good fortune in your travels.',
-			'Seek out new experiences and places to grow stronger.',
-			'Take this Stone Badge as a sign of your victory.',
-		],
-		sprite: SpriteEnum['brock'],
-		team: [{ dexId: 95, xp: 1000 }],
-		activePokemonPerside: 1,
-		rewardMoney: 4000,
-		rewardBadge: 'stoneBadge',
-	},
-	'brocks-minion': {
-		id: 'brocks-minion',
-		type: 'TRAINER',
-		position: {
-			y: 3,
-			x: 6,
-			mapId: 'brocks-gym',
-			orientation: 1,
-		},
-		dialogue: ['Go, my Rock Pokemon!'],
-		dialogueAfterDefeat: ['Damn, you are too good!'],
-		sprite: '093',
-		team: [
-			{ dexId: 524, xp: 400 },
-			{ dexId: 299, xp: 400 },
-		],
-		activePokemonPerside: 2,
-		rewardMoney: 500,
-		viewRange: 2,
-	},
-	'starter-town-item-1': {
-		id: 'starter-town-item-1',
-		type: 'ITEM',
-		inventory: generateInventory({ repel: 7 }),
-		position: {
-			y: 7,
-			x: 0,
-			mapId: 'starter-town',
-			orientation: 0,
-		},
-	},
+	'youngster-jimmy': youngsterJimmy,
+	'youngster-jimmy-blocker': youngsterJimmyBlocker,
+	brock,
+	'brocks-minion': brocksMinion,
+	'brocks-minion2': brocksMinion2,
+	'starter-town-item-1': starterTownItem1,
 	'oak-before-selection': {
 		id: 'oak-before-selection',
 		type: 'NPC',
@@ -207,23 +149,12 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 		questUpdates: {
 			talkToNurseJoy: 'completed',
 			secondPokemon: 'active',
+			catchAllStarterTown: 'active',
 		},
 		sprite: '115',
 		questCondition: { id: 'talkToNurseJoy', status: 'active' },
 	},
-	'starter-town-merchant': {
-		id: 'starter-town-merchant',
-		type: 'MERCHANT',
-		position: {
-			y: 4,
-			x: 8,
-			mapId: 'starter-town',
-			orientation: 0,
-		},
-		inventory: { potion: 100, 'poke-ball': 100, repel: 100 },
-		dialogue: ['What do you need?'],
-		sprite: '113',
-	},
+	'starter-town-merchant': starterTownMerchant,
 	'starter-town-nurse': {
 		id: 'starter-town-nurse',
 		type: 'HEALER',
@@ -304,4 +235,9 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 			findPikachu: 'active',
 		},
 	},
+	'bugCatcher-barry': bugcatcherBarry,
+	'bugCatcher-cisco': bugcatcherCisco,
+	'bugCatcher-nash': bugcatcherNash,
+	'bugCatcher-ralph': bugcatcherRalph,
+	'berry-patch-item-1': berryPatchItem1,
 };

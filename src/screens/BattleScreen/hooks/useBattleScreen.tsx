@@ -1,13 +1,12 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
 import { assignPriority } from '../../../functions/assignPriority';
-import { BattleAction } from '../../../interfaces/BattleAction';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { MoveDto } from '../../../interfaces/Move';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
-import { MapEncounter } from '../../../store/slices/MapSlice';
+import { MapEncounter, MapEnvironment } from '../../../store/slices/MapSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
@@ -17,29 +16,27 @@ import { useHandleAction } from './useHandleAction';
 import { useInitialiseBattleSides } from './useInitialiseBattle';
 import { useLeaveBattle } from './useLeaveBattle';
 
-export interface SelectableAction {
-	actionType: BattleAction['type'];
-	displayName: ReactNode;
-	move?: MoveDto;
-	disabled: boolean;
-	availableTargets: BattlePokemon[];
-}
-
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
 	trainerId?: UniqueOccupantIds;
 	activePokemonPerSide: number;
+	outside: MapEnvironment;
 }
 export const useBattleScreen = (saveFile: SaveFile) => {
 	const dispatch = useAppDispatch();
 	const { state } = useLocation();
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
-	const { trainerId, activePokemonPerSide } = state as BattleScreenProps;
+	const { trainerId, activePokemonPerSide, outside } =
+		state as BattleScreenProps;
 
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
-	const [usedBalls, setUsedBalls] = useState<number>(0);
-	const [usedPotions, setUsedPotions] = useState<number>(0);
+	const [environment, setEnvironment] = useState<BattleEnvironment>({
+		paydayCounter: 0,
+		trainerId: trainerId,
+		battleRounds: 0,
+		outside: outside,
+	});
 
 	const [mode, setMode] = useState<BattleMode>('COLLECTING');
 
@@ -52,8 +49,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		saveFile,
 		playerSide,
 		opponentSide,
-		usedBalls,
-		usedPotions,
+
 		trainerId,
 		nextPlayerPokemonWithoutAction
 	);
@@ -108,10 +104,11 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	);
 	//leave Battle
 	const leaveBattle = useLeaveBattle(
+		setOpponentSide,
+		setPlayerSide,
 		playerSide,
 		opponentSide,
-		usedBalls,
-		usedPotions,
+		environment,
 		trainerId
 	);
 	//handle action
@@ -121,13 +118,16 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		pokemonWithActions,
 		setPlayerSide,
 		setOpponentSide,
-		leaveBattle
+		leaveBattle,
+		environment,
+		setEnvironment
 	);
 	//initialise Battle
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
 		saveFile,
 		setPlayerSide,
-		setOpponentSide
+		setOpponentSide,
+		setEnvironment
 	);
 	//assemble actions
 	useCheckAndAssembleActions(
@@ -136,8 +136,8 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		pokemonWithActions,
 		mode,
 		setOpponentSide,
-		setUsedBalls,
-		setUsedPotions
+		setPlayerSide,
+		environment
 	);
 	//check to leave battle
 	useEffect(() => {
@@ -156,7 +156,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 			void leaveBattle('WIN');
 		}
 	}, [leaveBattle, opponentSide, playerSide]);
-	//set Mode to executing
+	//set Mode to handling environment
 	useEffect(() => {
 		if (
 			mode === 'COLLECTING' &&
@@ -167,6 +167,21 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 			opponentSide.field.length > 0 &&
 			opponentSide.field.every((p) => p.nextAction)
 		) {
+			if (environment.weather || environment.terrain) {
+				setEnvironment((environment) => {
+					const updatedWeather = environment.weather
+						? {
+								...environment.weather,
+								duration: environment.weather.duration - 1,
+						  }
+						: undefined;
+					if (updatedWeather?.duration === 0) {
+						return { ...environment, weather: undefined };
+					} else return { ...environment, weather: updatedWeather };
+				});
+				setMode('HANDLING_ENVIRONMENT');
+				return;
+			}
 			setMode('EXECUTING');
 		}
 	}, [mode, opponentSide, playerSide]);
@@ -225,10 +240,16 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 					nextAction: {
 						type: 'ATTACK',
 						target: optimalTarget,
-						move: p.moves[Math.floor(Math.random() * p.moves.length)],
+						move:
+							p.moves.find((m) => m.name === p.preparedMove?.moveName) ??
+							p.moves[Math.floor(Math.random() * p.moves.length)],
 					},
 				})),
 			});
+			setEnvironment((environment) => ({
+				...environment,
+				battleRounds: environment.battleRounds + 1,
+			}));
 		}
 	}, [mode, opponentSide, playerSide]);
 
@@ -247,5 +268,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		setMode,
 		activePokemonPerside: activePokemonPerSide,
 		setPlayerSide,
+		environment,
+		setEnvironment,
 	};
 };

@@ -1,4 +1,7 @@
-import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
+import {
+	UniqueOccupantIds,
+	UniqueOccupantRecord,
+} from '../constants/UniqueOccupantRecord';
 import { starterTownEncounters } from '../constants/maps/starterTown';
 import { Inventory, generateInventory } from './Inventory';
 
@@ -15,8 +18,8 @@ export interface NotRegisteredPokemonCondition {
 	conditionFailMessage?: string;
 }
 export interface HandledOccupantCondition {
-	type: 'HANDLED_OCCUPANT';
-	id: UniqueOccupantIds;
+	type: 'HANDLED_OCCUPANTS';
+	ids: UniqueOccupantIds[];
 	conditionFailMessage?: string;
 }
 
@@ -42,6 +45,8 @@ export const questNames = [
 	'talkToNurseJoy',
 	'secondPokemon',
 	'findPikachu',
+	'catchAllStarterTown',
+	'defeatAllTrainers',
 ] as const;
 
 export type QuestName = (typeof questNames)[number];
@@ -67,8 +72,8 @@ export const TalkToNurseJoyQuest: Quest = {
 	rewardMoney: 100,
 	rewardItems: generateInventory({ potion: 5 }),
 	condition: {
-		type: 'HANDLED_OCCUPANT',
-		id: 'starter-town-nurse-quest',
+		type: 'HANDLED_OCCUPANTS',
+		ids: ['starter-town-nurse-quest'],
 	},
 };
 export const SecondPokemonQuest: Quest = {
@@ -80,8 +85,21 @@ export const SecondPokemonQuest: Quest = {
 	rewardItems: generateInventory({ 'poke-ball': 5 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: starterTownEncounters,
+		ids: starterTownEncounters.map((s) => s.dexId),
 		mode: 'SOME',
+	},
+};
+export const CatchAllStarterTownQuest: Quest = {
+	status: 'inactive',
+	id: 'catchAllStarterTown',
+	title: 'Catch all different Species in Starter Town',
+	description: 'A true Pokemon Master values all different pokemon',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ 'great-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: starterTownEncounters.map((s) => s.dexId),
+		mode: 'ALL',
 	},
 };
 export const FindPikachuQuest: Quest = {
@@ -90,11 +108,25 @@ export const FindPikachuQuest: Quest = {
 	title: 'Find a Pikachu',
 	description: 'A young trainer asked you to find a pikachu',
 	rewardMoney: 100,
-	rewardItems: generateInventory({ repel: 5 }),
+	rewardItems: generateInventory({ 'ultra-ball': 5 }),
 	condition: {
 		type: 'OWNED_POKEMON',
 		ids: [25],
 		mode: 'SOME',
+	},
+};
+export const DefeatAllTrainersQuest: Quest = {
+	status: 'inactive',
+	id: 'defeatAllTrainers',
+	title: 'Defeat all Trainers',
+	description: 'Its the only way to prove you are the best.',
+	rewardMoney: 10000,
+	rewardItems: generateInventory({ potion: 5 }),
+	condition: {
+		type: 'HANDLED_OCCUPANTS',
+		ids: Object.values(UniqueOccupantRecord)
+			.filter((occupant) => occupant.type === 'TRAINER')
+			.map((o) => o.id) as UniqueOccupantIds[],
 	},
 };
 
@@ -103,4 +135,6 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	talkToNurseJoy: TalkToNurseJoyQuest,
 	secondPokemon: SecondPokemonQuest,
 	findPikachu: FindPikachuQuest,
+	catchAllStarterTown: CatchAllStarterTownQuest,
+	defeatAllTrainers: DefeatAllTrainersQuest,
 };

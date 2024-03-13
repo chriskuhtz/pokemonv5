@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 import { useOverworldEvent } from '../../../hooks/useOverworldEvent';
+import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { selectDecoratorAtNextCoordinatess } from '../../../store/selectors/combination/selectDecoratorAtCurrentPosition';
 import { selectNextCoordinates } from '../../../store/selectors/combination/selectNextCoordinates';
 import { selectOccupantAtNextCoordinates } from '../../../store/selectors/combination/selectOccupantAtNextCoordinates';
@@ -14,6 +14,10 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 
 export const useUpdatePosition = () => {
+	const saveFile = useGetCurrentSaveFile();
+	const stinky = useMemo(() => {
+		return saveFile?.pokemon.filter((p) => p.onTeam)[0]?.ability === 'stench';
+	}, [saveFile]);
 	const position = useSelector(selectPosition);
 	const dispatch = useAppDispatch();
 	const nextOrientation = useAppSelector(selectNextOrientation);
@@ -37,23 +41,45 @@ export const useUpdatePosition = () => {
 			dispatch(updatePosition({ ...position, orientation: nextOrientation }));
 			return;
 		}
+
 		if (decorator?.onStep) {
-			const random = Math.random();
+			const encounterThreshold = Math.random() + (stinky ? 0.5 : 0);
 			if (
 				decorator?.onStep?.type === 'PORTAL' ||
 				decorator?.onStep?.type === 'SPOTTED'
 			) {
+				dispatch(
+					updatePosition({
+						...position,
+						x: decorator.x,
+						y: decorator.y,
+					})
+				);
+				dispatch(stopWalking());
+
 				handleEvent(decorator.onStep);
+				return;
 			}
-			if (decorator?.onStep?.type === 'ENCOUNTER' && encounterChance < random) {
+			if (
+				decorator?.onStep?.type === 'ENCOUNTER' &&
+				encounterChance <= encounterThreshold
+			) {
 				setEncounterChance(encounterChance + 0.05);
 			}
 			if (
-				(decorator?.onStep?.type === 'ENCOUNTER' && encounterChance > random) ||
+				(decorator?.onStep?.type === 'ENCOUNTER' &&
+					encounterChance > encounterThreshold) ||
 				decorator?.onStep?.type !== 'ENCOUNTER'
 			) {
-				dispatch(stopWalking());
 				handleEvent(decorator.onStep);
+				dispatch(
+					updatePosition({
+						...position,
+						x: decorator.x,
+						y: decorator.y,
+					})
+				);
+				dispatch(stopWalking());
 				return;
 			}
 		}

@@ -2,15 +2,13 @@ import { useMemo } from 'react';
 import { isBattleActionWithTarget } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
+import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { BattleSide } from '../BattleScreen';
-import { SelectableAction } from './useBattleScreen';
 
 export const useAvailableActions = (
 	saveFile: SaveFile | undefined,
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
-	usedBalls: number,
-	usedPotions: number,
 	trainerId: string | undefined,
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined
 ) => {
@@ -18,9 +16,6 @@ export const useAvailableActions = (
 		if (!saveFile || !playerSide || !opponentSide) {
 			return [];
 		}
-		const noMorePokeBalls =
-			usedBalls >= saveFile.inventory['poke-ball'] || !!trainerId;
-		const noMorePotions = usedPotions >= saveFile.inventory['potion'];
 
 		const switchTargets =
 			playerSide?.bench.filter((benchmon) =>
@@ -31,7 +26,13 @@ export const useAvailableActions = (
 							fieldmon.nextAction.target !== benchmon.id)
 				)
 			) ?? [];
-		const healingTargets = playerSide.field.filter((p) => p.damage > 0);
+		const healingTargets = playerSide.field.filter(
+			(p) =>
+				p.damage > 0 ||
+				p.primaryAilment ||
+				(p.secondaryAilments && p.secondaryAilments.length > 0)
+		);
+		const revivalTargets = playerSide.defeated;
 		return [
 			//ATTACK
 			{
@@ -49,7 +50,7 @@ export const useAvailableActions = (
 			{
 				actionType: 'RUNAWAY_ATTEMPT',
 				displayName: 'Run Away',
-				disabled: !!trainerId,
+				disabled: !!trainerId || !!nextPlayerPokemonWithoutAction?.preparedMove,
 				availableTargets: [],
 			},
 			//CATCH
@@ -57,29 +58,32 @@ export const useAvailableActions = (
 				actionType: 'CATCH_ATTEMPT',
 				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
-						Throw Pokeball (
-						{!noMorePokeBalls && saveFile.inventory['poke-ball'] - usedBalls})
+						Throw Pokeball
 					</div>
 				),
-				disabled: noMorePokeBalls,
+				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove || !!trainerId,
 				availableTargets: opponentSide.field,
 			},
 			{
 				actionType: 'SWITCH',
 				displayName: 'Switch',
-				disabled: switchTargets.length <= 0,
+				disabled:
+					switchTargets.length <= 0 ||
+					!!nextPlayerPokemonWithoutAction?.preparedMove ||
+					!!nextPlayerPokemonWithoutAction?.secondaryAilments?.some(
+						(a) => a.type === 'trap'
+					),
 				availableTargets: switchTargets,
 			},
 			{
 				actionType: 'HEALING_ITEM',
 				displayName: (
-					<div style={{ display: 'flex', alignItems: 'center' }}>
-						use Potion (
-						{!noMorePotions && saveFile.inventory['potion'] - usedBalls})
-					</div>
+					<div style={{ display: 'flex', alignItems: 'center' }}>use Item</div>
 				),
-				disabled: healingTargets.length <= 0 || noMorePotions,
-				availableTargets: healingTargets,
+				disabled:
+					(healingTargets.length <= 0 && revivalTargets.length <= 0) ||
+					!!nextPlayerPokemonWithoutAction?.preparedMove,
+				availableTargets: [...healingTargets, ...revivalTargets],
 			},
 		];
 	}, [
@@ -88,7 +92,5 @@ export const useAvailableActions = (
 		playerSide,
 		saveFile,
 		trainerId,
-		usedBalls,
-		usedPotions,
 	]);
 };

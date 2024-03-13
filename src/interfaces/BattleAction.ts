@@ -1,3 +1,4 @@
+import { HealingItemType, PokeballType } from './Inventory';
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
@@ -10,15 +11,9 @@ interface BaseBattleAction {
 		| 'SWITCH'
 		| 'ITEM'
 		| 'RUNAWAY_ATTEMPT'
-		| 'RUNAWAY_SUCCESS'
-		| 'RUNAWAY_FAILURE'
-		| 'TARGET_NOT_ON_FIELD'
 		| 'DEFEATED_TARGET'
-		| 'MISSED_ATTACK'
-		| 'NOT_VERY_EFFECTIVE'
-		| 'SUPER_EFFECTIVE'
-		| 'NO_EFFECT'
-		| 'HEALING_ITEM';
+		| 'HEALING_ITEM'
+		| 'FLINCH';
 }
 
 interface BattleActionWithTarget extends BaseBattleAction {
@@ -30,9 +25,6 @@ interface BattleActionWithTarget extends BaseBattleAction {
 		| 'SWITCH'
 		| 'ITEM'
 		| 'DEFEATED_TARGET'
-		| 'NOT_VERY_EFFECTIVE'
-		| 'SUPER_EFFECTIVE'
-		| 'NO_EFFECT'
 		| 'SWITCH';
 
 	target: string;
@@ -44,14 +36,20 @@ interface BattleAttackAction extends BaseBattleAction {
 }
 interface BattleItemAction extends BaseBattleAction {
 	type: 'HEALING_ITEM';
-	item: string;
+	item: HealingItemType;
+	target: string;
+}
+interface CatchAttempt extends BaseBattleAction {
+	type: 'CATCH_ATTEMPT';
+	ball: PokeballType;
 	target: string;
 }
 export type BattleAction =
 	| BaseBattleAction
 	| BattleAttackAction
 	| BattleActionWithTarget
-	| BattleItemAction;
+	| BattleItemAction
+	| CatchAttempt;
 
 export function isBattleActionWithTarget(
 	x: BattleAction | undefined
@@ -74,8 +72,30 @@ export function isBattleActionWithTarget(
 	);
 }
 
+export function isPrimaryAction(x: BattleAction | undefined): boolean {
+	return !!(
+		x &&
+		[
+			'CATCH_ATTEMPT',
+			'ATTACK',
+			'ITEM',
+			'RUNAWAY_ATTEMPT',
+			'HEALING_ITEM',
+			'FLINCH',
+		].includes(x?.type)
+	);
+}
+
 export function isBattleAttack(
 	x: BattleAction | undefined
 ): x is BattleAttackAction {
 	return !!(x && x.type === 'ATTACK');
+}
+export function isCatchAttempt(x: BattleAction | undefined): x is CatchAttempt {
+	return !!(x && x.type === 'CATCH_ATTEMPT');
+}
+export function isBattleItemAction(
+	x: BattleAction | undefined
+): x is BattleItemAction {
+	return !!(x && x.type === 'HEALING_ITEM');
 }

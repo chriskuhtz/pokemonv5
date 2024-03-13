@@ -3,6 +3,7 @@ import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
 
 const mapId = 'brocks-gym';
 export const brocksGym: MapState = {
+	environment: 'building',
 	mapId,
 	height: 15,
 	width: 9,

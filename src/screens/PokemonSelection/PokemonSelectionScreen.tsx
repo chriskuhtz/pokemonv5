@@ -65,6 +65,8 @@ export const PokemonSelectionScreen = ({
 											moveNames: (
 												await getFirstFourMoves(c, 'level-up')
 											).map((move) => move.name),
+											ability: pokemon.abilities[0].ability.name,
+											ball: 'luxury-ball',
 										},
 									],
 									dexUpdates: choices.map((choice) => {

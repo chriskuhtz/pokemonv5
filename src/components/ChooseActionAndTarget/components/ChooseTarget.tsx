@@ -1,10 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
+import { canBenefitFromItem } from '../../../functions/applyHealingItemToPokemon';
 import {
 	BattleAction,
 	isBattleActionWithTarget,
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { HealingItemType, PokeballType } from '../../../interfaces/Inventory';
 import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
@@ -13,10 +16,14 @@ export const ChooseTarget = ({
 	selectAction,
 	actionName,
 	move,
+	ball,
+	item,
 	actor,
 }: {
 	actionName: BattleAction['type'];
 	move?: MoveDto;
+	ball?: PokeballType;
+	item?: HealingItemType;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
@@ -33,7 +40,14 @@ export const ChooseTarget = ({
 			return {
 				type: actionName,
 				target: c.id,
-				item: 'potion',
+				item: item,
+			};
+		}
+		if (actionName === 'CATCH_ATTEMPT') {
+			return {
+				type: actionName,
+				target: c.id,
+				ball: ball,
 			};
 		}
 		if (
@@ -50,6 +64,20 @@ export const ChooseTarget = ({
 
 		return { type: actionName };
 	};
+
+	useEffect(() => {
+		if (
+			availableTargets.length === 1 &&
+			actionName !== 'SWITCH' &&
+			actionName !== 'HEALING_ITEM'
+		) {
+			selectAction({
+				...actor,
+				nextAction: determineNextAction(availableTargets[0]),
+			});
+		}
+	}, []);
+
 	if (actionName) {
 		return (
 			<Banner
@@ -65,6 +93,7 @@ export const ChooseTarget = ({
 										backgroundColor: 'var(--main-bg-color)',
 									}}
 									key={c.id}
+									disabled={item && !canBenefitFromItem(c, item)}
 									onClick={() => {
 										selectAction({
 											...actor,

@@ -1,27 +1,42 @@
 import { useEffect, useState } from 'react';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
+import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
+import {
+	HealingItemType,
+	Inventory,
+	PokeballType,
+} from '../../interfaces/Inventory';
 import { MoveDto } from '../../interfaces/Move';
-import { SelectableAction } from '../../screens/BattleScreen/hooks/useBattleScreen';
+import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
+import { ChooseBall } from './components/ChooseBall';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
+import { ChooseItem } from './components/ChooseItem';
 
 export const ChooseActionAndTarget = ({
 	actor,
 	availableActions,
 	selectAction,
+	pokemonOnField,
+	inventory,
 }: {
 	actor: BattlePokemon;
 	availableActions: SelectableAction[];
 	selectAction: (updatedActor: BattlePokemon) => void;
+	pokemonOnField: BattlePokemon[];
+	inventory: Inventory;
 }): JSX.Element => {
 	const [actionName, setActionName] = useState<
 		BattleAction['type'] | undefined
 	>();
 	const [move, setMove] = useState<MoveDto | undefined>();
+	const [ball, setBall] = useState<PokeballType | undefined>();
+	const [item, setItem] = useState<HealingItemType | undefined>();
 
+	//no target needed for runAway
 	useEffect(() => {
 		if (actionName === 'RUNAWAY_ATTEMPT') {
 			selectAction({
@@ -31,6 +46,23 @@ export const ChooseActionAndTarget = ({
 			setActionName(undefined);
 		}
 	}, [actionName, actor, selectAction]);
+
+	//auto select target for prepared move
+	useEffect(() => {
+		const move = actor.moves.find(
+			(m) => m.name === actor.preparedMove?.moveName
+		);
+		if (move) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'ATTACK',
+					move,
+					target: actor.preparedMove?.targetId,
+				},
+			});
+		}
+	}, []);
 
 	if (!actionName) {
 		return (
@@ -55,10 +87,38 @@ export const ChooseActionAndTarget = ({
 				availableMoves={actor.moves.map((m) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
-					disabled: false,
+					disabled: isMoveDisabled(actor, pokemonOnField, m),
 					move: m,
 					availableTargets: [],
 				}))}
+			/>
+		);
+	}
+	if (actionName === 'CATCH_ATTEMPT' && !ball) {
+		return (
+			<ChooseBall
+				open={actionName === 'CATCH_ATTEMPT'}
+				setBall={setBall}
+				inventory={inventory}
+				resetActor={() => {
+					setActionName(undefined);
+				}}
+			/>
+		);
+	}
+	if (actionName === 'HEALING_ITEM' && !item) {
+		return (
+			<ChooseItem
+				open={actionName === 'HEALING_ITEM'}
+				setItem={setItem}
+				inventory={inventory}
+				resetActor={() => {
+					setActionName(undefined);
+				}}
+				availableTargets={
+					availableActions.find((a) => a.actionType === actionName)
+						?.availableTargets ?? []
+				}
 			/>
 		);
 	}
@@ -67,10 +127,14 @@ export const ChooseActionAndTarget = ({
 		<ChooseTarget
 			actionName={actionName}
 			move={move}
+			ball={ball}
+			item={item}
 			selectAction={(x) => {
 				selectAction(x);
 				setActionName(undefined);
 				setMove(undefined);
+				setBall(undefined);
+				setItem(undefined);
 			}}
 			availableTargets={
 				availableActions.find((a) => a.actionType === actionName)

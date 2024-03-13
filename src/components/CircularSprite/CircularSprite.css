@@ -64,8 +64,8 @@
 	border-radius: var(--circular);
 
 	background-image: conic-gradient(
-		green 0deg,
-		green var(--healthPercentage),
+		var(--healthBarColor) 0deg,
+		var(--healthBarColor) var(--healthPercentage),
 		transparent var(--healthPercentage)
 	);
 }

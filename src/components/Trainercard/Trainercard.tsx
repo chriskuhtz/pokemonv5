@@ -1,6 +1,7 @@
 import { useRotate } from '../../hooks/useRotate';
 import { DexEntry } from '../../interfaces/DexEntry';
-import { GymBadgeRecord } from '../../interfaces/SaveFile';
+import { GymBadge, GymBadgeRecord } from '../../interfaces/SaveFile';
+import { BadgeSprite } from '../BadgeSprite/BadgeSprite';
 import { CharacterSprite } from '../CharacterSprite/CharacterSprite';
 import { DexSummary } from '../DexSummary/DexSummary';
 import './trainercard.css';
@@ -43,7 +44,7 @@ export const Trainercard = ({
 				if (badge[1] === false) {
 					return;
 				}
-				return <strong key={badge[0]}>{badge[0]}</strong>;
+				return <BadgeSprite badge={badge[0] as GymBadge} />;
 			})}
 		</div>
 	);

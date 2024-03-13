@@ -4,9 +4,10 @@ import {
 	UniqueOccupantIds,
 	UniqueOccupantRecord,
 } from '../../../constants/UniqueOccupantRecord';
-import { isTrainer } from '../../../functions/typeguards/isOccupantWithDialogue';
+import { isTrainer } from '../../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { DexEntry } from '../../../interfaces/DexEntry';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { RoutesEnum } from '../../../router/router';
@@ -15,13 +16,14 @@ import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 
-export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS';
+export type BattleEndReason = 'RUNAWAY' | 'WIN' | 'LOSS' | 'FORCE_SWITCH';
 
 export const useLeaveBattle = (
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
-	usedBalls: number,
-	usedPotions: number,
+	environment: BattleEnvironment,
 	trainerId?: UniqueOccupantIds
 ) => {
 	const saveFile = useGetCurrentSaveFile();
@@ -67,6 +69,8 @@ export const useLeaveBattle = (
 				...playerSide.caught.map((p, i) => ({
 					...p,
 					onTeam: numberOfPreviousTeamMembers + i < 6,
+					damage: p.ball === 'heal-ball' ? 0 : p.damage,
+					primaryAilment: p.ball === 'heal-ball' ? undefined : p.primaryAilment,
 				})),
 			].map((p) => {
 				return {
@@ -76,6 +80,8 @@ export const useLeaveBattle = (
 					moves: undefined,
 					stats: undefined,
 					statModifiers: undefined,
+					multiHits: undefined,
+					preparedMove: undefined,
 				};
 			});
 		},
@@ -84,40 +90,47 @@ export const useLeaveBattle = (
 
 	return useCallback(
 		async (reason: BattleEndReason) => {
+			const fundsUpdate =
+				environment.paydayCounter +
+				(reason === 'WIN' && trainer ? trainer?.rewardMoney : 0);
+			const pokemonUpdates = updateOwnedPokemonFromBattlePokemon(
+				playerSide,
+				opponentSide
+			);
+			setOpponentSide(undefined);
+			setPlayerSide(undefined);
 			await save({
 				dexUpdates: allDexUpdates,
 				handledOccupants:
 					reason === 'WIN' && trainerId
 						? { [`${trainerId}`]: true }
 						: undefined,
-				pokemonUpdates: updateOwnedPokemonFromBattlePokemon(
-					playerSide,
-					opponentSide
-				),
-				inventoryChanges: { 'poke-ball': -usedBalls, potion: -usedPotions },
+				pokemonUpdates,
+
 				visitedNurse: reason === 'LOSS',
-				fundsUpdate: reason === 'WIN' ? trainer?.rewardMoney : undefined,
+				fundsUpdate,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				teleportToLastHealer: reason === 'LOSS',
-			}).then(() => {
-				navigate(RoutesEnum.overworld);
-				if (reason === 'RUNAWAY') {
-					dispatch(addNotification('Phew, escaped'));
-					dispatch(setDialogue([]));
-				}
-				if (reason === 'WIN') {
-					dispatch(addNotification('You won the Battle'));
-					if (trainer) {
-						dispatch(setDialogue(trainer.dialogueAfterDefeat));
-					}
-				}
-				if (reason === 'LOSS') {
-					dispatch(
-						addNotification('You lost the battle and scurried back to safety')
-					);
-					dispatch(setDialogue([]));
-				}
 			});
+
+			navigate(RoutesEnum.overworld);
+			if (reason === 'RUNAWAY') {
+				dispatch(addNotification('Phew, escaped'));
+			}
+			if (reason === 'FORCE_SWITCH') {
+				dispatch(addNotification('The wild Pokemon ran away'));
+			}
+			if (reason === 'WIN') {
+				dispatch(addNotification('You won the Battle'));
+				if (trainer) {
+					dispatch(setDialogue(trainer.dialogueAfterDefeat));
+				}
+			}
+			if (reason === 'LOSS') {
+				dispatch(
+					addNotification('You lost the battle and scurried back to safety')
+				);
+			}
 		},
 		[
 			allDexUpdates,
@@ -129,8 +142,6 @@ export const useLeaveBattle = (
 			trainer,
 			trainerId,
 			updateOwnedPokemonFromBattlePokemon,
-			usedBalls,
-			usedPotions,
 		]
 	);
 };

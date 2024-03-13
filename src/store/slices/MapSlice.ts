@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
 import { oaksLab } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
@@ -33,7 +34,17 @@ export interface BaseTile {
 export interface MapEncounter {
 	dexId: number;
 	xp: number;
+	rarity?: number;
 }
+
+export type MapEnvironment =
+	| 'city'
+	| 'field'
+	| 'forest'
+	| 'water'
+	| 'cave'
+	| 'desert'
+	| 'building';
 export interface MapState {
 	height: number;
 	width: number;
@@ -43,12 +54,14 @@ export interface MapState {
 	decorators: Decorator[];
 	mapId: string;
 	encounters: MapEncounter[];
+	environment: MapEnvironment;
 }
 
 const mapsRecord: Record<string, MapState> = {
 	'starter-town': starterTown,
 	'oaks-lab': oaksLab,
 	'brocks-gym': brocksGym,
+	'berry-patch': berryPatch,
 };
 
 const initialState: MapState = starterTown;

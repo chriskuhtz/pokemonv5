@@ -1,3 +1,5 @@
+import { ItemName } from './Item';
+
 export interface ItemData {
 	cost: number;
 	effect_entries: [
@@ -9,7 +11,7 @@ export interface ItemData {
 	];
 	fling_power: number;
 	id: number;
-	name: string;
+	name: ItemName;
 	sprites: {
 		default: string;
 	};

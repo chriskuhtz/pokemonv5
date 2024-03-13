@@ -1,5 +1,5 @@
 import { IoIosCloseCircle } from 'react-icons/io';
-import { BattleSprite } from '../../components/BattleSprite/BattleSprite';
+import { CircularSprite } from '../../components/CircularSprite/CircularSprite';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
@@ -19,7 +19,7 @@ export interface BattleSide {
 	side: 'PLAYER' | 'OPPONENT';
 }
 
-export type BattleMode = 'COLLECTING' | 'EXECUTING';
+export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'HANDLING_ENVIRONMENT';
 
 export const BattleScreen = ({
 	saveFile,
@@ -40,6 +40,8 @@ export const BattleScreen = ({
 		playerFetchStatus,
 		setMode,
 		setPlayerSide,
+		environment,
+		setEnvironment,
 	} = useBattleScreen(saveFile);
 
 	const hasOpenSpots: boolean = !!(
@@ -66,10 +68,11 @@ export const BattleScreen = ({
 	if (playerSide && opponentSide) {
 		return (
 			<div className="battle">
+				<strong>Round: {environment.battleRounds}</strong>
 				<div className="battleField">
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
-							<BattleSprite
+							<CircularSprite
 								key={p.id}
 								back
 								pokemon={p}
@@ -86,10 +89,12 @@ export const BattleScreen = ({
 											{isBattleAttack(p.nextAction)
 												? p.nextAction.move.name
 												: p.nextAction.type}
-											<IoIosCloseCircle
-												style={{ height: '40px', width: '40px' }}
-												onClick={() => resetAction(p.id)}
-											/>
+											{!p.preparedMove && (
+												<IoIosCloseCircle
+													style={{ height: '40px', width: '40px' }}
+													onClick={() => resetAction(p.id)}
+												/>
+											)}
 										</div>
 									)
 								}
@@ -98,7 +103,7 @@ export const BattleScreen = ({
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<BattleSprite key={p.id} pokemon={p} />
+							<CircularSprite key={p.id} pokemon={p} />
 						))}
 					</div>
 				</div>
@@ -106,12 +111,15 @@ export const BattleScreen = ({
 					nextPlayerPokemonWithoutAction={nextPlayerPokemonWithoutAction}
 					mode={mode}
 					playerSide={playerSide}
+					opponentSide={opponentSide}
 					availableActions={availableActions}
 					hasOpenSpots={hasOpenSpots}
 					handleAction={handleAction}
 					selectAction={selectAction}
 					setPlayerSide={setPlayerSide}
 					setMode={setMode}
+					environment={environment}
+					setEnvironment={setEnvironment}
 				/>
 			</div>
 		);

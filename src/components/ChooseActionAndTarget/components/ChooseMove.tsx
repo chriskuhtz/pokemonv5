@@ -1,7 +1,7 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
 import { MoveDto } from '../../../interfaces/Move';
-import { SelectableAction } from '../../../screens/BattleScreen/hooks/useBattleScreen';
+import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 import { TypeIcon } from '../../TypeIcon/TypeIcon';

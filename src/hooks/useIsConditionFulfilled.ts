@@ -8,13 +8,14 @@ export const isHandledOccupantConditionFulfilled = (
 	condition: Condition,
 	saveFile: SaveFile
 ) => {
-	if (condition.type !== 'HANDLED_OCCUPANT') {
+	if (condition.type !== 'HANDLED_OCCUPANTS') {
 		return false;
 	}
-	const { id } = condition;
+	const { ids } = condition;
 
-	return saveFile.handledOccupants[id];
+	return ids.every((id) => saveFile.handledOccupants[id]);
 };
+
 export const useIsConditionFulfilled = () => {
 	const data = useGetCurrentSaveFile();
 

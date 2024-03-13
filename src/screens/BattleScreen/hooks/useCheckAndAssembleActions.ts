@@ -1,8 +1,14 @@
 import { useEffect, useMemo } from 'react';
+import { secondTurnMoves } from '../../../constants/secondTurnMoves';
+import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilitiesWeatherAndAilments';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isBattleItemAction,
+	isCatchAttempt,
+	isPrimaryAction,
 } from '../../../interfaces/BattleAction';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { selectCurrentDialogue } from '../../../store/selectors/dialogue/selectCurrentDialogue';
 import { concatDialogue } from '../../../store/slices/dialogueSlice';
@@ -15,8 +21,8 @@ export const useCheckAndAssembleActions = (
 	pokemonWithActions: BattlePokemon[],
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setUsedBalls: React.Dispatch<React.SetStateAction<number>>,
-	setUsedPotions: React.Dispatch<React.SetStateAction<number>>
+	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	environment: BattleEnvironment
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const dispatch = useAppDispatch();
@@ -40,6 +46,9 @@ export const useCheckAndAssembleActions = (
 			pokemonWithActions.length > 0 &&
 			currentDialogue.length === 0
 		) {
+			if (!playerSide || !opponentSide) {
+				return;
+			}
 			const actor = pokemonWithActions[0];
 			const action = actor.nextAction;
 			const target = isBattleActionWithTarget(action)
@@ -49,6 +58,27 @@ export const useCheckAndAssembleActions = (
 				isBattleActionWithTarget(action) && action?.type === 'SWITCH'
 					? allPokemonOnBench.find((p) => p.id === action.target)
 					: undefined;
+
+			const reviveTarget =
+				isBattleItemAction(action) &&
+				['revive', 'max-revive'].includes(action.item)
+					? playerSide.defeated.find((p) => p.id === action.target)
+					: undefined;
+
+			if (isPrimaryAction(actor.nextAction)) {
+				const skipAction = applyAbilitiesWeatherAndAilments(
+					actor,
+					playerSide,
+					opponentSide,
+					setPlayerSide,
+					setOpponentSide,
+					dispatch,
+					environment
+				);
+				if (skipAction) {
+					return;
+				}
+			}
 
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
 				dispatch(
@@ -60,39 +90,27 @@ export const useCheckAndAssembleActions = (
 				);
 				return;
 			}
-			if (action?.type === 'HEALING_ITEM' && target) {
-				setUsedPotions((potions) => potions + 1);
+			if (isBattleItemAction(action) && (target || reviveTarget)) {
 				dispatch(
-					//@ts-expect-error : See typecheck in condition
-					concatDialogue([`You gave a ${action.item} to ${target.name}`])
+					concatDialogue([
+						`You gave a ${action.item} to ${
+							target?.name ?? reviveTarget?.name
+						}`,
+					])
 				);
 				return;
 			}
-			if (actor.nextAction?.type === 'TARGET_NOT_ON_FIELD') {
-				dispatch(
-					concatDialogue([`There is no target for ${actor?.name}s action!`])
-				);
-				return;
-			}
-			if (actor.nextAction?.type === 'MISSED_ATTACK') {
-				dispatch(concatDialogue([`${actor.name} missed`]));
+			if (actor.nextAction?.type === 'FLINCH') {
+				dispatch(concatDialogue([`${actor.name} flinched`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
-				dispatch(concatDialogue([`Got away safely`]));
-				return;
-			}
-			if (actor.nextAction?.type === 'RUNAWAY_FAILURE') {
-				dispatch(concatDialogue([`Could not escape`]));
-				return;
-			}
-			if (actor.nextAction?.type === 'CATCH_ATTEMPT') {
-				dispatch(concatDialogue([`You throw a Pokeball`]));
-				setUsedBalls((balls) => balls + 1);
+			if (isCatchAttempt(actor.nextAction)) {
+				const { ball } = actor.nextAction;
+				dispatch(concatDialogue([`You throw a ${ball}`]));
 				if (!target) {
 					return;
 				}
@@ -108,7 +126,10 @@ export const useCheckAndAssembleActions = (
 							}
 							return {
 								...target,
-								status: 'BEING_CAUGHT',
+								status: {
+									name: 'BEING_CAUGHT',
+									ball: ball,
+								},
 							};
 						}),
 					};
@@ -127,30 +148,28 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`${target?.name} fainted!`]));
 				return;
 			}
-			if (actor.nextAction?.type === 'NOT_VERY_EFFECTIVE') {
-				dispatch(
-					concatDialogue([`It is not very effective against ${target?.name}`])
-				);
-				return;
-			}
-			if (actor.nextAction?.type === 'SUPER_EFFECTIVE') {
-				dispatch(
-					concatDialogue([`It is very effective against ${target?.name}`])
-				);
-				return;
-			}
-			if (actor.nextAction?.type === 'NO_EFFECT') {
-				dispatch(concatDialogue([`It has no effect on ${target?.name}`]));
-				return;
-			}
+
 			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
+				if (
+					secondTurnMoves.includes(actor.nextAction.move.name) &&
+					!actor.preparedMove
+				) {
+					dispatch(
+						concatDialogue([
+							`${actor.name} is preparing ${actor.nextAction?.move.name}`,
+						])
+					);
+					return;
+				}
 				dispatch(
 					concatDialogue([`${actor.name} used ${actor.nextAction?.move.name}`])
 				);
 				return;
 			}
 			dispatch(
-				concatDialogue([`${actor.name} used ${actor.nextAction?.type}`])
+				concatDialogue([
+					`${actor.name} used ${actor.nextAction?.type} or something`,
+				])
 			);
 		}
 	}, [
@@ -159,9 +178,7 @@ export const useCheckAndAssembleActions = (
 		dispatch,
 		mode,
 		pokemonWithActions,
-		setUsedBalls,
 		setOpponentSide,
 		allPokemonOnBench,
-		setUsedPotions,
 	]);
 };

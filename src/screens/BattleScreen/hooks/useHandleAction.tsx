@@ -1,18 +1,22 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from 'react';
+import { forceSwitchMoves } from '../../../constants/forceSwitchMoves';
+import { secondTurnMoves } from '../../../constants/secondTurnMoves';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
-import {
-	calculateDamage,
-	getDamageFactors,
-} from '../../../functions/calculateDamage';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
-import { makeAccuracyCheck } from '../../../functions/makeAccuracyCheck';
+import { determineCatchRate } from '../../../functions/determineCatchRate';
+import { handleBattleAttack } from '../../../functions/handleBattleAttack';
+import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
+import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
+import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import {
-	BattleAction,
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isBattleItemAction,
+	isCatchAttempt,
 } from '../../../interfaces/BattleAction';
+import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
@@ -26,8 +30,11 @@ export const useHandleAction = (
 	pokemonWithActions: BattlePokemon[],
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	leaveBattle: (reason: BattleEndReason) => void
+	leaveBattle: (reason: BattleEndReason) => void,
+	environment: BattleEnvironment,
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>
 ) => {
+	const saveFile = useGetCurrentSaveFile();
 	const dispatch = useAppDispatch();
 
 	return useCallback(() => {
@@ -39,11 +46,17 @@ export const useHandleAction = (
 			const actor = pokemonWithActions[0];
 			const action = actor.nextAction;
 
-			const target = isBattleActionWithTarget(action)
+			const target: BattlePokemon | undefined = isBattleActionWithTarget(action)
 				? [...playerSide.field, ...opponentSide.field].find(
 						(p) => p.id === action?.target
 				  )
 				: undefined;
+
+			const reviveTarget =
+				isBattleItemAction(action) &&
+				['revive', 'max-revive'].includes(action.item) &&
+				playerSide.defeated.find((p) => p.id === action.target);
+
 			const switchTarget =
 				isBattleActionWithTarget(action) && action.type === 'SWITCH'
 					? [...playerSide.bench, ...opponentSide.bench].find(
@@ -53,7 +66,15 @@ export const useHandleAction = (
 
 			dispatch(continueDialogue());
 			//no target
-			if (isBattleActionWithTarget(action) && !target && !switchTarget) {
+			if (
+				isBattleActionWithTarget(action) &&
+				!target &&
+				!switchTarget &&
+				!reviveTarget
+			) {
+				dispatch(
+					addNotification(`There is no target for ${actor.name}'s move`)
+				);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -63,11 +84,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: {
-									type: 'TARGET_NOT_ON_FIELD',
-									target: p.id,
-									priority: action.priority,
-								},
+								nextAction: undefined,
 							};
 						}),
 					});
@@ -81,11 +98,7 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction: {
-									type: 'TARGET_NOT_ON_FIELD',
-									target: p.id,
-									priority: action.priority,
-								},
+								nextAction: undefined,
 							};
 						}),
 					});
@@ -117,7 +130,13 @@ export const useHandleAction = (
 							}),
 						bench: playerSide.bench
 							.filter((p) => p.id !== switchTarget.id)
-							.concat({ ...actor, nextAction: undefined }),
+							.concat({
+								...actor,
+								nextAction: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+							}),
 					});
 					setOpponentSide({
 						...opponentSide,
@@ -158,7 +177,13 @@ export const useHandleAction = (
 							}),
 						bench: opponentSide.bench
 							.filter((p) => p.id !== switchTarget.id)
-							.concat({ ...actor, nextAction: undefined }),
+							.concat({
+								...actor,
+								nextAction: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+							}),
 					});
 					setPlayerSide({
 						...playerSide,
@@ -176,10 +201,18 @@ export const useHandleAction = (
 						}),
 					});
 				}
+
+				if (target?.ability === 'drizzle') {
+					setEnvironment({
+						...environment,
+						weather: { type: 'rain', duration: -1 },
+					});
+					dispatch(addNotification(`${target.name}´s ability made it rain`));
+				}
 				return;
 			}
 			//Healing Item
-			if (action?.type === 'HEALING_ITEM' && target) {
+			if (isBattleItemAction(action) && target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -187,21 +220,13 @@ export const useHandleAction = (
 							//apply heal to self
 							if (target.id === actor.id && p.id === target.id) {
 								return {
-									...applyHealingItemToPokemon(
-										p,
-										//@ts-expect-error : See typecheck in condition
-										action.item
-									),
+									...applyHealingItemToPokemon(p, action.item),
 									nextAction: undefined,
 								};
 							}
 							if (target.id === p.id) {
 								return {
-									...applyHealingItemToPokemon(
-										p,
-										//@ts-expect-error : See typecheck in condition
-										action.item
-									),
+									...applyHealingItemToPokemon(p, action.item),
 								};
 							}
 							if (actor.id === p.id) {
@@ -219,62 +244,34 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
-			//MISS, EFFECTIVESS NOTIFICATIONS, TARGET_NOT_ON_FIELD, RUN_AWAY_FAILURE
-			if (
-				action &&
-				['MISSED_ATTACK', 'TARGET_NOT_ON_FIELD', 'RUNAWAY_FAILURE'].includes(
-					action.type
-				)
-			) {
+			if (isBattleItemAction(action) && reviveTarget) {
 				if (actor.side === 'PLAYER') {
+					const revived = applyHealingItemToPokemon(reviveTarget, action.item);
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
 							if (p.id !== actor.id) {
 								return p;
 							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
+							return { ...p, nextAction: undefined };
 						}),
+						bench: playerSide.bench.concat(revived),
+						defeated: playerSide.defeated.filter((p) => p.id !== revived.id),
 					});
+					return;
 				}
 				if (actor.side === 'OPPONENT') {
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
+					console.error('Opponent Healing not implemented yet');
 				}
 				return;
 			}
-			// EFFECTIVESS NOTIFICATIONS,
+			//PREPARE MOVE
 			if (
-				action &&
-				['NO_EFFECT', 'NOT_VERY_EFFECTIVE', 'SUPER_EFFECTIVE'].includes(
-					action.type
-				) &&
+				isBattleAttack(action) &&
+				secondTurnMoves.includes(action.move.name) &&
+				!actor.preparedMove &&
 				target
 			) {
-				let nextAction: BattleAction | undefined = undefined;
-
-				if (target.damage >= target.stats.hp) {
-					nextAction = {
-						type: 'DEFEATED_TARGET',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -284,7 +281,12 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction,
+								nextAction: undefined,
+								preparedMove: {
+									moveName: action.move.name,
+									targetId: target?.id,
+								},
+								location: inferLocationFromMove(action.move),
 							};
 						}),
 					});
@@ -298,7 +300,12 @@ export const useHandleAction = (
 							}
 							return {
 								...p,
-								nextAction,
+								nextAction: undefined,
+								preparedMove: {
+									moveName: action.move.name,
+									targetId: target?.id,
+								},
+								location: inferLocationFromMove(action.move),
 							};
 						}),
 					});
@@ -308,40 +315,42 @@ export const useHandleAction = (
 			//run away attempt
 			if (action?.type === 'RUNAWAY_ATTEMPT') {
 				const canRunAway = Math.random() > 0.5;
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: canRunAway
-									? {
-											type: 'RUNAWAY_SUCCESS',
-											target: actor.id,
-											priority: action.priority,
-									  }
-									: {
-											type: 'RUNAWAY_FAILURE',
-											target: actor.id,
-											priority: action.priority,
-									  },
-							};
-						}),
-					});
+
+				if (canRunAway) {
+					void leaveBattle('RUNAWAY');
+				} else {
+					if (actor.side === 'PLAYER') {
+						dispatch(addNotification('could not escape'));
+						setPlayerSide({
+							...playerSide,
+							field: playerSide.field.map((p) => {
+								if (p.id !== actor.id) {
+									return p;
+								}
+								return {
+									...p,
+									nextAction: undefined,
+								};
+							}),
+						});
+					}
 				}
 				return;
 			}
-			//run away success
-			if (actor.nextAction?.type === 'RUNAWAY_SUCCESS') {
-				void leaveBattle('RUNAWAY');
-				return;
-			}
+
 			//catch attempt
-			if (action?.type === 'CATCH_ATTEMPT' && target) {
-				const successfullyCaught = Math.random() > 0.5;
+			if (isCatchAttempt(action) && target) {
+				const successfullyCaught =
+					Math.random() <
+					determineCatchRate(
+						action.ball,
+						target,
+						environment.battleRounds,
+						environment.outside === 'cave',
+						!!saveFile?.pokedex.some(
+							(p) => p.status === 'owned' && p.dexId === target.dexId
+						)
+					);
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -383,7 +392,10 @@ export const useHandleAction = (
 								nextAction: undefined,
 							};
 						}),
-						caught: [...playerSide.caught, target],
+						caught: [
+							...playerSide.caught,
+							{ ...target, ball: target.status?.ball ?? 'poke-ball' },
+						],
 					});
 					setOpponentSide({
 						...opponentSide,
@@ -425,125 +437,41 @@ export const useHandleAction = (
 			}
 			//attack
 			if (isBattleAttack(action) && target) {
-				const { move } = action;
-
-				const updatedActorStatMods = { ...actor.statModifiers };
-				if (move.stat_changes.length > 0 && move.target.name === 'user') {
-					move.stat_changes.forEach((statChange) => {
-						if (statChange.change > 0) {
-							updatedActorStatMods[statChange.stat.name] = Math.min(
-								updatedActorStatMods[statChange.stat.name] + statChange.change,
-								6
-							);
-						}
-						if (statChange.change < 0) {
-							updatedActorStatMods[statChange.stat.name] = Math.max(
-								updatedActorStatMods[statChange.stat.name] + statChange.change,
-								-6
-							);
-						}
+				if (forceSwitchMoves.includes(action.move.name)) {
+					handleForceSwitchMove(
+						action,
+						environment,
+						leaveBattle,
+						target,
+						actor,
+						opponentSide,
+						playerSide,
+						dispatch,
+						setPlayerSide,
+						setOpponentSide
+					);
+					return;
+				}
+				if (action.move.name === 'pay-day') {
+					dispatch(addNotification('coins scatter around the battleField'));
+					const { level } = calculateLevelData(actor.xp);
+					setEnvironment({
+						...environment,
+						paydayCounter: environment.paydayCounter + level * 5,
 					});
 				}
 
-				let nextAction: BattleAction | undefined = undefined;
-
-				const passesAccuracyCheck = makeAccuracyCheck(actor, target, move);
-
-				if (!passesAccuracyCheck) {
-					nextAction = { type: 'MISSED_ATTACK', priority: action.priority };
-				}
-
-				const damageFactors = getDamageFactors(actor, move, target);
-				const attackDamage = passesAccuracyCheck
-					? calculateDamage(damageFactors)
-					: 0;
-				const newTargetDamage = target.damage + attackDamage;
-
-				if (
-					newTargetDamage >= target.stats.hp &&
-					damageFactors.typeFactor === 1
-				) {
-					nextAction = {
-						type: 'DEFEATED_TARGET',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (damageFactors.typeFactor === 0) {
-					nextAction = {
-						type: 'NO_EFFECT',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (damageFactors.typeFactor > 1) {
-					nextAction = {
-						type: 'SUPER_EFFECTIVE',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (damageFactors.typeFactor < 1) {
-					nextAction = {
-						type: 'NOT_VERY_EFFECTIVE',
-						target: target.id,
-						priority: action.priority,
-					};
-				}
-				if (actor.side === 'PLAYER') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction,
-								statModifiers: updatedActorStatMods,
-							};
-						}),
-					});
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
-							}
-							return {
-								...p,
-								damage: newTargetDamage,
-							};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== target.id) {
-								return p;
-							}
-							return {
-								...p,
-								damage: newTargetDamage,
-							};
-						}),
-					});
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction,
-								statModifiers: updatedActorStatMods,
-							};
-						}),
-					});
-				}
+				handleBattleAttack(
+					actor,
+					target,
+					action,
+					setPlayerSide,
+					setOpponentSide,
+					playerSide,
+					opponentSide,
+					environment,
+					dispatch
+				);
 				return;
 			}
 			//defeated target

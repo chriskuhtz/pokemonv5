@@ -1,9 +1,18 @@
-import { MapState } from '../../store/slices/MapSlice';
+import { MapEncounter, MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
-export const starterTownEncounters: number[] = [19, 16, 17, 25, 216, 261, 66];
+export const starterTownEncounters: MapEncounter[] = [
+	{ xp: 60, dexId: 19, rarity: 2 },
+	{ xp: 60, dexId: 17, rarity: 1 },
+	{ xp: 60, dexId: 25, rarity: 1 },
+	{ xp: 60, dexId: 216, rarity: 2 },
+	{ xp: 60, dexId: 261, rarity: 2 },
+	{ xp: 60, dexId: 16, rarity: 5 },
+	{ xp: 60, dexId: 66, rarity: 2 },
+];
 
 const mapId = 'starter-town';
 export const starterTown: MapState = {
+	environment: 'city',
 	mapId,
 	height: 25,
 	width: 9,
@@ -36,14 +45,19 @@ export const starterTown: MapState = {
 				to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
 			},
 		},
+		{
+			sprite: '',
+			x: 8,
+			y: 9,
+			onStep: {
+				type: 'PORTAL',
+				to: { mapId: 'berry-patch', x: 0, y: 6, orientation: 2 },
+			},
+		},
 		{ x: 0, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 5, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 6, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 7, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 8, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
 		{ x: 0, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -51,8 +65,6 @@ export const starterTown: MapState = {
 		{ x: 3, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 5, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 7, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 8, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
 		{ x: 0, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -252,9 +264,30 @@ export const starterTown: MapState = {
 				forwardFoot: 0,
 			},
 		},
+		{
+			type: 'OBSTACLE',
+			id: 'greenRock7/10',
+			sprite: 'greenRock',
+			position: {
+				x: 7,
+				y: 10,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+		},
+		{
+			type: 'OBSTACLE',
+			id: 'greenRock8/10',
+			sprite: 'greenRock',
+			position: {
+				x: 8,
+				y: 10,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+		},
 	],
-	encounters: starterTownEncounters.map((dexId) => ({
-		dexId,
-		xp: 60,
-	})),
+	encounters: starterTownEncounters,
 };

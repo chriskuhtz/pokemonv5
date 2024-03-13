@@ -18,6 +18,7 @@ export const Overworld = (): JSX.Element => {
 	const saveFile = useGetCurrentSaveFile();
 	const { mapId } = useAppSelector(selectMap);
 	const dispatch = useAppDispatch();
+
 	useEffect(() => {
 		if (saveFile && saveFile?.position.mapId !== mapId) {
 			dispatch(addNotification(`${saveFile?.position.mapId}`));

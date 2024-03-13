@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { isOccupantWithSprite } from '../../../functions/typeguards/isOccupantWithDialogue';
+import { isOccupantWithSprite } from '../../../functions/typeguards/occupantTypeGuards';
 import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
 
+import { selectFocusedOccupantId } from '../../../store/selectors/dialogue/selectFocusedOccupantId';
 import { selectDecorators } from '../../../store/selectors/map/selectDecorators';
 import { selectMap } from '../../../store/selectors/map/selectMap';
 import { occupantCanvas } from '../OverworldCanvas';
@@ -12,6 +13,7 @@ import { drawLargeObject } from '../functions/drawLargeObject';
 
 export const useDrawOccupants = () => {
 	const occupantsToDraw = useSelector(selectOccupantsToDraw);
+	const focusedOccupantId = useSelector(selectFocusedOccupantId);
 	const { height } = useSelector(selectMap);
 	const decorators = useSelector(selectDecorators);
 
@@ -57,8 +59,23 @@ export const useDrawOccupants = () => {
 			}
 
 			const img = new Image();
+
 			if (!isOccupantWithSprite(o)) {
 				return;
+			}
+			if (o.id && o.id === focusedOccupantId && o.type === 'TRAINER') {
+				const exclamation = new Image();
+				exclamation.onload = () => {
+					drawLargeObject({
+						context: ctx,
+						img: exclamation,
+						x: o.position.x,
+						y: o.position.y - 1,
+						height: 1,
+						width: 1,
+					});
+				};
+				exclamation.src = `other/Exclamation.png`;
 			}
 			if (o.type === 'ITEM') {
 				img.onload = () => {
@@ -145,6 +162,6 @@ export const useDrawOccupants = () => {
 			};
 			img.src = `mapObjects/${o.sprite}.png`;
 		});
-	}, [decorators, height, occupantsToDraw]);
+	}, [decorators, height, occupantsToDraw, focusedOccupantId]);
 	return { drawOccupants };
 };

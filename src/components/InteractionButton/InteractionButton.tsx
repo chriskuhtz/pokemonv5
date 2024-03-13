@@ -1,18 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	isOccupantWithDialogue,
 	isOccupantWithPossibleOnClick,
-} from '../../functions/typeguards/isOccupantWithDialogue';
+} from '../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { RoutesEnum } from '../../router/router';
-import { OccupantWithDialogue } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
 import { TbCircleLetterA } from 'react-icons/tb';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { useHandleTrainerChallenge } from '../../hooks/useHandleTrainerChallenge';
 import { useOverworldEvent } from '../../hooks/useOverworldEvent';
+import { selectFocusedOccupant } from '../../store/selectors/combination/selectFocusedOccupant';
 import { selectOccupantAtNextCoordinates } from '../../store/selectors/combination/selectOccupantAtNextCoordinates';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectNextNotification } from '../../store/selectors/notification/selectNextNotification';
@@ -21,6 +21,7 @@ import { selectOrientation } from '../../store/selectors/saveFile/selectOrientat
 import {
 	continueDialogue,
 	setDialogue,
+	setFocusedOccupantId,
 } from '../../store/slices/dialogueSlice';
 import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
@@ -28,17 +29,16 @@ import { Banner } from '../../ui_components/Banner/Banner';
 import './InteractionButton.css';
 
 export const InteractionButton = () => {
+	const dispatch = useAppDispatch();
 	const occupant = useAppSelector(selectOccupantAtNextCoordinates);
 	const playerOrientation = useAppSelector(selectOrientation);
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const noti = useAppSelector(selectNextNotification);
 	const handledOccupants = useAppSelector(selectHandledOccupants);
-	const dispatch = useAppDispatch();
 	const saveGame = useSaveGame();
 	const navigate = useNavigate();
-	const [focusedOccupant, setFocusedOccupant] = useState<
-		OccupantWithDialogue | undefined
-	>();
+	const focusedOccupant = useAppSelector(selectFocusedOccupant);
+
 	const handleEvent = useOverworldEvent();
 	const handleTrainerChallenge = useHandleTrainerChallenge();
 
@@ -70,7 +70,7 @@ export const InteractionButton = () => {
 			isOccupantWithDialogue(occupant) &&
 			currentDialogue.length === 0
 		) {
-			setFocusedOccupant(occupant);
+			dispatch(setFocusedOccupantId(occupant.id));
 			dispatch(
 				turnNpcTowardsPlayer({
 					occupantId: occupant.id,
