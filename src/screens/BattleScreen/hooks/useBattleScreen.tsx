@@ -257,9 +257,18 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 					};
 				}),
 			});
+
 			setEnvironment((environment) => ({
 				...environment,
 				battleRounds: environment.battleRounds + 1,
+				playerSideMist:
+					environment.playerSideMist && environment.playerSideMist > 1
+						? environment.playerSideMist - 1
+						: undefined,
+				opponentSideMist:
+					environment.opponentSideMist && environment.opponentSideMist > 1
+						? environment.opponentSideMist - 1
+						: undefined,
 			}));
 		}
 	}, [mode, opponentSide, playerSide]);

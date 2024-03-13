@@ -133,7 +133,7 @@ export const handleBattleAttack = (
 			'opponents-field',
 		].includes(move.target.name) &&
 		['net-good-stats', 'damage+lower'].includes(move.meta.category.name)
-			? applyStatMods(updatedTarget, move, dispatch)
+			? applyStatMods(updatedTarget, move, dispatch, environment)
 			: updatedTarget;
 
 	updatedActor = determineFollowUpAction(
@@ -155,7 +155,6 @@ export const handleBattleAttack = (
 			...updatedActor,
 			lockedInMove: {
 				moveName: action.move.name,
-				targetId: target.id,
 				duration: 1,
 			},
 		};

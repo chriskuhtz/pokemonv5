@@ -68,7 +68,19 @@ export const BattleScreen = ({
 	if (playerSide && opponentSide) {
 		return (
 			<div className="battle">
-				<strong>Round: {environment.battleRounds}</strong>
+				<p>
+					<strong>Round: {environment.battleRounds}</strong>
+				</p>
+				{environment.playerSideMist && (
+					<p>
+						<strong>PlayersideMist: {environment.playerSideMist}</strong>
+					</p>
+				)}
+				{environment.opponentSideMist && (
+					<p>
+						<strong>OpponentSideMist: {environment.opponentSideMist}</strong>
+					</p>
+				)}
 				<div className="battleField">
 					<div className="playerField">
 						{playerSide?.field.map((p) => (

@@ -190,7 +190,7 @@ export const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/53/',
 		handled: true,
 	},
-	{ name: 'mist', url: 'https://pokeapi.co/api/v2/move/54/' },
+	{ name: 'mist', url: 'https://pokeapi.co/api/v2/move/54/', handled: true },
 	{
 		name: 'water-gun',
 		url: 'https://pokeapi.co/api/v2/move/55/',

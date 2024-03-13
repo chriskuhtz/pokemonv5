@@ -5,8 +5,6 @@ import { calculateLevelData } from './calculateLevelData';
 import { inferLocationFromMove } from './inferLocationFromMove';
 import { isNight } from './isNight';
 
-// 'quick-ball',
-
 export const determineCatchRate = (
 	ball: PokeballType,
 	target: BattlePokemon,

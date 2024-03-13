@@ -307,6 +307,49 @@ export const useHandleAction = (
 				}
 				return;
 			}
+			//MIST
+			if (isBattleAttack(action) && action.move.name === 'mist') {
+				dispatch(addNotification(`${actor.name}'s team is protected by mist`));
+				if (actor.side === 'PLAYER') {
+					setEnvironment((environment) => ({
+						...environment,
+						playerSideMist: 5,
+					}));
+
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setEnvironment((environment) => ({
+						...environment,
+						opponentSideMist: 5,
+					}));
+
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
 			//PREPARE MOVE
 			if (
 				isBattleAttack(action) &&
@@ -379,7 +422,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
 			//catch attempt
 			if (isCatchAttempt(action) && target) {
 				const successfullyCaught =
