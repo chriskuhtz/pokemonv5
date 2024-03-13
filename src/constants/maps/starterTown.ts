@@ -7,7 +7,12 @@ export const starterTownEncounters: MapEncounter[] = [
 	{ xp: 60, dexId: 216, rarity: 2 },
 	{ xp: 60, dexId: 261, rarity: 2 },
 	{ xp: 60, dexId: 16, rarity: 5 },
-	{ xp: 60, dexId: 66, rarity: 2 },
+	{
+		xp: 60,
+		dexId: 66,
+		rarity: 2,
+		customMoves: ['bulk-up', 'karate-chop', 'mach-punch', 'cross-chop'],
+	},
 ];
 
 const mapId = 'starter-town';

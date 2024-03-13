@@ -19,18 +19,27 @@ export const getDamageFactors = (
 	const moveType = type.name;
 	const correctAttackKey =
 		damage_class.name === 'physical' ? 'attack' : 'spatk';
+
+	const attackModifier =
+		actor.statModifiers[correctAttackKey] >= 0
+			? actor.statModifiers[correctAttackKey]
+			: 1 / actor.statModifiers[correctAttackKey];
+
 	const correctAttack: number =
 		actor.stats[correctAttackKey] +
-		0.5 * actor.statModifiers[correctAttackKey] * actor.stats[correctAttackKey];
+		Math.abs(0.5 * attackModifier * actor.stats[correctAttackKey]);
 
 	const correctdefenseKey =
 		damage_class.name === 'physical' ? 'defense' : 'spdef';
 
+	const defenseModifier =
+		target.statModifiers[correctdefenseKey] >= 0
+			? target.statModifiers[correctdefenseKey]
+			: 1 / target.statModifiers[correctdefenseKey];
+
 	const correctdefense: number =
 		target.stats[correctdefenseKey] +
-		0.5 *
-			target.statModifiers[correctdefenseKey] *
-			target.stats[correctdefenseKey];
+		Math.abs(0.5 * defenseModifier * target.stats[correctdefenseKey]);
 
 	const stabFactor =
 		moveType === actor.primaryType || moveType === actor.secondaryType
