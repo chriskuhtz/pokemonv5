@@ -23,10 +23,7 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 			setOpponentSide({
 				...opponentSide,
 				field: opponentSide?.field.map((p) => {
-					const pokemonOnField = [
-						...(playerSide?.field ?? []),
-						...opponentSide.field,
-					];
+					const pokemonOnField = [...(playerSide?.field ?? [])];
 					const potentialTargets = pokemonOnField.filter(
 						(target) => target.id !== p.id
 					);
@@ -49,7 +46,6 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 						potentialMoves.find((m) => m.name === p.lockedInMove?.moveName) ??
 						potentialMoves[Math.floor(Math.random() * potentialMoves.length)];
 
-					console.log(potentialMoves, optimalMove);
 					return {
 						...p,
 						nextAction: {

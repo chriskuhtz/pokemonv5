@@ -162,13 +162,17 @@ export const useCheckAndAssembleActions = (
 					return;
 				}
 				dispatch(
-					concatDialogue([`${actor.name} used ${actor.nextAction?.move.name}`])
+					concatDialogue([
+						`${actor.name} used ${actor.nextAction?.move.name} ${
+							actor.multiHits ? `(${actor.multiHits} more)` : ''
+						}`,
+					])
 				);
 				return;
 			}
 			dispatch(
 				concatDialogue([
-					`${actor.name} used ${actor.nextAction?.type} or something`,
+					`${actor.name} used ${actor.nextAction?.type} or something, idk`,
 				])
 			);
 		}
