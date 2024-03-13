@@ -8,7 +8,12 @@ export const berryPatchEncounters: MapEncounter[] = [
 	{ xp: 100, dexId: 415, rarity: 2 },
 	{ xp: 100, dexId: 11, rarity: 2 },
 	{ xp: 100, dexId: 14, rarity: 2 },
-	{ xp: 100, dexId: 43, rarity: 2, customMoves: ['leaf-blade'] },
+	{
+		xp: 100,
+		dexId: 43,
+		rarity: 2,
+		customMoves: ['leaf-blade', 'swords-dance'],
+	},
 	{ xp: 200, dexId: 214, rarity: 1, customMoves: ['cross-chop'] },
 ];
 
