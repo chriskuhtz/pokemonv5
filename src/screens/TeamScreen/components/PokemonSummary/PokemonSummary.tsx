@@ -34,7 +34,8 @@ export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 				/>
 				<AbilityPill abilityName={pokemon.ability} />
 				<Pill
-					leftSide={
+					leftSide={<strong>caught with:</strong>}
+					rightSide={
 						<img
 							height={'60px'}
 							width={'60px'}
