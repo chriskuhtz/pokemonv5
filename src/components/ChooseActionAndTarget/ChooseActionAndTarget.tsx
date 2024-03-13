@@ -12,9 +12,9 @@ import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseBall } from './components/ChooseBall';
+import { ChooseItem } from './components/ChooseItem';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
-import { ChooseItem } from './components/ChooseItem';
 
 export const ChooseActionAndTarget = ({
 	actor,
@@ -64,6 +64,22 @@ export const ChooseActionAndTarget = ({
 		}
 	}, []);
 
+	//auto select target for locked in move
+	useEffect(() => {
+		const move = actor.moves.find(
+			(m) => m.name === actor.lockedInMove?.moveName
+		);
+		if (move) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'ATTACK',
+					move,
+					target: actor.lockedInMove?.targetId,
+				},
+			});
+		}
+	}, []);
 	if (!actionName) {
 		return (
 			<ChooseAction

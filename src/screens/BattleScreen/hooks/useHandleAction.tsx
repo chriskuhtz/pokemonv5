@@ -85,6 +85,11 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
+								status: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+								lockedInMove: undefined,
 							};
 						}),
 					});
@@ -99,6 +104,11 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
+								status: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+								lockedInMove: undefined,
 							};
 						}),
 					});

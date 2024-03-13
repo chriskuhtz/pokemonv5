@@ -83,6 +83,7 @@ export const useLeaveBattle = (
 					multiHits: undefined,
 					preparedMove: undefined,
 					secondaryAilments: undefined,
+					lockedInMove: undefined,
 				};
 			});
 		},
