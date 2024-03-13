@@ -8,6 +8,7 @@ import { RoutesEnum } from '../../router/router';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
+import { BattleInfo } from './components/BattleInfo/BattleInfo';
 import { BattleScreenController } from './components/BattleScreenController/BattleScreenController';
 import { useBattleScreen } from './hooks/useBattleScreen';
 
@@ -68,19 +69,11 @@ export const BattleScreen = ({
 	if (playerSide && opponentSide) {
 		return (
 			<div className="battle">
-				<p>
-					<strong>Round: {environment.battleRounds}</strong>
-				</p>
-				{environment.playerSideMist && (
-					<p>
-						<strong>PlayersideMist: {environment.playerSideMist}</strong>
-					</p>
-				)}
-				{environment.opponentSideMist && (
-					<p>
-						<strong>OpponentSideMist: {environment.opponentSideMist}</strong>
-					</p>
-				)}
+				<BattleInfo
+					environment={environment}
+					playerSide={playerSide}
+					opponentSide={opponentSide}
+				/>
 				<div className="battleField">
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
