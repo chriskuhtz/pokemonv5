@@ -9,6 +9,7 @@ import { useSaveGame } from '../../hooks/useSaveGame';
 import { PokemonData } from '../../interfaces/PokemonData';
 import { Quest } from '../../interfaces/Quest';
 import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
+import { addAudio } from '../../store/slices/audioSlice';
 import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
@@ -54,6 +55,7 @@ export const PokemonSelectionScreen = ({
 							onClick={async (pokemon: PokemonData) => {
 								setLoading(true);
 								dispatch(addNotification(`You chose ${pokemon.name}`));
+								dispatch(addAudio(pokemon.cries.latest));
 								await save({
 									pokemonUpdates: [
 										{
