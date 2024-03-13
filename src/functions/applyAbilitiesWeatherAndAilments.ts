@@ -6,6 +6,8 @@ import {
 	POISON_DAMAGE_FACTOR,
 	SANDSTORM_DAMAGE_FACTOR,
 	TRAP_DAMAGE_FACTOR,
+	UNFREEZE_CHANCE,
+	WAKEUP_CHANCE,
 } from '../interfaces/Ailment';
 import { isPrimaryAction } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
@@ -95,8 +97,7 @@ export const applyAbilitiesWeatherAndAilments = (
 	}
 	//FREEZE
 	if (updatedActor.primaryAilment?.type === 'freeze') {
-		const random = Math.random();
-		if (Math.random() >= random) {
+		if (Math.random() >= UNFREEZE_CHANCE) {
 			dispatch(addNotification(`${actor.name} frozen solid`));
 			shouldSkip = true;
 			updatedActor = {
@@ -105,6 +106,23 @@ export const applyAbilitiesWeatherAndAilments = (
 			};
 		} else {
 			dispatch(addNotification(`${actor.name} was defrosted`));
+			updatedActor = {
+				...updatedActor,
+				primaryAilment: undefined,
+			};
+		}
+	}
+	//SLEEP
+	if (updatedActor.primaryAilment?.type === 'sleep') {
+		if (Math.random() >= WAKEUP_CHANCE) {
+			dispatch(addNotification(`${actor.name} is fast asleep`));
+			shouldSkip = true;
+			updatedActor = {
+				...updatedActor,
+				nextAction: undefined,
+			};
+		} else {
+			dispatch(addNotification(`${actor.name} woke up`));
 			updatedActor = {
 				...updatedActor,
 				primaryAilment: undefined,

@@ -141,7 +141,7 @@ export const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/36/',
 		handled: true,
 	},
-	{ name: 'thrash', url: 'https://pokeapi.co/api/v2/move/37/' },
+	{ name: 'thrash', url: 'https://pokeapi.co/api/v2/move/37/', handled: true },
 	{
 		name: 'double-edge',
 		url: 'https://pokeapi.co/api/v2/move/38/',
@@ -171,8 +171,12 @@ export const movesCheckList: {
 	{ name: 'bite', url: 'https://pokeapi.co/api/v2/move/44/', handled: true },
 	{ name: 'growl', url: 'https://pokeapi.co/api/v2/move/45/', handled: true },
 	{ name: 'roar', url: 'https://pokeapi.co/api/v2/move/46/', handled: true },
-	{ name: 'sing', url: 'https://pokeapi.co/api/v2/move/47/' },
-	{ name: 'supersonic', url: 'https://pokeapi.co/api/v2/move/48/' },
+	{ name: 'sing', url: 'https://pokeapi.co/api/v2/move/47/', handled: true },
+	{
+		name: 'supersonic',
+		url: 'https://pokeapi.co/api/v2/move/48/',
+		handled: true,
+	},
 	{
 		name: 'sonic-boom',
 		url: 'https://pokeapi.co/api/v2/move/49/',
