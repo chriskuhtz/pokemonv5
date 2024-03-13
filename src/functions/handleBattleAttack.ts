@@ -46,7 +46,8 @@ export const handleBattleAttack = (
 	);
 
 	if (
-		(move.meta.category.name === 'damage+raise' ||
+		((move.meta.category.name === 'damage+raise' &&
+			move.meta.stat_chance / 100 > Math.random()) ||
 			move.target.name === 'user') &&
 		passesAccuracyCheck
 	) {
@@ -129,7 +130,8 @@ export const handleBattleAttack = (
 			'random-opponent',
 			'all-opponents',
 			'opponents-field',
-		].includes(move.target.name)
+		].includes(move.target.name) &&
+		['net-good-stats', 'damage+lower'].includes(move.meta.category.name)
 			? applyStatMods(updatedTarget, move, dispatch)
 			: updatedTarget;
 
