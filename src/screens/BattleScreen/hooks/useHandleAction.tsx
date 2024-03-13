@@ -6,6 +6,7 @@ import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemTo
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { determineCatchRate } from '../../../functions/determineCatchRate';
+import { getRandomDuration } from '../../../functions/getDuration';
 import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
@@ -344,6 +345,74 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//MIST
+			if (isBattleAttack(action) && action.move.name === 'disable' && target) {
+				const disabledMove = {
+					moveName:
+						target.moveNames[
+							Math.floor(Math.random() * target.moveNames.length)
+						],
+					duration: getRandomDuration(2, 5),
+				};
+				dispatch(
+					addNotification(
+						`${target.name}'s ${disabledMove.moveName} is disabled`
+					)
+				);
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								disabledMove,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								disabledMove,
 							};
 						}),
 					});

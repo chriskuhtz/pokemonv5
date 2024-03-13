@@ -182,7 +182,7 @@ export const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/49/',
 		handled: true,
 	},
-	{ name: 'disable', url: 'https://pokeapi.co/api/v2/move/50/' },
+	{ name: 'disable', url: 'https://pokeapi.co/api/v2/move/50/', handled: true },
 	{ name: 'acid', url: 'https://pokeapi.co/api/v2/move/51/', handled: true },
 	{ name: 'ember', url: 'https://pokeapi.co/api/v2/move/52/', handled: true },
 	{

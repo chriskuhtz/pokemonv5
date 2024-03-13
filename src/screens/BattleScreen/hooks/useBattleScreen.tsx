@@ -10,6 +10,7 @@ import { MapEncounter, MapEnvironment } from '../../../store/slices/MapSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { useAdvanceRoundAndAssignOpponentActions } from './useAdvanceRoundAndAssignOpponentActions';
 import { useAvailableActions } from './useAvailableActions';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
@@ -218,60 +219,13 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		trainerId,
 	]);
 	//assign actions to opponents
-	useEffect(() => {
-		if (
-			mode === 'COLLECTING' &&
-			opponentSide &&
-			!opponentSide.field.every((p) => p.nextAction)
-		) {
-			if (playerSide?.field.length === 0) {
-				return;
-			}
-
-			setOpponentSide({
-				...opponentSide,
-				field: opponentSide?.field.map((p) => {
-					const potentialTargets = [
-						...(playerSide?.field ?? []),
-						...opponentSide.field,
-					].filter((target) => target.id !== p.id);
-					const optimalTarget =
-						p.preparedMove?.targetId ??
-						potentialTargets[
-							Math.floor(Math.random() * potentialTargets.length)
-						].id;
-
-					if (!optimalTarget) {
-						console.error('cant determine optimal target');
-					}
-					return {
-						...p,
-						nextAction: {
-							type: 'ATTACK',
-							target: optimalTarget,
-							move:
-								p.moves.find((m) => m.name === p.preparedMove?.moveName) ??
-								p.moves.find((m) => m.name === p.lockedInMove?.moveName) ??
-								p.moves[Math.floor(Math.random() * p.moves.length)],
-						},
-					};
-				}),
-			});
-
-			setEnvironment((environment) => ({
-				...environment,
-				battleRounds: environment.battleRounds + 1,
-				playerSideMist:
-					environment.playerSideMist && environment.playerSideMist > 1
-						? environment.playerSideMist - 1
-						: undefined,
-				opponentSideMist:
-					environment.opponentSideMist && environment.opponentSideMist > 1
-						? environment.opponentSideMist - 1
-						: undefined,
-			}));
-		}
-	}, [mode, opponentSide, playerSide]);
+	useAdvanceRoundAndAssignOpponentActions(
+		mode,
+		opponentSide,
+		playerSide,
+		setOpponentSide,
+		setEnvironment
+	);
 
 	return {
 		mode,

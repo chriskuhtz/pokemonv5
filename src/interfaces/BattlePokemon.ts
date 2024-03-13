@@ -23,6 +23,7 @@ export interface BattlePokemon extends OwnedPokemon {
 	multiHits?: number;
 	preparedMove?: { moveName: string; targetId: string };
 	lockedInMove?: { moveName: string; duration: number };
+	disabledMove?: { moveName: string; duration: number };
 	location?: BattlePokemonLocation;
 	accuracyModifier: number;
 }

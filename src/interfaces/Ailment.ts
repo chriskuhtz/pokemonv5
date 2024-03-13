@@ -9,10 +9,6 @@ export function isSecondaryAilment(x: { type: string }): x is SecondaryAilment {
 	return ['confusion', 'trap'].includes(x.type);
 }
 
-export const getConfusionDuration = () => {
-	return 2 + Math.floor(Math.random() * 4);
-};
-
 export interface SecondaryAilment {
 	type: 'confusion' | 'trap';
 	duration: number;

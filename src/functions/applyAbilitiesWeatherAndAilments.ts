@@ -18,6 +18,7 @@ import { addNotification } from '../store/slices/notificationSlice';
 import { calculateDamage } from './calculateDamage';
 import { canRaiseStat } from './canRaiseStat';
 import { getDamageFactors } from './getDamageFactors';
+import { reduceDuration } from './reduceDuration';
 
 export const applyAbilitiesWeatherAndAilments = (
 	actor: BattlePokemon,
@@ -168,6 +169,37 @@ export const applyAbilitiesWeatherAndAilments = (
 							true
 						)
 					),
+			};
+		}
+	}
+	//DISABLE
+	if (updatedActor.disabledMove) {
+		const reducedDuration = reduceDuration(updatedActor.disabledMove.duration);
+		if (!reducedDuration) {
+			dispatch(
+				addNotification(
+					`${actor.name}'s ${updatedActor.disabledMove} is no longer disabled`
+				)
+			);
+
+			updatedActor = {
+				...updatedActor,
+				disabledMove: undefined,
+			};
+		} else {
+			dispatch(
+				addNotification(
+					`${actor.name}'s ${updatedActor.disabledMove} is disabled`
+				)
+			);
+			shouldSkip = true;
+			updatedActor = {
+				...updatedActor,
+				disabledMove: {
+					...updatedActor.disabledMove,
+					duration: reducedDuration,
+				},
+				nextAction: undefined,
 			};
 		}
 	}

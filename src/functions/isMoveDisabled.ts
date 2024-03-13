@@ -10,6 +10,9 @@ export const isMoveDisabled = (
 	if (actor.preparedMove && move.name !== actor.preparedMove.moveName) {
 		return true;
 	}
+	if (actor.disabledMove && move.name === actor.disabledMove.moveName) {
+		return true;
+	}
 	if (
 		pokemonOnField.some((p) => p.ability === 'damp') &&
 		SELF_DESTRUCTING_MOVES.includes(move.name)

@@ -1,8 +1,8 @@
 import { Dispatch } from 'react';
-import { getConfusionDuration } from '../interfaces/Ailment';
 import { BattleAction } from '../interfaces/BattleAction';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { addNotification } from '../store/slices/notificationSlice';
+import { getRandomDuration } from './getDuration';
 
 export const determineFollowUpAction = (
 	actor: BattlePokemon,
@@ -45,7 +45,7 @@ export const determineFollowUpAction = (
 			lockedInMove: undefined,
 			secondaryAilments: [
 				...(updated.secondaryAilments ?? []),
-				{ type: 'confusion', duration: getConfusionDuration() },
+				{ type: 'confusion', duration: getRandomDuration(2, 5) },
 			],
 		};
 	}

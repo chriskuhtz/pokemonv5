@@ -64,6 +64,7 @@ export const useAvailableActions = (
 				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove || !!trainerId,
 				availableTargets: opponentSide.field,
 			},
+			//SWITCH
 			{
 				actionType: 'SWITCH',
 				displayName: 'Switch',
@@ -75,6 +76,7 @@ export const useAvailableActions = (
 					),
 				availableTargets: switchTargets,
 			},
+			//HEALING ITEM
 			{
 				actionType: 'HEALING_ITEM',
 				displayName: (
