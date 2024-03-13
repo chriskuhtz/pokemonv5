@@ -87,7 +87,9 @@ export const SecondPokemonQuest: Quest = {
 	rewardItems: generateInventory({ 'poke-ball': 5 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: starterTownEncounters.map((s) => s.dexId),
+		ids: [...starterTownEncounters, ...berryPatchEncounters].map(
+			(s) => s.dexId
+		),
 		mode: 'SOME',
 	},
 };

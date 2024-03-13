@@ -29,8 +29,8 @@ export const brock: Trainer = {
 	team: [
 		{
 			dexId: 95,
-			xp: 3000,
-			customMoves: ['earthquake', 'bounce', 'rock-slide', 'body-slam'],
+			xp: 4000,
+			customMoves: ['earthquake', 'dragon-dance', 'earthquake', 'dragon-dance'],
 		},
 	],
 	activePokemonPerside: 1,
@@ -103,14 +103,13 @@ export const brocksMinion2: Trainer = {
 		{
 			dexId: 744,
 			xp: 1000,
-			customMoves: ['accelerock', 'swords-dance', 'accelerock', 'swords-dance'],
+			customMoves: ['accelerock'],
 		},
 	],
 	activePokemonPerside: 1,
 	rewardMoney: 500,
 	viewRange: 3,
 };
-
 export const bugcatcherBarry: Trainer = {
 	id: 'bugcatcher-barry',
 	type: 'TRAINER',
