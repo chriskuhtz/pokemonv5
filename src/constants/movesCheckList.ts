@@ -135,7 +135,11 @@ export const movesCheckList: {
 		handled: true,
 	},
 	{ name: 'wrap', url: 'https://pokeapi.co/api/v2/move/35/', handled: true },
-	{ name: 'take-down', url: 'https://pokeapi.co/api/v2/move/36/' },
+	{
+		name: 'take-down',
+		url: 'https://pokeapi.co/api/v2/move/36/',
+		handled: true,
+	},
 	{ name: 'thrash', url: 'https://pokeapi.co/api/v2/move/37/' },
 	{ name: 'double-edge', url: 'https://pokeapi.co/api/v2/move/38/' },
 	{ name: 'tail-whip', url: 'https://pokeapi.co/api/v2/move/39/' },

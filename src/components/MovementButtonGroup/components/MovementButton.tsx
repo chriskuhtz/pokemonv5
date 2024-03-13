@@ -24,6 +24,7 @@ export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {
 		return (
 			<FaCircleArrowLeft
 				className="movementButton"
+				role="button"
 				key={x}
 				onPointerDown={() => {
 					if (nextOrientation !== x) {
@@ -60,6 +61,7 @@ export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {
 		return (
 			<FaCircleArrowRight
 				className="movementButton"
+				role="button"
 				key={x}
 				onPointerDown={() => {
 					if (nextOrientation !== x) {
@@ -88,6 +90,7 @@ export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {
 		return (
 			<FaCircleArrowUp
 				className="movementButton"
+				role="button"
 				key={x}
 				onPointerDown={() => {
 					if (nextOrientation !== x) {
@@ -114,6 +117,7 @@ export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {
 	return (
 		<FaCircleArrowDown
 			className="movementButton"
+			role="button"
 			key={x}
 			onPointerDown={() => {
 				if (nextOrientation !== x) {
