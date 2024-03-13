@@ -114,27 +114,17 @@ const drawRandom3Background = (
 		img.onload = () => {
 			heightArray.forEach((_, y) =>
 				widthArray.forEach((_, x) => {
-					if (Math.random() > 0) {
-						ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img2.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.33) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img3.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.66) {
+					const random = Math.random();
+
+					if (random > 0.66) {
 						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
 					}
+					if (random > 0.33) {
+						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
 				})
 			);
 		};
@@ -173,36 +163,21 @@ const drawRandom4Background = (
 		img.onload = () => {
 			heightArray.forEach((_, y) =>
 				widthArray.forEach((_, x) => {
-					if (Math.random() > 0) {
-						ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img2.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.25) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img3.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.5) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img4.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.75) {
+					const random = Math.random();
+
+					if (random > 0.75) {
 						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
 					}
+					if (random > 0.5) {
+						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					if (random > 0.25) {
+						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
 				})
 			);
 		};
@@ -238,53 +213,35 @@ const drawRandom5Background = (
 		const img3 = new Image();
 		const img4 = new Image();
 		const img5 = new Image();
+
 		const heightArray: number[] = Array.from({ length: height });
 		const widthArray: number[] = Array.from({ length: width });
+
 		img.onload = () => {
 			heightArray.forEach((_, y) =>
 				widthArray.forEach((_, x) => {
-					if (Math.random() > 0) {
-						ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img2.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.2) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img3.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.4) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img4.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.6) {
-						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img5.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.8) {
+					const random = Math.random();
+					if (random > 0.8) {
 						ctx.drawImage(img5, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
 					}
+					if (random > 0.6) {
+						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					if (random > 0.4) {
+						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					if (random > 0.2) {
+						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
 				})
 			);
 		};
+
 		img.src = `tiles/${baseTile.id}1.png`;
 		img2.src = `tiles/${baseTile.id}2.png`;
 		img3.src = `tiles/${baseTile.id}3.png`;
@@ -321,57 +278,32 @@ const drawRandom6Background = (
 		const img6 = new Image();
 		const heightArray: number[] = Array.from({ length: height });
 		const widthArray: number[] = Array.from({ length: width });
+
 		img.onload = () => {
 			heightArray.forEach((_, y) =>
 				widthArray.forEach((_, x) => {
-					if (Math.random() > 0) {
-						ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img2.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.16) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img3.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.33) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img4.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.5) {
-						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img5.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.66) {
-						ctx.drawImage(img5, 0, 0, 16, 16, size * x, size * y, size, size);
-					}
-				})
-			);
-		};
-		img6.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					if (Math.random() > 0.83) {
+					const random = Math.random();
+					if (random > 0.9) {
 						ctx.drawImage(img6, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
 					}
+					if (random > 0.72) {
+						ctx.drawImage(img5, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					if (random > 0.54) {
+						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					if (random > 0.36) {
+						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					if (random > 0.18) {
+						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
+						return;
+					}
+					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
 				})
 			);
 		};
