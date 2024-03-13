@@ -27,6 +27,36 @@ export const brocksGym: MapState = {
 	],
 	obstacles: [
 		{
+			type: 'LARGE_OBSTACLE',
+			id: 'statueLeft',
+			sprite: 'pokeballStatue',
+			position: {
+				x: 2,
+				y: 12,
+				orientation: 0,
+				mapId: 'brocks-gym',
+				forwardFoot: 0,
+			},
+			clearanceBehind: 1,
+			height: 2,
+			width: 1,
+		},
+		{
+			type: 'LARGE_OBSTACLE',
+			id: 'statueRight',
+			sprite: 'pokeballStatue',
+			position: {
+				x: 6,
+				y: 12,
+				orientation: 0,
+				mapId: 'brocks-gym',
+				forwardFoot: 0,
+			},
+			clearanceBehind: 1,
+			height: 2,
+			width: 1,
+		},
+		{
 			type: 'OBSTACLE',
 			id: 'rock0/0',
 			sprite: 'rock',
@@ -52,11 +82,11 @@ export const brocksGym: MapState = {
 		},
 		{
 			type: 'OBSTACLE',
-			id: 'rock6/12',
+			id: 'rock7/10',
 			sprite: 'rock',
 			position: {
-				x: 6,
-				y: 12,
+				x: 7,
+				y: 10,
 				orientation: 0,
 				mapId: 'brocks-gym',
 				forwardFoot: 0,
