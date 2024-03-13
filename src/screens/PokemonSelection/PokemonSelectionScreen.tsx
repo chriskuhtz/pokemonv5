@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
+import { shinyChance } from '../../functions/shinyChance';
 import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { PokemonData } from '../../interfaces/PokemonData';
@@ -67,6 +68,7 @@ export const PokemonSelectionScreen = ({
 											).map((move) => move.name),
 											ability: pokemon.abilities[0].ability.name,
 											ball: 'luxury-ball',
+											shiny: shinyChance(),
 										},
 									],
 									dexUpdates: choices.map((choice) => {

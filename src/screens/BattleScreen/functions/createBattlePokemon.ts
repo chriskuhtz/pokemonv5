@@ -3,6 +3,7 @@ import { v4 } from 'uuid';
 import { fetchMove } from '../../../api/pokeApiFunctions/fetchMove';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { calculateStat } from '../../../functions/calculateStat';
+import { shinyChance } from '../../../functions/shinyChance';
 import { useGetFirstFourMoves } from '../../../hooks/useGetFirstFourMoves';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MoveDto } from '../../../interfaces/Move';
@@ -80,6 +81,7 @@ export const useCreateBattlePokemonFromData = () => {
 				ability: data.abilities[0].ability.name,
 				accuracyModifier: 0,
 				ball: 'poke-ball',
+				shiny: shinyChance(),
 			};
 		},
 		[getFirstFourMoves]

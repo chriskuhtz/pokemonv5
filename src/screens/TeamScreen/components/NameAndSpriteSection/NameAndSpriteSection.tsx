@@ -10,6 +10,7 @@ export const NameAndSpriteSection = ({
 	level,
 	primaryType,
 	secondaryType,
+	shiny,
 }: {
 	dexId: number;
 	name: string;
@@ -18,6 +19,7 @@ export const NameAndSpriteSection = ({
 	nickname?: string;
 	primaryType: PokemonType;
 	secondaryType?: PokemonType;
+	shiny?: boolean;
 }): JSX.Element => {
 	return (
 		<div className="nameAndSpriteSection">
@@ -37,7 +39,9 @@ export const NameAndSpriteSection = ({
 			</div>
 			<img
 				className="sprite"
-				src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexId}.png
+				src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
+					shiny ? 'shiny/' : ''
+				}${dexId}.png
         `}
 			/>
 		</div>

@@ -37,7 +37,7 @@ export const CircularSprite = ({
 							src={
 								pokemon.status?.name === 'BEING_CAUGHT'
 									? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pokemon.status.ball}.png`
-									: getPokemonSpriteUrl(pokemon.dexId, back)
+									: getPokemonSpriteUrl(pokemon.dexId, back, !!pokemon.shiny)
 							}
 						/>
 					</div>

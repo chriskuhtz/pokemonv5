@@ -13,4 +13,5 @@ export interface OwnedPokemon {
 	ability: Ability;
 	primaryAilment?: PrimaryAilment;
 	ball: PokeballType;
+	shiny?: boolean;
 }

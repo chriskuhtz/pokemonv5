@@ -31,6 +31,7 @@ export const PokemonSummary = ({ pokemon }: { pokemon: BattlePokemon }) => {
 					dexId={pokemon.dexId}
 					name={pokemon.name}
 					level={calculateLevelData(pokemon.xp).level}
+					shiny={pokemon.shiny}
 				/>
 				<AbilityPill abilityName={pokemon.ability} />
 				<Pill
