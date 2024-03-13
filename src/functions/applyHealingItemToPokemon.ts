@@ -1,10 +1,9 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { HealingItemType } from '../interfaces/Inventory';
-import { ItemName } from '../interfaces/Item';
 
 export const applyHealingItemToPokemon = (
 	pokemon: BattlePokemon,
-	itemName: ItemName
+	itemName: HealingItemType
 ): BattlePokemon => {
 	const copy = { ...pokemon };
 

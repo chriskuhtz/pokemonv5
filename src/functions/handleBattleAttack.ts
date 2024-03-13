@@ -44,22 +44,23 @@ export const handleBattleAttack = (
 
 	updatedActor = determineMultiHits(updatedActor, move);
 
-	let flinch_chance = Math.max(
-		updatedActor.ability === 'stench' ? 0.1 : 0,
-		move.meta.flinch_chance
-	);
-
-	const willFlinch = target.nextAction && Math.random() <= flinch_chance;
-
 	const passesAccuracyCheck = makeAccuracyCheck(
 		updatedActor,
 		target,
 		move,
 		environment.weather
 	);
+
 	if (!passesAccuracyCheck) {
 		dispatch(addNotification(`${actor.name} missed`));
 	}
+
+	let flinch_chance = Math.max(
+		updatedActor.ability === 'stench' ? 0.1 : 0,
+		move.meta.flinch_chance
+	);
+	const willFlinch =
+		passesAccuracyCheck && target.nextAction && Math.random() <= flinch_chance;
 
 	updatedActor = applyCrashDamage(
 		updatedActor,
@@ -68,7 +69,6 @@ export const handleBattleAttack = (
 		dispatch,
 		passesAccuracyCheck
 	);
-
 	//only get damage factors on hit
 	const damageFactors = getDamageFactors(
 		updatedActor,
@@ -95,12 +95,10 @@ export const handleBattleAttack = (
 		}
 	}
 
-	const newTargetDamage = determineNewTargetDamage(
-		target,
-		move,
-		attackDamage,
-		dispatch
-	);
+	const newTargetDamage = passesAccuracyCheck
+		? determineNewTargetDamage(target, move, attackDamage, dispatch)
+		: target.damage;
+
 	const newTargetAction: BattleAction | undefined = willFlinch
 		? { type: 'FLINCH' }
 		: target.nextAction;

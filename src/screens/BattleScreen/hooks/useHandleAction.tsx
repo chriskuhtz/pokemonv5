@@ -13,6 +13,7 @@ import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isBattleItemAction,
 	isCatchAttempt,
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
@@ -45,11 +46,17 @@ export const useHandleAction = (
 			const actor = pokemonWithActions[0];
 			const action = actor.nextAction;
 
-			const target = isBattleActionWithTarget(action)
+			const target: BattlePokemon | undefined = isBattleActionWithTarget(action)
 				? [...playerSide.field, ...opponentSide.field].find(
 						(p) => p.id === action?.target
 				  )
 				: undefined;
+
+			const reviveTarget =
+				isBattleItemAction(action) &&
+				['revive', 'max-revive'].includes(action.item) &&
+				playerSide.defeated.find((p) => p.id === action.target);
+
 			const switchTarget =
 				isBattleActionWithTarget(action) && action.type === 'SWITCH'
 					? [...playerSide.bench, ...opponentSide.bench].find(
@@ -59,7 +66,12 @@ export const useHandleAction = (
 
 			dispatch(continueDialogue());
 			//no target
-			if (isBattleActionWithTarget(action) && !target && !switchTarget) {
+			if (
+				isBattleActionWithTarget(action) &&
+				!target &&
+				!switchTarget &&
+				!reviveTarget
+			) {
 				dispatch(
 					addNotification(`There is no target for ${actor.name}'s move`)
 				);
@@ -200,7 +212,7 @@ export const useHandleAction = (
 				return;
 			}
 			//Healing Item
-			if (action?.type === 'HEALING_ITEM' && target) {
+			if (isBattleItemAction(action) && target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -208,21 +220,13 @@ export const useHandleAction = (
 							//apply heal to self
 							if (target.id === actor.id && p.id === target.id) {
 								return {
-									...applyHealingItemToPokemon(
-										p,
-										//@ts-expect-error : See typecheck in condition
-										action.item
-									),
+									...applyHealingItemToPokemon(p, action.item),
 									nextAction: undefined,
 								};
 							}
 							if (target.id === p.id) {
 								return {
-									...applyHealingItemToPokemon(
-										p,
-										//@ts-expect-error : See typecheck in condition
-										action.item
-									),
+									...applyHealingItemToPokemon(p, action.item),
 								};
 							}
 							if (actor.id === p.id) {
@@ -234,6 +238,27 @@ export const useHandleAction = (
 							return p;
 						}),
 					});
+				}
+				if (actor.side === 'OPPONENT') {
+					console.error('Opponent Healing not implemented yet');
+				}
+				return;
+			}
+			if (isBattleItemAction(action) && reviveTarget) {
+				if (actor.side === 'PLAYER') {
+					const revived = applyHealingItemToPokemon(reviveTarget, action.item);
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return { ...p, nextAction: undefined };
+						}),
+						bench: playerSide.bench.concat(revived),
+						defeated: playerSide.defeated.filter((p) => p.id !== revived.id),
+					});
+					return;
 				}
 				if (actor.side === 'OPPONENT') {
 					console.error('Opponent Healing not implemented yet');

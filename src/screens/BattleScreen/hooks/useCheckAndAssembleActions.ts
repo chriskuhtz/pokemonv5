@@ -4,6 +4,7 @@ import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilit
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
+	isBattleItemAction,
 	isCatchAttempt,
 	isPrimaryAction,
 } from '../../../interfaces/BattleAction';
@@ -58,6 +59,12 @@ export const useCheckAndAssembleActions = (
 					? allPokemonOnBench.find((p) => p.id === action.target)
 					: undefined;
 
+			const reviveTarget =
+				isBattleItemAction(action) &&
+				['revive', 'max-revive'].includes(action.item)
+					? playerSide.defeated.find((p) => p.id === action.target)
+					: undefined;
+
 			if (isPrimaryAction(actor.nextAction)) {
 				const skipAction = applyAbilitiesWeatherAndAilments(
 					actor,
@@ -83,10 +90,13 @@ export const useCheckAndAssembleActions = (
 				);
 				return;
 			}
-			if (action?.type === 'HEALING_ITEM' && target) {
+			if (isBattleItemAction(action) && (target || reviveTarget)) {
 				dispatch(
-					//@ts-expect-error : See typecheck in condition
-					concatDialogue([`You gave a ${action.item} to ${target.name}`])
+					concatDialogue([
+						`You gave a ${action.item} to ${
+							target?.name ?? reviveTarget?.name
+						}`,
+					])
 				);
 				return;
 			}
@@ -157,7 +167,9 @@ export const useCheckAndAssembleActions = (
 				return;
 			}
 			dispatch(
-				concatDialogue([`${actor.name} used ${actor.nextAction?.type}`])
+				concatDialogue([
+					`${actor.name} used ${actor.nextAction?.type} or something`,
+				])
 			);
 		}
 	}, [
