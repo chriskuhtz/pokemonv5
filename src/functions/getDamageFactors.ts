@@ -1,3 +1,4 @@
+import { fixedDamageMoves } from '../constants/fixedDamageMoves';
 import { ohkoMoves } from '../constants/ohkoMoves';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -69,5 +70,6 @@ export const getDamageFactors = (
 		zMoveFactor: 1,
 		teraShieldFactor: 1,
 		ohko: ohkoMoves.includes(move.name),
+		fixed: fixedDamageMoves[move.name],
 	};
 };

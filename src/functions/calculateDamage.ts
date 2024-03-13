@@ -15,6 +15,7 @@ export interface DamageFactors {
 	zMoveFactor: number;
 	teraShieldFactor: number;
 	ohko?: boolean;
+	fixed?: number;
 }
 
 export const calculateDamage = ({
@@ -34,10 +35,15 @@ export const calculateDamage = ({
 	zMoveFactor,
 	teraShieldFactor,
 	ohko,
+	fixed,
 }: DamageFactors): number => {
 	if (ohko) {
 		return 10000;
 	}
+	if (fixed) {
+		return fixed;
+	}
+
 	const random = Math.floor((1 - Math.random() * 0.15) * 100) / 100;
 
 	if (movePower === 0 || typeFactor === 0) {
