@@ -36,13 +36,6 @@ export const handleBattleAttack = (
 
 	let updatedActor = { ...actor };
 
-	if (
-		move.meta.category.name === 'damage+raise' ||
-		move.target.name === 'user'
-	) {
-		updatedActor = applyStatMods(updatedActor, move, dispatch);
-	}
-
 	updatedActor = determineMultiHits(updatedActor, move);
 
 	const passesAccuracyCheck = makeAccuracyCheck(
@@ -51,6 +44,14 @@ export const handleBattleAttack = (
 		move,
 		environment.weather
 	);
+
+	if (
+		(move.meta.category.name === 'damage+raise' ||
+			move.target.name === 'user') &&
+		passesAccuracyCheck
+	) {
+		updatedActor = applyStatMods(updatedActor, move, dispatch);
+	}
 
 	if (!passesAccuracyCheck) {
 		dispatch(addNotification(`${actor.name} missed`));
@@ -80,12 +81,12 @@ export const handleBattleAttack = (
 
 	const attackDamage = calculateDamage(damageFactors);
 
+	if (damageFactors.typeFactor === 0 && passesAccuracyCheck) {
+		dispatch(addNotification(`It has no effect on ${target.name}`));
+	}
 	if (attackDamage > 0 && passesAccuracyCheck) {
 		if (damageFactors.criticalFactor > 1) {
 			dispatch(addNotification('critical hit!'));
-		}
-		if (damageFactors.typeFactor === 0) {
-			dispatch(addNotification(`It has no effect on ${target.name}`));
 		}
 
 		if (damageFactors.typeFactor > 1) {
