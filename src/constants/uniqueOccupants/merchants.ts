@@ -15,6 +15,7 @@ export const starterTownMerchant: Merchant = {
 		antidote: 1000,
 		'burn-heal': 1000,
 		revive: 1000,
+		'super-potion': 1000,
 	},
 	dialogue: ['What do you need?'],
 	sprite: '113',
