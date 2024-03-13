@@ -26,7 +26,13 @@ export const brock: Trainer = {
 		'Take this Boulder Badge as a sign of your victory.',
 	],
 	sprite: SpriteEnum['brock'],
-	team: [{ dexId: 95, xp: 1000 }],
+	team: [
+		{
+			dexId: 95,
+			xp: 3000,
+			customMoves: ['earthquake', 'bounce', 'rock-slide', 'body-slam'],
+		},
+	],
 	activePokemonPerside: 1,
 	rewardMoney: 4000,
 	rewardBadge: 'boulderBadge',

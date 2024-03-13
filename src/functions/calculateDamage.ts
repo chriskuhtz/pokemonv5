@@ -2,7 +2,7 @@ export interface DamageFactors {
 	attackerLevel: number;
 	movePower: number;
 	correctAttack: number;
-	correctDefence: number;
+	correctdefense: number;
 	targetsFactor: number;
 	parentalBondFactor: number;
 	weatherFactor: number;
@@ -21,7 +21,7 @@ export const calculateDamage = ({
 	attackerLevel,
 	movePower,
 	correctAttack,
-	correctDefence,
+	correctdefense,
 	targetsFactor,
 	parentalBondFactor,
 	weatherFactor,
@@ -46,7 +46,7 @@ export const calculateDamage = ({
 
 	const levelFactor = (2 * attackerLevel) / 5 + 2;
 	const baseDamage =
-		(levelFactor * movePower * (correctAttack / correctDefence)) / 50 + 2;
+		(levelFactor * movePower * (correctAttack / correctdefense)) / 50 + 2;
 
 	const total =
 		baseDamage *

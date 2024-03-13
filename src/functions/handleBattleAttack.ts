@@ -113,7 +113,13 @@ export const handleBattleAttack = (
 		: updatedTarget;
 
 	updatedTarget =
-		passesAccuracyCheck && move.target.name === 'selected-pokemon'
+		passesAccuracyCheck &&
+		[
+			'selected-pokemon',
+			'random-opponent',
+			'all-opponents',
+			'opponents-field',
+		].includes(move.target.name)
 			? applyStatMods(updatedTarget, move, dispatch)
 			: updatedTarget;
 

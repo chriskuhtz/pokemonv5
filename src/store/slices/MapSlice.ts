@@ -35,6 +35,7 @@ export interface MapEncounter {
 	dexId: number;
 	xp: number;
 	rarity?: number;
+	customMoves?: string[];
 }
 
 export type MapEnvironment =

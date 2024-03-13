@@ -14,7 +14,7 @@ import { OPPOID } from '../../../testing/constants/trainerIds';
 const modifiers: StatObject = {
 	hp: 0,
 	attack: 0,
-	defence: 0,
+	defense: 0,
 	spatk: 0,
 	spdef: 0,
 	speed: 0,
@@ -38,20 +38,28 @@ const getStats = (stats: StatInfo[], level: number): StatObject => {
 		spatk: calculateStat(baseSpatk, 0, 0, 'hardy', level, 'spatk'),
 		spdef: calculateStat(baseSpDef, 0, 0, 'hardy', level, 'spdef'),
 		speed: calculateStat(baseSpeed, 0, 0, 'hardy', level, 'speed'),
-		defence: calculateStat(baseDef, 0, 0, 'hardy', level, 'defence'),
+		defense: calculateStat(baseDef, 0, 0, 'hardy', level, 'defense'),
 	};
 };
 
 export const useCreateBattlePokemonFromData = () => {
 	const getFirstFourMoves = useGetFirstFourMoves();
 	return useCallback(
-		async (data: PokemonData, xp?: number): Promise<BattlePokemon> => {
+		async (
+			data: PokemonData,
+			xp?: number,
+			customMoves?: string[]
+		): Promise<BattlePokemon> => {
 			const baseXp = xp ?? 100;
 			const { level } = calculateLevelData(baseXp);
 
 			const stats = getStats(data.stats, level);
 
-			const firstFourMoves = await getFirstFourMoves(data.id, 'level-up');
+			const firstFourMoves = await getFirstFourMoves(
+				data.id,
+				'level-up',
+				customMoves
+			);
 
 			return {
 				primaryType: data.types[0].type.name,

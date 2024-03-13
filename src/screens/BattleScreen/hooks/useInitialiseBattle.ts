@@ -33,7 +33,7 @@ export const useInitialiseBattleSides = (
 		Promise.all(
 			opponents.map(async (e) => {
 				const data = await getPokemonByDexId(e.dexId).unwrap();
-				return await createBattlePokemonFromData(data, e.xp);
+				return await createBattlePokemonFromData(data, e.xp, e.customMoves);
 			})
 		)
 	);

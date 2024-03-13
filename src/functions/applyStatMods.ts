@@ -11,6 +11,7 @@ export const applyStatMods = (
 	dispatch: Dispatch<unknown>
 ): BattlePokemon => {
 	const updatedPokemon = { ...pokemon };
+	const updatedStats = { ...pokemon.statModifiers };
 	if (move.stat_changes) {
 		move.stat_changes.forEach((statChange) => {
 			if (statChange.stat.name === 'accuracy') {
@@ -27,11 +28,10 @@ export const applyStatMods = (
 				statChange.change > 0 &&
 				canRaiseStat(updatedPokemon, statChange.stat.name)
 			) {
-				updatedPokemon.statModifiers[statChange.stat.name] =
-					updatedPokemon.statModifiers[statChange.stat.name] +
-					statChange.change;
-				if (updatedPokemon.statModifiers[statChange.stat.name] > 6) {
-					updatedPokemon.statModifiers[statChange.stat.name] = 6;
+				updatedStats[statChange.stat.name] += statChange.change;
+
+				if (updatedStats[statChange.stat.name] > 6) {
+					updatedStats[statChange.stat.name] = 6;
 				}
 				dispatch(
 					addNotification(
@@ -43,9 +43,9 @@ export const applyStatMods = (
 				statChange.change < 0 &&
 				canLowerStat(updatedPokemon, statChange.stat.name)
 			) {
-				updatedPokemon.statModifiers[statChange.stat.name] -= statChange.change;
-				if (updatedPokemon.statModifiers[statChange.stat.name] < -6) {
-					updatedPokemon.statModifiers[statChange.stat.name] = -6;
+				updatedStats[statChange.stat.name] += statChange.change;
+				if (updatedStats[statChange.stat.name] < -6) {
+					updatedStats[statChange.stat.name] = -6;
 				}
 				dispatch(
 					addNotification(
@@ -55,6 +55,5 @@ export const applyStatMods = (
 			}
 		});
 	}
-
-	return updatedPokemon;
+	return { ...updatedPokemon, statModifiers: updatedStats };
 };

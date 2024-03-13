@@ -23,14 +23,14 @@ export const getDamageFactors = (
 		actor.stats[correctAttackKey] +
 		0.5 * actor.statModifiers[correctAttackKey] * actor.stats[correctAttackKey];
 
-	const correctDefenceKey =
-		damage_class.name === 'physical' ? 'defence' : 'spdef';
+	const correctdefenseKey =
+		damage_class.name === 'physical' ? 'defense' : 'spdef';
 
-	const correctDefence: number =
-		target.stats[correctDefenceKey] +
+	const correctdefense: number =
+		target.stats[correctdefenseKey] +
 		0.5 *
-			target.statModifiers[correctDefenceKey] *
-			target.stats[correctDefenceKey];
+			target.statModifiers[correctdefenseKey] *
+			target.stats[correctdefenseKey];
 
 	const stabFactor =
 		moveType === actor.primaryType || moveType === actor.secondaryType
@@ -42,7 +42,7 @@ export const getDamageFactors = (
 	return {
 		attackerLevel: level,
 		correctAttack,
-		correctDefence,
+		correctdefense,
 		movePower: power ?? 0,
 		targetsFactor: 1,
 		parentalBondFactor: 1,
