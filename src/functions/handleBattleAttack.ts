@@ -6,6 +6,7 @@ import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
 import { applyCrashDamage } from './applyCrashDamage';
+import { applyDrain } from './applyDrain';
 import { applyStatMods } from './applyStatMods';
 import { calculateDamage } from './calculateDamage';
 import { determineFollowUpAction } from './determineFollowUpAction';
@@ -15,11 +16,6 @@ import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
 
-export const applyDrain = (pokemon: BattlePokemon) => {
-	const updated = { ...pokemon };
-
-	return updated;
-};
 export const handleBattleAttack = (
 	actor: BattlePokemon,
 	target: BattlePokemon,
@@ -99,7 +95,12 @@ export const handleBattleAttack = (
 			dispatch(addNotification(`It is not very effective`));
 		}
 		if (move.meta.drain) {
-			updatedActor = applyDrain(updatedActor, attackDamage, dispatch);
+			updatedActor = applyDrain(
+				updatedActor,
+				attackDamage,
+				move.meta.drain,
+				dispatch
+			);
 		}
 	}
 
