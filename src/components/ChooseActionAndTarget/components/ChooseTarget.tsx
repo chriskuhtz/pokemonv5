@@ -29,7 +29,6 @@ export const ChooseTarget = ({
 	actor: BattlePokemon;
 }) => {
 	const determineNextAction = (c: BattlePokemon) => {
-		console.log('det action');
 		if (actionName === 'ATTACK') {
 			return {
 				type: actionName,
@@ -66,8 +65,6 @@ export const ChooseTarget = ({
 		return { type: actionName };
 	};
 
-	console.log(availableTargets, item, actionName);
-
 	useEffect(() => {
 		if (
 			availableTargets.length === 1 &&
@@ -98,7 +95,6 @@ export const ChooseTarget = ({
 									key={c.id}
 									disabled={item && !canBenefitFromItem(c, item)}
 									onClick={() => {
-										console.log('click');
 										selectAction({
 											...actor,
 											nextAction: determineNextAction(c),

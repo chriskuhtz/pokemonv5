@@ -29,9 +29,12 @@ export const assignPriority = (pokemon: BattlePokemon): BattlePokemon => {
 		prio += prioIndex['SWITCH'];
 	}
 	if (
-		['CATCH_ATTEMPT', 'CATCH_SUCCESS', 'CATCH_FAILURE', 'ITEM'].includes(
-			pokemon.nextAction?.type
-		)
+		[
+			'CATCH_ATTEMPT',
+			'CATCH_SUCCESS',
+			'CATCH_FAILURE',
+			'HEALING_ITEM',
+		].includes(pokemon.nextAction?.type)
 	) {
 		prio += prioIndex['ITEM'];
 	}
