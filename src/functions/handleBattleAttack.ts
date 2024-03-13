@@ -15,6 +15,11 @@ import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
 
+export const applyDrain = (pokemon: BattlePokemon) => {
+	const updated = { ...pokemon };
+
+	return updated;
+};
 export const handleBattleAttack = (
 	actor: BattlePokemon,
 	target: BattlePokemon,
@@ -92,6 +97,9 @@ export const handleBattleAttack = (
 		}
 		if (damageFactors.typeFactor < 1) {
 			dispatch(addNotification(`It is not very effective`));
+		}
+		if (move.meta.drain) {
+			updatedActor = applyDrain(updatedActor, attackDamage, dispatch);
 		}
 	}
 

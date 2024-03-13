@@ -7,13 +7,18 @@ import { NotificationBanner } from './components/NotificationBanner/Notification
 import './index.css';
 import { router } from './router/router.tsx';
 import { store } from './store/store.ts';
+import { abilityCheckList } from './constants/abilityCheckList.ts';
+import { itemsCheckList } from './constants/itemsCheckList.ts';
+import { movesCheckList } from './constants/movesCheckList.ts';
 
-// console.log('handled items', itemsCheckList.filter((i) => i.handled).length);
-// console.log('handled moves', movesCheckList.filter((i) => i.handled).length);
-// console.log(
-// 	'handled abilities',
-// 	abilityCheckList.filter((i) => i.handled).length
-// );
+if (import.meta.env.MODE === 'development') {
+	console.log('handled items', itemsCheckList.filter((i) => i.handled).length);
+	console.log('handled moves', movesCheckList.filter((i) => i.handled).length);
+	console.log(
+		'handled abilities',
+		abilityCheckList.filter((i) => i.handled).length
+	);
+}
 
 export const size =
 	window.innerHeight > window.innerWidth
