@@ -30,7 +30,7 @@ export const brock: Trainer = {
 		{
 			dexId: 95,
 			xp: 4000,
-			customMoves: ['earthquake', 'dragon-dance', 'bonemerang', 'bone-rush'],
+			customMoves: ['earthquake', 'dragon-dance', 'earthquake', 'dragon-dance'],
 		},
 	],
 	activePokemonPerside: 1,
