@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
 import {
 	BURN_DAMAGE_FACTOR,
+	CONFUSION_HURT_CHANCE,
 	PARA_CHANCE,
 	POISON_DAMAGE_FACTOR,
 	SANDSTORM_DAMAGE_FACTOR,
@@ -9,9 +10,12 @@ import {
 import { isPrimaryAction } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
+import { MoveDto } from '../interfaces/Move';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { addNotification } from '../store/slices/notificationSlice';
+import { calculateDamage } from './calculateDamage';
 import { canRaiseStat } from './canRaiseStat';
+import { getDamageFactors } from './getDamageFactors';
 
 export const applyAbilitiesWeatherAndAilments = (
 	actor: BattlePokemon,
@@ -22,11 +26,12 @@ export const applyAbilitiesWeatherAndAilments = (
 	dispatch: Dispatch<unknown>,
 	environment: BattleEnvironment
 ): boolean => {
-	if (!isPrimaryAction(actor.nextAction)) {
+	if (!isPrimaryAction(actor.nextAction) && !actor.multiHits) {
 		return false;
 	}
 	let shouldSkip = false;
 	let updatedActor = { ...actor };
+	//SPEED BOOST
 	if (actor.ability === 'speed-boost' && canRaiseStat(actor, 'speed')) {
 		dispatch(
 			addNotification(`${actor.name} increased its speed with speed-boost`)
@@ -39,6 +44,7 @@ export const applyAbilitiesWeatherAndAilments = (
 			},
 		};
 	}
+	//SAND STORM
 	if (
 		environment.weather?.type === 'sandstorm' &&
 		actor.ability !== 'sand-veil'
@@ -51,6 +57,7 @@ export const applyAbilitiesWeatherAndAilments = (
 				Math.round(updatedActor.stats.hp * SANDSTORM_DAMAGE_FACTOR),
 		};
 	}
+	//BURN
 	if (updatedActor.primaryAilment?.type === 'burn') {
 		dispatch(addNotification(`${actor.name} is hurt by burn`));
 		updatedActor = {
@@ -60,6 +67,7 @@ export const applyAbilitiesWeatherAndAilments = (
 				Math.round(updatedActor.stats.hp * BURN_DAMAGE_FACTOR),
 		};
 	}
+	//POISON
 	if (
 		updatedActor.primaryAilment?.type === 'poison' ||
 		updatedActor.primaryAilment?.type === 'toxic'
@@ -73,17 +81,19 @@ export const applyAbilitiesWeatherAndAilments = (
 				Math.round(updatedActor.stats.hp * POISON_DAMAGE_FACTOR),
 		};
 	}
+	//PARA
 	if (
 		updatedActor.primaryAilment?.type === 'paralysis' &&
 		Math.random() < PARA_CHANCE
 	) {
-		dispatch(addNotification(`${actor.name} is paralyzed`));
+		dispatch(addNotification(`${actor.name} is fully paralyzed`));
 		shouldSkip = true;
 		updatedActor = {
 			...updatedActor,
 			nextAction: undefined,
 		};
 	}
+	//FREEZE
 	if (updatedActor.primaryAilment?.type === 'freeze') {
 		const random = Math.random();
 		if (Math.random() >= random) {
@@ -101,6 +111,7 @@ export const applyAbilitiesWeatherAndAilments = (
 			};
 		}
 	}
+	//TRAP
 	if (updatedActor.secondaryAilments?.some((a) => a.type === 'trap')) {
 		dispatch(addNotification(`${actor.name} is hurt by trap`));
 		updatedActor = {
@@ -109,6 +120,38 @@ export const applyAbilitiesWeatherAndAilments = (
 				updatedActor.damage +
 				Math.round(updatedActor.stats.hp * TRAP_DAMAGE_FACTOR),
 		};
+	}
+	//CONFUSION
+	if (
+		!shouldSkip &&
+		updatedActor.secondaryAilments?.some((a) => a.type === 'confusion')
+	) {
+		dispatch(addNotification(`${actor.name} is confused`));
+		if (Math.random() < CONFUSION_HURT_CHANCE) {
+			dispatch(addNotification(`${actor.name} hurt itself in confusion`));
+			shouldSkip = true;
+			updatedActor = {
+				...updatedActor,
+				nextAction: undefined,
+
+				damage:
+					updatedActor.damage +
+					calculateDamage(
+						getDamageFactors(
+							updatedActor,
+							{
+								power: 40,
+								damage_class: { name: 'physical', url: '' },
+								type: { name: 'normal' },
+								meta: { crit_rate: -1 },
+							} as MoveDto,
+							actor,
+							{} as BattleEnvironment,
+							true
+						)
+					),
+			};
+		}
 	}
 
 	updatedActor = {

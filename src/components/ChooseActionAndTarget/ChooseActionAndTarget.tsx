@@ -69,13 +69,17 @@ export const ChooseActionAndTarget = ({
 		const move = actor.moves.find(
 			(m) => m.name === actor.lockedInMove?.moveName
 		);
+		const potentialTargets = pokemonOnField.filter((p) => p.id !== actor.id);
+		const optimalTarget =
+			potentialTargets[Math.floor(Math.random() * potentialTargets.length)].id;
+
 		if (move) {
 			selectAction({
 				...actor,
 				nextAction: {
 					type: 'ATTACK',
 					move,
-					target: actor.lockedInMove?.targetId,
+					target: optimalTarget,
 				},
 			});
 		}

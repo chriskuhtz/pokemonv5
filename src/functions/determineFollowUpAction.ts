@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { getConfusionDuration } from '../interfaces/Ailment';
 import { BattleAction } from '../interfaces/BattleAction';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { addNotification } from '../store/slices/notificationSlice';
@@ -43,7 +44,8 @@ export const determineFollowUpAction = (
 			nextAction: undefined,
 			lockedInMove: undefined,
 			secondaryAilments: [
-				{ type: 'confusion', duration: 1 + Math.floor(Math.random() * 5) },
+				...(updated.secondaryAilments ?? []),
+				{ type: 'confusion', duration: getConfusionDuration() },
 			],
 		};
 	}

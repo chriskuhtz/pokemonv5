@@ -231,10 +231,16 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 			setOpponentSide({
 				...opponentSide,
 				field: opponentSide?.field.map((p) => {
+					const potentialTargets = [
+						...(playerSide?.field ?? []),
+						...opponentSide.field,
+					].filter((target) => target.id !== p.id);
 					const optimalTarget =
 						p.preparedMove?.targetId ??
-						p.lockedInMove?.targetId ??
-						playerSide?.field[0].id;
+						potentialTargets[
+							Math.floor(Math.random() * potentialTargets.length)
+						].id;
+
 					if (!optimalTarget) {
 						console.error('cant determine optimal target');
 					}
