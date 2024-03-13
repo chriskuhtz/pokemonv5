@@ -11,6 +11,9 @@ export const makeAccuracyCheck = (
 	if (target.location) {
 		return false;
 	}
+	if (move.name === 'blizzard' && weather?.type === 'hail') {
+		return true;
+	}
 	if (move.accuracy === null) {
 		return true;
 	}

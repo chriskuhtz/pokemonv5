@@ -210,8 +210,9 @@ export const movesCheckList: {
 	{
 		name: 'blizzard',
 		url: 'https://pokeapi.co/api/v2/move/59/',
+		handled: true,
 	},
-	{ name: 'psybeam', url: 'https://pokeapi.co/api/v2/move/60/' },
+	{ name: 'psybeam', url: 'https://pokeapi.co/api/v2/move/60/', handled: true },
 	//v0.0.5
 	{ name: 'bubble-beam', url: 'https://pokeapi.co/api/v2/move/61/' },
 	{ name: 'aurora-beam', url: 'https://pokeapi.co/api/v2/move/62/' },
