@@ -1,5 +1,6 @@
 import { ChooseActionAndTarget } from '../../../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { ChooseRefill } from '../../../../components/ChooseActionAndTarget/components/ChooseRefill';
+import { joinInventories } from '../../../../functions/joinInventories';
 import { useGetCurrentSaveFile } from '../../../../hooks/xata/useCurrentSaveFile';
 import { BattleEnvironment } from '../../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
@@ -71,7 +72,11 @@ export const BattleScreenController = ({
 				availableActions={availableActions}
 				selectAction={selectAction}
 				pokemonOnField={[...playerSide.field, ...opponentSide.field]}
-				inventory={saveFile.inventory}
+				inventory={joinInventories(
+					saveFile.inventory,
+					playerSide.consumedItems,
+					true
+				)}
 			/>
 		);
 	}

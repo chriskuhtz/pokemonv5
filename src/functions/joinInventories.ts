@@ -3,7 +3,8 @@ import { ItemName } from '../interfaces/Item';
 
 export const joinInventories = (
 	existing: Inventory,
-	update: Partial<Inventory>
+	update: Partial<Inventory>,
+	subtract?: boolean
 ): Inventory => {
 	const joined = { ...existing };
 
@@ -12,7 +13,7 @@ export const joinInventories = (
 		const value = updateEntry[1];
 
 		//amount cant fall under 0
-		joined[key] = Math.max(joined[key] + value, 0);
+		joined[key] = Math.max(joined[key] + (subtract ? -value : value), 0);
 	});
 
 	return joined;

@@ -27,6 +27,7 @@ export const useSaveGame = () => {
 			questUpdates,
 			pokemonUpdates,
 			visitedNurse,
+			subtractInventory,
 			dexUpdates,
 			handledOccupants,
 			fundsUpdate,
@@ -44,6 +45,7 @@ export const useSaveGame = () => {
 			fundsUpdate?: number;
 			newBadge?: GymBadge;
 			teleportToLastHealer?: boolean;
+			subtractInventory?: boolean;
 		}) => {
 			if (!data) {
 				return;
@@ -51,7 +53,7 @@ export const useSaveGame = () => {
 			const updatedData = { ...data };
 
 			let updatedInventory = inventoryChanges
-				? joinInventories(data.inventory, inventoryChanges)
+				? joinInventories(data.inventory, inventoryChanges, !!subtractInventory)
 				: data.inventory;
 			const updatedPosition = () => {
 				if (portalEvent?.to) {

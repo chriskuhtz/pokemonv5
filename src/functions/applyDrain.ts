@@ -9,7 +9,7 @@ export const applyDrain = (
 	dispatch: Dispatch<unknown>
 ) => {
 	const drainAmount = Math.round((attackDamage * drain) / 100);
-	console.log(drainAmount);
+
 	const updated = {
 		...pokemon,
 		damage: pokemon.damage - drainAmount,

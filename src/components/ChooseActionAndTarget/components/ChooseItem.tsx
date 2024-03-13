@@ -63,7 +63,7 @@ export const ChooseItem = ({
 													width={24}
 													src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${key}.png`}
 												/>
-												{key}
+												{key} ({inventory[key]})
 											</div>
 										}
 									/>

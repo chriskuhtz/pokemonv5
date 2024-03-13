@@ -73,6 +73,7 @@ export const useInitialiseBattleSides = (
 				defeated: [],
 				caught: [],
 				side: 'OPPONENT',
+				consumedItems: {},
 			});
 
 			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
@@ -113,6 +114,7 @@ export const useInitialiseBattleSides = (
 				defeated: defeatedPlayerPokemon,
 				caught: [],
 				side: 'PLAYER',
+				consumedItems: {},
 			});
 
 			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');

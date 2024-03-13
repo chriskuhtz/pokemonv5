@@ -10,6 +10,7 @@ import { getRandomDuration } from '../../../functions/getDuration';
 import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
+import { joinInventories } from '../../../functions/joinInventories';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import {
 	isBattleActionWithTarget,
@@ -19,6 +20,7 @@ import {
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { generateInventory } from '../../../interfaces/Inventory';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -280,6 +282,12 @@ export const useHandleAction = (
 							}
 							return p;
 						}),
+						consumedItems: joinInventories(
+							generateInventory(playerSide.consumedItems),
+							{
+								[`${action.item}`]: 1,
+							}
+						),
 					});
 				}
 				if (actor.side === 'OPPONENT') {
@@ -300,6 +308,12 @@ export const useHandleAction = (
 						}),
 						bench: playerSide.bench.concat(revived),
 						defeated: playerSide.defeated.filter((p) => p.id !== revived.id),
+						consumedItems: joinInventories(
+							generateInventory(playerSide.consumedItems),
+							{
+								[`${action.item}`]: 1,
+							}
+						),
 					});
 					return;
 				}
@@ -526,6 +540,12 @@ export const useHandleAction = (
 									  },
 							};
 						}),
+						consumedItems: joinInventories(
+							generateInventory(playerSide.consumedItems),
+							{
+								[`${action.ball}`]: 1,
+							}
+						),
 					});
 				}
 				return;

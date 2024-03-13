@@ -3,6 +3,7 @@ import { CircularSprite } from '../../components/CircularSprite/CircularSprite';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { Inventory } from '../../interfaces/Inventory';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
@@ -18,6 +19,7 @@ export interface BattleSide {
 	defeated: BattlePokemon[];
 	caught: BattlePokemon[];
 	side: 'PLAYER' | 'OPPONENT';
+	consumedItems: Partial<Inventory>;
 }
 
 export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'HANDLING_ENVIRONMENT';

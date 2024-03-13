@@ -111,6 +111,8 @@ export const useLeaveBattle = (
 
 				visitedNurse: reason === 'LOSS',
 				fundsUpdate,
+				inventoryChanges: playerSide?.consumedItems,
+				subtractInventory: true,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				teleportToLastHealer: reason === 'LOSS',
 			});

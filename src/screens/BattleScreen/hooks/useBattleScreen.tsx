@@ -31,6 +31,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		state as BattleScreenProps;
 
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
+
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [environment, setEnvironment] = useState<BattleEnvironment>({
 		paydayCounter: 0,

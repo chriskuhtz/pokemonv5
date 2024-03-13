@@ -14,15 +14,14 @@ export const BattleInfo = ({
 	return (
 		<div className={'battleInfoGrid'}>
 			<strong>Round: {environment.battleRounds}</strong>
-
+			<BattleSideBallSummary battleSide={playerSide} />
+			<BattleSideBallSummary battleSide={opponentSide} />
 			{environment.playerSideMist && (
 				<strong>PlayersideMist: {environment.playerSideMist}</strong>
 			)}
 			{environment.opponentSideMist && (
 				<strong>OpponentSideMist: {environment.opponentSideMist}</strong>
 			)}
-			<BattleSideBallSummary battleSide={playerSide} />
-			<BattleSideBallSummary battleSide={opponentSide} />
 		</div>
 	);
 };
