@@ -23,7 +23,7 @@ export const ExpIndicator = ({
 			return 'shakingBall';
 		}
 		if (noAnimation) {
-			return '';
+			return 'idle';
 		}
 		return 'jumping';
 	}, [noAnimation, pokemon.status]);
