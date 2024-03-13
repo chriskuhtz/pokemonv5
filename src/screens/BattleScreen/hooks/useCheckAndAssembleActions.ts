@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
 import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilitiesWeatherAndAilments';
+import { getPrepMoveDialogue } from '../../../functions/getPrepMoveDialogue';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
@@ -149,14 +150,14 @@ export const useCheckAndAssembleActions = (
 				return;
 			}
 
-			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
+			if (isBattleAttack(actor.nextAction)) {
 				if (
 					secondTurnMoves.includes(actor.nextAction.move.name) &&
 					!actor.preparedMove
 				) {
 					dispatch(
 						concatDialogue([
-							`${actor.name} is preparing ${actor.nextAction?.move.name}`,
+							getPrepMoveDialogue(actor.name, actor.nextAction.move.name),
 						])
 					);
 					return;
