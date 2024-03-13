@@ -76,7 +76,7 @@ export const useSaveGame = () => {
 
 			if (visitedNurse) {
 				updatedPokemon = updatedPokemon.map((p) => {
-					return { ...p, damage: 0 };
+					return { ...p, damage: 0, primaryAilment: undefined };
 				});
 			}
 
