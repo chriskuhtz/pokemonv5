@@ -29,6 +29,9 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 		if (pokemon.preparedMove) {
 			res.push(pokemon.preparedMove.moveName);
 		}
+		if (pokemon.lockedInMove) {
+			res.push(`locked into ${pokemon.lockedInMove.moveName}`);
+		}
 		if (pokemon.location) {
 			res.push(pokemon.location);
 		}

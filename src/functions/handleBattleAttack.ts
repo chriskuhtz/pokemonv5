@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { lockInMoves } from '../constants/forceSwitchMoves';
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -135,10 +136,11 @@ export const handleBattleAttack = (
 			? applyStatMods(updatedTarget, move, dispatch)
 			: updatedTarget;
 
-	const newActorAction = determineFollowUpAction(
+	updatedActor = determineFollowUpAction(
 		updatedActor,
 		updatedTarget,
-		action
+		action,
+		dispatch
 	);
 
 	updatedActor = determineNewActorAilment(
@@ -147,6 +149,17 @@ export const handleBattleAttack = (
 		move,
 		dispatch
 	);
+
+	if (lockInMoves.includes(action.move.name) && !actor.lockedInMove) {
+		updatedActor = {
+			...updatedActor,
+			lockedInMove: {
+				moveName: action.move.name,
+				targetId: target.id,
+				duration: 1,
+			},
+		};
+	}
 
 	if (actor.side === 'PLAYER') {
 		setPlayerSide({
@@ -157,7 +170,6 @@ export const handleBattleAttack = (
 				}
 				return {
 					...updatedActor,
-					nextAction: newActorAction,
 					preparedMove: undefined,
 					location: undefined,
 				};
@@ -191,7 +203,6 @@ export const handleBattleAttack = (
 				}
 				return {
 					...updatedActor,
-					nextAction: newActorAction,
 					preparedMove: undefined,
 					location: undefined,
 				};

@@ -227,24 +227,29 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 			if (playerSide?.field.length === 0) {
 				return;
 			}
-			const optimalTarget = playerSide?.field[0].id;
-			if (!optimalTarget) {
-				console.error('cant determine optimal target');
-				return;
-			}
 
 			setOpponentSide({
 				...opponentSide,
-				field: opponentSide?.field.map((p) => ({
-					...p,
-					nextAction: {
-						type: 'ATTACK',
-						target: optimalTarget,
-						move:
-							p.moves.find((m) => m.name === p.preparedMove?.moveName) ??
-							p.moves[Math.floor(Math.random() * p.moves.length)],
-					},
-				})),
+				field: opponentSide?.field.map((p) => {
+					const optimalTarget =
+						p.preparedMove?.targetId ??
+						p.lockedInMove?.targetId ??
+						playerSide?.field[0].id;
+					if (!optimalTarget) {
+						console.error('cant determine optimal target');
+					}
+					return {
+						...p,
+						nextAction: {
+							type: 'ATTACK',
+							target: optimalTarget,
+							move:
+								p.moves.find((m) => m.name === p.preparedMove?.moveName) ??
+								p.moves.find((m) => m.name === p.lockedInMove?.moveName) ??
+								p.moves[Math.floor(Math.random() * p.moves.length)],
+						},
+					};
+				}),
 			});
 			setEnvironment((environment) => ({
 				...environment,
