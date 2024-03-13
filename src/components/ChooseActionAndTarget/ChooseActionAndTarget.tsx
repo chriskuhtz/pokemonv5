@@ -3,13 +3,18 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
-import { Inventory, PokeballType } from '../../interfaces/Inventory';
+import {
+	HealingItemType,
+	Inventory,
+	PokeballType,
+} from '../../interfaces/Inventory';
 import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
+import { ChooseBall } from './components/ChooseBall';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
-import { ChooseBall } from './components/ChooseBall';
+import { ChooseItem } from './components/ChooseItem';
 
 export const ChooseActionAndTarget = ({
 	actor,
@@ -29,6 +34,7 @@ export const ChooseActionAndTarget = ({
 	>();
 	const [move, setMove] = useState<MoveDto | undefined>();
 	const [ball, setBall] = useState<PokeballType | undefined>();
+	const [item, setItem] = useState<HealingItemType | undefined>();
 
 	//no target needed for runAway
 	useEffect(() => {
@@ -100,17 +106,35 @@ export const ChooseActionAndTarget = ({
 			/>
 		);
 	}
+	if (actionName === 'HEALING_ITEM' && !item) {
+		return (
+			<ChooseItem
+				open={actionName === 'HEALING_ITEM'}
+				setItem={setItem}
+				inventory={inventory}
+				resetActor={() => {
+					setActionName(undefined);
+				}}
+				availableTargets={
+					availableActions.find((a) => a.actionType === actionName)
+						?.availableTargets ?? []
+				}
+			/>
+		);
+	}
 
 	return (
 		<ChooseTarget
 			actionName={actionName}
 			move={move}
 			ball={ball}
+			item={item}
 			selectAction={(x) => {
 				selectAction(x);
 				setActionName(undefined);
 				setMove(undefined);
 				setBall(undefined);
+				setItem(undefined);
 			}}
 			availableTargets={
 				availableActions.find((a) => a.actionType === actionName)

@@ -1,12 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
+import { canBenefitFromItem } from '../../../functions/applyHealingItemToPokemon';
 import {
 	BattleAction,
 	isBattleActionWithTarget,
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { PokeballType } from '../../../interfaces/Inventory';
+import { HealingItemType, PokeballType } from '../../../interfaces/Inventory';
 import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
@@ -16,16 +17,19 @@ export const ChooseTarget = ({
 	actionName,
 	move,
 	ball,
+	item,
 	actor,
 }: {
 	actionName: BattleAction['type'];
 	move?: MoveDto;
 	ball?: PokeballType;
+	item?: HealingItemType;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
 }) => {
 	const determineNextAction = (c: BattlePokemon) => {
+		console.log('det action');
 		if (actionName === 'ATTACK') {
 			return {
 				type: actionName,
@@ -37,7 +41,7 @@ export const ChooseTarget = ({
 			return {
 				type: actionName,
 				target: c.id,
-				item: 'potion',
+				item: item,
 			};
 		}
 		if (actionName === 'CATCH_ATTEMPT') {
@@ -62,8 +66,14 @@ export const ChooseTarget = ({
 		return { type: actionName };
 	};
 
+	console.log(availableTargets, item, actionName);
+
 	useEffect(() => {
-		if (availableTargets.length === 1 && actionName !== 'SWITCH') {
+		if (
+			availableTargets.length === 1 &&
+			actionName !== 'SWITCH' &&
+			actionName !== 'HEALING_ITEM'
+		) {
 			selectAction({
 				...actor,
 				nextAction: determineNextAction(availableTargets[0]),
@@ -86,7 +96,9 @@ export const ChooseTarget = ({
 										backgroundColor: 'var(--main-bg-color)',
 									}}
 									key={c.id}
+									disabled={item && !canBenefitFromItem(actor, item)}
 									onClick={() => {
+										console.log('click');
 										selectAction({
 											...actor,
 											nextAction: determineNextAction(c),

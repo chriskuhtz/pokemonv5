@@ -1,4 +1,5 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
+import { HealingItemType } from '../interfaces/Inventory';
 import { ItemName } from '../interfaces/Item';
 
 export const applyHealingItemToPokemon = (
@@ -53,4 +54,55 @@ export const applyHealingItemToPokemon = (
 		copy.primaryAilment = undefined;
 	}
 	return copy;
+};
+export const canBenefitFromItem = (
+	pokemon: BattlePokemon,
+	itemName: HealingItemType
+): boolean => {
+	const { damage, primaryAilment, secondaryAilments } = pokemon;
+	let canBenefit = false;
+
+	if (
+		[
+			'potion',
+			'super-potion',
+			'hyper-potion',
+			'max-potion',
+			'fresh-water',
+			'full-restore',
+		].includes(itemName) &&
+		damage &&
+		damage < pokemon.stats.hp
+	) {
+		canBenefit = true;
+	}
+	if (
+		['revive', 'max-revive'].includes(itemName) &&
+		damage &&
+		damage >= pokemon.stats.hp
+	) {
+		canBenefit = true;
+	}
+	if (
+		['full-restore', 'full-heal'].includes(itemName) &&
+		(primaryAilment || secondaryAilments?.some((a) => a.type === 'confusion'))
+	) {
+		canBenefit = true;
+	}
+	if (
+		itemName === 'antidote' &&
+		['poison', 'toxic'].includes(primaryAilment?.type ?? '')
+	) {
+		canBenefit = true;
+	}
+	if (itemName === 'paralyze-heal' && primaryAilment?.type === 'paralysis') {
+		canBenefit = true;
+	}
+	if (itemName === 'burn-heal' && primaryAilment?.type === 'burn') {
+		canBenefit = true;
+	}
+	if (itemName === 'ice-heal' && primaryAilment?.type === 'freeze') {
+		canBenefit = true;
+	}
+	return canBenefit;
 };
