@@ -2,6 +2,7 @@ import {
 	UniqueOccupantIds,
 	UniqueOccupantRecord,
 } from '../constants/UniqueOccupantRecord';
+import { berryPatchEncounters } from '../constants/maps/berryPatch';
 import { starterTownEncounters } from '../constants/maps/starterTown';
 import { Inventory, generateInventory } from './Inventory';
 
@@ -46,6 +47,7 @@ export const questNames = [
 	'secondPokemon',
 	'findPikachu',
 	'catchAllStarterTown',
+	'catchAllBerryPatch',
 	'defeatAllTrainers',
 ] as const;
 
@@ -102,6 +104,19 @@ export const CatchAllStarterTownQuest: Quest = {
 		mode: 'ALL',
 	},
 };
+export const CatchAllBerryPatchQuest: Quest = {
+	status: 'inactive',
+	id: 'catchAllBerryPatch',
+	title: 'Catch all different Species in Berry Patch',
+	description: 'A true Pokemon Master values all different pokemon',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ 'net-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: berryPatchEncounters.map((s) => s.dexId),
+		mode: 'ALL',
+	},
+};
 export const FindPikachuQuest: Quest = {
 	status: 'inactive',
 	id: 'findPikachu',
@@ -136,5 +151,6 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	secondPokemon: SecondPokemonQuest,
 	findPikachu: FindPikachuQuest,
 	catchAllStarterTown: CatchAllStarterTownQuest,
+	catchAllBerryPatch: CatchAllBerryPatchQuest,
 	defeatAllTrainers: DefeatAllTrainersQuest,
 };

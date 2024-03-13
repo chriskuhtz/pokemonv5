@@ -26,6 +26,7 @@ export const staticSaveData: SaveFile = {
 		findPikachu: 'inactive',
 		secondPokemon: 'inactive',
 		catchAllStarterTown: 'inactive',
+		catchAllBerryPatch: 'inactive',
 		defeatAllTrainers: 'inactive',
 	},
 	handledOccupants: {
