@@ -82,6 +82,7 @@ export const useCreateBattlePokemonFromData = () => {
 				accuracyModifier: 0,
 				ball: 'poke-ball',
 				shiny: shinyChance(),
+				friendship: 70,
 			};
 		},
 		[getFirstFourMoves]

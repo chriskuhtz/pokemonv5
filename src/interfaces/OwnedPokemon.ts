@@ -14,4 +14,5 @@ export interface OwnedPokemon {
 	primaryAilment?: PrimaryAilment;
 	ball: PokeballType;
 	shiny?: boolean;
+	friendship: number;
 }

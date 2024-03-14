@@ -16,5 +16,6 @@ export const trimToOwnedPokemon = (
 		primaryAilment: battlemon.primaryAilment,
 		ball: battlemon.ball,
 		shiny: battlemon.shiny,
+		friendship: battlemon.friendship,
 	};
 };

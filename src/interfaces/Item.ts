@@ -29,4 +29,11 @@ export enum ItemName {
 	'max-revive' = 'max-revive',
 	'revive' = 'revive',
 	'fresh-water' = 'fresh-water',
+	'soda-pop' = 'soda-pop',
+	'lemonade' = 'lemonade',
+	'moomoo-milk' = 'moomoo-milk',
+	'energy-powder' = 'energy-powder',
+	'energy-root' = 'energy-root',
+	'heal-powder' = 'heal-powder',
+	'revival-herb' = 'revival-herb',
 }

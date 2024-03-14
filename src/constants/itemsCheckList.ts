@@ -4,6 +4,7 @@ export const itemsCheckList: {
 	todos?: string[];
 	handled?: boolean;
 }[] = [
+	//v0.0.3
 	{
 		name: 'master-ball',
 		url: 'https://pokeapi.co/api/v2/item/1/',
@@ -142,13 +143,42 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/30/',
 		handled: true,
 	},
-	{ name: 'soda-pop', url: 'https://pokeapi.co/api/v2/item/31/' },
-	{ name: 'lemonade', url: 'https://pokeapi.co/api/v2/item/32/' },
-	{ name: 'moomoo-milk', url: 'https://pokeapi.co/api/v2/item/33/' },
-	{ name: 'energy-powder', url: 'https://pokeapi.co/api/v2/item/34/' },
-	{ name: 'energy-root', url: 'https://pokeapi.co/api/v2/item/35/' },
-	{ name: 'heal-powder', url: 'https://pokeapi.co/api/v2/item/36/' },
-	{ name: 'revival-herb', url: 'https://pokeapi.co/api/v2/item/37/' },
+	//v0.0.4
+	{
+		name: 'soda-pop',
+		url: 'https://pokeapi.co/api/v2/item/31/',
+		handled: true,
+	},
+	{
+		name: 'lemonade',
+		url: 'https://pokeapi.co/api/v2/item/32/',
+		handled: true,
+	},
+	{
+		name: 'moomoo-milk',
+		url: 'https://pokeapi.co/api/v2/item/33/',
+		handled: true,
+	},
+	{
+		name: 'energy-powder',
+		url: 'https://pokeapi.co/api/v2/item/34/',
+		handled: true,
+	},
+	{
+		name: 'energy-root',
+		url: 'https://pokeapi.co/api/v2/item/35/',
+		handled: true,
+	},
+	{
+		name: 'heal-powder',
+		url: 'https://pokeapi.co/api/v2/item/36/',
+		handled: true,
+	},
+	{
+		name: 'revival-herb',
+		url: 'https://pokeapi.co/api/v2/item/37/',
+		handled: true,
+	},
 	{ name: 'ether', url: 'https://pokeapi.co/api/v2/item/38/' },
 	{ name: 'max-ether', url: 'https://pokeapi.co/api/v2/item/39/' },
 	{ name: 'elixir', url: 'https://pokeapi.co/api/v2/item/40/' },
@@ -172,6 +202,7 @@ export const itemsCheckList: {
 	{ name: 'x-defense', url: 'https://pokeapi.co/api/v2/item/58/' },
 	{ name: 'x-speed', url: 'https://pokeapi.co/api/v2/item/59/' },
 	{ name: 'x-accuracy', url: 'https://pokeapi.co/api/v2/item/60/' },
+	//v0.0.5
 	{ name: 'x-sp-atk', url: 'https://pokeapi.co/api/v2/item/61/' },
 	{ name: 'x-sp-def', url: 'https://pokeapi.co/api/v2/item/62/' },
 	{ name: 'poke-doll', url: 'https://pokeapi.co/api/v2/item/63/' },

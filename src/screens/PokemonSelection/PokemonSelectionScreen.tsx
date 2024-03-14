@@ -71,6 +71,7 @@ export const PokemonSelectionScreen = ({
 											ability: pokemon.abilities[0].ability.name,
 											ball: 'luxury-ball',
 											shiny: shinyChance(),
+											friendship: 70,
 										},
 									],
 									dexUpdates: choices.map((choice) => {

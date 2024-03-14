@@ -40,6 +40,13 @@ export const healingItemTypes = [
 	'awakening',
 	'revive',
 	'max-revive',
+	'soda-pop',
+	'lemonade',
+	'moomoo-milk',
+	'energy-powder',
+	'energy-root',
+	'heal-powder',
+	'revival-herb',
 ] as const;
 
 export type HealingItemType = (typeof healingItemTypes)[number];
@@ -81,6 +88,13 @@ export const EmptyInventory: Inventory = {
 	'max-revive': 0,
 	revive: 0,
 	'fresh-water': 0,
+	'soda-pop': 0,
+	lemonade: 0,
+	'moomoo-milk': 0,
+	'energy-powder': 0,
+	'energy-root': 0,
+	'heal-powder': 0,
+	'revival-herb': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

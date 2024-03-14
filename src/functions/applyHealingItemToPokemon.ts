@@ -1,19 +1,33 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { HealingItemType } from '../interfaces/Inventory';
+import { applyBitterItemToPokemon, isBitterItem } from './applyBitterItem';
 
 export const applyHealingItemToPokemon = (
 	pokemon: BattlePokemon,
 	itemName: HealingItemType
 ): BattlePokemon => {
-	const copy = { ...pokemon };
+	let copy = { ...pokemon };
 
 	if (itemName === 'potion') {
 		copy.damage = Math.max(0, copy.damage - 20);
 	}
-	if (itemName === 'super-potion' || itemName === 'fresh-water') {
+	if (
+		itemName === 'super-potion' ||
+		itemName === 'fresh-water' ||
+		itemName === 'energy-powder'
+	) {
 		copy.damage = Math.max(0, copy.damage - 50);
 	}
-	if (itemName === 'hyper-potion') {
+	if (itemName === 'soda-pop') {
+		copy.damage = Math.max(0, copy.damage - 80);
+	}
+	if (itemName === 'lemonade') {
+		copy.damage = Math.max(0, copy.damage - 80);
+	}
+	if (itemName === 'moomoo-milk') {
+		copy.damage = Math.max(0, copy.damage - 80);
+	}
+	if (itemName === 'hyper-potion' || itemName === 'energy-root') {
 		copy.damage = Math.max(0, copy.damage - 200);
 	}
 	if (
@@ -23,11 +37,18 @@ export const applyHealingItemToPokemon = (
 	) {
 		copy.damage = 0;
 	}
-	if (itemName === 'revive') {
+	if (itemName === 'revive' || itemName === 'revival-herb') {
 		copy.damage = Math.round(copy.stats.hp / 2);
 	}
 	if (
-		['full-heal', 'full-restore', 'max-revive', 'revive'].includes(itemName)
+		[
+			'full-heal',
+			'full-restore',
+			'max-revive',
+			'revive',
+			'revival-herb',
+			'heal-powder',
+		].includes(itemName)
 	) {
 		copy.primaryAilment = undefined;
 		copy.secondaryAilments = [...(copy.secondaryAilments ?? [])].filter(
@@ -52,8 +73,12 @@ export const applyHealingItemToPokemon = (
 	if (itemName === 'ice-heal' && copy.primaryAilment?.type === 'freeze') {
 		copy.primaryAilment = undefined;
 	}
+	if (isBitterItem(itemName)) {
+		copy = applyBitterItemToPokemon(copy, itemName);
+	}
 	return copy;
 };
+
 export const canBenefitFromItem = (
 	pokemon: BattlePokemon,
 	itemName: HealingItemType
@@ -69,6 +94,11 @@ export const canBenefitFromItem = (
 			'max-potion',
 			'fresh-water',
 			'full-restore',
+			'soda-pop',
+			'lemonade',
+			'moomoo-milk',
+			'energy-powder',
+			'energy-root',
 		].includes(itemName) &&
 		damage &&
 		damage < pokemon.stats.hp
@@ -76,14 +106,14 @@ export const canBenefitFromItem = (
 		canBenefit = true;
 	}
 	if (
-		['revive', 'max-revive'].includes(itemName) &&
+		['revive', 'max-revive', 'revival-herb'].includes(itemName) &&
 		damage &&
 		damage >= pokemon.stats.hp
 	) {
 		canBenefit = true;
 	}
 	if (
-		['full-restore', 'full-heal'].includes(itemName) &&
+		['full-restore', 'full-heal', 'heal-powder'].includes(itemName) &&
 		(primaryAilment || secondaryAilments?.some((a) => a.type === 'confusion'))
 	) {
 		canBenefit = true;
