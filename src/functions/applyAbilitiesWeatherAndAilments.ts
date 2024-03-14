@@ -26,6 +26,7 @@ export const applyAbilitiesWeatherAndAilments = (
 	opponentSide: BattleSide,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>,
 	dispatch: Dispatch<unknown>,
 	environment: BattleEnvironment
 ): boolean => {
@@ -47,7 +48,20 @@ export const applyAbilitiesWeatherAndAilments = (
 			},
 		};
 	}
-	//SAND STORM
+	//DRIZZLE
+	if (
+		actor.ability === 'drizzle' &&
+		environment.weather?.type !== 'rain' &&
+		!actor.usedAbility
+	) {
+		dispatch(addNotification(`${actor.name} caused a rainstorm`));
+		setEnvironment({ ...environment, weather: { type: 'rain', duration: -1 } });
+		updatedActor = {
+			...updatedActor,
+			usedAbility: true,
+		};
+	}
+	//SAND VEIL
 	if (
 		environment.weather?.type === 'sandstorm' &&
 		actor.ability !== 'sand-veil'

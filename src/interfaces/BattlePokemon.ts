@@ -26,4 +26,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	disabledMove?: { moveName: string; duration: number };
 	location?: BattlePokemonLocation;
 	accuracyModifier: number;
+	usedAbility?: boolean;
 }

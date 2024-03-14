@@ -57,7 +57,11 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/11/',
 		handled: true,
 	},
-	{ name: 'oblivious', url: 'https://pokeapi.co/api/v2/ability/12/' },
+	{
+		name: 'oblivious',
+		url: 'https://pokeapi.co/api/v2/ability/12/',
+		handled: true,
+	},
 	{ name: 'cloud-nine', url: 'https://pokeapi.co/api/v2/ability/13/' },
 	{ name: 'compound-eyes', url: 'https://pokeapi.co/api/v2/ability/14/' },
 	{ name: 'insomnia', url: 'https://pokeapi.co/api/v2/ability/15/' },

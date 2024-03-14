@@ -23,6 +23,7 @@ export const useCheckAndAssembleActions = (
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>,
 	environment: BattleEnvironment
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
@@ -73,6 +74,7 @@ export const useCheckAndAssembleActions = (
 					opponentSide,
 					setPlayerSide,
 					setOpponentSide,
+					setEnvironment,
 					dispatch,
 					environment
 				);

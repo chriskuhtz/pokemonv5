@@ -215,13 +215,6 @@ export const useHandleAction = (
 					});
 				}
 
-				if (target?.ability === 'drizzle') {
-					setEnvironment({
-						...environment,
-						weather: { type: 'rain', duration: -1 },
-					});
-					dispatch(addNotification(`${target.name}´s ability made it rain`));
-				}
 				return;
 			}
 			//flinch

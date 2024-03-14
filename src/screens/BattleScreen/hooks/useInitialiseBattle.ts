@@ -2,11 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
-import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
-import { addNotification } from '../../../store/slices/notificationSlice';
-import { useAppDispatch } from '../../../store/storeHooks';
 import { BattleSide } from '../BattleScreen';
 import {
 	createBattlePokemonFromOwned,
@@ -17,11 +14,10 @@ import { BattleScreenProps } from './useBattleScreen';
 export const useInitialiseBattleSides = (
 	data: SaveFile,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>
+	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>
 ) => {
 	const { state } = useLocation();
-	const dispatch = useAppDispatch();
+
 	const { opponents, activePokemonPerSide } = state as BattleScreenProps;
 	const createBattlePokemonFromData = useCreateBattlePokemonFromData();
 
@@ -75,17 +71,6 @@ export const useInitialiseBattleSides = (
 				side: 'OPPONENT',
 				consumedItems: {},
 			});
-
-			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
-			if (weatherman) {
-				setEnvironment((environment) => ({
-					...environment,
-					weather: { type: 'rain', duration: -1 },
-					paydayCounter: 0,
-					battleRounds: 0,
-				}));
-				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
-			}
 		}
 	}, [
 		activePokemonPerSide,
@@ -116,15 +101,6 @@ export const useInitialiseBattleSides = (
 				side: 'PLAYER',
 				consumedItems: {},
 			});
-
-			const weatherman = monsOnField.find((p) => p.ability === 'drizzle');
-			if (weatherman) {
-				setEnvironment((environment) => ({
-					...environment,
-					weather: { type: 'rain', duration: -1 },
-				}));
-				dispatch(addNotification(`${weatherman.name}´s ability made it rain`));
-			}
 		}
 	}, [
 		activePokemonPerSide,

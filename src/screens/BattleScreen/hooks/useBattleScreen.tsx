@@ -128,8 +128,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
 		saveFile,
 		setPlayerSide,
-		setOpponentSide,
-		setEnvironment
+		setOpponentSide
 	);
 	//assemble actions
 	useCheckAndAssembleActions(
@@ -139,6 +138,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		mode,
 		setOpponentSide,
 		setPlayerSide,
+		setEnvironment,
 		environment
 	);
 	//check to leave battle
