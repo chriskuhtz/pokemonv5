@@ -13,8 +13,28 @@ export const applyAilments = (
 	if (pokemon.primaryAilment) {
 		return pokemon;
 	}
+	if (
+		move.meta.category.name === 'damage+lower' &&
+		pokemon.ability === 'shield-dust'
+	) {
+		dispatch(
+			addNotification(
+				`${pokemon.name} prevents additional effects with shield dust`
+			)
+		);
+		return pokemon;
+	}
 	if (move.meta.ailment.name === 'paralysis' && pokemon.ability === 'limber') {
 		dispatch(addNotification(`${pokemon.name} avoided paralysis with limber`));
+		return pokemon;
+	}
+	if (
+		move.meta.ailment.name === 'confusion' &&
+		pokemon.ability === 'own-tempo'
+	) {
+		dispatch(
+			addNotification(`${pokemon.name} avoided confusion with own-tempo`)
+		);
 		return pokemon;
 	}
 	if (move.meta.ailment.name === 'sleep' && pokemon.ability === 'insomnia') {

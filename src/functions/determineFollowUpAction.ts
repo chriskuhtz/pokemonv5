@@ -38,6 +38,14 @@ export const determineFollowUpAction = (
 				},
 			};
 		}
+		if (actor.ability === 'own-tempo') {
+			return {
+				...updated,
+				nextAction: undefined,
+				lockedInMove: undefined,
+			};
+		}
+
 		dispatch(addNotification(`${actor.name} became confused from fatigue`));
 		return {
 			...updated,

@@ -19,6 +19,17 @@ export const applyStatMods = (
 		dispatch(addNotification(`${pokemon.name} is oblivious`));
 		return updatedPokemon;
 	}
+	if (
+		move.meta.category.name === 'damage+lower' &&
+		pokemon.ability === 'shield-dust'
+	) {
+		dispatch(
+			addNotification(
+				`${pokemon.name} prevents additional effects with shield dust`
+			)
+		);
+		return updatedPokemon;
+	}
 
 	if (move.stat_changes) {
 		move.stat_changes.forEach((statChange) => {
