@@ -22,6 +22,12 @@ export const BattleInfo = ({
 			{environment.opponentSideMist && (
 				<strong>OpponentSideMist: {environment.opponentSideMist}</strong>
 			)}
+			{environment.weather && (
+				<strong>
+					Weather: {environment.weather.type} ({environment.weather.duration}{' '}
+					more turns)
+				</strong>
+			)}
 		</div>
 	);
 };
