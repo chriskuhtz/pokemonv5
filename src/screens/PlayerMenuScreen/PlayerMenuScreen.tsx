@@ -35,7 +35,7 @@ export const PlayerMenu = (): JSX.Element => {
 						<div
 							style={{ color: numberOfUnclaimed > 0 ? 'orange' : undefined }}
 						>
-							{numberOfUnclaimed > 0 ? `(${numberOfUnclaimed} unclaimed)` : ''}
+							{numberOfUnclaimed > 0 ? `${numberOfUnclaimed}` : ''}
 						</div>
 					}
 				/>

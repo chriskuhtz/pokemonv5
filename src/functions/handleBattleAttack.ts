@@ -8,6 +8,7 @@ import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
 import { applyCrashDamage } from './applyCrashDamage';
 import { applyDrain } from './applyDrain';
+import { applyPPChange } from './applyPPChange';
 import { applyStatMods } from './applyStatMods';
 import { calculateDamage } from './calculateDamage';
 import { determineFollowUpAction } from './determineFollowUpAction';
@@ -39,12 +40,24 @@ export const handleBattleAttack = (
 
 	updatedActor = determineMultiHits(updatedActor, move);
 
+	if (!updatedActor.multiHits) {
+		updatedActor = applyPPChange(
+			updatedActor,
+			1,
+			updatedActor.moveNames.findIndex((m) => m === move.name)
+		);
+	}
+
 	const passesAccuracyCheck = makeAccuracyCheck(
 		updatedActor,
 		target,
 		move,
 		environment.weather
 	);
+
+	if (!passesAccuracyCheck) {
+		dispatch(addNotification(`${actor.name} missed`));
+	}
 
 	if (
 		((move.meta.category.name === 'damage+raise' &&
@@ -53,10 +66,6 @@ export const handleBattleAttack = (
 		passesAccuracyCheck
 	) {
 		updatedActor = applyStatMods(updatedActor, move, dispatch);
-	}
-
-	if (!passesAccuracyCheck) {
-		dispatch(addNotification(`${actor.name} missed`));
 	}
 
 	let flinch_chance = Math.max(
@@ -113,10 +122,10 @@ export const handleBattleAttack = (
 
 	const newTargetAction: BattleAction | undefined = willFlinch
 		? { type: 'FLINCH' }
-		: target.nextAction;
+		: updatedTarget.nextAction;
 
 	updatedTarget = {
-		...target,
+		...updatedTarget,
 		nextAction: newTargetAction,
 	};
 	updatedTarget = passesAccuracyCheck

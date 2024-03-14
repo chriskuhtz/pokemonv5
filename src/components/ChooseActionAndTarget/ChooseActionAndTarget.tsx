@@ -101,6 +101,7 @@ export const ChooseActionAndTarget = ({
 				open={actionName === 'ATTACK'}
 				name={actor.name}
 				setMove={setMove}
+				usedPP={actor.usedPowerPoints}
 				resetActor={() => {
 					setActionName(undefined);
 				}}

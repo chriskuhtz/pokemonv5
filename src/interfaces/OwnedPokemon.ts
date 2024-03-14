@@ -15,4 +15,12 @@ export interface OwnedPokemon {
 	ball: PokeballType;
 	shiny?: boolean;
 	friendship: number;
+	usedPowerPoints: UsedPowerPoints;
+}
+
+export interface UsedPowerPoints {
+	firstMove: number;
+	secondMove: number;
+	thirdMove: number;
+	fourthMove: number;
 }

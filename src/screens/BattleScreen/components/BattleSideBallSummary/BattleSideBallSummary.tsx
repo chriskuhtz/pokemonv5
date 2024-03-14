@@ -12,6 +12,7 @@ export const BattleSideBallSummary = ({
 			{side === 'PLAYER' ? 'Playerside' : 'OpponentSide'}:
 			{[...field, ...bench, ...defeated].map((p) => (
 				<img
+					key={p.id}
 					style={
 						p.damage >= p.stats.hp
 							? {

@@ -83,6 +83,12 @@ export const useCreateBattlePokemonFromData = () => {
 				ball: 'poke-ball',
 				shiny: shinyChance(),
 				friendship: 70,
+				usedPowerPoints: {
+					firstMove: 0,
+					secondMove: 0,
+					thirdMove: 0,
+					fourthMove: 0,
+				},
 			};
 		},
 		[getFirstFourMoves]

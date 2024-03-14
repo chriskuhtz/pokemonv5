@@ -27,6 +27,9 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 					const potentialTargets = pokemonOnField.filter(
 						(target) => target.id !== p.id
 					);
+					if (potentialTargets.length === 0) {
+						return p;
+					}
 					const optimalTarget =
 						p.preparedMove?.targetId ??
 						potentialTargets[

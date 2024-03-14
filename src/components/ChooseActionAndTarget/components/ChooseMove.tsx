@@ -1,6 +1,8 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
+import { getPPByIndex } from '../../../functions/getPPByIndex';
 import { MoveDto } from '../../../interfaces/Move';
+import { UsedPowerPoints } from '../../../interfaces/OwnedPokemon';
 import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
@@ -12,7 +14,9 @@ export const ChooseMove = ({
 	availableMoves,
 	name,
 	resetActor,
+	usedPP,
 }: {
+	usedPP: UsedPowerPoints;
 	open: boolean;
 	setMove: (x: MoveDto | undefined) => void;
 	availableMoves: SelectableAction[];
@@ -33,7 +37,7 @@ export const ChooseMove = ({
 								gap: '1rem',
 							}}
 						>
-							{availableMoves.map((a) => (
+							{availableMoves.map((a, i) => (
 								<Slanted
 									style={{
 										flexGrow: 1,
@@ -42,7 +46,10 @@ export const ChooseMove = ({
 										borderColor: typeColors[a.move?.type.name ?? 'normal'],
 									}}
 									key={a.move?.name}
-									disabled={a.disabled}
+									disabled={
+										a.disabled ||
+										(a.move?.pp ?? 0) - getPPByIndex(usedPP, i) <= 0
+									}
 									onClick={() => {
 										setMove(a.move);
 									}}
@@ -52,7 +59,9 @@ export const ChooseMove = ({
 												size={'24px'}
 												type={a.move?.type.name ?? 'normal'}
 											/>
-											{a.displayName}
+											{a.displayName} (
+											{(a.move?.pp ?? 0) - getPPByIndex(usedPP, i)}/{a.move?.pp}
+											)
 										</div>
 									}
 								/>

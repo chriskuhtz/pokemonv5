@@ -72,6 +72,12 @@ export const PokemonSelectionScreen = ({
 											ball: 'luxury-ball',
 											shiny: shinyChance(),
 											friendship: 70,
+											usedPowerPoints: {
+												firstMove: 0,
+												secondMove: 0,
+												thirdMove: 0,
+												fourthMove: 0,
+											},
 										},
 									],
 									dexUpdates: choices.map((choice) => {
