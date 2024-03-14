@@ -12,11 +12,19 @@ import { router } from './router/router.tsx';
 import { store } from './store/store.ts';
 
 if (import.meta.env.MODE === 'development') {
-	console.log('handled items', itemsCheckList.filter((i) => i.handled).length);
-	console.log('handled moves', movesCheckList.filter((i) => i.handled).length);
+	console.log(
+		'handled items',
+		`${itemsCheckList.filter((i) => i.handled).length}/${itemsCheckList.length}`
+	);
+	console.log(
+		'handled moves',
+		`${movesCheckList.filter((i) => i.handled).length}/${movesCheckList.length}`
+	);
 	console.log(
 		'handled abilities',
-		abilityCheckList.filter((i) => i.handled).length
+		`${abilityCheckList.filter((i) => i.handled).length}/${
+			abilityCheckList.length
+		}`
 	);
 }
 
