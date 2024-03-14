@@ -22,6 +22,14 @@ export const applyAilments = (
 		return pokemon;
 	}
 	if (
+		(move.meta.ailment.name === 'poison' ||
+			move.meta.ailment.name === 'toxic') &&
+		pokemon.ability === 'immunity'
+	) {
+		dispatch(addNotification(`${pokemon.name} is immune to poisoning`));
+		return pokemon;
+	}
+	if (
 		move.meta.ailment.name === 'infatuation' &&
 		pokemon.ability === 'oblivious'
 	) {
