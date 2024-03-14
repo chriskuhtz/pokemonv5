@@ -19,7 +19,11 @@ export const determineNewTargetDamage = (
 	}
 	if (move.type.name === 'electric' && target.ability === 'volt-absorb') {
 		dispatch(addNotification(`${target.name} absorbed the electric damage`));
-		return Math.min(0, target.damage - attackDamage);
+		return Math.max(0, target.damage - attackDamage);
+	}
+	if (move.type.name === 'water' && target.ability === 'water-absorb') {
+		dispatch(addNotification(`${target.name} absorbed the water type damage`));
+		return Math.max(0, target.damage - attackDamage);
 	}
 	return target.damage + attackDamage;
 };

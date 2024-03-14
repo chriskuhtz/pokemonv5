@@ -4,6 +4,7 @@ export const abilityCheckList: {
 	todos?: string[];
 	handled?: boolean;
 }[] = [
+	//v.0.0.3
 	{
 		name: 'stench',
 		url: 'https://pokeapi.co/api/v2/ability/1/',
@@ -50,7 +51,12 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/10/',
 		handled: true,
 	},
-	{ name: 'water-absorb', url: 'https://pokeapi.co/api/v2/ability/11/' },
+	//v.0.0.4
+	{
+		name: 'water-absorb',
+		url: 'https://pokeapi.co/api/v2/ability/11/',
+		handled: true,
+	},
 	{ name: 'oblivious', url: 'https://pokeapi.co/api/v2/ability/12/' },
 	{ name: 'cloud-nine', url: 'https://pokeapi.co/api/v2/ability/13/' },
 	{ name: 'compound-eyes', url: 'https://pokeapi.co/api/v2/ability/14/' },
