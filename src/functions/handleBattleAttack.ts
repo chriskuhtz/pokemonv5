@@ -107,17 +107,16 @@ export const handleBattleAttack = (
 		}
 	}
 
-	const newTargetDamage = passesAccuracyCheck
+	let updatedTarget: BattlePokemon = passesAccuracyCheck
 		? determineNewTargetDamage(target, move, attackDamage, dispatch)
-		: target.damage;
+		: target;
 
 	const newTargetAction: BattleAction | undefined = willFlinch
 		? { type: 'FLINCH' }
 		: target.nextAction;
 
-	let updatedTarget: BattlePokemon = {
+	updatedTarget = {
 		...target,
-		damage: newTargetDamage,
 		nextAction: newTargetAction,
 	};
 	updatedTarget = passesAccuracyCheck
