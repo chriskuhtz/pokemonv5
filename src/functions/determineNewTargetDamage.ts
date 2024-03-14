@@ -23,6 +23,12 @@ export const determineNewTargetDamage = (
 	) {
 		dispatch(addNotification(`${target.name} absorbed the electric damage`));
 		updated.damage = Math.max(0, target.damage - attackDamage);
+	} else if (move.type.name === 'fire' && target.ability === 'flash-fire') {
+		dispatch(
+			addNotification(`${target.name} raised its power with flash fire`)
+		);
+		updated.damage = target.damage;
+		updated.usedAbility = true;
 	} else if (move.type.name === 'water' && target.ability === 'water-absorb') {
 		dispatch(addNotification(`${target.name} absorbed the water type damage`));
 		updated.damage = Math.max(0, target.damage - attackDamage);
