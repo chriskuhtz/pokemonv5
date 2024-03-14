@@ -17,8 +17,16 @@ export const applyAilments = (
 		dispatch(addNotification(`${pokemon.name} avoided paralysis with limber`));
 		return pokemon;
 	}
+	if (
+		move.meta.ailment.name === 'infatuation' &&
+		pokemon.ability === 'oblivious'
+	) {
+		dispatch(addNotification(`${pokemon.name} is oblivious`));
+		return pokemon;
+	}
 	if (Math.random() < move.meta.ailment_chance / 100) {
 		const possibleAilment = { type: move.meta.ailment.name };
+
 		if (
 			isPrimaryAilment(possibleAilment) &&
 			isAilmentApplicableToPokemon(possibleAilment, pokemon)

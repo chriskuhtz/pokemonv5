@@ -6,11 +6,11 @@ export function isPrimaryAilment(x: { type: string }): x is PrimaryAilment {
 	return ['paralysis', 'burn', 'freeze', 'poison', 'sleep'].includes(x.type);
 }
 export function isSecondaryAilment(x: { type: string }): x is SecondaryAilment {
-	return ['confusion', 'trap'].includes(x.type);
+	return ['confusion', 'trap', 'infatuation'].includes(x.type);
 }
 
 export interface SecondaryAilment {
-	type: 'confusion' | 'trap';
+	type: 'confusion' | 'trap' | 'infatuation';
 	duration: number;
 }
 

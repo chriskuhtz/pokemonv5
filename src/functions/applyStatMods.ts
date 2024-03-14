@@ -15,6 +15,11 @@ export const applyStatMods = (
 	const updatedPokemon = { ...pokemon };
 	const updatedStats = { ...pokemon.statModifiers };
 
+	if (move.name === 'captivate' && pokemon.ability === 'oblivious') {
+		dispatch(addNotification(`${pokemon.name} is oblivious`));
+		return updatedPokemon;
+	}
+
 	if (move.stat_changes) {
 		move.stat_changes.forEach((statChange) => {
 			const protectedByMist =
