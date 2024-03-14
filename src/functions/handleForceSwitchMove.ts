@@ -73,6 +73,9 @@ export const handleForceSwitchMove = (
 						nextAction: undefined,
 						preparedMove: undefined,
 						multiHits: undefined,
+						lockedInMove: undefined,
+						usedAbility: undefined,
+						secondaryAilments: undefined,
 					},
 				]),
 			});
@@ -101,6 +104,9 @@ export const handleForceSwitchMove = (
 						nextAction: undefined,
 						preparedMove: undefined,
 						multiHits: undefined,
+						lockedInMove: undefined,
+						usedAbility: undefined,
+						secondaryAilments: undefined,
 					},
 				]),
 			});

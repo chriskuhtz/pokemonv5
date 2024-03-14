@@ -146,8 +146,10 @@ export const useHandleAction = (
 							.concat({
 								...actor,
 								nextAction: undefined,
-								multiHits: undefined,
 								preparedMove: undefined,
+								multiHits: undefined,
+								lockedInMove: undefined,
+								usedAbility: undefined,
 								secondaryAilments: undefined,
 							}),
 					});
@@ -193,8 +195,10 @@ export const useHandleAction = (
 							.concat({
 								...actor,
 								nextAction: undefined,
-								multiHits: undefined,
 								preparedMove: undefined,
+								multiHits: undefined,
+								lockedInMove: undefined,
+								usedAbility: undefined,
 								secondaryAilments: undefined,
 							}),
 					});

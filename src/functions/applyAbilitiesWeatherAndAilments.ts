@@ -61,6 +61,21 @@ export const applyAbilitiesWeatherAndAilments = (
 			usedAbility: true,
 		};
 	}
+	//CLOUD_NINE
+	if (
+		actor.ability === 'cloud-nine' &&
+		environment.weather &&
+		!actor.usedAbility
+	) {
+		dispatch(
+			addNotification(`${actor.name} calmed the weather with cloud nine`)
+		);
+		setEnvironment({ ...environment, weather: undefined });
+		updatedActor = {
+			...updatedActor,
+			usedAbility: true,
+		};
+	}
 	//SAND VEIL
 	if (
 		environment.weather?.type === 'sandstorm' &&

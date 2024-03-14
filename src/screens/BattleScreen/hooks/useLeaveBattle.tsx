@@ -4,6 +4,7 @@ import {
 	UniqueOccupantIds,
 	UniqueOccupantRecord,
 } from '../../../constants/UniqueOccupantRecord';
+import { trimToOwnedPokemon } from '../../../functions/trimToOwnedPokemon';
 import { isTrainer } from '../../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
@@ -72,20 +73,7 @@ export const useLeaveBattle = (
 					damage: p.ball === 'heal-ball' ? 0 : p.damage,
 					primaryAilment: p.ball === 'heal-ball' ? undefined : p.primaryAilment,
 				})),
-			].map((p) => {
-				return {
-					...p,
-					nextAction: undefined,
-					status: undefined,
-					moves: undefined,
-					stats: undefined,
-					statModifiers: undefined,
-					multiHits: undefined,
-					preparedMove: undefined,
-					secondaryAilments: undefined,
-					lockedInMove: undefined,
-				};
-			});
+			].map((p) => trimToOwnedPokemon(p));
 		},
 		[saveFile]
 	);
