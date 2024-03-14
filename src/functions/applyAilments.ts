@@ -17,6 +17,10 @@ export const applyAilments = (
 		dispatch(addNotification(`${pokemon.name} avoided paralysis with limber`));
 		return pokemon;
 	}
+	if (move.meta.ailment.name === 'sleep' && pokemon.ability === 'insomnia') {
+		dispatch(addNotification(`${pokemon.name} avoided sleep with insomnia`));
+		return pokemon;
+	}
 	if (
 		move.meta.ailment.name === 'infatuation' &&
 		pokemon.ability === 'oblivious'

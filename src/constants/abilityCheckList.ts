@@ -72,7 +72,11 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/14/',
 		handled: true,
 	},
-	{ name: 'insomnia', url: 'https://pokeapi.co/api/v2/ability/15/' },
+	{
+		name: 'insomnia',
+		url: 'https://pokeapi.co/api/v2/ability/15/',
+		handled: true,
+	},
 	{ name: 'color-change', url: 'https://pokeapi.co/api/v2/ability/16/' },
 	{ name: 'immunity', url: 'https://pokeapi.co/api/v2/ability/17/' },
 	{ name: 'flash-fire', url: 'https://pokeapi.co/api/v2/ability/18/' },
