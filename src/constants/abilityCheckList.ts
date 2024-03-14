@@ -62,8 +62,16 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/12/',
 		handled: true,
 	},
-	{ name: 'cloud-nine', url: 'https://pokeapi.co/api/v2/ability/13/' },
-	{ name: 'compound-eyes', url: 'https://pokeapi.co/api/v2/ability/14/' },
+	{
+		name: 'cloud-nine',
+		url: 'https://pokeapi.co/api/v2/ability/13/',
+		handled: true,
+	},
+	{
+		name: 'compound-eyes',
+		url: 'https://pokeapi.co/api/v2/ability/14/',
+		handled: true,
+	},
 	{ name: 'insomnia', url: 'https://pokeapi.co/api/v2/ability/15/' },
 	{ name: 'color-change', url: 'https://pokeapi.co/api/v2/ability/16/' },
 	{ name: 'immunity', url: 'https://pokeapi.co/api/v2/ability/17/' },
