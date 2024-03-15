@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import '../CircularSprite.css';
 
 export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
-	const tags: string[] = useMemo(() => {
+	const tags: ReactNode[] = useMemo(() => {
 		const { level } = calculateLevelData(pokemon.xp);
-		const res: string[] = [`Lvl ${level}`];
+		const res: ReactNode[] = [`Lvl ${level}`];
 
 		Object.entries(pokemon.statModifiers).forEach(([x, value]) => {
 			if (value === 0) {
@@ -41,8 +41,32 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 		pokemon.secondaryAilments?.forEach((a) => {
 			res.push(`${a.type}: ${a.duration} turns`);
 		});
+		if (pokemon.heldItemName) {
+			res.push(
+				<img
+					className="battleSpriteTag"
+					height={'40px'}
+					width={'40px'}
+					src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pokemon.heldItemName}.png`}
+				/>
+			);
+		}
 
-		return res;
+		return res.map((tag) => {
+			if (typeof tag === 'string') {
+				return (
+					<div
+						key={tag}
+						className={`battleSpriteTag ${tag.includes('-') && 'redTag'} ${
+							tag.includes('+') && 'greenTag'
+						}`}
+					>
+						<div>{tag}</div>
+					</div>
+				);
+			}
+			return tag;
+		});
 	}, [pokemon]);
 
 	const [shiftDegrees, setShiftDegrees] = useState<number>(0);
@@ -50,7 +74,7 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 	useEffect(() => {
 		const rotator = setInterval(() => {
 			setShiftDegrees(shiftDegrees + 0.5);
-		}, 50);
+		}, 75);
 
 		return () => clearInterval(rotator);
 	}, [shiftDegrees, setShiftDegrees]);
@@ -73,15 +97,8 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 
 	return (
 		<div className="tagWrapper">
-			{tags.map((tag) => (
-				<div
-					key={tag}
-					className={`battleSpriteTag ${tag.includes('-') && 'redTag'} ${
-						tag.includes('+') && 'greenTag'
-					}`}
-				>
-					<div>{tag}</div>
-				</div>
+			{tags.map((tag, i) => (
+				<React.Fragment key={i}>{tag}</React.Fragment>
 			))}
 		</div>
 	);

@@ -56,6 +56,7 @@ export const HeldItemModal = ({
 					<div>
 						{holdableItems.map((h) => (
 							<Pill
+								key={h}
 								onClick={async () => {
 									await giveItemToPokemon(h);
 									setHeldItemModalOpen(false);
