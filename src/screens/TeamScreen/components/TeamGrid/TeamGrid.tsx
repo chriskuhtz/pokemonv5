@@ -14,12 +14,14 @@ export interface TeamGridProps {
 	pokemon: OwnedPokemon[];
 	noFocus?: boolean;
 	onGridItemClick?: (p: BattlePokemon) => void;
+	shouldSave?: boolean;
 }
 
 export const TeamGrid = ({
 	pokemon,
 	noFocus,
 	onGridItemClick,
+	shouldSave,
 }: TeamGridProps): JSX.Element => {
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
@@ -79,7 +81,7 @@ export const TeamGrid = ({
 					<PokemonSummary
 						pokemon={focused}
 						save={async (x: SaveGamePayload) => {
-							if (save) {
+							if (shouldSave) {
 								await save(x);
 								invalidateTeam();
 							}

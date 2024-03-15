@@ -1,12 +1,24 @@
 import { useCallback, useMemo } from 'react';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
+import { applyEVBoostItem } from '../../../functions/applyEVBoostItem';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
+import { applyPPItem } from '../../../functions/applyPPItem';
 import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
+import { canRaiseStatEV } from '../../../functions/canRaiseStatEV';
 import { useFetch } from '../../../hooks/useFetch';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { HealingItemType, isHealingItem } from '../../../interfaces/Item';
+import {
+	EVBoostMap,
+	EvBoostItemType,
+	HealingItemType,
+	PPItemType,
+	isEvBoostItem,
+	isHealingItem,
+	isPPRestorationItem,
+} from '../../../interfaces/Item';
 import { ItemData } from '../../../interfaces/ItemData';
+import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -42,47 +54,78 @@ export const ItemUsageModal = ({
 			);
 	}, [getPokemonByDexId, team]);
 
-	const { res: battleTeam } = useFetch<BattlePokemon[] | undefined>(
+	const { res: battleTeam, invalidate } = useFetch<BattlePokemon[] | undefined>(
 		fetchPlayerPokemon
 	);
 
 	const applyItemToPokemon = useCallback(
 		async (pokemon: BattlePokemon, item: ItemData) => {
+			let pokemonUpdates: OwnedPokemon[] | undefined = [];
+			dispatch(addNotification(`${pokemon.name} was given the ${item.name}`));
+
 			if (isHealingItem(item.name)) {
-				dispatch(addNotification(`${pokemon.name} was given the ${item.name}`));
-				await save({
-					inventoryChanges: { [`${item.name}`]: -1 },
-					pokemonUpdates: team.map((p) => {
-						if (p.id === pokemon.id) {
-							return applyHealingItemToPokemon(
-								pokemon,
-								item.name as HealingItemType
-							);
-						} else return p;
-					}),
+				pokemonUpdates = team.map((p) => {
+					if (p.id === pokemon.id) {
+						return applyHealingItemToPokemon(
+							pokemon,
+							item.name as HealingItemType
+						);
+					} else return p;
 				});
 			}
+			if (isPPRestorationItem(item.name)) {
+				pokemonUpdates = team.map((p) => {
+					if (p.id === pokemon.id) {
+						return applyPPItem(pokemon, item.name as PPItemType);
+					} else return p;
+				});
+			}
+			if (isEvBoostItem(item.name)) {
+				pokemonUpdates = team.map((p) => {
+					if (p.id === pokemon.id) {
+						console.log('bullu');
+						return applyEVBoostItem(pokemon, item.name as EvBoostItemType);
+					} else return p;
+				});
+			}
+
+			await save({
+				inventoryChanges: { [`${item.name}`]: -1 },
+				pokemonUpdates,
+			});
+			invalidate();
 			setItemToUse(undefined);
 		},
-		[save, setItemToUse, team]
+		[save, setItemToUse, team, invalidate]
 	);
 
 	if (battleTeam) {
+		const applicableTeamMembers = battleTeam.filter((t) => {
+			if (isHealingItem(item.name) && canBenefitFromItem(t, item.name)) {
+				return true;
+			}
+			if (isPPRestorationItem(item.name) && canBenefitFromItem(t, item.name)) {
+				return true;
+			}
+			if (
+				isEvBoostItem(item.name) &&
+				canRaiseStatEV(t, 10, EVBoostMap[item.name])
+			) {
+				return true;
+			}
+		});
+
 		return (
 			<Modal
 				open={!!item}
 				onCancel={() => setItemToUse(undefined)}
 				modalTitle={`Which Pokemon should receive the ${item.name}`}
 				modalContent={
-					battleTeam.some((t) =>
-						canBenefitFromItem(t, item.name as HealingItemType)
-					) ? (
+					applicableTeamMembers.length > 0 ? (
 						<TeamGrid
 							noFocus
 							onGridItemClick={(p) => applyItemToPokemon(p, item)}
-							pokemon={battleTeam.filter((t) =>
-								canBenefitFromItem(t, item.name as HealingItemType)
-							)}
+							pokemon={applicableTeamMembers}
 						/>
 					) : (
 						'No Pokemon can benefit from this'

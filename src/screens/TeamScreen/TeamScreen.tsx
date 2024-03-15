@@ -16,7 +16,7 @@ export const TeamScreen = (): JSX.Element => {
 					text={'Team'}
 					routerButtonProps={{ to: RoutesEnum.menu, text: 'Menu' }}
 				/>
-				{teamMembers && <TeamGrid pokemon={teamMembers} />}
+				{teamMembers && <TeamGrid pokemon={teamMembers} shouldSave />}
 			</div>
 		);
 	}

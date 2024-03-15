@@ -1,3 +1,5 @@
+import { Stat } from './StatObject';
+
 export const healingItemTypes = [
 	'potion',
 	'super-potion',
@@ -31,6 +33,15 @@ export const ppRestorationItemTypes = [
 	'max-elixir',
 ] as const;
 
+export const evBoostItemTypes = [
+	'hp-up',
+	'calcium',
+	'zinc',
+	'iron',
+	'protein',
+	'carbos',
+] as const;
+
 export const balltypes = [
 	'master-ball',
 	'poke-ball',
@@ -53,6 +64,7 @@ export const itemTypes = [
 	...balltypes,
 	...healingItemTypes,
 	...ppRestorationItemTypes,
+	...evBoostItemTypes,
 	'repel',
 	'sacred-ash',
 ] as const;
@@ -63,6 +75,7 @@ export type PokeballType = (typeof balltypes)[number];
 
 export type HealingItemType = (typeof healingItemTypes)[number];
 export type PPItemType = (typeof ppRestorationItemTypes)[number];
+export type EvBoostItemType = (typeof evBoostItemTypes)[number];
 
 export function isPokeball(x: string | undefined): x is PokeballType {
 	return (balltypes as unknown as string[]).includes(x ?? '');
@@ -73,6 +86,18 @@ export function isHealingItem(x: string | undefined): x is HealingItemType {
 }
 export function isPPRestorationItem(x: string | undefined): x is PPItemType {
 	return (ppRestorationItemTypes as unknown as string[]).includes(x ?? '');
+}
+
+export const EVBoostMap: Record<EvBoostItemType, Stat> = {
+	calcium: 'spatk',
+	carbos: 'speed',
+	'hp-up': 'hp',
+	iron: 'defense',
+	protein: 'attack',
+	zinc: 'spdef',
+};
+export function isEvBoostItem(x: string | undefined): x is EvBoostItemType {
+	return (evBoostItemTypes as unknown as string[]).includes(x ?? '');
 }
 export function isItem(x: string | undefined): x is ItemType {
 	return (itemTypes as unknown as string[]).includes(x ?? '');
