@@ -3,6 +3,7 @@ import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { applyEVBoostItem } from '../../../functions/applyEVBoostItem';
 import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
 import { applyPPItem } from '../../../functions/applyPPItem';
+import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 import { canRaiseStatEV } from '../../../functions/canRaiseStatEV';
 import { useFetch } from '../../../hooks/useFetch';
@@ -83,8 +84,18 @@ export const ItemUsageModal = ({
 			if (isEvBoostItem(item.name)) {
 				pokemonUpdates = team.map((p) => {
 					if (p.id === pokemon.id) {
-						console.log('bullu');
 						return applyEVBoostItem(pokemon, item.name as EvBoostItemType);
+					} else return p;
+				});
+			}
+			if (item.name === 'rare-candy') {
+				const { xpAtNextLevel, level } = calculateLevelData(pokemon.xp);
+				pokemonUpdates = team.map((p) => {
+					if (p.id === pokemon.id) {
+						dispatch(
+							addNotification(`${pokemon.name} reached level ${level + 1}`)
+						);
+						return { ...pokemon, xp: xpAtNextLevel };
 					} else return p;
 				});
 			}
@@ -111,6 +122,10 @@ export const ItemUsageModal = ({
 				isEvBoostItem(item.name) &&
 				canRaiseStatEV(t, 10, EVBoostMap[item.name])
 			) {
+				return true;
+			}
+			const { level } = calculateLevelData(t.xp);
+			if (item.name === 'rare-candy' && level < 100) {
 				return true;
 			}
 		});

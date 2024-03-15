@@ -211,7 +211,11 @@ export const itemsCheckList: {
 	{ name: 'iron', url: 'https://pokeapi.co/api/v2/item/47/', handled: true },
 	{ name: 'carbos', url: 'https://pokeapi.co/api/v2/item/48/', handled: true },
 	{ name: 'calcium', url: 'https://pokeapi.co/api/v2/item/49/', handled: true },
-	{ name: 'rare-candy', url: 'https://pokeapi.co/api/v2/item/50/' },
+	{
+		name: 'rare-candy',
+		url: 'https://pokeapi.co/api/v2/item/50/',
+		handled: true,
+	},
 	{ name: 'pp-up', url: 'https://pokeapi.co/api/v2/item/51/' },
 	{ name: 'zinc', url: 'https://pokeapi.co/api/v2/item/52/', handled: true },
 	{ name: 'pp-max', url: 'https://pokeapi.co/api/v2/item/53/' },

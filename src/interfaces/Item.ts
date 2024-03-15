@@ -67,6 +67,7 @@ export const itemTypes = [
 	...evBoostItemTypes,
 	'repel',
 	'sacred-ash',
+	'rare-candy',
 ] as const;
 
 export type ItemType = (typeof itemTypes)[number];
