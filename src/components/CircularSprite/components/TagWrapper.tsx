@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import '../CircularSprite.css';
@@ -45,11 +45,21 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 		return res;
 	}, [pokemon]);
 
+	const [shiftDegrees, setShiftDegrees] = useState<number>(0);
+
+	useEffect(() => {
+		const rotator = setInterval(() => {
+			setShiftDegrees(shiftDegrees + 0.5);
+		}, 50);
+
+		return () => clearInterval(rotator);
+	}, [shiftDegrees, setShiftDegrees]);
+
 	useEffect(() => {
 		//find the correct angles for n tags
 		document.querySelectorAll('.tagWrapper').forEach((tagWrapper) => {
 			const circles = tagWrapper.querySelectorAll('.battleSpriteTag');
-			let angle = 360 - 90;
+			let angle = 360 - 90 + shiftDegrees;
 			const dangle = 360 / circles.length;
 			for (let i = 0; i < circles.length; ++i) {
 				const circle = circles[i] as HTMLElement;
@@ -59,7 +69,7 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 				}px) rotate(-${angle}deg)`;
 			}
 		});
-	}, [pokemon]);
+	}, [pokemon, shiftDegrees]);
 
 	return (
 		<div className="tagWrapper">
