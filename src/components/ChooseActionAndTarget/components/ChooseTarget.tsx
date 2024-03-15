@@ -1,16 +1,20 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
+import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 import {
 	BattleAction,
 	isBattleActionWithTarget,
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { HealingItemType, PokeballType } from '../../../interfaces/Item';
+import {
+	HealingItemType,
+	PPItemType,
+	PokeballType,
+} from '../../../interfaces/Item';
 import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
-import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,
@@ -23,7 +27,7 @@ export const ChooseTarget = ({
 	actionName: BattleAction['type'];
 	move?: MoveDto;
 	ball?: PokeballType;
-	item?: HealingItemType;
+	item?: HealingItemType | PPItemType;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;

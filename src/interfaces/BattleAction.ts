@@ -37,6 +37,7 @@ interface BattleAttackAction extends BaseBattleAction {
 interface BattleItemAction extends BaseBattleAction {
 	type: 'HEALING_ITEM';
 	item: HealingItemType | PPItemType;
+	ppRestoreMove?: string;
 	target: string;
 }
 interface CatchAttempt extends BaseBattleAction {

@@ -12,7 +12,7 @@ export const ChooseMove = ({
 	open,
 	setMove,
 	availableMoves,
-	name,
+	title,
 	resetActor,
 	usedPP,
 }: {
@@ -20,7 +20,7 @@ export const ChooseMove = ({
 	open: boolean;
 	setMove: (x: MoveDto | undefined) => void;
 	availableMoves: SelectableAction[];
-	name: string;
+	title: string;
 	resetActor: () => void;
 }) => {
 	if (open) {
@@ -28,7 +28,7 @@ export const ChooseMove = ({
 			<Banner
 				content={
 					<div style={{ textAlign: 'left' }}>
-						<strong>{`which move should ${name} use:`}</strong>
+						<strong>{title}</strong>
 						<div
 							style={{
 								display: 'flex',

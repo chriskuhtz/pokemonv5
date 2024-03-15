@@ -32,8 +32,9 @@ export const applyPPItem = (
 	if (itemName === 'elixir') {
 		updated = applyPPChange(updated, -10, -1);
 	}
-	if (itemName === 'max-elixir' && moveName) {
+	if (itemName === 'max-elixir') {
 		updated = applyPPChange(updated, -1000, -1);
 	}
+
 	return updated;
 };

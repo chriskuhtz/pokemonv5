@@ -262,13 +262,13 @@ export const useHandleAction = (
 							//apply heal to self
 							if (target.id === actor.id && p.id === target.id) {
 								return {
-									...applyItem(p, action.item),
+									...applyItem(p, action.item, action.ppRestoreMove),
 									nextAction: undefined,
 								};
 							}
 							if (target.id === p.id) {
 								return {
-									...applyItem(p, action.item),
+									...applyItem(p, action.item, action.ppRestoreMove),
 								};
 							}
 							if (actor.id === p.id) {
@@ -294,7 +294,11 @@ export const useHandleAction = (
 			}
 			if (isBattleItemAction(action) && reviveTarget) {
 				if (actor.side === 'PLAYER') {
-					const revived = applyItem(reviveTarget, action.item);
+					const revived = applyItem(
+						reviveTarget,
+						action.item,
+						action.ppRestoreMove
+					);
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
