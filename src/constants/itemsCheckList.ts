@@ -191,7 +191,11 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/41/',
 		handled: true,
 	},
-	{ name: 'lava-cookie', url: 'https://pokeapi.co/api/v2/item/42/' },
+	{
+		name: 'lava-cookie',
+		url: 'https://pokeapi.co/api/v2/item/42/',
+		handled: true,
+	},
 	{ name: 'berry-juice', url: 'https://pokeapi.co/api/v2/item/43/' },
 	{ name: 'sacred-ash', url: 'https://pokeapi.co/api/v2/item/44/' },
 	{ name: 'hp-up', url: 'https://pokeapi.co/api/v2/item/45/' },

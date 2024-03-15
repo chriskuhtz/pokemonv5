@@ -1,26 +1,7 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import {
-	HealingItemType,
-	PPItemType,
-	isHealingItem,
-	isPPRestorationItem,
-} from '../interfaces/Item';
+import { HealingItemType } from '../interfaces/Item';
 import { applyBitterItemToPokemon, isBitterItem } from './applyBitterItem';
-import { applyPPItem } from './applyPPItem';
 
-export const applyItem = (
-	pokemon: BattlePokemon,
-	itemName: HealingItemType | PPItemType,
-	moveName?: string
-) => {
-	if (isHealingItem(itemName)) {
-		return applyHealingItemToPokemon(pokemon, itemName);
-	}
-	if (isPPRestorationItem(itemName)) {
-		return applyPPItem(pokemon, itemName, moveName);
-	}
-	return pokemon;
-};
 export const applyHealingItemToPokemon = (
 	pokemon: BattlePokemon,
 	itemName: HealingItemType
@@ -69,6 +50,7 @@ export const applyHealingItemToPokemon = (
 			'revive',
 			'revival-herb',
 			'heal-powder',
+			'lava-cookie',
 		].includes(itemName)
 	) {
 		copy.primaryAilment = undefined;

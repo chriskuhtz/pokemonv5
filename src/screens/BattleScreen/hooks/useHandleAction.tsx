@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 import { forceSwitchMoves } from '../../../constants/forceSwitchMoves';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
-import { applyItem } from '../../../functions/applyHealingItemToPokemon';
+import { applyItem } from '../../../functions/applyItem';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { determineCatchRate } from '../../../functions/determineCatchRate';
