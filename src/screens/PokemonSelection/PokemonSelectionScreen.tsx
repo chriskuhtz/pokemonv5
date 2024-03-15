@@ -6,12 +6,12 @@ import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/Poke
 import { shinyChance } from '../../functions/shinyChance';
 import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
 import { useSaveGame } from '../../hooks/useSaveGame';
+import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { PokemonData } from '../../interfaces/PokemonData';
 import { Quest } from '../../interfaces/Quest';
-import { selectSaveFile } from '../../store/selectors/saveFile/selectSaveFile';
 import { addAudio } from '../../store/slices/audioSlice';
 import { addNotification } from '../../store/slices/notificationSlice';
-import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
+import { useAppDispatch } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 
@@ -24,7 +24,7 @@ export const PokemonSelectionScreen = ({
 	headline: string;
 	quest?: Quest;
 }): JSX.Element => {
-	const data = useAppSelector(selectSaveFile);
+	const data = useGetCurrentSaveFile();
 	const dispatch = useAppDispatch();
 	const save = useSaveGame();
 	const navigate = useNavigate();

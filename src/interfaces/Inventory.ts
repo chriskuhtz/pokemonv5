@@ -47,6 +47,7 @@ export const EmptyInventory: Inventory = {
 	'max-ether': 0,
 	'lava-cookie': 0,
 	'berry-juice': 0,
+	'sacred-ash': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

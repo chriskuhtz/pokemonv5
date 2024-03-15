@@ -8,11 +8,11 @@ import { OwnedPokemon } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { GymBadge, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
-import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
 import { addNotification } from '../store/slices/notificationSlice';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
-import { useAppDispatch, useAppSelector } from '../store/storeHooks';
+import { useAppDispatch } from '../store/storeHooks';
 import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
+import { useGetCurrentSaveFile } from './xata/useCurrentSaveFile';
 
 export type SaveGamePayload = {
 	currentPosition?: CharacterPosition;
@@ -32,7 +32,7 @@ export type SaveGameFunction = (x: SaveGamePayload) => Promise<void>;
 
 export const useSaveGame = (): SaveGameFunction => {
 	const dispatch = useAppDispatch();
-	const data = useAppSelector(selectSaveFile);
+	const data = useGetCurrentSaveFile();
 	const { updateSaveFile } = useCreateOrUpdateSaveFile();
 
 	return useCallback(
@@ -64,6 +64,7 @@ export const useSaveGame = (): SaveGameFunction => {
 			subtractInventory?: boolean;
 		}) => {
 			if (!data) {
+				console.error('cant save if no current saveFile');
 				return;
 			}
 

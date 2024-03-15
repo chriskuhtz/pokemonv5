@@ -54,7 +54,7 @@ export const itemTypes = [
 	...healingItemTypes,
 	...ppRestorationItemTypes,
 	'repel',
-	'potion',
+	'sacred-ash',
 ] as const;
 
 export type ItemType = (typeof itemTypes)[number];
