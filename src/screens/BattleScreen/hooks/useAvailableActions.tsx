@@ -30,8 +30,10 @@ export const useAvailableActions = (
 			(p) =>
 				p.damage > 0 ||
 				p.primaryAilment ||
-				(p.secondaryAilments && p.secondaryAilments.length > 0)
+				(p.secondaryAilments && p.secondaryAilments.length > 0) ||
+				Object.values(p.usedPowerPoints).some((v) => v > 0)
 		);
+
 		const revivalTargets = playerSide.defeated;
 		return [
 			//ATTACK

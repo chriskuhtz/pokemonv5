@@ -1,4 +1,4 @@
-import { HealingItemType, PokeballType } from './Inventory';
+import { HealingItemType, PPItemType, PokeballType } from './Item';
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
@@ -36,7 +36,7 @@ interface BattleAttackAction extends BaseBattleAction {
 }
 interface BattleItemAction extends BaseBattleAction {
 	type: 'HEALING_ITEM';
-	item: HealingItemType;
+	item: HealingItemType | PPItemType;
 	target: string;
 }
 interface CatchAttempt extends BaseBattleAction {

@@ -1,13 +1,33 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import { HealingItemType } from '../interfaces/Inventory';
+import {
+	HealingItemType,
+	PPItemType,
+	isHealingItem,
+	isPPRestorationItem,
+} from '../interfaces/Item';
 import { applyBitterItemToPokemon, isBitterItem } from './applyBitterItem';
+import { applyPPItem } from './applyPPItem';
 
+export const applyItem = (
+	pokemon: BattlePokemon,
+	itemName: HealingItemType | PPItemType,
+	moveName?: string
+) => {
+	if (isHealingItem(itemName)) {
+		return applyHealingItemToPokemon(pokemon, itemName);
+	}
+	if (isPPRestorationItem(itemName)) {
+		return applyPPItem(pokemon, itemName, moveName);
+	}
+	return pokemon;
+};
 export const applyHealingItemToPokemon = (
 	pokemon: BattlePokemon,
 	itemName: HealingItemType
 ): BattlePokemon => {
 	let copy = { ...pokemon };
 
+	//HP HEALING
 	if (itemName === 'potion') {
 		copy.damage = Math.max(0, copy.damage - 20);
 	}
@@ -40,6 +60,7 @@ export const applyHealingItemToPokemon = (
 	if (itemName === 'revive' || itemName === 'revival-herb') {
 		copy.damage = Math.round(copy.stats.hp / 2);
 	}
+	//AILMENTS
 	if (
 		[
 			'full-heal',
@@ -73,65 +94,10 @@ export const applyHealingItemToPokemon = (
 	if (itemName === 'ice-heal' && copy.primaryAilment?.type === 'freeze') {
 		copy.primaryAilment = undefined;
 	}
+	//FRIENDSHIP EFFECTS
 	if (isBitterItem(itemName)) {
 		copy = applyBitterItemToPokemon(copy, itemName);
 	}
+
 	return copy;
-};
-
-export const canBenefitFromItem = (
-	pokemon: BattlePokemon,
-	itemName: HealingItemType
-): boolean => {
-	const { damage, primaryAilment, secondaryAilments } = pokemon;
-	let canBenefit = false;
-
-	if (
-		[
-			'potion',
-			'super-potion',
-			'hyper-potion',
-			'max-potion',
-			'fresh-water',
-			'full-restore',
-			'soda-pop',
-			'lemonade',
-			'moomoo-milk',
-			'energy-powder',
-			'energy-root',
-		].includes(itemName) &&
-		damage &&
-		damage < pokemon.stats.hp
-	) {
-		canBenefit = true;
-	}
-	if (
-		['revive', 'max-revive', 'revival-herb'].includes(itemName) &&
-		damage &&
-		damage >= pokemon.stats.hp
-	) {
-		canBenefit = true;
-	}
-	if (
-		['full-restore', 'full-heal', 'heal-powder'].includes(itemName) &&
-		(primaryAilment || secondaryAilments?.some((a) => a.type === 'confusion'))
-	) {
-		canBenefit = true;
-	}
-	if (
-		itemName === 'antidote' &&
-		['poison', 'toxic'].includes(primaryAilment?.type ?? '')
-	) {
-		canBenefit = true;
-	}
-	if (itemName === 'paralyze-heal' && primaryAilment?.type === 'paralysis') {
-		canBenefit = true;
-	}
-	if (itemName === 'burn-heal' && primaryAilment?.type === 'burn') {
-		canBenefit = true;
-	}
-	if (itemName === 'ice-heal' && primaryAilment?.type === 'freeze') {
-		canBenefit = true;
-	}
-	return canBenefit;
 };

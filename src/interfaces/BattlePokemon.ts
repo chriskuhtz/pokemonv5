@@ -1,6 +1,6 @@
 import { SecondaryAilment } from './Ailment';
 import { BattleAction } from './BattleAction';
-import { PokeballType } from './Inventory';
+import { PokeballType } from './Item';
 import { MoveDto } from './Move';
 import { OwnedPokemon } from './OwnedPokemon';
 import { PokemonType } from './PokemonType';

@@ -1,6 +1,12 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { UsedPowerPoints } from '../interfaces/OwnedPokemon';
-
+/**
+ *
+ * @param pokemon  the BattlePokemon to change
+ * @param change the amount to subtract (positive to reduce, negative to restore)
+ * @param moveIndex the moveIndex, -1 will heal all moves
+ * @returns the updated BattlePokemon
+ */
 export const applyPPChange = (
 	pokemon: BattlePokemon,
 	change: number,

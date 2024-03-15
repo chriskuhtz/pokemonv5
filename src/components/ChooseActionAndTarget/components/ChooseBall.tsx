@@ -1,10 +1,7 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
-import {
-	Inventory,
-	PokeballType,
-	isPokeball,
-} from '../../../interfaces/Inventory';
+import { Inventory } from '../../../interfaces/Inventory';
+import { PokeballType, isPokeball } from '../../../interfaces/Item';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 

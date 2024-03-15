@@ -1,12 +1,13 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
-import { canBenefitFromItem } from '../../../functions/applyHealingItemToPokemon';
+import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { Inventory } from '../../../interfaces/Inventory';
 import {
 	HealingItemType,
-	Inventory,
 	isHealingItem,
-} from '../../../interfaces/Inventory';
+	isPPRestorationItem,
+} from '../../../interfaces/Item';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 
@@ -38,7 +39,11 @@ export const ChooseItem = ({
 							}}
 						>
 							{Object.entries(inventory).map(([key, amount]) => {
-								if (amount === 0 || !isHealingItem(key)) {
+								if (
+									amount === 0 ||
+									!isHealingItem(key) ||
+									!isPPRestorationItem(key)
+								) {
 									return <></>;
 								}
 								return (

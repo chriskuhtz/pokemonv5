@@ -1,6 +1,6 @@
 import { Ability } from '../constants/abilityCheckList';
 import { PrimaryAilment } from './Ailment';
-import { PokeballType } from './Inventory';
+import { PokeballType } from './Item';
 
 export interface OwnedPokemon {
 	dexId: number;

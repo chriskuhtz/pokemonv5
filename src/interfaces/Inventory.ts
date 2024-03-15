@@ -1,21 +1,5 @@
 import { joinInventories } from '../functions/joinInventories';
-import { ItemType, balltypes, healingItemTypes, itemTypes } from './Item';
-
-export type PokeballType = (typeof balltypes)[number];
-
-export function isPokeball(x: string | undefined): x is PokeballType {
-	return (balltypes as unknown as string[]).includes(x ?? '');
-}
-
-export type HealingItemType = (typeof healingItemTypes)[number];
-
-export function isHealingItem(x: string | undefined): x is HealingItemType {
-	return (healingItemTypes as unknown as string[]).includes(x ?? '');
-}
-
-export function isItem(x: string | undefined): x is ItemType {
-	return (itemTypes as unknown as string[]).includes(x ?? '');
-}
+import { ItemType } from './Item';
 
 export type Inventory = Record<ItemType, number>;
 

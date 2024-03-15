@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 import { forceSwitchMoves } from '../../../constants/forceSwitchMoves';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
-import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
+import { applyItem } from '../../../functions/applyHealingItemToPokemon';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { determineCatchRate } from '../../../functions/determineCatchRate';
@@ -262,13 +262,13 @@ export const useHandleAction = (
 							//apply heal to self
 							if (target.id === actor.id && p.id === target.id) {
 								return {
-									...applyHealingItemToPokemon(p, action.item),
+									...applyItem(p, action.item),
 									nextAction: undefined,
 								};
 							}
 							if (target.id === p.id) {
 								return {
-									...applyHealingItemToPokemon(p, action.item),
+									...applyItem(p, action.item),
 								};
 							}
 							if (actor.id === p.id) {
@@ -294,7 +294,7 @@ export const useHandleAction = (
 			}
 			if (isBattleItemAction(action) && reviveTarget) {
 				if (actor.side === 'PLAYER') {
-					const revived = applyHealingItemToPokemon(reviveTarget, action.item);
+					const revived = applyItem(reviveTarget, action.item);
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {

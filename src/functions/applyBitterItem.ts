@@ -1,5 +1,5 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import { HealingItemType } from '../interfaces/Inventory';
+import { HealingItemType } from '../interfaces/Item';
 
 export const isBitterItem = (itemName: HealingItemType) => {
 	return [

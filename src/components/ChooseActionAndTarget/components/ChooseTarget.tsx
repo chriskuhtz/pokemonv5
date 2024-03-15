@@ -1,16 +1,16 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
-import { canBenefitFromItem } from '../../../functions/applyHealingItemToPokemon';
 import {
 	BattleAction,
 	isBattleActionWithTarget,
 } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { HealingItemType, PokeballType } from '../../../interfaces/Inventory';
+import { HealingItemType, PokeballType } from '../../../interfaces/Item';
 import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
+import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 export const ChooseTarget = ({
 	availableTargets,
 	selectAction,

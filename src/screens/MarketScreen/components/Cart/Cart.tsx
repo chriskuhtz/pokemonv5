@@ -1,5 +1,5 @@
-import { Inventory, isItem } from '../../../../interfaces/Inventory';
-import { ItemType } from '../../../../interfaces/Item';
+import { Inventory } from '../../../../interfaces/Inventory';
+import { ItemType, isItem } from '../../../../interfaces/Item';
 import { Pill } from '../../../../ui_components/Pill/Pill';
 import './Cart.css';
 export const Cart = ({

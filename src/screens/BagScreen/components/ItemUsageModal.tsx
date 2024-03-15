@@ -1,13 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
-import {
-	applyHealingItemToPokemon,
-	canBenefitFromItem,
-} from '../../../functions/applyHealingItemToPokemon';
+import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
+import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 import { useFetch } from '../../../hooks/useFetch';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import { HealingItemType, isHealingItem } from '../../../interfaces/Inventory';
+import { HealingItemType, isHealingItem } from '../../../interfaces/Item';
 import { ItemData } from '../../../interfaces/ItemData';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { addNotification } from '../../../store/slices/notificationSlice';

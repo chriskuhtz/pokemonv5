@@ -3,11 +3,7 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
 import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
-import {
-	HealingItemType,
-	Inventory,
-	PokeballType,
-} from '../../interfaces/Inventory';
+import { Inventory } from '../../interfaces/Inventory';
 import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
@@ -15,6 +11,7 @@ import { ChooseBall } from './components/ChooseBall';
 import { ChooseItem } from './components/ChooseItem';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
+import { PokeballType, HealingItemType } from '../../interfaces/Item';
 
 export const ChooseActionAndTarget = ({
 	actor,

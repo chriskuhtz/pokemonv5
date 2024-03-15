@@ -20,6 +20,9 @@ export const healingItemTypes = [
 	'energy-root',
 	'heal-powder',
 	'revival-herb',
+] as const;
+
+export const ppRestorationItemTypes = [
 	'ether',
 	'max-ether',
 	'elixir',
@@ -47,8 +50,28 @@ export const balltypes = [
 export const itemTypes = [
 	...balltypes,
 	...healingItemTypes,
+	...ppRestorationItemTypes,
 	'repel',
 	'potion',
 ] as const;
 
 export type ItemType = (typeof itemTypes)[number];
+
+export type PokeballType = (typeof balltypes)[number];
+
+export type HealingItemType = (typeof healingItemTypes)[number];
+export type PPItemType = (typeof ppRestorationItemTypes)[number];
+
+export function isPokeball(x: string | undefined): x is PokeballType {
+	return (balltypes as unknown as string[]).includes(x ?? '');
+}
+
+export function isHealingItem(x: string | undefined): x is HealingItemType {
+	return (healingItemTypes as unknown as string[]).includes(x ?? '');
+}
+export function isPPRestorationItem(x: string | undefined): x is PPItemType {
+	return (ppRestorationItemTypes as unknown as string[]).includes(x ?? '');
+}
+export function isItem(x: string | undefined): x is ItemType {
+	return (itemTypes as unknown as string[]).includes(x ?? '');
+}
