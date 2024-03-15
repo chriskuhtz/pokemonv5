@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { useGetPokemonDataByDexIdQuery } from '../../../../api/pokeApi';
 import { AbilityPill } from '../../../../components/AbilityPill/AbilityPill';
+import { HeldItemModal } from '../../../../components/HeldItemModal/HeldItemModal';
 import { calculateLevelData } from '../../../../functions/calculateLevelData';
 import { trimToOwnedPokemon } from '../../../../functions/trimToOwnedPokemon';
 import { SaveGameFunction } from '../../../../hooks/useSaveGame';
@@ -16,7 +17,6 @@ import { MoveSection } from '../MoveSection/MoveSection';
 import { NameAndSpriteSection } from '../NameAndSpriteSection/NameAndSpriteSection';
 import { StatSection } from '../StatSection/StatSection';
 import './PokemonSummary.css';
-import { HeldItemModal } from '../../../../components/HeldItemModal/HeldItemModal';
 
 export const PokemonSummary = ({
 	pokemon,
@@ -103,6 +103,7 @@ export const PokemonSummary = ({
 				<div className="movesAndStats">
 					<StatSection
 						baseStats={pokemon.stats}
+						evs={pokemon.effortValues}
 						type={pokemon.primaryType}
 						nature={'hardy'}
 						level={calculateLevelData(pokemon.xp).level}

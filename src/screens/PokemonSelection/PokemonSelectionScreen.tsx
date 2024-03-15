@@ -5,10 +5,11 @@ import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
 import { shinyChance } from '../../functions/shinyChance';
 import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
-import { useSaveGame } from '../../hooks/useSaveGame';
+import { EmptyUsedPP, useSaveGame } from '../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { PokemonData } from '../../interfaces/PokemonData';
 import { Quest } from '../../interfaces/Quest';
+import { EmptyStatObject } from '../../interfaces/StatObject';
 import { addAudio } from '../../store/slices/audioSlice';
 import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../store/storeHooks';
@@ -72,13 +73,9 @@ export const PokemonSelectionScreen = ({
 											ball: 'luxury-ball',
 											shiny: shinyChance(),
 											friendship: 70,
-											usedPowerPoints: {
-												firstMove: 0,
-												secondMove: 0,
-												thirdMove: 0,
-												fourthMove: 0,
-											},
+											usedPowerPoints: EmptyUsedPP,
 											heldItemName: 'berry-juice',
+											effortValues: EmptyStatObject,
 										},
 									],
 									dexUpdates: choices.map((choice) => {

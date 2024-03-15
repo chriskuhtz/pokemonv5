@@ -4,7 +4,7 @@ import { addEntriesToDex } from '../functions/addEntriesToDex';
 import { joinInventories } from '../functions/joinInventories';
 import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
-import { OwnedPokemon } from '../interfaces/OwnedPokemon';
+import { OwnedPokemon, UsedPowerPoints } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { GymBadge, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
@@ -29,6 +29,13 @@ export type SaveGamePayload = {
 	subtractInventory?: boolean;
 };
 export type SaveGameFunction = (x: SaveGamePayload) => Promise<void>;
+
+export const EmptyUsedPP: UsedPowerPoints = {
+	firstMove: 0,
+	secondMove: 0,
+	thirdMove: 0,
+	fourthMove: 0,
+};
 
 export const useSaveGame = (): SaveGameFunction => {
 	const dispatch = useAppDispatch();
@@ -115,12 +122,7 @@ export const useSaveGame = (): SaveGameFunction => {
 						...p,
 						damage: 0,
 						primaryAilment: undefined,
-						usedPowerPoints: {
-							firstMove: 0,
-							secondMove: 0,
-							thirdMove: 0,
-							fourthMove: 0,
-						},
+						usedPowerPoints: EmptyUsedPP,
 					};
 				});
 			}
