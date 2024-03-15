@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
-import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilitiesWeatherAndAilments';
+import { applyAbilitiesWeatherAilmentsAndHeldItems } from '../../../functions/applyAbilitiesWeatherAilmentsAndHeldItems';
 import { getPrepMoveDialogue } from '../../../functions/getPrepMoveDialogue';
 import {
 	isBattleActionWithTarget,
@@ -68,7 +68,7 @@ export const useCheckAndAssembleActions = (
 					: undefined;
 
 			if (isPrimaryAction(actor.nextAction)) {
-				const skipAction = applyAbilitiesWeatherAndAilments(
+				const skipAction = applyAbilitiesWeatherAilmentsAndHeldItems(
 					actor,
 					playerSide,
 					opponentSide,

@@ -17,10 +17,11 @@ import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { addNotification } from '../store/slices/notificationSlice';
 import { calculateDamage } from './calculateDamage';
 import { canRaiseStat } from './canRaiseStat';
+import { consumeHeldItem } from './consumeHeldItem';
 import { getDamageFactors } from './getDamageFactors';
 import { reduceDuration } from './reduceDuration';
 
-export const applyAbilitiesWeatherAndAilments = (
+export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 	actor: BattlePokemon,
 	playerSide: BattleSide,
 	opponentSide: BattleSide,
@@ -231,6 +232,9 @@ export const applyAbilitiesWeatherAndAilments = (
 				nextAction: undefined,
 			};
 		}
+	}
+	if (updatedActor.heldItemName) {
+		updatedActor = consumeHeldItem(updatedActor, dispatch);
 	}
 
 	updatedActor = {
