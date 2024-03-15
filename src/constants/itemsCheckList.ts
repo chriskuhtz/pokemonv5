@@ -196,7 +196,11 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/42/',
 		handled: true,
 	},
-	{ name: 'berry-juice', url: 'https://pokeapi.co/api/v2/item/43/' },
+	{
+		name: 'berry-juice',
+		url: 'https://pokeapi.co/api/v2/item/43/',
+		handled: true,
+	},
 	{ name: 'sacred-ash', url: 'https://pokeapi.co/api/v2/item/44/' },
 	{ name: 'hp-up', url: 'https://pokeapi.co/api/v2/item/45/' },
 	{ name: 'protein', url: 'https://pokeapi.co/api/v2/item/46/' },
