@@ -17,7 +17,7 @@ export const PlayerMenu = (): JSX.Element => {
 			/>
 
 			<div className="playerMenuGrid">
-				<RouterButton to={RoutesEnum.playercard} text={'Trainercard'} />
+				<RouterButton to={RoutesEnum.playercard} text={'Trainer-Pass'} />
 				<RouterButton to={RoutesEnum.team} text={'Team'} />
 				<RouterButton to={RoutesEnum.storage} text={'Storage'} />
 				<RouterButton to={RoutesEnum.pokedex} text={'Pokedex'} />

@@ -77,3 +77,6 @@ export function isPPRestorationItem(x: string | undefined): x is PPItemType {
 export function isItem(x: string | undefined): x is ItemType {
 	return (itemTypes as unknown as string[]).includes(x ?? '');
 }
+export function isHoldable(x: string | undefined): boolean {
+	return ['berry-juice'].includes(x ?? '');
+}

@@ -39,12 +39,14 @@ export const useCreateOrUpdateSaveFile = () => {
 				return;
 			}
 			setFetching(true);
+
 			const xata = getXataClient();
 
 			await xata.db.saveFiles
 				.createOrUpdate({ id, saveFile: JSON.stringify(newSaveFile) })
 				.then((res) => {
 					window.localStorage.setItem('userId', res.id);
+
 					dispatch(setSaveFile(res.saveFile));
 				});
 

@@ -78,6 +78,7 @@ export const PokemonSelectionScreen = ({
 												thirdMove: 0,
 												fourthMove: 0,
 											},
+											heldItemName: 'berry-juice',
 										},
 									],
 									dexUpdates: choices.map((choice) => {

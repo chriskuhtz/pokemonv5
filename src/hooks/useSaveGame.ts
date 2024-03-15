@@ -14,7 +14,23 @@ import { CharacterPosition } from '../store/slices/saveFileSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useCreateOrUpdateSaveFile } from './xata/useCreateOrUpdateSaveFile';
 
-export const useSaveGame = () => {
+export type SaveGamePayload = {
+	currentPosition?: CharacterPosition;
+	inventoryChanges?: Partial<Inventory>;
+	portalEvent?: PortalEvent;
+	questUpdates?: Partial<SaveFile['quests']>;
+	pokemonUpdates?: OwnedPokemon[];
+	visitedNurse?: boolean;
+	dexUpdates?: DexEntry[];
+	handledOccupants?: Partial<Record<UniqueOccupantIds, boolean>>;
+	fundsUpdate?: number;
+	newBadge?: GymBadge;
+	teleportToLastHealer?: boolean;
+	subtractInventory?: boolean;
+};
+export type SaveGameFunction = (x: SaveGamePayload) => Promise<void>;
+
+export const useSaveGame = (): SaveGameFunction => {
 	const dispatch = useAppDispatch();
 	const data = useAppSelector(selectSaveFile);
 	const { updateSaveFile } = useCreateOrUpdateSaveFile();
@@ -50,6 +66,7 @@ export const useSaveGame = () => {
 			if (!data) {
 				return;
 			}
+
 			const updatedData = { ...data };
 
 			let updatedInventory = inventoryChanges
@@ -70,15 +87,40 @@ export const useSaveGame = () => {
 			};
 
 			//if there are updates, filter out all mons whose ids are included in the updates, then concat updates
-			let updatedPokemon = pokemonUpdates
-				? data.pokemon
-						.filter((d) => !pokemonUpdates?.some((u) => u.id === d.id))
-						.concat(pokemonUpdates)
-				: data.pokemon;
+
+			let existingAndUpdates = [...data.pokemon];
+
+			if (pokemonUpdates) {
+				existingAndUpdates = existingAndUpdates
+					.map((p) => {
+						const update = pokemonUpdates.find((update) => update.id === p.id);
+						if (update) {
+							return update;
+						}
+						return p;
+					})
+					.concat(
+						pokemonUpdates.filter(
+							(p) => !existingAndUpdates.some((e) => e.id === p.id)
+						)
+					);
+
+				console.log(pokemonUpdates, existingAndUpdates);
+			}
 
 			if (visitedNurse) {
-				updatedPokemon = updatedPokemon.map((p) => {
-					return { ...p, damage: 0, primaryAilment: undefined };
+				existingAndUpdates = existingAndUpdates.map((p) => {
+					return {
+						...p,
+						damage: 0,
+						primaryAilment: undefined,
+						usedPowerPoints: {
+							firstMove: 0,
+							secondMove: 0,
+							thirdMove: 0,
+							fourthMove: 0,
+						},
+					};
 				});
 			}
 
@@ -126,7 +168,7 @@ export const useSaveGame = () => {
 				lastHealPosition: visitedNurse
 					? updatedPosition()
 					: data.lastHealPosition,
-				pokemon: updatedPokemon,
+				pokemon: existingAndUpdates,
 				pokedex: updatedDex,
 				money: updatedMoney,
 				gymBadges: newBadge

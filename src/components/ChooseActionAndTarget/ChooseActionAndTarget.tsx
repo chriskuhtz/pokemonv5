@@ -49,7 +49,6 @@ export const ChooseActionAndTarget = ({
 	//select ppRestoration Action
 	useEffect(() => {
 		if (item && moveToPPRestore && pokemonIdToPPRestore) {
-			console.log('yayaya');
 			selectAction({
 				...actor,
 				nextAction: {
