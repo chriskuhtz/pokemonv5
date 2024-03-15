@@ -1,4 +1,4 @@
-import { ItemName } from './Item';
+import { ItemType } from './Item';
 
 export interface ItemData {
 	cost: number;
@@ -11,7 +11,7 @@ export interface ItemData {
 	];
 	fling_power: number;
 	id: number;
-	name: ItemName;
+	name: ItemType;
 	sprites: {
 		default: string;
 	};

@@ -1,5 +1,5 @@
-import { Inventory } from '../../../../interfaces/Inventory';
-import { ItemName } from '../../../../interfaces/Item';
+import { Inventory, isItem } from '../../../../interfaces/Inventory';
+import { ItemType } from '../../../../interfaces/Item';
 import { Pill } from '../../../../ui_components/Pill/Pill';
 import './Cart.css';
 export const Cart = ({
@@ -10,7 +10,7 @@ export const Cart = ({
 	purchase,
 }: {
 	cart: Inventory;
-	removeFromCart: (x: ItemName) => void;
+	removeFromCart: (x: ItemType) => void;
 	totalCost: number;
 	money: number;
 	purchase: () => void;
@@ -33,8 +33,8 @@ export const Cart = ({
 							</span>
 							<span
 								onClick={() => {
-									if (name in ItemName) {
-										removeFromCart(name as ItemName);
+									if (isItem(name)) {
+										removeFromCart(name);
 									}
 								}}
 							>

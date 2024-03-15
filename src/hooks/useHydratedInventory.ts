@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useLazyGetItemDataByNameQuery } from '../api/pokeApi';
-import { Inventory } from '../interfaces/Inventory';
-import { ItemName } from '../interfaces/Item';
+import { Inventory, isItem } from '../interfaces/Inventory';
+
 import { ItemData } from '../interfaces/ItemData';
 import { useFetch } from './useFetch';
 
@@ -14,8 +14,8 @@ export const useHydratedInventory = (inventory: Partial<Inventory>) => {
 		}
 		const items = await Promise.all(
 			Object.keys(inventory).map((i) => {
-				if (i in ItemName) {
-					return getItemData(i as ItemName).unwrap();
+				if (isItem(i)) {
+					return getItemData(i).unwrap();
 				}
 			})
 		).then((res) => {

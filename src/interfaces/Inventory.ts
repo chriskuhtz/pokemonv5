@@ -1,23 +1,5 @@
 import { joinInventories } from '../functions/joinInventories';
-import { ItemName } from './Item';
-
-export const balltypes = [
-	'master-ball',
-	'poke-ball',
-	'ultra-ball',
-	'great-ball',
-	'safari-ball',
-	'net-ball',
-	'dive-ball',
-	'nest-ball',
-	'repeat-ball',
-	'timer-ball',
-	'luxury-ball',
-	'dusk-ball',
-	'heal-ball',
-	'quick-ball',
-	'cherish-ball',
-] as const;
+import { ItemType, balltypes, healingItemTypes, itemTypes } from './Item';
 
 export type PokeballType = (typeof balltypes)[number];
 
@@ -25,37 +7,17 @@ export function isPokeball(x: string | undefined): x is PokeballType {
 	return (balltypes as unknown as string[]).includes(x ?? '');
 }
 
-export const healingItemTypes = [
-	'potion',
-	'super-potion',
-	'hyper-potion',
-	'max-potion',
-	'full-restore',
-	'full-heal',
-	'fresh-water',
-	'antidote',
-	'burn-heal',
-	'paralyze-heal',
-	'ice-heal',
-	'awakening',
-	'revive',
-	'max-revive',
-	'soda-pop',
-	'lemonade',
-	'moomoo-milk',
-	'energy-powder',
-	'energy-root',
-	'heal-powder',
-	'revival-herb',
-] as const;
-
 export type HealingItemType = (typeof healingItemTypes)[number];
 
 export function isHealingItem(x: string | undefined): x is HealingItemType {
 	return (healingItemTypes as unknown as string[]).includes(x ?? '');
 }
 
-export type Inventory = Record<ItemName, number>;
+export function isItem(x: string | undefined): x is ItemType {
+	return (itemTypes as unknown as string[]).includes(x ?? '');
+}
+
+export type Inventory = Record<ItemType, number>;
 
 export const EmptyInventory: Inventory = {
 	'master-ball': 0,
@@ -95,6 +57,10 @@ export const EmptyInventory: Inventory = {
 	'energy-root': 0,
 	'heal-powder': 0,
 	'revival-herb': 0,
+	elixir: 0,
+	ether: 0,
+	'max-elixir': 0,
+	'max-ether': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

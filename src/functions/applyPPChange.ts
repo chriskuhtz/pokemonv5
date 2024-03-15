@@ -28,6 +28,5 @@ export const applyPPChange = (
 		),
 	};
 
-	console.log(moveIndex, newUsedPP);
 	return { ...pokemon, usedPowerPoints: newUsedPP };
 };

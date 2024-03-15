@@ -6,7 +6,7 @@ import { useHydratedInventory } from '../../../hooks/useHydratedInventory';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { Inventory, generateInventory } from '../../../interfaces/Inventory';
-import { ItemName } from '../../../interfaces/Item';
+import { ItemType } from '../../../interfaces/Item';
 import { ItemData } from '../../../interfaces/ItemData';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -25,7 +25,7 @@ export const useMarketScreen = () => {
 		setCart((cart) => joinInventories(cart, { [x.name]: 1 }));
 	}, []);
 
-	const removeFromCart = useCallback((x: ItemName) => {
+	const removeFromCart = useCallback((x: ItemType) => {
 		setCart((cart) => joinInventories(cart, { [x]: -1 }));
 	}, []);
 
