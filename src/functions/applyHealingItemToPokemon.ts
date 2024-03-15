@@ -9,7 +9,7 @@ export const applyHealingItemToPokemon = (
 	let copy = { ...pokemon };
 
 	//HP HEALING
-	if (itemName === 'potion') {
+	if (itemName === 'potion' || itemName === 'berry-juice') {
 		copy.damage = Math.max(0, copy.damage - 20);
 	}
 	if (

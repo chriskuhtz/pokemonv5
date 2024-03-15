@@ -1,6 +1,6 @@
 import { Ability } from '../constants/abilityCheckList';
 import { PrimaryAilment } from './Ailment';
-import { PokeballType } from './Item';
+import { ItemType, PokeballType } from './Item';
 
 export interface OwnedPokemon {
 	dexId: number;
@@ -16,6 +16,7 @@ export interface OwnedPokemon {
 	shiny?: boolean;
 	friendship: number;
 	usedPowerPoints: UsedPowerPoints;
+	heldItemName?: ItemType;
 }
 
 export interface UsedPowerPoints {

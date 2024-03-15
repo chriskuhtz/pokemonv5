@@ -23,6 +23,7 @@ export const canBenefitFromItem = (
 			'moomoo-milk',
 			'energy-powder',
 			'energy-root',
+			'berry-juice',
 		].includes(itemName) &&
 		damage &&
 		damage < pokemon.stats.hp
