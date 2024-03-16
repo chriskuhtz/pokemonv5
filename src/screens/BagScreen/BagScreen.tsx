@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Headline } from '../../components/Headline/Headline';
 import { useHydratedInventory } from '../../hooks/useHydratedInventory';
 import { useSaveGame } from '../../hooks/useSaveGame';
@@ -78,22 +78,27 @@ export const BagScreen = (): JSX.Element => {
 			(status === 'success' && hydratedInventory?.length === 0) ? (
 				<Pill center={'You dont have any items in your inventory'} />
 			) : (
-				hydratedInventory?.map((item) => (
-					<Pill
-						withHoverEffect
-						leftSide={
-							<img
-								height={40}
-								width={40}
-								src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${item.name}.png`}
-							/>
-						}
-						key={item.name}
-						center={item.name}
-						rightSide={inventory[item.name]}
-						onClick={() => handleItemClick(item)}
-					/>
-				))
+				hydratedInventory?.map((item) => {
+					if (!inventory[item.name]) {
+						return <React.Fragment />;
+					}
+					return (
+						<Pill
+							withHoverEffect
+							leftSide={
+								<img
+									height={40}
+									width={40}
+									src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${item.name}.png`}
+								/>
+							}
+							key={item.name}
+							center={item.name}
+							rightSide={inventory[item.name]}
+							onClick={() => handleItemClick(item)}
+						/>
+					);
+				})
 			)}
 		</div>
 	);
