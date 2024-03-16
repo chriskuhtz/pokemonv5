@@ -1,6 +1,5 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { HealingItemType } from '../interfaces/Item';
-import { applyBitterItemToPokemon, isBitterItem } from './applyBitterItem';
 
 export const applyHealingItemToPokemon = (
 	pokemon: BattlePokemon,
@@ -76,10 +75,6 @@ export const applyHealingItemToPokemon = (
 	}
 	if (itemName === 'ice-heal' && copy.primaryAilment?.type === 'freeze') {
 		copy.primaryAilment = undefined;
-	}
-	//FRIENDSHIP EFFECTS
-	if (isBitterItem(itemName)) {
-		copy = applyBitterItemToPokemon(copy, itemName);
 	}
 
 	return copy;

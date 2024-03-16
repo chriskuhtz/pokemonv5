@@ -130,3 +130,14 @@ export function isItem(x: string | undefined): x is ItemType {
 export function isHoldable(x: string | undefined): boolean {
 	return ['berry-juice'].includes(x ?? '');
 }
+
+export const hasFriendshipEffect = (itemName: ItemType) => {
+	return [
+		'heal-powder',
+		'energy-powder',
+		'revival-herb',
+		'energy-root',
+		...evBoostItemTypes,
+		'rare-candy',
+	].includes(itemName);
+};

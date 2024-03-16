@@ -1,14 +1,18 @@
-import console from 'console';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import {
 	ItemType,
+	hasFriendshipEffect,
 	isHealingItem,
+	isPPBoostItem,
 	isPPRestorationItem,
 	isXItem,
 } from '../interfaces/Item';
+import { applyFriendshipAffectingItem } from './applyFriendShipAffectingItem';
 import { applyHealingItemToPokemon } from './applyHealingItemToPokemon';
+import { applyPPBoostItem } from './applyPPBoostItem';
 import { applyPPItem } from './applyPPItem';
 import { applyXItem } from './applyXItem';
+import { calculateLevelData } from './calculateLevelData';
 /**
  *
  * @param pokemon the initial Pokemon
@@ -21,15 +25,28 @@ export const applyItem = (
 	itemName: ItemType,
 	moveName?: string
 ) => {
+	let copy = { ...pokemon };
 	if (isHealingItem(itemName)) {
-		return applyHealingItemToPokemon(pokemon, itemName);
+		copy = applyHealingItemToPokemon(pokemon, itemName);
 	}
 	if (isPPRestorationItem(itemName)) {
-		return applyPPItem(pokemon, itemName, moveName);
+		copy = applyPPItem(pokemon, itemName, moveName);
 	}
 	if (isXItem(itemName)) {
-		return applyXItem(pokemon, itemName);
+		copy = applyXItem(pokemon, itemName);
 	}
-	console.error('cant handle item', itemName, pokemon, moveName);
-	return pokemon;
+
+	if (isPPBoostItem(itemName) && moveName) {
+		copy = applyPPBoostItem(pokemon, itemName, moveName);
+	}
+	if (itemName === 'rare-candy') {
+		const { xpAtNextLevel } = calculateLevelData(pokemon.xp);
+		copy = { ...pokemon, xp: xpAtNextLevel };
+	}
+
+	//FRIENDSHIP EFFECTS
+	if (hasFriendshipEffect(itemName)) {
+		copy = applyFriendshipAffectingItem(copy, itemName);
+	}
+	return copy;
 };

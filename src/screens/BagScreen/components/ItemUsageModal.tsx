@@ -1,23 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
-import { applyEVBoostItem } from '../../../functions/applyEVBoostItem';
-import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
-import { applyPPBoostItem } from '../../../functions/applyPPBoostItem';
-import { applyPPItem } from '../../../functions/applyPPItem';
+import { applyItem } from '../../../functions/applyItem';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 import { useFetch } from '../../../hooks/useFetch';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
-import {
-	EvBoostItemType,
-	HealingItemType,
-	PPRestoringItemType,
-	isEvBoostItem,
-	isHealingItem,
-	isPPBoostItem,
-	isPPRestorationItem,
-} from '../../../interfaces/Item';
+import { ItemType, isPPBoostItem } from '../../../interfaces/Item';
 import { ItemData } from '../../../interfaces/ItemData';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { SaveFile } from '../../../interfaces/SaveFile';
@@ -68,30 +57,12 @@ export const ItemUsageModal = ({
 			let pokemonUpdates: OwnedPokemon[] | undefined = [];
 			dispatch(addNotification(`${pokemon.name} was given the ${item.name}`));
 
-			if (isHealingItem(item.name)) {
-				pokemonUpdates = team.map((p) => {
-					if (p.id === pokemon.id) {
-						return applyHealingItemToPokemon(
-							pokemon,
-							item.name as HealingItemType
-						);
-					} else return p;
-				});
-			}
-			if (isPPRestorationItem(item.name)) {
-				pokemonUpdates = team.map((p) => {
-					if (p.id === pokemon.id) {
-						return applyPPItem(pokemon, item.name as PPRestoringItemType);
-					} else return p;
-				});
-			}
-			if (isEvBoostItem(item.name)) {
-				pokemonUpdates = team.map((p) => {
-					if (p.id === pokemon.id) {
-						return applyEVBoostItem(pokemon, item.name as EvBoostItemType);
-					} else return p;
-				});
-			}
+			pokemonUpdates = team.map((p) => {
+				if (p.id === pokemon.id) {
+					return applyItem(pokemon, item.name as ItemType, moveName);
+				} else return p;
+			});
+
 			if (item.name === 'rare-candy') {
 				const { xpAtNextLevel, level } = calculateLevelData(pokemon.xp);
 				pokemonUpdates = team.map((p) => {
@@ -100,13 +71,6 @@ export const ItemUsageModal = ({
 							addNotification(`${pokemon.name} reached level ${level + 1}`)
 						);
 						return { ...pokemon, xp: xpAtNextLevel };
-					} else return p;
-				});
-			}
-			if (isPPBoostItem(item.name) && moveName) {
-				pokemonUpdates = team.map((p) => {
-					if (p.id === pokemon.id && isPPBoostItem(item.name)) {
-						return applyPPBoostItem(pokemon, item.name, moveName);
 					} else return p;
 				});
 			}
