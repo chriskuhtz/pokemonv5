@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-	UniqueOccupantIds,
+	UniqueOccupantId,
 	UniqueOccupantRecord,
 } from '../../../constants/UniqueOccupantRecord';
 import { trimToOwnedPokemon } from '../../../functions/trimToOwnedPokemon';
@@ -25,7 +25,7 @@ export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	environment: BattleEnvironment,
-	trainerId?: UniqueOccupantIds
+	trainerId?: UniqueOccupantId
 ) => {
 	const saveFile = useGetCurrentSaveFile();
 	const navigate = useNavigate();

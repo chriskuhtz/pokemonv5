@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
+import { UniqueOccupantId } from '../../../constants/UniqueOccupantRecord';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { Decorator } from '../../../screens/OverworldScreen/interfaces/Decorator';
 import { Occupant } from '../../../screens/OverworldScreen/interfaces/Occupants/Occupant';
@@ -15,7 +15,7 @@ export const getTrainerDecorators = (
 	const res: Decorator[] = [];
 
 	occupants.forEach((o) => {
-		const occupantId = o.id as UniqueOccupantIds;
+		const occupantId = o.id as UniqueOccupantId;
 		const handled = handledOccupants?.[occupantId];
 		if (o.type !== 'TRAINER' || handled) {
 			return;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
+import { UniqueOccupantId } from '../../../constants/UniqueOccupantRecord';
 import { assignPriority } from '../../../functions/assignPriority';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
@@ -19,7 +19,7 @@ import { useLeaveBattle } from './useLeaveBattle';
 
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
-	trainerId?: UniqueOccupantIds;
+	trainerId?: UniqueOccupantId;
 	activePokemonPerSide: number;
 	outside: MapEnvironment;
 }

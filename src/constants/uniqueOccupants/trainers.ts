@@ -113,7 +113,7 @@ export const brocksMinion2: Trainer = {
 };
 //BERRY_PATCH
 export const bugcatcherBarry: Trainer = {
-	id: 'bugcatcher-barry',
+	id: 'bugCatcher-barry',
 	type: 'TRAINER',
 	position: {
 		y: 4,
@@ -130,7 +130,7 @@ export const bugcatcherBarry: Trainer = {
 	viewRange: 1,
 };
 export const bugcatcherCisco: Trainer = {
-	id: 'bugcatcher-cisco',
+	id: 'bugCatcher-cisco',
 	type: 'TRAINER',
 	position: {
 		y: 7,
@@ -151,7 +151,7 @@ export const bugcatcherCisco: Trainer = {
 	viewRange: 1,
 };
 export const bugcatcherRalph: Trainer = {
-	id: 'bugcatcher-ralph',
+	id: 'bugCatcher-ralph',
 	type: 'TRAINER',
 	position: {
 		y: 2,
@@ -171,7 +171,7 @@ export const bugcatcherRalph: Trainer = {
 	viewRange: 3,
 };
 export const bugcatcherNash: Trainer = {
-	id: 'bugcatcher-nash',
+	id: 'bugCatcher-nash',
 	type: 'TRAINER',
 	position: {
 		y: 9,

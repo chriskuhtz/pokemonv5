@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
+import { UniqueOccupantId } from '../constants/UniqueOccupantRecord';
 import { addEntriesToDex } from '../functions/addEntriesToDex';
 import { joinInventories } from '../functions/joinInventories';
 import { DexEntry } from '../interfaces/DexEntry';
@@ -22,7 +22,7 @@ export type SaveGamePayload = {
 	pokemonUpdates?: OwnedPokemon[];
 	visitedNurse?: boolean;
 	dexUpdates?: DexEntry[];
-	handledOccupants?: Partial<Record<UniqueOccupantIds, boolean>>;
+	handledOccupants?: Partial<Record<UniqueOccupantId, boolean>>;
 	fundsUpdate?: number;
 	newBadge?: GymBadge;
 	teleportToLastHealer?: boolean;
@@ -56,20 +56,7 @@ export const useSaveGame = (): SaveGameFunction => {
 			fundsUpdate,
 			newBadge,
 			teleportToLastHealer,
-		}: {
-			currentPosition?: CharacterPosition;
-			inventoryChanges?: Partial<Inventory>;
-			portalEvent?: PortalEvent;
-			questUpdates?: Partial<SaveFile['quests']>;
-			pokemonUpdates?: OwnedPokemon[];
-			visitedNurse?: boolean;
-			dexUpdates?: DexEntry[];
-			handledOccupants?: Partial<Record<UniqueOccupantIds, boolean>>;
-			fundsUpdate?: number;
-			newBadge?: GymBadge;
-			teleportToLastHealer?: boolean;
-			subtractInventory?: boolean;
-		}) => {
+		}: SaveGamePayload) => {
 			if (!data) {
 				console.error('cant save if no current saveFile');
 				return;

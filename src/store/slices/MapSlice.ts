@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
+import { UniqueOccupantId } from '../../constants/UniqueOccupantRecord';
 import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
 import { flamingDesert } from '../../constants/maps/flamingDesert';
@@ -51,7 +51,7 @@ export interface MapState {
 	height: number;
 	width: number;
 	baseTile: BaseTile;
-	interactives: Partial<Record<UniqueOccupantIds, Occupant>>;
+	interactives: Partial<Record<UniqueOccupantId, Occupant>>;
 	obstacles: (Obstacle | LargeObstacle)[];
 	decorators: Decorator[];
 	mapId: string;
@@ -87,18 +87,17 @@ export const mapSlice = createSlice({
 			state,
 			action: PayloadAction<{
 				playerOrientation: OrientationEnum;
-				occupantId: string;
+				occupantId: UniqueOccupantId;
 			}>
 		) => {
-			const occupant =
-				state.interactives[action.payload.occupantId as UniqueOccupantIds];
+			const occupant = state.interactives[action.payload.occupantId];
 			if (!occupant) {
 				return;
 			}
+
 			const newDirection = getOppositeDirection(
 				action.payload.playerOrientation
 			);
-
 			if (occupant.position.orientation === newDirection) {
 				return;
 			}
@@ -110,8 +109,7 @@ export const mapSlice = createSlice({
 				},
 			};
 
-			state.interactives[action.payload.occupantId as UniqueOccupantIds] =
-				updatedOccupant;
+			state.interactives[action.payload.occupantId] = updatedOccupant;
 		},
 	},
 });

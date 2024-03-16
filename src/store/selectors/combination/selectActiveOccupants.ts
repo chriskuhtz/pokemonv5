@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
+import { UniqueOccupantId } from '../../../constants/UniqueOccupantRecord';
 import { checkQuestCondition } from '../../../functions/checkQuestCondition';
 import { getBlockersForLargeOccupants } from '../../../functions/getBlockersForLargeObstacles';
 import { selectObstacles } from '../map/selectObstacles';
@@ -15,7 +15,7 @@ export const selectActiveOccupants = createSelector(
 		}
 
 		const activeOccupants = Object.values(occupants).filter((entry) => {
-			const occupantId = entry.id as UniqueOccupantIds;
+			const occupantId = entry.id as UniqueOccupantId;
 			const handled = handledOccupants[occupantId];
 			if (entry.type === 'ITEM' && handled) {
 				return false;

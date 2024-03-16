@@ -9,7 +9,6 @@ import { RoutesEnum } from '../../router/router';
 import { turnNpcTowardsPlayer } from '../../store/slices/MapSlice';
 
 import { TbCircleLetterA } from 'react-icons/tb';
-import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { useHandleTrainerChallenge } from '../../hooks/useHandleTrainerChallenge';
 import { useOverworldEvent } from '../../hooks/useOverworldEvent';
 import { selectFocusedOccupant } from '../../store/selectors/combination/selectFocusedOccupant';
@@ -84,9 +83,7 @@ export const InteractionButton = () => {
 					playerOrientation: playerOrientation ?? 0,
 				})
 			);
-			const handled = handledOccupants
-				? handledOccupants[occupant.id as UniqueOccupantIds]
-				: false;
+			const handled = handledOccupants ? handledOccupants[occupant.id] : false;
 			const correctDialogue =
 				occupant.type === 'TRAINER' && handled
 					? occupant.dialogueAfterDefeat
@@ -100,7 +97,7 @@ export const InteractionButton = () => {
 				}
 				if (focusedOccupant.type === 'TRAINER') {
 					const handled = handledOccupants
-						? handledOccupants[focusedOccupant.id as UniqueOccupantIds]
+						? handledOccupants[focusedOccupant.id]
 						: false;
 					if (!handled) {
 						handleTrainerChallenge(focusedOccupant);

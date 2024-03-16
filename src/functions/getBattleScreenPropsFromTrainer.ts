@@ -1,4 +1,3 @@
-import { UniqueOccupantIds } from '../constants/UniqueOccupantRecord';
 import { BattleScreenProps } from '../screens/BattleScreen/hooks/useBattleScreen';
 import { Trainer } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { MapEnvironment } from '../store/slices/MapSlice';
@@ -9,7 +8,7 @@ export const getBattleScreenPropsFromTrainer = (
 ): BattleScreenProps => {
 	return {
 		opponents: trainer.team,
-		trainerId: trainer.id as UniqueOccupantIds,
+		trainerId: trainer.id,
 		activePokemonPerSide: trainer.activePokemonPerside,
 		outside: environment,
 	};

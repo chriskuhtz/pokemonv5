@@ -1,5 +1,5 @@
 import {
-	UniqueOccupantIds,
+	UniqueOccupantId,
 	UniqueOccupantRecord,
 } from '../constants/UniqueOccupantRecord';
 import { berryPatchEncounters } from '../constants/maps/berryPatch';
@@ -21,7 +21,7 @@ export interface NotRegisteredPokemonCondition {
 }
 export interface HandledOccupantCondition {
 	type: 'HANDLED_OCCUPANTS';
-	ids: UniqueOccupantIds[];
+	ids: UniqueOccupantId[];
 	conditionFailMessage?: string;
 }
 
@@ -158,7 +158,7 @@ export const DefeatAllTrainersQuest: Quest = {
 		type: 'HANDLED_OCCUPANTS',
 		ids: Object.values(UniqueOccupantRecord)
 			.filter((occupant) => occupant.type === 'TRAINER')
-			.map((o) => o.id) as UniqueOccupantIds[],
+			.map((o) => o.id) as UniqueOccupantId[],
 	},
 };
 

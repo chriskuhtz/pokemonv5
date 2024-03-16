@@ -34,42 +34,44 @@ import {
 	youngsterJimmy,
 } from './uniqueOccupants/trainers';
 
+export const uniqueOccupantIds = [
+	'oak-before-selection',
+	'oak-during-selection',
+	'oak-after-selection',
+	'starter-town-nurse-quest',
+	'starter-town-merchant',
+	'starter-town-nurse',
+	'ballMachine',
+	'starter-town-item-1',
+	'starter-town-item-2',
+	'youngster-jimmy',
+	'brock',
+	'brocks-minion',
+	'brocks-minion2',
+	'youngster-jimmy-blocker',
+	'oaks-assistant',
+	'oaks-assistant2',
+	'pikachu-fan',
+	'bugCatcher-barry',
+	'bugCatcher-nash',
+	'bugCatcher-ralph',
+	'bugCatcher-cisco',
+	'berry-patch-item-1',
+	'ace-trainer-melanie',
+	'hiker-bennet',
+	'farmer-pike',
+	'cowgirl-alex',
+	'pyromaniac-javi',
+	'flaming-desert-merchant',
+	'flaming-desert-item-1',
+	'flaming-desert-item-2',
+	'flaming-desert-item-3',
+	'flaming-desert-item-4',
+] as const;
 //every occupant that can be handled should be unique
-export type UniqueOccupantIds =
-	| 'oak-before-selection'
-	| 'oak-during-selection'
-	| 'oak-after-selection'
-	| 'starter-town-nurse-quest'
-	| 'starter-town-merchant'
-	| 'starter-town-nurse'
-	| 'ballMachine'
-	| 'starter-town-item-1'
-	| 'starter-town-item-2'
-	| 'youngster-jimmy'
-	| 'brock'
-	| 'brocks-minion'
-	| 'brocks-minion2'
-	| 'youngster-jimmy-blocker'
-	| 'oaks-assistant'
-	| 'oaks-assistant2'
-	| 'pikachu-fan'
-	| 'bugCatcher-barry'
-	| 'bugCatcher-nash'
-	| 'bugCatcher-ralph'
-	| 'bugCatcher-cisco'
-	| 'berry-patch-item-1'
-	| 'ace-trainer-melanie'
-	| 'hiker-bennet'
-	| 'farmer-pike'
-	| 'cowgirl-alex'
-	| 'pyromaniac-javi'
-	| 'flaming-desert-merchant'
-	| 'flaming-desert-item-1'
-	| 'flaming-desert-item-2'
-	| 'flaming-desert-item-3'
-	| 'flaming-desert-item-4';
+export type UniqueOccupantId = (typeof uniqueOccupantIds)[number];
 
-export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
+export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 	'youngster-jimmy': youngsterJimmy,
 	'youngster-jimmy-blocker': youngsterJimmyBlocker,
 	brock,

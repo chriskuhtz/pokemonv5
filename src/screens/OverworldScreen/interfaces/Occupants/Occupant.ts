@@ -1,3 +1,4 @@
+import { UniqueOccupantId } from '../../../../constants/UniqueOccupantRecord';
 import { Inventory } from '../../../../interfaces/Inventory';
 import { QuestIdAndStatus } from '../../../../interfaces/QuestIdAndStatus';
 import { GymBadge, SaveFile } from '../../../../interfaces/SaveFile';
@@ -30,12 +31,14 @@ export interface BaseOccupant {
 
 export interface Npc extends BaseOccupant {
 	dialogue: string[];
+	id: UniqueOccupantId;
 	sprite: string;
 	movement?: Movement;
 	type: 'NPC';
 }
 export interface Trainer extends BaseOccupant {
 	dialogue: string[];
+	id: UniqueOccupantId;
 	dialogueAfterDefeat: string[];
 	sprite: string;
 	movement?: Movement;
@@ -49,17 +52,20 @@ export interface Trainer extends BaseOccupant {
 }
 export interface Merchant extends BaseOccupant {
 	type: 'MERCHANT';
+	id: UniqueOccupantId;
 	dialogue: string[];
 	sprite: string;
 	inventory: Partial<Inventory>;
 }
 export interface Healer extends BaseOccupant {
 	type: 'HEALER';
+	id: UniqueOccupantId;
 	sprite: string;
 	dialogue: string[];
 }
 export interface OverworldItem extends BaseOccupant {
 	inventory: Inventory;
+	id: UniqueOccupantId;
 	type: 'ITEM';
 }
 export interface QuestCheck extends BaseOccupant {
