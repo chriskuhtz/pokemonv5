@@ -86,3 +86,12 @@ export const flamingDesertToStarterTown: Decorator = {
 		to: { mapId: 'starter-town', x: 1, y: 25, orientation: 3 },
 	},
 };
+export const flamingDesertToStarterTown2: Decorator = {
+	sprite: '',
+	x: 0,
+	y: 6,
+	onStep: {
+		type: 'PORTAL',
+		to: { mapId: 'starter-town', x: 1, y: 25, orientation: 3 },
+	},
+};

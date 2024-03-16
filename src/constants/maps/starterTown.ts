@@ -362,8 +362,9 @@ export const starterTown: MapState = {
 		},
 		{
 			type: 'OBSTACLE',
-			id: 'rock',
-			sprite: 'rock',
+			id: 'berryPatchSign',
+			sprite: 'smallSign',
+			dialogue: ['Flaming Desert v'],
 			position: {
 				x: 0,
 				y: 24,

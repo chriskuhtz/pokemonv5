@@ -1,5 +1,8 @@
 import { Occupant } from '../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { starterTownMerchant } from './uniqueOccupants/merchants';
+import {
+	flamingDesertMerchant,
+	starterTownMerchant,
+} from './uniqueOccupants/merchants';
 import {
 	oaksAssistant,
 	oaksAssistant2,
@@ -8,10 +11,15 @@ import {
 } from './uniqueOccupants/npcs';
 import {
 	berryPatchItem1,
+	flamingDesertItem1,
+	flamingDesertItem2,
+	flamingDesertItem3,
+	flamingDesertItem4,
 	starterTownItem1,
 	starterTownItem2,
 } from './uniqueOccupants/overworldItems';
 import {
+	aceTrainerMelanie,
 	brock,
 	brocksMinion,
 	brocksMinion2,
@@ -19,6 +27,10 @@ import {
 	bugcatcherCisco,
 	bugcatcherNash,
 	bugcatcherRalph,
+	cowgirlAlex,
+	farmerPike,
+	hikerBennet,
+	pyromaniacJavi,
 	youngsterJimmy,
 } from './uniqueOccupants/trainers';
 
@@ -45,7 +57,17 @@ export type UniqueOccupantIds =
 	| 'bugCatcher-nash'
 	| 'bugCatcher-ralph'
 	| 'bugCatcher-cisco'
-	| 'berry-patch-item-1';
+	| 'berry-patch-item-1'
+	| 'ace-trainer-melanie'
+	| 'hiker-bennet'
+	| 'farmer-pike'
+	| 'cowgirl-alex'
+	| 'pyromaniac-javi'
+	| 'flaming-desert-merchant'
+	| 'flaming-desert-item-1'
+	| 'flaming-desert-item-2'
+	| 'flaming-desert-item-3'
+	| 'flaming-desert-item-4';
 
 export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'youngster-jimmy': youngsterJimmy,
@@ -186,4 +208,14 @@ export const UniqueOccupantRecord: Record<UniqueOccupantIds, Occupant> = {
 	'bugCatcher-nash': bugcatcherNash,
 	'bugCatcher-ralph': bugcatcherRalph,
 	'berry-patch-item-1': berryPatchItem1,
+	'pyromaniac-javi': pyromaniacJavi,
+	'ace-trainer-melanie': aceTrainerMelanie,
+	'cowgirl-alex': cowgirlAlex,
+	'farmer-pike': farmerPike,
+	'hiker-bennet': hikerBennet,
+	'flaming-desert-merchant': flamingDesertMerchant,
+	'flaming-desert-item-1': flamingDesertItem1,
+	'flaming-desert-item-2': flamingDesertItem2,
+	'flaming-desert-item-3': flamingDesertItem3,
+	'flaming-desert-item-4': flamingDesertItem4,
 };

@@ -49,7 +49,10 @@ export const oaksAssistant2: Npc = {
 		'You should learn more about the local Pokemon before continuing further',
 	],
 	sprite: SpriteEnum.scientistMale,
-	questCondition: { id: 'catchAllStarterTown', status: 'active' },
+	questCondition: {
+		id: 'catchAllStarterTown',
+		status: 'completed', //RESET THIS TO ACTIVE AFTER TESTING 'active'
+	},
 };
 
 export const pikachuFan: Npc = {
