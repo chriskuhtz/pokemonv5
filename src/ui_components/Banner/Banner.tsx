@@ -13,15 +13,7 @@ export const Banner = ({
 }): JSX.Element => {
 	return (
 		<div className={`banner ${bottom ? 'bottom' : ''}`} onClick={onClick}>
-			<Slanted
-				style={{
-					backgroundColor: 'var(--main-bg-90)',
-					width: '85%',
-					padding: '1.5rem 2rem',
-					fontSize: 'x-large',
-				}}
-				content={content}
-			/>
+			<Slanted className={'bannerContentWrapper'} content={content} />
 		</div>
 	);
 };

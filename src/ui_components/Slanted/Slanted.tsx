@@ -6,16 +6,18 @@ export const Slanted = ({
 	onClick,
 	style,
 	disabled,
+	className,
 }: {
 	content: ReactNode;
 	onClick?: () => void;
 	style?: CSSProperties;
 	disabled?: boolean;
+	className?: string;
 }) => {
 	return (
 		<div
 			style={style}
-			className={`slanted ${disabled ? 'disabled' : ''}`}
+			className={`slanted ${className} ${disabled ? 'disabled' : ''}`}
 			onClick={disabled ? () => {} : onClick}
 		>
 			{content}
