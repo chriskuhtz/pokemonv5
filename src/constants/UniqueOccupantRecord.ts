@@ -199,7 +199,18 @@ export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 				id: 'pickStarter',
 				status: 'active',
 			},
-			conditionFailMessage: ['You should speak to the Professor first.'],
+			conditionalMessages: [
+				{
+					id: 'pickStarter',
+					status: 'inactive',
+					message: ['You should speak to the Professor first.'],
+				},
+				{
+					id: 'pickStarter',
+					status: 'completed',
+					message: ['You can only pick one Pokemon.'],
+				},
+			],
 		},
 	},
 	'oaks-assistant': oaksAssistant,

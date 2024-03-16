@@ -51,7 +51,7 @@ export const oaksAssistant2: Npc = {
 	sprite: SpriteEnum.scientistMale,
 	questCondition: {
 		id: 'catchAllStarterTown',
-		status: 'completed', //RESET THIS TO ACTIVE AFTER TESTING 'active'
+		status: 'active',
 	},
 };
 
