@@ -70,7 +70,7 @@ export const TeamGrid = ({
 							}}
 						>
 							<CircularSprite
-								noAnimation={focused?.id !== p.id}
+								noAnimation={focused?.id !== p.id || noFocus}
 								pokemon={p}
 								overlay={focused?.id === p.id && !noFocus && <div />}
 							/>

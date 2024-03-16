@@ -5,7 +5,7 @@ import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { Inventory } from '../../../interfaces/Inventory';
 import {
 	HealingItemType,
-	PPItemType,
+	PPRestoringItemType,
 	isHealingItem,
 	isPPRestorationItem,
 } from '../../../interfaces/Item';
@@ -20,7 +20,7 @@ export const ChooseItem = ({
 	availableTargets,
 }: {
 	open: boolean;
-	setItem: (x: HealingItemType | PPItemType | undefined) => void;
+	setItem: (x: HealingItemType | PPRestoringItemType | undefined) => void;
 	inventory: Inventory;
 	resetActor: () => void;
 	availableTargets: BattlePokemon[];

@@ -1,5 +1,5 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import { PPItemType } from '../interfaces/Item';
+import { PPRestoringItemType } from '../interfaces/Item';
 import { applyPPChange } from './applyPPChange';
 /**
  *
@@ -10,7 +10,7 @@ import { applyPPChange } from './applyPPChange';
  */
 export const applyPPItem = (
 	pokemon: BattlePokemon,
-	itemName: PPItemType,
+	itemName: PPRestoringItemType,
 	moveName?: string
 ): BattlePokemon => {
 	let updated = { ...pokemon };

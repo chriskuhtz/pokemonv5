@@ -1,6 +1,6 @@
 import { UsedPowerPoints } from '../interfaces/OwnedPokemon';
 
-export const getPPByIndex = (
+export const getUsedPPByIndex = (
 	usedPP: UsedPowerPoints,
 	index: number
 ): number => {

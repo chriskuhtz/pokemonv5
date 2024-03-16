@@ -19,8 +19,12 @@ export interface OwnedPokemon {
 	usedPowerPoints: UsedPowerPoints;
 	heldItemName?: ItemType;
 	effortValues: StatObject;
+	ppBoostedMoves: PPBoostedMove[];
 }
-
+export interface PPBoostedMove {
+	name: string;
+	boost: number;
+}
 export interface UsedPowerPoints {
 	firstMove: number;
 	secondMove: number;

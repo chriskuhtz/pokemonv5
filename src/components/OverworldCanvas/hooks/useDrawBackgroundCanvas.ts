@@ -345,6 +345,5 @@ export const useDrawBackGroundCanvas = () => {
 			drawRandom6Background(height, width, baseTile);
 		}
 		setLastDrawnMapId(mapId);
-		console.error('what is this basetile');
 	}, [baseTile, height, lastDrawnMapId, mapId, width]);
 };

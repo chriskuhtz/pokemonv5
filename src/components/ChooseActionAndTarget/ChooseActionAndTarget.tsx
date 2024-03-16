@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
-import { getPPByIndex } from '../../functions/getPPByIndex';
+import { getUsedPPByIndex } from '../../functions/getPPByIndex';
 import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
 import { Inventory } from '../../interfaces/Inventory';
 import {
 	HealingItemType,
-	PPItemType,
+	PPRestoringItemType,
 	PokeballType,
 } from '../../interfaces/Item';
 import { MoveDto } from '../../interfaces/Move';
@@ -36,7 +36,9 @@ export const ChooseActionAndTarget = ({
 	>();
 	const [move, setMove] = useState<MoveDto | undefined>();
 	const [ball, setBall] = useState<PokeballType | undefined>();
-	const [item, setItem] = useState<HealingItemType | PPItemType | undefined>();
+	const [item, setItem] = useState<
+		HealingItemType | PPRestoringItemType | undefined
+	>();
 	const [pokemonIdToPPRestore, setPokemonIdToPPRestore] = useState<
 		string | undefined
 	>();
@@ -136,6 +138,7 @@ export const ChooseActionAndTarget = ({
 				setMove={setMove}
 				usedPP={actor.usedPowerPoints}
 				resetActor={reset}
+				boostedMoves={actor.ppBoostedMoves}
 				availableMoves={actor.moves.map((m) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
@@ -198,10 +201,12 @@ export const ChooseActionAndTarget = ({
 				setMove={(x) => setMoveToPPRestore(x?.name)}
 				usedPP={ppRestorationTarget.usedPowerPoints}
 				resetActor={reset}
+				boostedMoves={actor.ppBoostedMoves}
 				availableMoves={ppRestorationTarget.moves.map((m, i) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
-					disabled: getPPByIndex(ppRestorationTarget.usedPowerPoints, i) === 0,
+					disabled:
+						getUsedPPByIndex(ppRestorationTarget.usedPowerPoints, i) === 0,
 					move: m,
 					availableTargets: [],
 				}))}

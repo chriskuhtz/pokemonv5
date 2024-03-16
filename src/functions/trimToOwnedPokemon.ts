@@ -18,5 +18,7 @@ export const trimToOwnedPokemon = (
 		shiny: battlemon.shiny,
 		friendship: battlemon.friendship,
 		usedPowerPoints: battlemon.usedPowerPoints,
+		ppBoostedMoves: battlemon.ppBoostedMoves,
+		effortValues: battlemon.effortValues,
 	};
 };

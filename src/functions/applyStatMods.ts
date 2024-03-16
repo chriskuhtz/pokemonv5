@@ -36,6 +36,7 @@ export const applyStatMods = (
 			const protectedByMist =
 				(pokemon.side === 'PLAYER' && environment?.playerSideMist) ||
 				(pokemon.side === 'OPPONENT' && environment?.opponentSideMist);
+			//@ts-expect-error hmmm
 			if (statChange.stat.name === 'accuracy') {
 				updatedPokemon.accuracyModifier += statChange.change;
 				dispatch(

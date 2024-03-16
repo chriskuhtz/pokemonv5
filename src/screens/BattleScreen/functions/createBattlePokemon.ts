@@ -116,6 +116,7 @@ export const useCreateBattlePokemonFromData = () => {
 				shiny: shinyChance(),
 				friendship: 70,
 				usedPowerPoints: EmptyUsedPP,
+				ppBoostedMoves: [],
 			};
 		},
 		[getFirstFourMoves]

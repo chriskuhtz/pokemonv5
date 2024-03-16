@@ -1,5 +1,13 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import { ItemType, isPPRestorationItem } from '../interfaces/Item';
+import {
+	EVBoostMap,
+	ItemType,
+	isEvBoostItem,
+	isPPBoostItem,
+	isPPRestorationItem,
+} from '../interfaces/Item';
+import { calculateLevelData } from './calculateLevelData';
+import { canRaiseStatEV } from './canRaiseStatEV';
 
 export const canBenefitFromItem = (
 	pokemon: BattlePokemon,
@@ -9,7 +17,7 @@ export const canBenefitFromItem = (
 		pokemon;
 	let canBenefit = false;
 
-	//Damaged
+	//DAMAGED
 	if (
 		[
 			'potion',
@@ -67,6 +75,22 @@ export const canBenefitFromItem = (
 		isPPRestorationItem(itemName) &&
 		Object.values(usedPowerPoints).some((v) => v > 0)
 	) {
+		return true;
+	}
+	//EV BOOST
+	if (
+		isEvBoostItem(itemName) &&
+		canRaiseStatEV(pokemon, 10, EVBoostMap[itemName])
+	) {
+		return true;
+	}
+	//RARE_CANDY
+	const { level } = calculateLevelData(pokemon.xp);
+	if (itemName === 'rare-candy' && level < 100) {
+		return true;
+	}
+	//PP BOOST
+	if (isPPBoostItem(itemName)) {
 		return true;
 	}
 

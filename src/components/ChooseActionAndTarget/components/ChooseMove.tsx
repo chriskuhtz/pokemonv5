@@ -1,8 +1,12 @@
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
-import { getPPByIndex } from '../../../functions/getPPByIndex';
+import { getMaxPP } from '../../../functions/getMaxPP';
+import { getUsedPPByIndex } from '../../../functions/getPPByIndex';
 import { MoveDto } from '../../../interfaces/Move';
-import { UsedPowerPoints } from '../../../interfaces/OwnedPokemon';
+import {
+	PPBoostedMove,
+	UsedPowerPoints,
+} from '../../../interfaces/OwnedPokemon';
 import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
@@ -14,12 +18,14 @@ export const ChooseMove = ({
 	availableMoves,
 	title,
 	resetActor,
+	boostedMoves,
 	usedPP,
 }: {
 	usedPP: UsedPowerPoints;
 	open: boolean;
 	setMove: (x: MoveDto | undefined) => void;
 	availableMoves: SelectableAction[];
+	boostedMoves: PPBoostedMove[];
 	title: string;
 	resetActor: () => void;
 }) => {
@@ -37,35 +43,34 @@ export const ChooseMove = ({
 								gap: '1rem',
 							}}
 						>
-							{availableMoves.map((a, i) => (
-								<Slanted
-									style={{
-										flexGrow: 1,
-										border: '1px solid',
-										backgroundColor: 'var(--main-bg-color)',
-										borderColor: typeColors[a.move?.type.name ?? 'normal'],
-									}}
-									key={a.move?.name}
-									disabled={
-										a.disabled ||
-										(a.move?.pp ?? 0) - getPPByIndex(usedPP, i) <= 0
-									}
-									onClick={() => {
-										setMove(a.move);
-									}}
-									content={
-										<div style={{ display: 'flex', gap: '0.5rem' }}>
-											<TypeIcon
-												size={'24px'}
-												type={a.move?.type.name ?? 'normal'}
-											/>
-											{a.displayName} (
-											{(a.move?.pp ?? 0) - getPPByIndex(usedPP, i)}/{a.move?.pp}
-											)
-										</div>
-									}
-								/>
-							))}
+							{availableMoves.map((a, i) => {
+								const maxPP = a.move ? getMaxPP(boostedMoves, a.move) : 0;
+								const currentPP = maxPP - getUsedPPByIndex(usedPP, i);
+								return (
+									<Slanted
+										style={{
+											flexGrow: 1,
+											border: '1px solid',
+											backgroundColor: 'var(--main-bg-color)',
+											borderColor: typeColors[a.move?.type.name ?? 'normal'],
+										}}
+										key={a.move?.name}
+										disabled={a.disabled || currentPP <= 0}
+										onClick={() => {
+											setMove(a.move);
+										}}
+										content={
+											<div style={{ display: 'flex', gap: '0.5rem' }}>
+												<TypeIcon
+													size={'24px'}
+													type={a.move?.type.name ?? 'normal'}
+												/>
+												{a.displayName} ({currentPP}/{maxPP})
+											</div>
+										}
+									/>
+								);
+							})}
 							<IoIosCloseCircle
 								style={{ height: '40px', width: '40px' }}
 								onClick={resetActor}

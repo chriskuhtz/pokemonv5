@@ -76,6 +76,7 @@ export const PokemonSelectionScreen = ({
 											usedPowerPoints: EmptyUsedPP,
 											heldItemName: 'berry-juice',
 											effortValues: EmptyStatObject,
+											ppBoostedMoves: [],
 										},
 									],
 									dexUpdates: choices.map((choice) => {

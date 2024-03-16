@@ -1,4 +1,4 @@
-import { HealingItemType, PPItemType, PokeballType } from './Item';
+import { HealingItemType, PPRestoringItemType, PokeballType } from './Item';
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
@@ -36,7 +36,7 @@ interface BattleAttackAction extends BaseBattleAction {
 }
 interface BattleItemAction extends BaseBattleAction {
 	type: 'HEALING_ITEM';
-	item: HealingItemType | PPItemType;
+	item: HealingItemType | PPRestoringItemType;
 	ppRestoreMove?: string;
 	target: string;
 }

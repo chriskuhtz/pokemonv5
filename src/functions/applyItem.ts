@@ -1,7 +1,7 @@
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import {
 	HealingItemType,
-	PPItemType,
+	PPRestoringItemType,
 	isHealingItem,
 	isPPRestorationItem,
 } from '../interfaces/Item';
@@ -10,7 +10,7 @@ import { applyPPItem } from './applyPPItem';
 
 export const applyItem = (
 	pokemon: BattlePokemon,
-	itemName: HealingItemType | PPItemType,
+	itemName: HealingItemType | PPRestoringItemType,
 	moveName?: string
 ) => {
 	if (isHealingItem(itemName)) {
