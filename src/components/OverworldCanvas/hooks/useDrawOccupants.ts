@@ -4,9 +4,11 @@ import { useSelector } from 'react-redux';
 import { isOccupantWithSprite } from '../../../functions/typeguards/occupantTypeGuards';
 import { selectOccupantsToDraw } from '../../../store/selectors/combination/selectOccupantsToDraw';
 
+import { UniqueOccupantId } from '../../../constants/UniqueOccupantRecord';
 import { selectFocusedOccupantId } from '../../../store/selectors/dialogue/selectFocusedOccupantId';
 import { selectDecorators } from '../../../store/selectors/map/selectDecorators';
 import { selectMap } from '../../../store/selectors/map/selectMap';
+import { selectHandledOccupants } from '../../../store/selectors/saveFile/selectHandledOccupants';
 import { occupantCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { drawLargeObject } from '../functions/drawLargeObject';
@@ -16,6 +18,7 @@ export const useDrawOccupants = () => {
 	const focusedOccupantId = useSelector(selectFocusedOccupantId);
 	const { height } = useSelector(selectMap);
 	const decorators = useSelector(selectDecorators);
+	const handledOccupants = useSelector(selectHandledOccupants);
 
 	const drawOccupants = useCallback(() => {
 		Array.from({ length: height }).forEach((_, i) => {
@@ -63,7 +66,15 @@ export const useDrawOccupants = () => {
 			if (!isOccupantWithSprite(o)) {
 				return;
 			}
-			if (o.id && o.id === focusedOccupantId && o.type === 'TRAINER') {
+			//TRAINER EXCLAMATION
+			if (
+				o.id &&
+				focusedOccupantId &&
+				o.id === focusedOccupantId &&
+				o.type === 'TRAINER' &&
+				handledOccupants &&
+				!handledOccupants[focusedOccupantId as UniqueOccupantId]
+			) {
 				const exclamation = new Image();
 				exclamation.onload = () => {
 					drawLargeObject({
@@ -77,6 +88,7 @@ export const useDrawOccupants = () => {
 				};
 				exclamation.src = `other/Exclamation.png`;
 			}
+			//ITEM
 			if (o.type === 'ITEM') {
 				img.onload = () => {
 					drawLargeObject({
@@ -89,7 +101,9 @@ export const useDrawOccupants = () => {
 					});
 				};
 				img.src = `mapObjects/pokeball.png`;
-			} else if (o.type === 'LARGE_OBSTACLE') {
+			}
+			//LARGE_OBSTACLE
+			else if (o.type === 'LARGE_OBSTACLE') {
 				img.onload = () => {
 					drawLargeObject({
 						context: ctx,
@@ -101,7 +115,9 @@ export const useDrawOccupants = () => {
 					});
 				};
 				img.src = `mapObjects/${o.sprite}.png`;
-			} else if (o.type === 'OBSTACLE') {
+			}
+			//OBSTACLE
+			else if (o.type === 'OBSTACLE') {
 				img.onload = () => {
 					drawLargeObject({
 						context: ctx,
@@ -113,7 +129,8 @@ export const useDrawOccupants = () => {
 					});
 				};
 				img.src = `mapObjects/${o.sprite}.png`;
-			} else {
+			} //OTHER
+			else {
 				img.onload = () => {
 					drawCharacter({
 						context: ctx,
