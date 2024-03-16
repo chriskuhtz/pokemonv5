@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Pill } from '../Pill/Pill';
+import { IoIosCloseCircle } from 'react-icons/io';
 import './modal.css';
 export const Modal = ({
 	open,
@@ -22,8 +22,13 @@ export const Modal = ({
 		<div className="modal">
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 				<div className="modalHeader">
-					{modalTitle && <div>{modalTitle}</div>}
-					{onCancel && <Pill onClick={onCancel} center={'X'} />}
+					{modalTitle && <h3>{modalTitle}</h3>}
+					{onCancel && (
+						<IoIosCloseCircle
+							style={{ height: '40px', width: '40px' }}
+							onClick={onCancel}
+						/>
+					)}
 				</div>
 
 				{modalContent}

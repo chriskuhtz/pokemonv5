@@ -1,5 +1,4 @@
 import React from 'react';
-import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
 import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
@@ -12,8 +11,8 @@ import {
 	isPPRestorationItem,
 	isXItem,
 } from '../../../interfaces/Item';
-import { Banner } from '../../../ui_components/Banner/Banner';
-import { Slanted } from '../../../ui_components/Slanted/Slanted';
+import { Modal } from '../../../ui_components/Modal/Modal';
+import { Pill } from '../../../ui_components/Pill/Pill';
 
 export const ChooseItem = ({
 	open,
@@ -32,60 +31,58 @@ export const ChooseItem = ({
 }) => {
 	if (open) {
 		return (
-			<Banner
-				content={
-					<div style={{ textAlign: 'left' }}>
-						<strong>{`which item:`}</strong>
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'stretch',
-								justifyContent: 'space-evenly',
-								gap: '1rem',
-							}}
-						>
-							{Object.entries(inventory).map(([key, amount]) => {
-								if (
-									amount === 0 ||
-									(!isHealingItem(key) &&
-										!isPPRestorationItem(key) &&
-										!isXItem(key))
-								) {
-									return <React.Fragment key={key}></React.Fragment>;
-								}
-								return (
-									<Slanted
-										style={{
-											flexGrow: 1,
-											border: '1px solid',
-											backgroundColor: 'var(--main-bg-color)',
-											borderColor: typeColors['normal'],
-										}}
-										disabled={availableTargets.every(
-											(t) => !canBenefitFromItem(t, key)
-										)}
-										key={key + amount}
-										onClick={() => {
-											setItem(key);
-										}}
-										content={
-											<div style={{ display: 'flex', gap: '0.5rem' }}>
-												<img
-													height={24}
-													width={24}
-													src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${key}.png`}
-												/>
-												{key} ({inventory[key]})
-											</div>
-										}
-									/>
-								);
-							})}
-							<IoIosCloseCircle
-								style={{ height: '40px', width: '40px' }}
-								onClick={resetActor}
-							/>
-						</div>
+			<Modal
+				open={true}
+				onCancel={resetActor}
+				modalTitle={`which item:`}
+				modalContent={
+					<div
+						style={{
+							display: 'grid',
+							gridTemplateColumns: '1fr 1fr 1fr',
+							gap: '.5rem',
+						}}
+					>
+						{Object.entries(inventory).map(([key, amount]) => {
+							if (
+								amount === 0 ||
+								(!isHealingItem(key) &&
+									!isPPRestorationItem(key) &&
+									!isXItem(key))
+							) {
+								return <React.Fragment key={key}></React.Fragment>;
+							}
+							return (
+								<Pill
+									style={{
+										flexGrow: 1,
+										border: '1px solid',
+										backgroundColor: 'var(--main-bg-color)',
+										borderColor: typeColors['normal'],
+										minWidth: '25%',
+									}}
+									disabled={availableTargets.every(
+										(t) => !canBenefitFromItem(t, key)
+									)}
+									key={key + amount}
+									onClick={() => {
+										setItem(key);
+									}}
+									rightSide={
+										<img
+											height={24}
+											width={24}
+											src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${key}.png`}
+										/>
+									}
+									center={
+										<div style={{ display: 'flex', gap: '0.5rem' }}>
+											{key} ({inventory[key]})
+										</div>
+									}
+								/>
+							);
+						})}
 					</div>
 				}
 			/>
