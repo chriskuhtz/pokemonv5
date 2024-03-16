@@ -4,6 +4,7 @@ import {
 	starterTownToBerryPatch,
 	starterTownToBrockLeft,
 	starterTownToBrockRight,
+	starterTownToFlamingDesert,
 	starterTownToOaksLab,
 } from './portals';
 export const starterTownEncounters: MapEncounter[] = [
@@ -34,6 +35,7 @@ export const starterTown: MapState = {
 		starterTownToBrockLeft,
 		starterTownToBrockRight,
 		starterTownToBerryPatch,
+		starterTownToFlamingDesert,
 		{ x: 0, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 9, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },

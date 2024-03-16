@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UniqueOccupantIds } from '../../constants/UniqueOccupantRecord';
 import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
+import { flamingDesert } from '../../constants/maps/flamingDesert';
 import { oaksLab } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
@@ -56,6 +57,7 @@ export interface MapState {
 	mapId: string;
 	encounters: MapEncounter[];
 	environment: MapEnvironment;
+	encounterOnEveryField?: boolean;
 }
 
 const mapsRecord: Record<string, MapState> = {
@@ -63,6 +65,7 @@ const mapsRecord: Record<string, MapState> = {
 	'oaks-lab': oaksLab,
 	'brocks-gym': brocksGym,
 	'berry-patch': berryPatch,
+	'flaming-desert': flamingDesert,
 };
 
 const initialState: MapState = starterTown;

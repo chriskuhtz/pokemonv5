@@ -5,6 +5,7 @@ import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { selectDecoratorAtNextCoordinatess } from '../../../store/selectors/combination/selectDecoratorAtCurrentPosition';
 import { selectNextCoordinates } from '../../../store/selectors/combination/selectNextCoordinates';
 import { selectOccupantAtNextCoordinates } from '../../../store/selectors/combination/selectOccupantAtNextCoordinates';
+import { selectMap } from '../../../store/selectors/map/selectMap';
 import { selectNextOrientation } from '../../../store/selectors/saveFile/selectNextOrientation';
 import { selectPosition } from '../../../store/selectors/saveFile/selectPosition';
 import {
@@ -21,6 +22,7 @@ export const useUpdatePosition = () => {
 	const position = useSelector(selectPosition);
 	const dispatch = useAppDispatch();
 	const nextOrientation = useAppSelector(selectNextOrientation);
+	const { encounterOnEveryField } = useAppSelector(selectMap);
 	const occupied = useAppSelector(selectOccupantAtNextCoordinates);
 	const decorator = useAppSelector(selectDecoratorAtNextCoordinatess);
 	const handleEvent = useOverworldEvent();
@@ -42,7 +44,7 @@ export const useUpdatePosition = () => {
 			return;
 		}
 
-		if (decorator?.onStep) {
+		if (decorator?.onStep || encounterOnEveryField) {
 			const encounterThreshold = Math.random() + (stinky ? 0.5 : 0);
 			if (
 				decorator?.onStep?.type === 'PORTAL' ||
@@ -61,15 +63,19 @@ export const useUpdatePosition = () => {
 				return;
 			}
 			if (
-				decorator?.onStep?.type === 'ENCOUNTER' &&
+				(decorator?.onStep?.type === 'ENCOUNTER' || encounterOnEveryField) &&
 				encounterChance <= encounterThreshold
 			) {
 				setEncounterChance(encounterChance + 0.05);
 			}
+			if (encounterChance > encounterThreshold && encounterOnEveryField) {
+				handleEvent({ type: 'ENCOUNTER' });
+				dispatch(stopWalking());
+				return;
+			}
 			if (
-				(decorator?.onStep?.type === 'ENCOUNTER' &&
-					encounterChance > encounterThreshold) ||
-				decorator?.onStep?.type !== 'ENCOUNTER'
+				decorator?.onStep?.type === 'ENCOUNTER' &&
+				encounterChance > encounterThreshold
 			) {
 				handleEvent(decorator.onStep);
 				dispatch(

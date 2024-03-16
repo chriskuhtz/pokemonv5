@@ -47,6 +47,15 @@ export const starterTownToBrockRight: Decorator = {
 		to: { orientation: 3, mapId: 'brocks-gym', y: 14, x: 4 },
 	},
 };
+export const starterTownToFlamingDesert: Decorator = {
+	x: 1,
+	y: 25,
+	sprite: '',
+	onStep: {
+		type: 'PORTAL',
+		to: { orientation: 2, mapId: 'flaming-desert', y: 5, x: 0 },
+	},
+};
 //FROM BERRY PATCH
 export const berryPatchToStarterTown: Decorator = {
 	sprite: '',
@@ -65,5 +74,15 @@ export const brocksGymToStarterTown: Decorator = {
 	onStep: {
 		type: 'PORTAL',
 		to: { mapId: 'starter-town', x: 5, y: 24, orientation: 0 },
+	},
+};
+//FROM FLAMING DESERT
+export const flamingDesertToStarterTown: Decorator = {
+	sprite: '',
+	x: 0,
+	y: 5,
+	onStep: {
+		type: 'PORTAL',
+		to: { mapId: 'starter-town', x: 1, y: 25, orientation: 3 },
 	},
 };
