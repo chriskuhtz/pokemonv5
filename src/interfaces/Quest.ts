@@ -3,6 +3,7 @@ import {
 	UniqueOccupantRecord,
 } from '../constants/UniqueOccupantRecord';
 import { berryPatchEncounters } from '../constants/maps/berryPatch';
+import { flamingDesertEncounters } from '../constants/maps/flamingDesert';
 import { starterTownEncounters } from '../constants/maps/starterTown';
 import { Inventory, generateInventory } from './Inventory';
 
@@ -48,6 +49,7 @@ export const questNames = [
 	'findPikachu',
 	'catchAllStarterTown',
 	'catchAllBerryPatch',
+	'catchAllFlamingDesert',
 	'defeatAllTrainers',
 ] as const;
 
@@ -106,6 +108,19 @@ export const CatchAllStarterTownQuest: Quest = {
 		mode: 'ALL',
 	},
 };
+export const CatchAllFlamingDesertQuest: Quest = {
+	status: 'inactive',
+	id: 'catchAllFlamingDesert',
+	title: 'Catch all different Species in the Flaming Desert',
+	description: 'A true Pokemon Master values all different pokemon',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ 'quick-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: flamingDesertEncounters.map((s) => s.dexId),
+		mode: 'ALL',
+	},
+};
 export const CatchAllBerryPatchQuest: Quest = {
 	status: 'inactive',
 	id: 'catchAllBerryPatch',
@@ -154,5 +169,6 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	findPikachu: FindPikachuQuest,
 	catchAllStarterTown: CatchAllStarterTownQuest,
 	catchAllBerryPatch: CatchAllBerryPatchQuest,
+	catchAllFlamingDesert: CatchAllFlamingDesertQuest,
 	defeatAllTrainers: DefeatAllTrainersQuest,
 };
