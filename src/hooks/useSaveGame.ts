@@ -138,7 +138,10 @@ export const useSaveGame = (): SaveGameFunction => {
 				}
 				const res: SaveFile['quests'] = { ...data.quests };
 				Object.entries(questUpdates).forEach(([key, value]) => {
-					if (res[key as QuestName] === 'completed') {
+					if (
+						res[key as QuestName] === 'completed' ||
+						res[key as QuestName] === value
+					) {
 						return;
 					}
 					if (value === 'active') {
