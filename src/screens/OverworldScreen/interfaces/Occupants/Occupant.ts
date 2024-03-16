@@ -70,6 +70,7 @@ export interface Obstacle extends BaseOccupant {
 	sprite: string;
 	type: 'OBSTACLE';
 	onClick?: OverworldEvent;
+	dialogue?: string[];
 }
 export interface LargeObstacle extends BaseOccupant {
 	sprite: string;

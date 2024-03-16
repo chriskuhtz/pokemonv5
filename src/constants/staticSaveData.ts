@@ -32,8 +32,8 @@ export const staticSaveData: SaveFile = {
 	handledOccupants: {
 		'youngster-jimmy': false,
 		'starter-town-item-1': false,
+		'starter-town-item-2': false,
 		ballMachine: false,
-		'starter-town-grass-blocker': false,
 		'starter-town-merchant': false,
 		'starter-town-nurse-quest': false,
 		'starter-town-nurse': false,
@@ -45,6 +45,7 @@ export const staticSaveData: SaveFile = {
 		'brocks-minion': false,
 		'brocks-minion2': false,
 		'oaks-assistant': false,
+		'oaks-assistant2': false,
 		'pikachu-fan': false,
 		'bugCatcher-barry': false,
 		'bugCatcher-cisco': false,

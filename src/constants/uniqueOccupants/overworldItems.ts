@@ -12,6 +12,17 @@ export const starterTownItem1: OverworldItem = {
 		orientation: 0,
 	},
 };
+export const starterTownItem2: OverworldItem = {
+	id: 'starter-town-item-2',
+	type: 'ITEM',
+	inventory: generateInventory({ 'super-potion': 2 }),
+	position: {
+		y: 24,
+		x: 9,
+		mapId: 'starter-town',
+		orientation: 0,
+	},
+};
 export const berryPatchItem1: OverworldItem = {
 	id: 'berry-patch-item-1',
 	type: 'ITEM',

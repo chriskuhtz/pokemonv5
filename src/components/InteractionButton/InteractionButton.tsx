@@ -66,6 +66,13 @@ export const InteractionButton = () => {
 			return;
 		}
 		if (
+			occupant?.type == 'OBSTACLE' &&
+			occupant?.dialogue &&
+			currentDialogue.length === 0
+		) {
+			dispatch(setDialogue(occupant.dialogue));
+		}
+		if (
 			occupant &&
 			isOccupantWithDialogue(occupant) &&
 			currentDialogue.length === 0
