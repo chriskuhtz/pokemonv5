@@ -51,6 +51,7 @@ export const applyHealingItemToPokemon = (
 			'revival-herb',
 			'heal-powder',
 			'lava-cookie',
+			'old-gateau',
 		].includes(itemName)
 	) {
 		copy.primaryAilment = undefined;

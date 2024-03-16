@@ -48,9 +48,13 @@ export const canBenefitFromItem = (
 	}
 	//AILMENTS
 	if (
-		['full-restore', 'full-heal', 'heal-powder', 'lava-cookie'].includes(
-			itemName
-		) &&
+		[
+			'full-restore',
+			'full-heal',
+			'heal-powder',
+			'lava-cookie',
+			'old-gateau',
+		].includes(itemName) &&
 		(primaryAilment || secondaryAilments?.some((a) => a.type === 'confusion'))
 	) {
 		canBenefit = true;
