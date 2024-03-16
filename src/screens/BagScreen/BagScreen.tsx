@@ -80,7 +80,7 @@ export const BagScreen = (): JSX.Element => {
 			) : (
 				hydratedInventory?.map((item) => {
 					if (!inventory[item.name]) {
-						return <React.Fragment />;
+						return <React.Fragment key={item.name} />;
 					}
 					return (
 						<Pill
