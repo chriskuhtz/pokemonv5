@@ -26,15 +26,7 @@ export const useAvailableActions = (
 							fieldmon.nextAction.target !== benchmon.id)
 				)
 			) ?? [];
-		const healingTargets = playerSide.field.filter(
-			(p) =>
-				p.damage > 0 ||
-				p.primaryAilment ||
-				(p.secondaryAilments && p.secondaryAilments.length > 0) ||
-				Object.values(p.usedPowerPoints).some((v) => v > 0)
-		);
 
-		const revivalTargets = playerSide.defeated;
 		return [
 			//ATTACK
 			{
@@ -78,16 +70,18 @@ export const useAvailableActions = (
 					),
 				availableTargets: switchTargets,
 			},
-			//HEALING ITEM
+			//ITEM
 			{
-				actionType: 'HEALING_ITEM',
+				actionType: 'IN_BATTLE_ITEM',
 				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>use Item</div>
 				),
-				disabled:
-					(healingTargets.length <= 0 && revivalTargets.length <= 0) ||
-					!!nextPlayerPokemonWithoutAction?.preparedMove,
-				availableTargets: [...healingTargets, ...revivalTargets],
+				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove,
+				availableTargets: [
+					...playerSide.field,
+					...playerSide.bench,
+					...playerSide.defeated,
+				],
 			},
 		];
 	}, [

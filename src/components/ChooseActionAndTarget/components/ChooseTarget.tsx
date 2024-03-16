@@ -11,6 +11,7 @@ import {
 	HealingItemType,
 	PPRestoringItemType,
 	PokeballType,
+	XItemType,
 } from '../../../interfaces/Item';
 import { MoveDto } from '../../../interfaces/Move';
 import { Banner } from '../../../ui_components/Banner/Banner';
@@ -27,7 +28,7 @@ export const ChooseTarget = ({
 	actionName: BattleAction['type'];
 	move?: MoveDto;
 	ball?: PokeballType;
-	item?: HealingItemType | PPRestoringItemType;
+	item?: HealingItemType | PPRestoringItemType | XItemType;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
@@ -40,7 +41,7 @@ export const ChooseTarget = ({
 				move: move,
 			};
 		}
-		if (actionName === 'HEALING_ITEM') {
+		if (actionName === 'IN_BATTLE_ITEM') {
 			return {
 				type: actionName,
 				target: c.id,
@@ -73,7 +74,7 @@ export const ChooseTarget = ({
 		if (
 			availableTargets.length === 1 &&
 			actionName !== 'SWITCH' &&
-			actionName !== 'HEALING_ITEM'
+			actionName !== 'IN_BATTLE_ITEM'
 		) {
 			selectAction({
 				...actor,

@@ -224,15 +224,35 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/54/',
 		handled: true,
 	},
+	{
+		name: 'x-attack',
+		url: 'https://pokeapi.co/api/v2/item/57/',
+		handled: true,
+	},
+	{
+		name: 'x-defense',
+		url: 'https://pokeapi.co/api/v2/item/58/',
+		handled: true,
+	},
+	{ name: 'x-speed', url: 'https://pokeapi.co/api/v2/item/59/', handled: true },
+	{
+		name: 'x-accuracy',
+		url: 'https://pokeapi.co/api/v2/item/60/',
+		handled: true,
+	},
+	{
+		name: 'x-sp-atk',
+		url: 'https://pokeapi.co/api/v2/item/61/',
+		handled: true,
+	},
+	{
+		name: 'x-sp-def',
+		url: 'https://pokeapi.co/api/v2/item/62/',
+		handled: true,
+	},
+	//v0.0.5
 	{ name: 'guard-spec', url: 'https://pokeapi.co/api/v2/item/55/' },
 	{ name: 'dire-hit', url: 'https://pokeapi.co/api/v2/item/56/' },
-	{ name: 'x-attack', url: 'https://pokeapi.co/api/v2/item/57/' },
-	{ name: 'x-defense', url: 'https://pokeapi.co/api/v2/item/58/' },
-	{ name: 'x-speed', url: 'https://pokeapi.co/api/v2/item/59/' },
-	{ name: 'x-accuracy', url: 'https://pokeapi.co/api/v2/item/60/' },
-	//v0.0.5
-	{ name: 'x-sp-atk', url: 'https://pokeapi.co/api/v2/item/61/' },
-	{ name: 'x-sp-def', url: 'https://pokeapi.co/api/v2/item/62/' },
 	{ name: 'poke-doll', url: 'https://pokeapi.co/api/v2/item/63/' },
 	{ name: 'fluffy-tail', url: 'https://pokeapi.co/api/v2/item/64/' },
 	{ name: 'blue-flute', url: 'https://pokeapi.co/api/v2/item/65/' },

@@ -58,6 +58,12 @@ export const EmptyInventory: Inventory = {
 	'pp-max': 0,
 	'pp-up': 0,
 	'old-gateau': 0,
+	'x-accuracy': 0,
+	'x-attack': 0,
+	'x-defense': 0,
+	'x-sp-atk': 0,
+	'x-sp-def': 0,
+	'x-speed': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

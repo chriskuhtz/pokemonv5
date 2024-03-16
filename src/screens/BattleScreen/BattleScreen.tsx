@@ -19,7 +19,7 @@ export interface BattleSide {
 	defeated: BattlePokemon[];
 	caught: BattlePokemon[];
 	side: 'PLAYER' | 'OPPONENT';
-	consumedItems: Partial<Inventory>;
+	consumedItems: Inventory;
 }
 
 export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'HANDLING_ENVIRONMENT';

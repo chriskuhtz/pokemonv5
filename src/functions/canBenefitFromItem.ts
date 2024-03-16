@@ -7,6 +7,7 @@ import {
 	isPPRestorationItem,
 } from '../interfaces/Item';
 import { calculateLevelData } from './calculateLevelData';
+import { canRaiseStat } from './canRaiseStat';
 import { canRaiseStatEV } from './canRaiseStatEV';
 
 export const canBenefitFromItem = (
@@ -97,6 +98,24 @@ export const canBenefitFromItem = (
 	if (isPPBoostItem(itemName)) {
 		return true;
 	}
-
+	//X ITEMS
+	if (itemName === 'x-attack' && canRaiseStat(pokemon, 'attack')) {
+		return true;
+	}
+	if (itemName === 'x-defense' && canRaiseStat(pokemon, 'defense')) {
+		return true;
+	}
+	if (itemName === 'x-sp-atk' && canRaiseStat(pokemon, 'spatk')) {
+		return true;
+	}
+	if (itemName === 'x-sp-def' && canRaiseStat(pokemon, 'spdef')) {
+		return true;
+	}
+	if (itemName === 'x-speed' && canRaiseStat(pokemon, 'speed')) {
+		return true;
+	}
+	if (itemName === 'x-accuracy' && canRaiseStat(pokemon, 'accuracy')) {
+		return true;
+	}
 	return canBenefit;
 };

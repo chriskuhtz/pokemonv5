@@ -1,3 +1,4 @@
+import React from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { typeColors } from '../../../constants/typeColors';
 import { canBenefitFromItem } from '../../../functions/canBenefitFromItem';
@@ -6,8 +7,10 @@ import { Inventory } from '../../../interfaces/Inventory';
 import {
 	HealingItemType,
 	PPRestoringItemType,
+	XItemType,
 	isHealingItem,
 	isPPRestorationItem,
+	isXItem,
 } from '../../../interfaces/Item';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
@@ -20,7 +23,9 @@ export const ChooseItem = ({
 	availableTargets,
 }: {
 	open: boolean;
-	setItem: (x: HealingItemType | PPRestoringItemType | undefined) => void;
+	setItem: (
+		x: HealingItemType | PPRestoringItemType | XItemType | undefined
+	) => void;
 	inventory: Inventory;
 	resetActor: () => void;
 	availableTargets: BattlePokemon[];
@@ -42,9 +47,11 @@ export const ChooseItem = ({
 							{Object.entries(inventory).map(([key, amount]) => {
 								if (
 									amount === 0 ||
-									(!isHealingItem(key) && !isPPRestorationItem(key))
+									(!isHealingItem(key) &&
+										!isPPRestorationItem(key) &&
+										!isXItem(key))
 								) {
-									return <></>;
+									return <React.Fragment key={key}></React.Fragment>;
 								}
 								return (
 									<Slanted

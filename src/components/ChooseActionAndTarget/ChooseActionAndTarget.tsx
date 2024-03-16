@@ -9,6 +9,7 @@ import {
 	HealingItemType,
 	PPRestoringItemType,
 	PokeballType,
+	XItemType,
 } from '../../interfaces/Item';
 import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
@@ -37,7 +38,7 @@ export const ChooseActionAndTarget = ({
 	const [move, setMove] = useState<MoveDto | undefined>();
 	const [ball, setBall] = useState<PokeballType | undefined>();
 	const [item, setItem] = useState<
-		HealingItemType | PPRestoringItemType | undefined
+		HealingItemType | PPRestoringItemType | XItemType | undefined
 	>();
 	const [pokemonIdToPPRestore, setPokemonIdToPPRestore] = useState<
 		string | undefined
@@ -54,7 +55,7 @@ export const ChooseActionAndTarget = ({
 			selectAction({
 				...actor,
 				nextAction: {
-					type: 'HEALING_ITEM',
+					type: 'IN_BATTLE_ITEM',
 					item,
 					ppRestoreMove: moveToPPRestore,
 					target: pokemonIdToPPRestore,
@@ -159,10 +160,10 @@ export const ChooseActionAndTarget = ({
 			/>
 		);
 	}
-	if (actionName === 'HEALING_ITEM' && !item) {
+	if (actionName === 'IN_BATTLE_ITEM' && !item) {
 		return (
 			<ChooseItem
-				open={actionName === 'HEALING_ITEM'}
+				open={actionName === 'IN_BATTLE_ITEM'}
 				setItem={setItem}
 				inventory={inventory}
 				resetActor={reset}
@@ -222,11 +223,7 @@ export const ChooseActionAndTarget = ({
 			item={item}
 			selectAction={(x) => {
 				selectAction(x);
-				setActionName(undefined);
-				setMove(undefined);
-				setBall(undefined);
-				setItem(undefined);
-				setMoveToPPRestore(undefined);
+				reset();
 			}}
 			availableTargets={
 				availableActions.find((a) => a.actionType === actionName)

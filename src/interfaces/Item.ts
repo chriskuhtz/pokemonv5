@@ -63,12 +63,21 @@ export const balltypes = [
 
 export const ppBoostItemTypes = ['pp-up', 'pp-max'] as const;
 
+export const xItemTypes = [
+	'x-attack',
+	'x-defense',
+	'x-sp-atk',
+	'x-sp-def',
+	'x-speed',
+	'x-accuracy',
+] as const;
 export const itemTypes = [
 	...balltypes,
 	...healingItemTypes,
 	...ppRestorationItemTypes,
 	...ppBoostItemTypes,
 	...evBoostItemTypes,
+	...xItemTypes,
 	'repel',
 	'sacred-ash',
 	'rare-candy',
@@ -82,6 +91,7 @@ export type HealingItemType = (typeof healingItemTypes)[number];
 export type PPRestoringItemType = (typeof ppRestorationItemTypes)[number];
 export type PPBoostItemType = (typeof ppBoostItemTypes)[number];
 export type EvBoostItemType = (typeof evBoostItemTypes)[number];
+export type XItemType = (typeof xItemTypes)[number];
 
 export function isPokeball(x: string | undefined): x is PokeballType {
 	return (balltypes as unknown as string[]).includes(x ?? '');
@@ -104,11 +114,15 @@ export const EVBoostMap: Record<EvBoostItemType, Stat> = {
 	protein: 'attack',
 	zinc: 'spdef',
 };
+
 export function isEvBoostItem(x: string | undefined): x is EvBoostItemType {
 	return (evBoostItemTypes as unknown as string[]).includes(x ?? '');
 }
 export function isPPBoostItem(x: string | undefined): x is PPBoostItemType {
 	return (ppBoostItemTypes as unknown as string[]).includes(x ?? '');
+}
+export function isXItem(x: string | undefined): x is XItemType {
+	return (xItemTypes as unknown as string[]).includes(x ?? '');
 }
 export function isItem(x: string | undefined): x is ItemType {
 	return (itemTypes as unknown as string[]).includes(x ?? '');

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../api/pokeApi';
 import { useFetch } from '../../../hooks/useFetch';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { generateInventory } from '../../../interfaces/Inventory';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { BattleSide } from '../BattleScreen';
 import {
@@ -69,7 +70,7 @@ export const useInitialiseBattleSides = (
 				defeated: [],
 				caught: [],
 				side: 'OPPONENT',
-				consumedItems: {},
+				consumedItems: generateInventory({}),
 			});
 		}
 	}, [
@@ -99,7 +100,7 @@ export const useInitialiseBattleSides = (
 				defeated: defeatedPlayerPokemon,
 				caught: [],
 				side: 'PLAYER',
-				consumedItems: {},
+				consumedItems: generateInventory({}),
 			});
 		}
 	}, [
