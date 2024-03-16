@@ -10,6 +10,7 @@ import {
 	PPRestoringItemType,
 	PokeballType,
 	XItemType,
+	isXItem,
 } from '../../interfaces/Item';
 import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
@@ -226,8 +227,11 @@ export const ChooseActionAndTarget = ({
 				reset();
 			}}
 			availableTargets={
-				availableActions.find((a) => a.actionType === actionName)
-					?.availableTargets ?? []
+				availableActions
+					.find((a) => a.actionType === actionName)
+					?.availableTargets.filter(
+						(t) => !isXItem(item) || pokemonOnField.some((p) => p.id === t.id)
+					) ?? []
 			}
 			actor={actor}
 		/>
