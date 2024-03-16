@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+import { joinInventories } from '../../../functions/joinInventories';
 import { isBattleActionWithTarget } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { isPokeball } from '../../../interfaces/Item';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { BattleSide } from '../BattleScreen';
@@ -26,6 +28,9 @@ export const useAvailableActions = (
 							fieldmon.nextAction.target !== benchmon.id)
 				)
 			) ?? [];
+		const hasPokeballs = Object.entries(
+			joinInventories(saveFile.inventory, playerSide.consumedItems, true)
+		).some(([key, amount]) => isPokeball(key) && amount > 0);
 
 		return [
 			//ATTACK
@@ -55,7 +60,10 @@ export const useAvailableActions = (
 						Throw Pokeball
 					</div>
 				),
-				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove || !!trainerId,
+				disabled:
+					!!nextPlayerPokemonWithoutAction?.preparedMove ||
+					!!trainerId ||
+					!hasPokeballs,
 				availableTargets: opponentSide.field,
 			},
 			//SWITCH
