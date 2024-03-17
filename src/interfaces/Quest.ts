@@ -25,11 +25,18 @@ export interface HandledOccupantCondition {
 	conditionFailMessage?: string;
 }
 
+export interface NumberOfTeamMembersCondition {
+	type: 'NUMBER_OF_TEAMMEMBERS';
+	numberOfMembers: number;
+	mode: 'EXACTLY' | 'UNDER' | 'OVER';
+	conditionFailMessage?: string;
+}
+
 export type Condition =
 	| OwnedPokemonCondition
 	| HandledOccupantCondition
 	| NotRegisteredPokemonCondition
-	| HandledOccupantCondition;
+	| NumberOfTeamMembersCondition;
 
 export type QuestStatus = 'inactive' | 'active' | 'completed';
 export interface Quest {
@@ -63,9 +70,9 @@ export const PickStarterQuest: Quest = {
 	rewardMoney: 1000,
 	rewardItems: generateInventory({ 'poke-ball': 5 }),
 	condition: {
-		type: 'OWNED_POKEMON',
-		ids: [1, 4, 7],
-		mode: 'SOME',
+		type: 'NUMBER_OF_TEAMMEMBERS',
+		numberOfMembers: 0,
+		mode: 'OVER',
 	},
 };
 export const TalkToNurseJoyQuest: Quest = {

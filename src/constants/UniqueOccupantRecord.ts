@@ -4,6 +4,9 @@ import {
 	starterTownMerchant,
 } from './uniqueOccupants/merchants';
 import {
+	OakAfterSelection,
+	OakBeforeSelection,
+	OakDuringSelection,
 	oaksAssistant,
 	oaksAssistant2,
 	pikachuFan,
@@ -79,67 +82,9 @@ export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 	'brocks-minion2': brocksMinion2,
 	'starter-town-item-1': starterTownItem1,
 	'starter-town-item-2': starterTownItem2,
-	'oak-before-selection': {
-		id: 'oak-before-selection',
-		type: 'NPC',
-		position: {
-			y: 2,
-			x: 2,
-			mapId: 'oaks-lab',
-			orientation: 0,
-		},
-		dialogue: [
-			'Hello',
-			"It's nice to meet you.",
-			'Congratulations on obtaining your Pokemon Trainer License.',
-			'It is my privilege and responsibility to give you your first Pokemon.',
-			'For your first Pokemon Partner, you can choose one from the Machine next to me.',
-		],
-		sprite: '136',
-		questUpdates: {
-			talkToNurseJoy: 'active',
-			pickStarter: 'active',
-		},
-		questCondition: { id: 'pickStarter', status: 'inactive' },
-	},
-	'oak-during-selection': {
-		id: 'oak-during-selection',
-		type: 'NPC',
-		position: {
-			y: 2,
-			x: 2,
-			mapId: 'oaks-lab',
-			orientation: 0,
-		},
-		dialogue: [
-			'Choosing the right Pokemon Partner is important',
-			'Consider your choices carefully',
-		],
-		sprite: '136',
-		questCondition: { id: 'pickStarter', status: 'active' },
-	},
-	'oak-after-selection': {
-		id: 'oak-after-selection',
-		type: 'NPC',
-		position: {
-			y: 2,
-			x: 2,
-			mapId: 'oaks-lab',
-			orientation: 0,
-		},
-		dialogue: [
-			'Aah, what an excellent choice',
-			'I am sure this Pokemon will become an excellent Partner',
-			'I look forward to hearing about your many adventures',
-			'You should talk to Nurse Joy outside',
-			'She will provide you with some starting equipment',
-		],
-		sprite: '136',
-		questCondition: {
-			id: 'pickStarter',
-			status: 'completed',
-		},
-	},
+	'oak-before-selection': OakBeforeSelection,
+	'oak-during-selection': OakDuringSelection,
+	'oak-after-selection': OakAfterSelection,
 	'starter-town-nurse-quest': {
 		id: 'starter-town-nurse-quest',
 		type: 'NPC',

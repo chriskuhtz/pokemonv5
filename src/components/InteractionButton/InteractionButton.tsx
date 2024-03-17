@@ -103,6 +103,9 @@ export const InteractionButton = () => {
 						handleTrainerChallenge(focusedOccupant);
 					}
 				}
+				if (focusedOccupant.type === 'NPC' && focusedOccupant.onDialogueEnd) {
+					handleEvent(focusedOccupant.onDialogueEnd);
+				}
 
 				await saveGame({
 					questUpdates: focusedOccupant.questUpdates,

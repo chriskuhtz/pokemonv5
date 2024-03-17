@@ -16,6 +16,28 @@ export const isHandledOccupantConditionFulfilled = (
 	return ids.every((id) => saveFile.handledOccupants[id]);
 };
 
+export const isNumberOfPokemonFulfilled = (
+	condition: Condition,
+	saveFile: SaveFile
+) => {
+	if (condition.type !== 'NUMBER_OF_TEAMMEMBERS') {
+		return false;
+	}
+	const { mode, numberOfMembers } = condition;
+	const { pokemon } = saveFile;
+
+	if (mode === 'EXACTLY') {
+		return pokemon.filter((p) => p.onTeam).length === numberOfMembers;
+	}
+	if (mode === 'OVER') {
+		return pokemon.filter((p) => p.onTeam).length > numberOfMembers;
+	}
+	if (mode === 'UNDER') {
+		return pokemon.filter((p) => p.onTeam).length < numberOfMembers;
+	}
+	return false;
+};
+
 export const useIsConditionFulfilled = () => {
 	const data = useGetCurrentSaveFile();
 
@@ -27,7 +49,8 @@ export const useIsConditionFulfilled = () => {
 
 			return (
 				isOwnedPokemonConditionFulfilled(condition, data.pokedex) ||
-				isHandledOccupantConditionFulfilled(condition, data)
+				isHandledOccupantConditionFulfilled(condition, data) ||
+				isNumberOfPokemonFulfilled(condition, data)
 			);
 		},
 		[data]

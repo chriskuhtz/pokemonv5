@@ -35,6 +35,7 @@ export interface Npc extends BaseOccupant {
 	sprite: string;
 	movement?: Movement;
 	type: 'NPC';
+	onDialogueEnd?: OverworldEvent;
 }
 export interface Trainer extends BaseOccupant {
 	dialogue: string[];

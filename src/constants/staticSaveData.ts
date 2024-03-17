@@ -6,11 +6,11 @@ export const staticSaveData: SaveFile = {
 	playerId: v4(),
 	username: 'generic username',
 	position: {
-		x: 0,
-		y: 1,
+		x: 2,
+		y: 5,
 		forwardFoot: 0,
 		mapId: 'oaks-lab',
-		orientation: 0,
+		orientation: 3,
 	},
 	lastHealPosition: {
 		x: 0,
