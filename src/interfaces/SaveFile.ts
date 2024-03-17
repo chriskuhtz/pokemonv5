@@ -8,6 +8,10 @@ import { QuestName, QuestStatus } from './Quest';
 export type GymBadge = 'boulderBadge';
 export type GymBadgeRecord = Record<GymBadge, boolean>;
 
+export interface PlayerConfigObject {
+	randomStarters: boolean;
+}
+
 export interface SaveFile {
 	username: string;
 	position: CharacterPosition;
@@ -21,4 +25,5 @@ export interface SaveFile {
 	quests: Record<QuestName, QuestStatus>;
 	playerId: string;
 	gymBadges: GymBadgeRecord;
+	config: PlayerConfigObject;
 }

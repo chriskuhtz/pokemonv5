@@ -93,6 +93,8 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 				}px) rotate(-${angle}deg)`;
 			}
 		});
+
+		return () => {};
 	}, [shiftDegrees, tags]);
 
 	return (

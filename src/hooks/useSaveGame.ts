@@ -6,7 +6,7 @@ import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
 import { OwnedPokemon, UsedPowerPoints } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
-import { GymBadge, SaveFile } from '../interfaces/SaveFile';
+import { GymBadge, PlayerConfigObject, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { addNotification } from '../store/slices/notificationSlice';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
@@ -27,6 +27,7 @@ export type SaveGamePayload = {
 	newBadge?: GymBadge;
 	teleportToLastHealer?: boolean;
 	subtractInventory?: boolean;
+	updatedConfig?: PlayerConfigObject;
 };
 export type SaveGameFunction = (x: SaveGamePayload) => Promise<void>;
 
@@ -56,6 +57,7 @@ export const useSaveGame = (): SaveGameFunction => {
 			fundsUpdate,
 			newBadge,
 			teleportToLastHealer,
+			updatedConfig,
 		}: SaveGamePayload) => {
 			if (!data) {
 				console.error('cant save if no current saveFile');
@@ -164,6 +166,7 @@ export const useSaveGame = (): SaveGameFunction => {
 				pokemon: existingAndUpdates,
 				pokedex: updatedDex,
 				money: updatedMoney,
+				config: updatedConfig ?? data.config,
 				gymBadges: newBadge
 					? { ...data.gymBadges, [`${newBadge}`]: true }
 					: data.gymBadges,

@@ -6,6 +6,7 @@ import { MarketScreen } from '../screens/MarketScreen/MarketScreen';
 import { NewGameProcess } from '../screens/NewGameProcessScreen/NewGameProcess';
 import { Overworld } from '../screens/OverworldScreen/Overworld';
 import { PlayerCardScreen } from '../screens/PlayerCardScreen/PlayerCardScreen';
+import { PlayerConfigScreen } from '../screens/PlayerConfigScreen/PlayerConfigScreen';
 import { PlayerMenu } from '../screens/PlayerMenuScreen/PlayerMenuScreen';
 import { PokedexScreen } from '../screens/PokedexScreen/PokedexScreen';
 import { PokemonSelectionScreen } from '../screens/PokemonSelection/PokemonSelectionScreen';
@@ -30,6 +31,7 @@ export enum RoutesEnum {
 	test = '/test',
 	newFulfilledQuest = '/newFulfilledQuest',
 	login = '/login',
+	playerConfig = '/playerConfig',
 }
 
 export const router = createBrowserRouter([
@@ -91,5 +93,6 @@ export const router = createBrowserRouter([
 			/>
 		),
 	},
+	{ path: RoutesEnum.playerConfig, element: <PlayerConfigScreen /> },
 	{ path: RoutesEnum.test, element: <TestArea /> },
 ]);

@@ -69,4 +69,7 @@ export const staticSaveData: SaveFile = {
 	money: 5000,
 	inventory: EmptyInventory,
 	gymBadges: { boulderBadge: false },
+	config: {
+		randomStarters: false,
+	},
 };
