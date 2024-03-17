@@ -17,3 +17,8 @@
 	align-items: center;
 	gap: 1rem;
 }
+.modalContent {
+	background-color: var(--main-bg-color);
+	border-radius: var(--rounded);
+	padding: 2rem;
+}

@@ -1,13 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { joinInventories } from '../../../functions/joinInventories';
 import { useHydratedInventory } from '../../../hooks/useHydratedInventory';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import { Inventory, generateInventory } from '../../../interfaces/Inventory';
 import { ItemType } from '../../../interfaces/Item';
-import { ItemData } from '../../../interfaces/ItemData';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
 
@@ -21,12 +19,8 @@ export const useMarketScreen = () => {
 
 	const [cart, setCart] = useState<Inventory>(generateInventory({}));
 
-	const addToCart = useCallback((x: ItemData) => {
-		setCart((cart) => joinInventories(cart, { [x.name]: 1 }));
-	}, []);
-
-	const removeFromCart = useCallback((x: ItemType) => {
-		setCart((cart) => joinInventories(cart, { [x]: -1 }));
+	const changeCartAmount = useCallback((x: ItemType, amount: number) => {
+		setCart((cart) => ({ ...cart, [x]: amount }));
 	}, []);
 
 	const totalCost = useMemo(() => {
@@ -59,8 +53,7 @@ export const useMarketScreen = () => {
 	}, [cart, data, save, totalCost]);
 
 	return {
-		addToCart,
-		removeFromCart,
+		changeCartAmount,
 		totalCost,
 		purchase,
 		hydratedInventory,

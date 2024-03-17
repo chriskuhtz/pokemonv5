@@ -21,17 +21,19 @@ export const Modal = ({
 	return (
 		<div className="modal">
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-				<div className="modalHeader">
-					{modalTitle && <h3>{modalTitle}</h3>}
-					{onCancel && (
-						<IoIosCloseCircle
-							style={{ height: '40px', width: '40px' }}
-							onClick={onCancel}
-						/>
-					)}
+				<div className="modalContent">
+					{' '}
+					<div className="modalHeader">
+						{modalTitle && <h3>{modalTitle}</h3>}
+						{onCancel && (
+							<IoIosCloseCircle
+								style={{ height: '40px', width: '40px' }}
+								onClick={onCancel}
+							/>
+						)}
+					</div>
+					{modalContent}
 				</div>
-
-				{modalContent}
 			</div>
 		</div>
 	);

@@ -81,11 +81,6 @@ const drawRandomBackGround = async (
 		Promise.all(
 			images.map((im) => new Promise((resolve) => (im.onload = resolve)))
 		).then(() => {
-			console.log(
-				'The images have loaded at last!\nHere are their dimensions (width,height):'
-			);
-			console.log(images.map((im) => [im.width, im.height]));
-
 			heightArray.forEach((_, y) =>
 				widthArray.forEach((_, x) => {
 					const random = Math.random();

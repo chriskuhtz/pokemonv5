@@ -1,12 +1,16 @@
 import { MarketListItem } from '../../../../components/MarketListItem/MarketListItem';
+import { Inventory } from '../../../../interfaces/Inventory';
+import { ItemType } from '../../../../interfaces/Item';
 import { ItemData } from '../../../../interfaces/ItemData';
 
 export const HydratedInventory = ({
 	hydratedInventory,
-	addToCart,
+	changeCartAmount,
+	cart,
 }: {
 	hydratedInventory?: ItemData[];
-	addToCart: (x: ItemData) => void;
+	changeCartAmount: (x: ItemType, amount: number) => void;
+	cart: Inventory;
 }): React.JSX.Element => {
 	if (!hydratedInventory) {
 		return <></>;
@@ -17,7 +21,8 @@ export const HydratedInventory = ({
 				<MarketListItem
 					key={inventoryItem.id}
 					item={inventoryItem}
-					onClick={() => addToCart(inventoryItem)}
+					amount={cart[inventoryItem.name]}
+					onClick={changeCartAmount}
 				/>
 			))}
 		</div>

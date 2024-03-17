@@ -1,6 +1,4 @@
 .cart {
-	border-left: solid 1px;
-
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
