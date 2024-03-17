@@ -7,6 +7,7 @@ import {
 	OakAfterSelection,
 	OakBeforeSelection,
 	OakDuringSelection,
+	nightPokemonFan,
 	oaksAssistant,
 	oaksAssistant2,
 	pikachuFan,
@@ -70,6 +71,7 @@ export const uniqueOccupantIds = [
 	'flaming-desert-item-2',
 	'flaming-desert-item-3',
 	'flaming-desert-item-4',
+	'night-pokemon-fan',
 ] as const;
 //every occupant that can be handled should be unique
 export type UniqueOccupantId = (typeof uniqueOccupantIds)[number];
@@ -176,4 +178,5 @@ export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 	'flaming-desert-item-2': flamingDesertItem2,
 	'flaming-desert-item-3': flamingDesertItem3,
 	'flaming-desert-item-4': flamingDesertItem4,
+	'night-pokemon-fan': nightPokemonFan,
 };

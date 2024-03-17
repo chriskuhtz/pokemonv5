@@ -29,6 +29,7 @@ export const staticSaveData: SaveFile = {
 		catchAllBerryPatch: 'inactive',
 		catchAllFlamingDesert: 'inactive',
 		defeatAllTrainers: 'inactive',
+		catchNightPokemon: 'inactive',
 	},
 	handledOccupants: {
 		'youngster-jimmy': false,
@@ -63,6 +64,7 @@ export const staticSaveData: SaveFile = {
 		'flaming-desert-merchant': false,
 		'hiker-bennet': false,
 		'pyromaniac-javi': false,
+		'night-pokemon-fan': false,
 	},
 	pokedex: [],
 	pokemon: [],

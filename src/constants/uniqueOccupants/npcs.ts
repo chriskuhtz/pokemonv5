@@ -71,6 +71,25 @@ export const pikachuFan: Npc = {
 	},
 };
 
+export const nightPokemonFan: Npc = {
+	id: 'night-pokemon-fan',
+	type: 'NPC',
+	position: {
+		y: 3,
+		x: 3,
+		mapId: 'flaming-desert',
+		orientation: 0,
+	},
+	dialogue: [
+		'Did you know that Pokemon prefer different times of day?',
+		'Some only show up at night',
+	],
+	sprite: SpriteEnum.child,
+	questUpdates: {
+		catchNightPokemon: 'active',
+	},
+};
+
 export const OakBeforeSelection: Npc = {
 	id: 'oak-before-selection',
 	type: 'NPC',

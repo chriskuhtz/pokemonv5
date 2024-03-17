@@ -16,6 +16,12 @@ export const berryPatchEncounters: MapEncounter[] = [
 		customMoves: ['leaf-blade', 'swords-dance'],
 	},
 	{ xp: 200, dexId: 214, rarity: 1, customMoves: ['cross-chop'] },
+
+	{ xp: 60, dexId: 191, rarity: 2, timeOfDay: 'MORNING' },
+	{ xp: 60, dexId: 127, rarity: 2, timeOfDay: 'EVENING' },
+	{ xp: 60, dexId: 41, rarity: 4, timeOfDay: 'EVENING' },
+	{ xp: 60, dexId: 41, rarity: 4, timeOfDay: 'EVENING' },
+	{ xp: 100, dexId: 920, rarity: 2, timeOfDay: 'NIGHT' },
 ];
 
 const mapId = 'berry-patch';

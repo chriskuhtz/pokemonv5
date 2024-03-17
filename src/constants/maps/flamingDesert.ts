@@ -13,9 +13,11 @@ export const flamingDesertEncounters: MapEncounter[] = [
 	{ xp: 400, dexId: 104, rarity: 3 },
 	{ xp: 400, dexId: 529, rarity: 3 },
 	{ xp: 400, dexId: 322, rarity: 3 },
-	{ xp: 400, dexId: 551, rarity: 2 },
 	{ xp: 800, dexId: 115, rarity: 1 },
 	{ xp: 600, dexId: 554, rarity: 1 },
+	{ xp: 600, dexId: 443, rarity: 1, timeOfDay: 'MORNING' },
+	{ xp: 400, dexId: 551, rarity: 2, timeOfDay: 'EVENING' },
+	{ xp: 600, dexId: 228, rarity: 2, timeOfDay: 'NIGHT' },
 ];
 
 const mapId = 'flaming-desert';

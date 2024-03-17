@@ -32,11 +32,13 @@ export interface BaseTile {
 	id: BaseTileId;
 	pattern: BaseTilePattern;
 }
+export type TimeOfDay = 'MORNING' | 'DAY' | 'EVENING' | 'NIGHT';
 export interface MapEncounter {
 	dexId: number;
 	xp: number;
 	rarity?: number;
 	customMoves?: string[];
+	timeOfDay?: TimeOfDay;
 }
 
 export type MapEnvironment =

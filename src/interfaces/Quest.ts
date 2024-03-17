@@ -58,6 +58,7 @@ export const questNames = [
 	'catchAllBerryPatch',
 	'catchAllFlamingDesert',
 	'defeatAllTrainers',
+	'catchNightPokemon',
 ] as const;
 
 export type QuestName = (typeof questNames)[number];
@@ -95,11 +96,9 @@ export const SecondPokemonQuest: Quest = {
 	rewardMoney: 100,
 	rewardItems: generateInventory({ 'poke-ball': 5 }),
 	condition: {
-		type: 'OWNED_POKEMON',
-		ids: [...starterTownEncounters, ...berryPatchEncounters].map(
-			(s) => s.dexId
-		),
-		mode: 'SOME',
+		type: 'NUMBER_OF_TEAMMEMBERS',
+		mode: 'OVER',
+		numberOfMembers: 1,
 	},
 };
 export const CatchAllStarterTownQuest: Quest = {
@@ -141,6 +140,25 @@ export const CatchAllBerryPatchQuest: Quest = {
 		mode: 'ALL',
 	},
 };
+export const CatchNightPokemon: Quest = {
+	status: 'inactive',
+	id: 'catchNightPokemon',
+	title: 'Catch a nocturnal Pokemon',
+	description: 'Some Pokemon hide during the day',
+	rewardMoney: 1000,
+	rewardItems: generateInventory({ 'dusk-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: [
+			...starterTownEncounters,
+			...berryPatchEncounters,
+			...flamingDesertEncounters,
+		]
+			.filter((e) => e.timeOfDay === 'NIGHT')
+			.map((e) => e.dexId),
+		mode: 'SOME',
+	},
+};
 export const FindPikachuQuest: Quest = {
 	status: 'inactive',
 	id: 'findPikachu',
@@ -178,4 +196,5 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	catchAllBerryPatch: CatchAllBerryPatchQuest,
 	catchAllFlamingDesert: CatchAllFlamingDesertQuest,
 	defeatAllTrainers: DefeatAllTrainersQuest,
+	catchNightPokemon: CatchNightPokemon,
 };
