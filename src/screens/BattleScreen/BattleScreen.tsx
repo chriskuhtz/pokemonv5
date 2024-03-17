@@ -79,6 +79,7 @@ export const BattleScreen = ({
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
 							<CircularSprite
+								makeSound
 								key={p.id}
 								back
 								pokemon={p}
@@ -109,7 +110,7 @@ export const BattleScreen = ({
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<CircularSprite key={p.id} pokemon={p} />
+							<CircularSprite key={p.id} pokemon={p} makeSound />
 						))}
 					</div>
 				</div>

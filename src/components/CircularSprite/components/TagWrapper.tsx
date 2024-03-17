@@ -72,29 +72,25 @@ export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
 	const [shiftDegrees, setShiftDegrees] = useState<number>(0);
 
 	useEffect(() => {
+		//find the correct angles for n tags
+
 		const rotator = setInterval(() => {
 			setShiftDegrees(shiftDegrees + 0.5);
+			document.querySelectorAll('.tagWrapper').forEach((tagWrapper) => {
+				const circles = tagWrapper.querySelectorAll('.battleSpriteTag');
+				let angle = 360 - 90 + shiftDegrees;
+				const dangle = 360 / circles.length;
+				for (let i = 0; i < circles.length; ++i) {
+					const circle = circles[i] as HTMLElement;
+					angle += dangle;
+					circle.style.transform = `rotate(${angle}deg) translate(${
+						tagWrapper.clientWidth / 2
+					}px) rotate(-${angle}deg)`;
+				}
+			});
 		}, 75);
 
 		return () => clearInterval(rotator);
-	}, [shiftDegrees, setShiftDegrees]);
-
-	useEffect(() => {
-		//find the correct angles for n tags
-		document.querySelectorAll('.tagWrapper').forEach((tagWrapper) => {
-			const circles = tagWrapper.querySelectorAll('.battleSpriteTag');
-			let angle = 360 - 90 + shiftDegrees;
-			const dangle = 360 / circles.length;
-			for (let i = 0; i < circles.length; ++i) {
-				const circle = circles[i] as HTMLElement;
-				angle += dangle;
-				circle.style.transform = `rotate(${angle}deg) translate(${
-					tagWrapper.clientWidth / 2
-				}px) rotate(-${angle}deg)`;
-			}
-		});
-
-		return () => {};
 	}, [shiftDegrees, tags]);
 
 	return (

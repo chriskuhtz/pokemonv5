@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
@@ -35,11 +34,9 @@ export const size = Math.round(
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<NotificationBanner />
-			<AudioQueue />
-			<RouterProvider router={router} />
-		</Provider>
-	</React.StrictMode>
+	<Provider store={store}>
+		<NotificationBanner />
+		<AudioQueue />
+		<RouterProvider router={router} />
+	</Provider>
 );
