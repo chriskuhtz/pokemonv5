@@ -13,7 +13,7 @@ export interface BattlePokemon extends OwnedPokemon {
 	statModifiers: StatObject;
 	nextAction?: BattleAction;
 	side: 'PLAYER' | 'OPPONENT';
-	status?: { name: 'BEING_CAUGHT'; ball: PokeballType };
+	status?: { name: 'BEING_CAUGHT'; ball: PokeballType } | { name: 'ATTACKING' };
 	base_experience: number;
 	primaryType: PokemonType;
 	secondaryType?: PokemonType;

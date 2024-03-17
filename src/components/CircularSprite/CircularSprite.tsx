@@ -4,9 +4,9 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { addAudio } from '../../store/slices/audioSlice';
 import { useAppDispatch } from '../../store/storeHooks';
 import './CircularSprite.css';
-import { ExpIndicator } from './components/ExpIndicator';
 import { HealthIndicator } from './components/HealthIndicator';
 import { TagWrapper } from './components/TagWrapper';
+import { ExpIndicator } from './components/ExpIndicator';
 
 export const CircularSprite = ({
 	pokemon,

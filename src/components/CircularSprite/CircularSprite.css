@@ -35,6 +35,33 @@
 	}
 }
 
+@keyframes player-attacking {
+	0% {
+		transform: translateY(0) translateX(0);
+	}
+	20% {
+		transform: translateY(-30%) translateX(50%) perspective(200px)
+			translateZ(66px);
+	}
+
+	100% {
+		transform: translateY(0) translateX(0);
+	}
+}
+@keyframes opponent-attacking {
+	0% {
+		transform: translateY(0) translateX(0);
+	}
+	20% {
+		transform: translateY(30%) translateX(-50%) perspective(200px)
+			translateZ(66px);
+	}
+
+	100% {
+		transform: translateY(0) translateX(0);
+	}
+}
+
 @keyframes idle {
 	0% {
 		transform: translateY(0);
@@ -43,7 +70,7 @@
 .expIndicator {
 	animation-name: var(--animationName);
 	animation-duration: 2s;
-	animation-iteration-count: infinite;
+	animation-iteration-count: var(--iterations);
 	display: flex;
 	justify-content: center;
 	align-items: center;

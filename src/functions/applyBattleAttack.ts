@@ -180,6 +180,7 @@ export const applyBattleAttack = (
 					...updatedActor,
 					preparedMove: undefined,
 					location: undefined,
+					status: { name: 'ATTACKING' },
 				};
 			}),
 		};
@@ -213,6 +214,7 @@ export const applyBattleAttack = (
 					...updatedActor,
 					preparedMove: undefined,
 					location: undefined,
+					status: { name: 'ATTACKING' },
 				};
 			}),
 		};

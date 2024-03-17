@@ -19,7 +19,7 @@ export const useGetFirstFourMoves = () => {
 				)
 				.slice(0, 4)
 				.map(({ move }) => move.name)
-				.concat(overWrites ?? ['spore', 'glare', 'will-o-wisp', 'toxic'])
+				.concat(overWrites ?? [])
 				.slice(-4);
 
 			const moves = await getMovesData(moveNames);
