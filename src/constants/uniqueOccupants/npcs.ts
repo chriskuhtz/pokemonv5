@@ -40,7 +40,7 @@ export const oaksAssistant2: Npc = {
 	id: 'oaks-assistant2',
 	type: 'NPC',
 	position: {
-		y: 24,
+		y: 25,
 		x: 1,
 		mapId: 'starter-town',
 		orientation: 3,
