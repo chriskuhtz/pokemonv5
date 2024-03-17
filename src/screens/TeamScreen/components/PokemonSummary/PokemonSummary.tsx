@@ -101,6 +101,7 @@ export const PokemonSummary = ({
 					/>
 				</div>
 				<div className="movesAndStats">
+					<MoveSection moves={pokemon.moves} />
 					<StatSection
 						baseStats={pokemon.stats}
 						evs={pokemon.effortValues}
@@ -108,7 +109,6 @@ export const PokemonSummary = ({
 						nature={'hardy'}
 						level={calculateLevelData(pokemon.xp).level}
 					/>{' '}
-					<MoveSection moves={pokemon.moves} />
 				</div>
 			</div>
 		);

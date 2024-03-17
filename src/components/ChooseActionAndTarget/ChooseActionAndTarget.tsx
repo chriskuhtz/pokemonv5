@@ -50,6 +50,14 @@ export const ChooseActionAndTarget = ({
 		() => pokemonOnField.find((p) => p.id === pokemonIdToPPRestore),
 		[pokemonOnField, pokemonIdToPPRestore]
 	);
+
+	const reset = () => {
+		setActionName(undefined);
+		setMove(undefined);
+		setBall(undefined);
+		setItem(undefined);
+		setMoveToPPRestore(undefined);
+	};
 	//select ppRestoration Action
 	useEffect(() => {
 		if (item && moveToPPRestore && pokemonIdToPPRestore) {
@@ -62,6 +70,7 @@ export const ChooseActionAndTarget = ({
 					target: pokemonIdToPPRestore,
 				},
 			});
+			reset();
 		}
 	}, [moveToPPRestore, item, actor, pokemonIdToPPRestore]);
 
@@ -72,9 +81,24 @@ export const ChooseActionAndTarget = ({
 				...actor,
 				nextAction: { type: 'RUNAWAY_ATTEMPT' },
 			});
-			setActionName(undefined);
+			reset();
 		}
 	}, [actionName, actor, selectAction]);
+
+	//auto select self as target for boost moves
+	useEffect(() => {
+		if (move && move.target.name === 'user') {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'ATTACK',
+					move,
+					target: actor.id,
+				},
+			});
+			reset();
+		}
+	}, [move]);
 
 	//auto select target for prepared move
 	useEffect(() => {
@@ -90,6 +114,7 @@ export const ChooseActionAndTarget = ({
 					target: actor.preparedMove?.targetId,
 				},
 			});
+			reset();
 		}
 	}, []);
 
@@ -111,16 +136,10 @@ export const ChooseActionAndTarget = ({
 					target: optimalTarget,
 				},
 			});
+			reset();
 		}
 	}, []);
 
-	const reset = () => {
-		setActionName(undefined);
-		setMove(undefined);
-		setBall(undefined);
-		setItem(undefined);
-		setMoveToPPRestore(undefined);
-	};
 	if (!actionName) {
 		return (
 			<ChooseAction
