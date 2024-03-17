@@ -10,6 +10,9 @@ import { ErrorScreen } from '../../../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../../../FetchingScreen/FetchingScreen';
 import { PokemonSummary } from '../PokemonSummary/PokemonSummary';
 import './TeamGrid.css';
+
+import { Draggable } from 'react-drag-reorder';
+
 export interface TeamGridProps {
 	pokemon: OwnedPokemon[];
 	noFocus?: boolean;
@@ -61,21 +64,24 @@ export const TeamGrid = ({
 		return (
 			<div className="teamGridAndFocused">
 				<div className="teamGrid">
-					{team.map((p) => (
-						<div
-							key={p.id}
-							onClick={() => {
-								onGridItemClick && onGridItemClick(p);
-								setFocused(p);
-							}}
-						>
-							<CircularSprite
-								noAnimation={focused?.id !== p.id || noFocus}
-								pokemon={p}
-								overlay={focused?.id === p.id && !noFocus && <div />}
-							/>
-						</div>
-					))}
+					<Draggable>
+						{team.map((p) => (
+							<div
+								key={p.id}
+								onClick={() => {
+									onGridItemClick && onGridItemClick(p);
+									setFocused(p);
+								}}
+								style={{ display: 'flex', justifyContent: 'center' }}
+							>
+								<CircularSprite
+									noAnimation={focused?.id !== p.id || noFocus}
+									pokemon={p}
+									overlay={focused?.id === p.id && !noFocus && <div />}
+								/>
+							</div>
+						))}
+					</Draggable>
 				</div>
 				{focused && !noFocus && (
 					<PokemonSummary
