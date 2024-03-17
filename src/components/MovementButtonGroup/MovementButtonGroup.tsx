@@ -1,4 +1,10 @@
 import { JSX } from 'react';
+import {
+	FaCircleArrowDown,
+	FaCircleArrowLeft,
+	FaCircleArrowRight,
+	FaCircleArrowUp,
+} from 'react-icons/fa6';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
 import { selectNextNotification } from '../../store/selectors/notification/selectNextNotification';
 import { useAppSelector } from '../../store/storeHooks';
@@ -13,11 +19,24 @@ export const MovementButtonGroup = (): JSX.Element => {
 	}
 	return (
 		<div className="movementButtons">
-			<MovementButton x={3} />
+			<MovementButton
+				orientation={3}
+				icon={<FaCircleArrowUp className="movementButton" role="button" />}
+			/>
 			<div className="middleButtons">
-				<MovementButton x={1} /> <MovementButton x={2} />
+				<MovementButton
+					orientation={1}
+					icon={<FaCircleArrowLeft className="movementButton" role="button" />}
+				/>{' '}
+				<MovementButton
+					orientation={2}
+					icon={<FaCircleArrowRight className="movementButton" role="button" />}
+				/>
 			</div>
-			<MovementButton x={0} />
+			<MovementButton
+				orientation={0}
+				icon={<FaCircleArrowDown className="movementButton" role="button" />}
+			/>
 		</div>
 	);
 };
