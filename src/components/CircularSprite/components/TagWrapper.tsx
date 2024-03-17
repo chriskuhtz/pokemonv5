@@ -1,73 +1,10 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
-import { calculateLevelData } from '../../../functions/calculateLevelData';
+import React, { useEffect, useState } from 'react';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import '../CircularSprite.css';
+import { useTags } from '../../../hooks/useTags';
 
 export const TagWrapper = ({ pokemon }: { pokemon: BattlePokemon }) => {
-	const tags: ReactNode[] = useMemo(() => {
-		const { level } = calculateLevelData(pokemon.xp);
-		const res: ReactNode[] = [`Lvl ${level}`];
-
-		Object.entries(pokemon.statModifiers).forEach(([x, value]) => {
-			if (value === 0) {
-				return;
-			}
-			const sign = value > 0 ? '+' : '';
-
-			res.push(`${sign}${value} ${x}`);
-		});
-		if (pokemon.evasiveness) {
-			res.push(`eva: ${pokemon.evasiveness}`);
-		}
-		if (pokemon.accuracyModifier) {
-			res.push(`accu: ${pokemon.accuracyModifier}`);
-		}
-
-		if (pokemon.primaryAilment) {
-			res.push(pokemon.primaryAilment.type.slice(0, 4));
-		}
-		if (pokemon.preparedMove) {
-			res.push(pokemon.preparedMove.moveName);
-		}
-		if (pokemon.lockedInMove) {
-			res.push(`locked into ${pokemon.lockedInMove.moveName}`);
-		}
-		if (pokemon.location) {
-			res.push(pokemon.location);
-		}
-		if (pokemon.multiHits) {
-			res.push(`${pokemon.multiHits} hits remaining`);
-		}
-		pokemon.secondaryAilments?.forEach((a) => {
-			res.push(`${a.type}: ${a.duration} turns`);
-		});
-		if (pokemon.heldItemName) {
-			res.push(
-				<img
-					className="battleSpriteTag"
-					height={'40px'}
-					width={'40px'}
-					src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pokemon.heldItemName}.png`}
-				/>
-			);
-		}
-
-		return res.map((tag) => {
-			if (typeof tag === 'string') {
-				return (
-					<div
-						key={tag}
-						className={`battleSpriteTag ${tag.includes('-') && 'redTag'} ${
-							tag.includes('+') && 'greenTag'
-						}`}
-					>
-						<div>{tag}</div>
-					</div>
-				);
-			}
-			return tag;
-		});
-	}, [pokemon]);
+	const tags = useTags(pokemon);
 
 	const [shiftDegrees, setShiftDegrees] = useState<number>(0);
 
