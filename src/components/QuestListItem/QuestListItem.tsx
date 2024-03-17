@@ -3,6 +3,7 @@ import { useSaveGame } from '../../hooks/useSaveGame';
 import { Quest } from '../../interfaces/Quest';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { IconWithTag } from '../IconWithTag/IconWithTag';
+import { QuestProgress } from '../QuestProgress/QuestProgress';
 
 export const QuestListItem = ({ quest }: { quest: Quest }) => {
 	const isConditionFulfilled = useIsConditionFulfilled();
@@ -30,6 +31,7 @@ export const QuestListItem = ({ quest }: { quest: Quest }) => {
 					<p>
 						<strong>Reward Money: {quest.rewardMoney}$</strong>
 					</p>
+					<QuestProgress quest={quest} />
 				</div>
 			}
 			rightSide={

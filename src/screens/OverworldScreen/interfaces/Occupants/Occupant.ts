@@ -68,6 +68,7 @@ export interface OverworldItem extends BaseOccupant {
 	inventory: Inventory;
 	id: UniqueOccupantId;
 	type: 'ITEM';
+	sprite: 'pokeball';
 }
 export interface QuestCheck extends BaseOccupant {
 	type: 'QUEST_CHECK';

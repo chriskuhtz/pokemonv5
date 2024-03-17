@@ -178,7 +178,7 @@ export const DefeatAllTrainersQuest: Quest = {
 	title: 'Defeat all Trainers',
 	description: 'Its the only way to prove you are the best.',
 	rewardMoney: 10000,
-	rewardItems: generateInventory({ potion: 5 }),
+	rewardItems: generateInventory({ 'master-ball': 1, 'rare-candy': 20 }),
 	condition: {
 		type: 'HANDLED_OCCUPANTS',
 		ids: Object.values(UniqueOccupantRecord)
