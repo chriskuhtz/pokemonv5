@@ -33,8 +33,7 @@ export const ExpIndicator = ({
 			style={
 				{
 					'--expPercentage': expPercentage,
-					'--expColor':
-						pokemon.side === 'PLAYER' ? 'blue' : 'var(--main-bg-color)',
+					'--expColor': pokemon.side === 'PLAYER' ? 'blue' : undefined,
 					'--animationName': animationName,
 				} as CSSProperties
 			}
