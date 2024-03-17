@@ -26,6 +26,9 @@ export const determineNewActorAilment = (
 		dispatch(addNotification(`${actor.name} was paralyzed by static`));
 		updatedActor.primaryAilment = { type: 'paralysis' };
 	}
+	if (target.ability === 'cute-charm' && actor.ability === 'oblivious') {
+		dispatch(addNotification(`${actor.name} is oblivious to cute charm`));
+	}
 
 	return updatedActor;
 };

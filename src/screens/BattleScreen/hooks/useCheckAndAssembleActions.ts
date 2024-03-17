@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
-import { applyAbilitiesWeatherAndAilments } from '../../../functions/applyAbilitiesWeatherAndAilments';
+import { applyAbilitiesWeatherAilmentsAndHeldItems } from '../../../functions/applyAbilitiesWeatherAilmentsAndHeldItems';
+import { getPrepMoveDialogue } from '../../../functions/getPrepMoveDialogue';
 import {
 	isBattleActionWithTarget,
 	isBattleAttack,
@@ -22,6 +23,7 @@ export const useCheckAndAssembleActions = (
 	mode: BattleMode,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>,
 	environment: BattleEnvironment
 ) => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
@@ -66,12 +68,13 @@ export const useCheckAndAssembleActions = (
 					: undefined;
 
 			if (isPrimaryAction(actor.nextAction)) {
-				const skipAction = applyAbilitiesWeatherAndAilments(
+				const skipAction = applyAbilitiesWeatherAilmentsAndHeldItems(
 					actor,
 					playerSide,
 					opponentSide,
 					setPlayerSide,
 					setOpponentSide,
+					setEnvironment,
 					dispatch,
 					environment
 				);
@@ -149,26 +152,30 @@ export const useCheckAndAssembleActions = (
 				return;
 			}
 
-			if (actor.nextAction && isBattleAttack(actor.nextAction)) {
+			if (isBattleAttack(actor.nextAction)) {
 				if (
 					secondTurnMoves.includes(actor.nextAction.move.name) &&
 					!actor.preparedMove
 				) {
 					dispatch(
 						concatDialogue([
-							`${actor.name} is preparing ${actor.nextAction?.move.name}`,
+							getPrepMoveDialogue(actor.name, actor.nextAction.move.name),
 						])
 					);
 					return;
 				}
 				dispatch(
-					concatDialogue([`${actor.name} used ${actor.nextAction?.move.name}`])
+					concatDialogue([
+						`${actor.name} used ${actor.nextAction?.move.name} ${
+							actor.multiHits ? `(${actor.multiHits} more)` : ''
+						}`,
+					])
 				);
 				return;
 			}
 			dispatch(
 				concatDialogue([
-					`${actor.name} used ${actor.nextAction?.type} or something`,
+					`${actor.name} used ${actor.nextAction?.type} or something, idk`,
 				])
 			);
 		}

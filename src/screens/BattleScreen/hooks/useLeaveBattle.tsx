@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-	UniqueOccupantIds,
+	UniqueOccupantId,
 	UniqueOccupantRecord,
 } from '../../../constants/UniqueOccupantRecord';
+import { trimToOwnedPokemon } from '../../../functions/trimToOwnedPokemon';
 import { isTrainer } from '../../../functions/typeguards/occupantTypeGuards';
 import { useSaveGame } from '../../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
@@ -24,7 +25,7 @@ export const useLeaveBattle = (
 	playerSide: BattleSide | undefined,
 	opponentSide: BattleSide | undefined,
 	environment: BattleEnvironment,
-	trainerId?: UniqueOccupantIds
+	trainerId?: UniqueOccupantId
 ) => {
 	const saveFile = useGetCurrentSaveFile();
 	const navigate = useNavigate();
@@ -72,19 +73,7 @@ export const useLeaveBattle = (
 					damage: p.ball === 'heal-ball' ? 0 : p.damage,
 					primaryAilment: p.ball === 'heal-ball' ? undefined : p.primaryAilment,
 				})),
-			].map((p) => {
-				return {
-					...p,
-					nextAction: undefined,
-					status: undefined,
-					moves: undefined,
-					stats: undefined,
-					statModifiers: undefined,
-					multiHits: undefined,
-					preparedMove: undefined,
-					secondaryAilments: undefined,
-				};
-			});
+			].map((p) => trimToOwnedPokemon(p));
 		},
 		[saveFile]
 	);
@@ -110,11 +99,18 @@ export const useLeaveBattle = (
 
 				visitedNurse: reason === 'LOSS',
 				fundsUpdate,
+				inventoryChanges: playerSide?.consumedItems,
+				subtractInventory: true,
 				newBadge: reason === 'WIN' ? trainer?.rewardBadge : undefined,
 				teleportToLastHealer: reason === 'LOSS',
 			});
 
 			navigate(RoutesEnum.overworld);
+			if (trainer) {
+				dispatch(setDialogue(trainer.dialogueAfterDefeat));
+			} else {
+				dispatch(setDialogue([]));
+			}
 			if (reason === 'RUNAWAY') {
 				dispatch(addNotification('Phew, escaped'));
 			}
@@ -123,9 +119,6 @@ export const useLeaveBattle = (
 			}
 			if (reason === 'WIN') {
 				dispatch(addNotification('You won the Battle'));
-				if (trainer) {
-					dispatch(setDialogue(trainer.dialogueAfterDefeat));
-				}
 			}
 			if (reason === 'LOSS') {
 				dispatch(

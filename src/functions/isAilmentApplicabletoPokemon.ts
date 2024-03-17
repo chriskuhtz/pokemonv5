@@ -23,5 +23,12 @@ export const isAilmentApplicableToPokemon = (
 	) {
 		return false;
 	}
+	if (
+		((ailment.type === 'poison' || ailment.type === 'toxic') &&
+			['poison', 'steel'].includes(pokemon.primaryType)) ||
+		['poison', 'steel'].includes(pokemon.secondaryType ?? '')
+	) {
+		return false;
+	}
 	return true;
 };

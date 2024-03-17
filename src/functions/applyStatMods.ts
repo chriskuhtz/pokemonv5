@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
 import { addNotification } from '../store/slices/notificationSlice';
@@ -8,12 +9,34 @@ import { canRaiseStat } from './canRaiseStat';
 export const applyStatMods = (
 	pokemon: BattlePokemon,
 	move: MoveDto,
-	dispatch: Dispatch<unknown>
+	dispatch: Dispatch<unknown>,
+	environment?: BattleEnvironment
 ): BattlePokemon => {
 	const updatedPokemon = { ...pokemon };
 	const updatedStats = { ...pokemon.statModifiers };
+
+	if (move.name === 'captivate' && pokemon.ability === 'oblivious') {
+		dispatch(addNotification(`${pokemon.name} is oblivious`));
+		return updatedPokemon;
+	}
+	if (
+		move.meta.category.name === 'damage+lower' &&
+		pokemon.ability === 'shield-dust'
+	) {
+		dispatch(
+			addNotification(
+				`${pokemon.name} prevents additional effects with shield dust`
+			)
+		);
+		return updatedPokemon;
+	}
+
 	if (move.stat_changes) {
 		move.stat_changes.forEach((statChange) => {
+			const protectedByMist =
+				(pokemon.side === 'PLAYER' && environment?.playerSideMist) ||
+				(pokemon.side === 'OPPONENT' && environment?.opponentSideMist);
+			//@ts-expect-error hmmm
 			if (statChange.stat.name === 'accuracy') {
 				updatedPokemon.accuracyModifier += statChange.change;
 				dispatch(
@@ -43,6 +66,14 @@ export const applyStatMods = (
 				statChange.change < 0 &&
 				canLowerStat(updatedPokemon, statChange.stat.name)
 			) {
+				if (protectedByMist) {
+					dispatch(
+						addNotification(
+							`${pokemon.name} prevents stat reductions with mist`
+						)
+					);
+					return;
+				}
 				updatedStats[statChange.stat.name] += statChange.change;
 				if (updatedStats[statChange.stat.name] < -6) {
 					updatedStats[statChange.stat.name] = -6;

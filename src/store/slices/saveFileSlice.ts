@@ -3,6 +3,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ForwardFootEnum } from '../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { SaveFile } from '../../interfaces/SaveFile';
+import { iterateOver } from '../../functions/iterateOver';
+
 export interface CharacterPosition {
 	orientation: OrientationEnum;
 	forwardFoot?: ForwardFootEnum;
@@ -29,13 +31,25 @@ export const saveFileSlice = createSlice({
 			state.saveFile = undefined;
 		},
 		startWalking: (state) => {
+			if (!state.saveFile) {
+				return;
+			}
 			state.walking = true;
+			state.saveFile.position = {
+				...state.saveFile.position,
+				forwardFoot: iterateOver(
+					state.saveFile.position.forwardFoot ?? 0,
+					0,
+					3
+				),
+			};
 		},
 		stopWalking: (state) => {
 			if (!state.saveFile) {
 				return;
 			}
 			state.walking = false;
+			state.nextOrientation = undefined;
 			state.saveFile.position = {
 				...state.saveFile.position,
 				forwardFoot: 0,
@@ -51,19 +65,15 @@ export const saveFileSlice = createSlice({
 			if (!state.saveFile) {
 				return;
 			}
-			if (
-				state.saveFile.position.forwardFoot ===
-				Object.entries(ForwardFootEnum).length / 2 - 1
-			)
-				state.saveFile.position = { ...action.payload, forwardFoot: 0 };
-			else
-				state.saveFile.position = {
-					...action.payload,
-					forwardFoot: (state.saveFile.position.forwardFoot ?? 0) + 1,
-				};
-			if (state.walking === false) {
-				state.nextOrientation = undefined;
-			}
+
+			state.saveFile.position = {
+				...action.payload,
+				forwardFoot: iterateOver(
+					state.saveFile.position.forwardFoot ?? 0,
+					0,
+					3
+				),
+			};
 		},
 	},
 });

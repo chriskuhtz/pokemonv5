@@ -1,17 +1,20 @@
+import { ItemType } from '../../interfaces/Item';
 import { ItemData } from '../../interfaces/ItemData';
+import { AmountHandler } from '../../ui_components/AmountHandler/AmountHandler';
 import { Pill } from '../../ui_components/Pill/Pill';
 
 export const MarketListItem = ({
 	item,
+	amount,
 	onClick,
 }: {
 	item: ItemData;
-	onClick: () => void;
+	amount: number;
+	onClick: (x: ItemType, amount: number) => void;
 }) => {
 	return (
 		<Pill
 			leftSide={<div>{item.cost}$</div>}
-			onClick={onClick}
 			center={
 				<div
 					style={{
@@ -28,7 +31,13 @@ export const MarketListItem = ({
 					{item.name}
 				</div>
 			}
-			rightSide={<div>ADD</div>}
+			rightSide={
+				<AmountHandler
+					amount={amount}
+					//displayZero={false}
+					setAmount={(x) => onClick(item.name, x)}
+				/>
+			}
 		/>
 	);
 };

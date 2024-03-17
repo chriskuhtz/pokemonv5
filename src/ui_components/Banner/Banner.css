@@ -6,3 +6,9 @@
 	align-items: center;
 	background-color: var(--main-bg-95);
 }
+.bannerContentWrapper {
+	background-color: var(--main-bg-90);
+	width: 85%;
+	padding: 1.5rem 2rem;
+	font-size: x-large;
+}

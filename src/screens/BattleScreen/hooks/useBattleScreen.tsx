@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UniqueOccupantIds } from '../../../constants/UniqueOccupantRecord';
+import { UniqueOccupantId } from '../../../constants/UniqueOccupantRecord';
 import { assignPriority } from '../../../functions/assignPriority';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
@@ -10,6 +10,7 @@ import { MapEncounter, MapEnvironment } from '../../../store/slices/MapSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import { BattleMode, BattleSide } from '../BattleScreen';
+import { useAdvanceRoundAndAssignOpponentActions } from './useAdvanceRoundAndAssignOpponentActions';
 import { useAvailableActions } from './useAvailableActions';
 import { useCheckAndAssembleActions } from './useCheckAndAssembleActions';
 import { useHandleAction } from './useHandleAction';
@@ -18,7 +19,7 @@ import { useLeaveBattle } from './useLeaveBattle';
 
 export interface BattleScreenProps {
 	opponents: MapEncounter[];
-	trainerId?: UniqueOccupantIds;
+	trainerId?: UniqueOccupantId;
 	activePokemonPerSide: number;
 	outside: MapEnvironment;
 }
@@ -30,6 +31,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		state as BattleScreenProps;
 
 	const [playerSide, setPlayerSide] = useState<BattleSide | undefined>();
+
 	const [opponentSide, setOpponentSide] = useState<BattleSide | undefined>();
 	const [environment, setEnvironment] = useState<BattleEnvironment>({
 		paydayCounter: 0,
@@ -126,8 +128,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 	const { opponentFetchStatus, playerFetchStatus } = useInitialiseBattleSides(
 		saveFile,
 		setPlayerSide,
-		setOpponentSide,
-		setEnvironment
+		setOpponentSide
 	);
 	//assemble actions
 	useCheckAndAssembleActions(
@@ -137,6 +138,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		mode,
 		setOpponentSide,
 		setPlayerSide,
+		setEnvironment,
 		environment
 	);
 	//check to leave battle
@@ -218,40 +220,13 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		trainerId,
 	]);
 	//assign actions to opponents
-	useEffect(() => {
-		if (
-			mode === 'COLLECTING' &&
-			opponentSide &&
-			!opponentSide.field.every((p) => p.nextAction)
-		) {
-			if (playerSide?.field.length === 0) {
-				return;
-			}
-			const optimalTarget = playerSide?.field[0].id;
-			if (!optimalTarget) {
-				console.error('cant determine optimal target');
-				return;
-			}
-
-			setOpponentSide({
-				...opponentSide,
-				field: opponentSide?.field.map((p) => ({
-					...p,
-					nextAction: {
-						type: 'ATTACK',
-						target: optimalTarget,
-						move:
-							p.moves.find((m) => m.name === p.preparedMove?.moveName) ??
-							p.moves[Math.floor(Math.random() * p.moves.length)],
-					},
-				})),
-			});
-			setEnvironment((environment) => ({
-				...environment,
-				battleRounds: environment.battleRounds + 1,
-			}));
-		}
-	}, [mode, opponentSide, playerSide]);
+	useAdvanceRoundAndAssignOpponentActions(
+		mode,
+		opponentSide,
+		playerSide,
+		setOpponentSide,
+		setEnvironment
+	);
 
 	return {
 		mode,

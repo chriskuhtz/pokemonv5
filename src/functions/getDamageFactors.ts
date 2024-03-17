@@ -1,3 +1,4 @@
+import { fixedDamageMoves } from '../constants/fixedDamageMoves';
 import { ohkoMoves } from '../constants/ohkoMoves';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -12,7 +13,8 @@ export const getDamageFactors = (
 	actor: BattlePokemon,
 	move: MoveDto,
 	target: BattlePokemon,
-	environment: BattleEnvironment
+	environment: BattleEnvironment,
+	isConfusionHit?: boolean
 ): DamageFactors => {
 	const { level } = calculateLevelData(actor.xp);
 	const { damage_class, power, type } = move;
@@ -48,6 +50,18 @@ export const getDamageFactors = (
 	const weatherFactor = determineWeatherFactor(moveType, environment.weather);
 	const criticalFactor = determineCritFactor(move, target);
 
+	const otherFactor = () => {
+		if (
+			actor.ability === 'flash-fire' &&
+			actor.usedAbility &&
+			move.type.name === 'fire'
+		) {
+			return 1.5;
+		}
+
+		return 1;
+	};
+
 	return {
 		attackerLevel: level,
 		correctAttack,
@@ -59,15 +73,14 @@ export const getDamageFactors = (
 		glaiveRush: 1,
 		criticalFactor,
 		stabFactor,
-		typeFactor: getTypeFactor(
-			moveType,
-			target.primaryType,
-			target.secondaryType
-		),
+		typeFactor: isConfusionHit
+			? 1
+			: getTypeFactor(moveType, target.primaryType, target.secondaryType),
 		burnFactor: actor.primaryAilment?.type === 'burn' ? 0.5 : 1,
-		otherFactor: 1,
+		otherFactor: otherFactor(),
 		zMoveFactor: 1,
 		teraShieldFactor: 1,
 		ohko: ohkoMoves.includes(move.name),
+		fixed: fixedDamageMoves[move.name],
 	};
 };

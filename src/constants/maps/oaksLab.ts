@@ -1,5 +1,6 @@
 import { MapState } from '../../store/slices/MapSlice';
 import { UniqueOccupantRecord } from '../UniqueOccupantRecord';
+import { oaksLabToStarterTown } from './portals';
 
 const mapId = 'oaks-lab';
 export const oaksLab: MapState = {
@@ -14,17 +15,7 @@ export const oaksLab: MapState = {
 			(entry) => entry[1].position.mapId === mapId
 		)
 	),
-	decorators: [
-		{
-			sprite: 'doormat',
-			x: 2,
-			y: 5,
-			onStep: {
-				type: 'PORTAL',
-				to: { mapId: 'starter-town', x: 5, y: 4, orientation: 0 },
-			},
-		},
-	],
+	decorators: [oaksLabToStarterTown],
 	obstacles: [
 		{
 			type: 'OBSTACLE',

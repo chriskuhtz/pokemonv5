@@ -1,20 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
 
+import { getUsedPPByIndex } from '../../functions/getPPByIndex';
 import { isMoveDisabled } from '../../functions/isMoveDisabled';
 import { BattleAction } from '../../interfaces/BattleAction';
+import { Inventory } from '../../interfaces/Inventory';
 import {
 	HealingItemType,
-	Inventory,
+	PPRestoringItemType,
 	PokeballType,
-} from '../../interfaces/Inventory';
+	XItemType,
+	isXItem,
+} from '../../interfaces/Item';
 import { MoveDto } from '../../interfaces/Move';
 import { SelectableAction } from '../../interfaces/SelectableAction';
 import { ChooseAction } from './components/ChooseAction';
 import { ChooseBall } from './components/ChooseBall';
+import { ChooseItem } from './components/ChooseItem';
 import { ChooseMove } from './components/ChooseMove';
 import { ChooseTarget } from './components/ChooseTarget';
-import { ChooseItem } from './components/ChooseItem';
 
 export const ChooseActionAndTarget = ({
 	actor,
@@ -34,7 +38,41 @@ export const ChooseActionAndTarget = ({
 	>();
 	const [move, setMove] = useState<MoveDto | undefined>();
 	const [ball, setBall] = useState<PokeballType | undefined>();
-	const [item, setItem] = useState<HealingItemType | undefined>();
+	const [item, setItem] = useState<
+		HealingItemType | PPRestoringItemType | XItemType | undefined
+	>();
+	const [pokemonIdToPPRestore, setPokemonIdToPPRestore] = useState<
+		string | undefined
+	>();
+	const [moveToPPRestore, setMoveToPPRestore] = useState<string | undefined>();
+
+	const ppRestorationTarget = useMemo(
+		() => pokemonOnField.find((p) => p.id === pokemonIdToPPRestore),
+		[pokemonOnField, pokemonIdToPPRestore]
+	);
+
+	const reset = () => {
+		setActionName(undefined);
+		setMove(undefined);
+		setBall(undefined);
+		setItem(undefined);
+		setMoveToPPRestore(undefined);
+	};
+	//select ppRestoration Action
+	useEffect(() => {
+		if (item && moveToPPRestore && pokemonIdToPPRestore) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'IN_BATTLE_ITEM',
+					item,
+					ppRestoreMove: moveToPPRestore,
+					target: pokemonIdToPPRestore,
+				},
+			});
+			reset();
+		}
+	}, [moveToPPRestore, item, actor, pokemonIdToPPRestore]);
 
 	//no target needed for runAway
 	useEffect(() => {
@@ -43,9 +81,24 @@ export const ChooseActionAndTarget = ({
 				...actor,
 				nextAction: { type: 'RUNAWAY_ATTEMPT' },
 			});
-			setActionName(undefined);
+			reset();
 		}
 	}, [actionName, actor, selectAction]);
+
+	//auto select self as target for boost moves
+	useEffect(() => {
+		if (move && move.target.name === 'user') {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'ATTACK',
+					move,
+					target: actor.id,
+				},
+			});
+			reset();
+		}
+	}, [move]);
 
 	//auto select target for prepared move
 	useEffect(() => {
@@ -61,6 +114,29 @@ export const ChooseActionAndTarget = ({
 					target: actor.preparedMove?.targetId,
 				},
 			});
+			reset();
+		}
+	}, []);
+
+	//auto select target for locked in move
+	useEffect(() => {
+		const move = actor.moves.find(
+			(m) => m.name === actor.lockedInMove?.moveName
+		);
+		const potentialTargets = pokemonOnField.filter((p) => p.id !== actor.id);
+		const optimalTarget =
+			potentialTargets[Math.floor(Math.random() * potentialTargets.length)].id;
+
+		if (move) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'ATTACK',
+					move,
+					target: optimalTarget,
+				},
+			});
+			reset();
 		}
 	}, []);
 
@@ -79,11 +155,11 @@ export const ChooseActionAndTarget = ({
 		return (
 			<ChooseMove
 				open={actionName === 'ATTACK'}
-				name={actor.name}
+				title={`which move should ${actor.name} use:`}
 				setMove={setMove}
-				resetActor={() => {
-					setActionName(undefined);
-				}}
+				usedPP={actor.usedPowerPoints}
+				resetActor={reset}
+				boostedMoves={actor.ppBoostedMoves}
 				availableMoves={actor.moves.map((m) => ({
 					displayName: m.name,
 					actionType: 'ATTACK',
@@ -100,25 +176,61 @@ export const ChooseActionAndTarget = ({
 				open={actionName === 'CATCH_ATTEMPT'}
 				setBall={setBall}
 				inventory={inventory}
-				resetActor={() => {
-					setActionName(undefined);
-				}}
+				resetActor={reset}
 			/>
 		);
 	}
-	if (actionName === 'HEALING_ITEM' && !item) {
+	if (actionName === 'IN_BATTLE_ITEM' && !item) {
 		return (
 			<ChooseItem
-				open={actionName === 'HEALING_ITEM'}
+				open={actionName === 'IN_BATTLE_ITEM'}
 				setItem={setItem}
 				inventory={inventory}
-				resetActor={() => {
-					setActionName(undefined);
+				resetActor={reset}
+				availableTargets={
+					availableActions.find((a) => a.actionType === actionName)
+						?.availableTargets ?? []
+				}
+			/>
+		);
+	}
+	if (!pokemonIdToPPRestore && item && ['ether', 'max-ether'].includes(item)) {
+		return (
+			<ChooseTarget
+				actionName={actionName}
+				item={item}
+				selectAction={(x) => {
+					setPokemonIdToPPRestore(x.id);
 				}}
 				availableTargets={
 					availableActions.find((a) => a.actionType === actionName)
 						?.availableTargets ?? []
 				}
+				actor={actor}
+			/>
+		);
+	}
+	if (!moveToPPRestore && item && ['ether', 'max-ether'].includes(item)) {
+		if (!ppRestorationTarget) {
+			console.error('who should we pp Restore?');
+			return <></>;
+		}
+		return (
+			<ChooseMove
+				open={true}
+				title={'restore which move´s pp'}
+				setMove={(x) => setMoveToPPRestore(x?.name)}
+				usedPP={ppRestorationTarget.usedPowerPoints}
+				resetActor={reset}
+				boostedMoves={actor.ppBoostedMoves}
+				availableMoves={ppRestorationTarget.moves.map((m, i) => ({
+					displayName: m.name,
+					actionType: 'ATTACK',
+					disabled:
+						getUsedPPByIndex(ppRestorationTarget.usedPowerPoints, i) === 0,
+					move: m,
+					availableTargets: [],
+				}))}
 			/>
 		);
 	}
@@ -131,14 +243,14 @@ export const ChooseActionAndTarget = ({
 			item={item}
 			selectAction={(x) => {
 				selectAction(x);
-				setActionName(undefined);
-				setMove(undefined);
-				setBall(undefined);
-				setItem(undefined);
+				reset();
 			}}
 			availableTargets={
-				availableActions.find((a) => a.actionType === actionName)
-					?.availableTargets ?? []
+				availableActions
+					.find((a) => a.actionType === actionName)
+					?.availableTargets.filter(
+						(t) => !isXItem(item) || pokemonOnField.some((p) => p.id === t.id)
+					) ?? []
 			}
 			actor={actor}
 		/>

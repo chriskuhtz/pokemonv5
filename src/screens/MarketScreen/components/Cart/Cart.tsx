@@ -1,16 +1,17 @@
 import { Inventory } from '../../../../interfaces/Inventory';
-import { ItemName } from '../../../../interfaces/Item';
+import { ItemType } from '../../../../interfaces/Item';
+import { AmountHandler } from '../../../../ui_components/AmountHandler/AmountHandler';
 import { Pill } from '../../../../ui_components/Pill/Pill';
 import './Cart.css';
 export const Cart = ({
 	cart,
-	removeFromCart,
+	changeCartAmount,
 	totalCost,
 	money,
 	purchase,
 }: {
 	cart: Inventory;
-	removeFromCart: (x: ItemName) => void;
+	changeCartAmount: (x: ItemType, amount: number) => void;
 	totalCost: number;
 	money: number;
 	purchase: () => void;
@@ -31,15 +32,11 @@ export const Cart = ({
 							<span>
 								{amount} {name}
 							</span>
-							<span
-								onClick={() => {
-									if (name in ItemName) {
-										removeFromCart(name as ItemName);
-									}
-								}}
-							>
-								{amount === 1 ? 'X' : '-'}
-							</span>
+							<AmountHandler
+								amount={amount}
+								setAmount={(x) => changeCartAmount(name as ItemType, x)}
+								canIncrease={false}
+							/>
 						</h3>
 					);
 				})}

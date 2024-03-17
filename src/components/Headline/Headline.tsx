@@ -8,6 +8,7 @@ export interface HeadlineProps {
 	className?: string;
 	style?: React.CSSProperties;
 	rightElement?: ReactNode;
+	sticky?: boolean;
 }
 export const Headline = ({
 	text,
@@ -15,9 +16,15 @@ export const Headline = ({
 	className,
 	style,
 	rightElement,
+	sticky,
 }: HeadlineProps): JSX.Element => {
 	return (
-		<div className={`headline ${className}`} style={style}>
+		<div
+			className={`headline ${className} ${
+				sticky ? 'stickyHeadline' : undefined
+			}`}
+			style={style}
+		>
 			{routerButtonProps && (
 				<RouterButton
 					to={routerButtonProps.to}

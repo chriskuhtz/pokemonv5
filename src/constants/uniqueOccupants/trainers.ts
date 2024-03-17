@@ -1,6 +1,37 @@
 import { SpriteEnum } from '../../interfaces/SpriteEnum';
 import { Trainer } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
-
+//STARTER_TOWN
+export const youngsterJimmy: Trainer = {
+	id: 'youngster-jimmy',
+	type: 'TRAINER',
+	position: {
+		y: 7,
+		x: 3,
+		mapId: 'starter-town',
+		orientation: 2,
+	},
+	dialogue: ['Think you got what it takes, Big Dog?'],
+	dialogueAfterDefeat: [
+		'You definitely got it, Large Canine.',
+		'Maybe you could even beat Brock.',
+	],
+	sprite: '093',
+	team: [
+		{ dexId: 399, xp: 40 },
+		{ dexId: 13, xp: 40 },
+	],
+	activePokemonPerside: 1,
+	questCondition: {
+		id: 'talkToNurseJoy',
+		status: 'completed',
+	},
+	questUpdates: {
+		defeatAllTrainers: 'active',
+	},
+	rewardMoney: 300,
+	viewRange: 1,
+};
+//BROCKS_GYM
 export const brock: Trainer = {
 	id: 'brock',
 	type: 'TRAINER',
@@ -36,36 +67,6 @@ export const brock: Trainer = {
 	activePokemonPerside: 1,
 	rewardMoney: 4000,
 	rewardBadge: 'boulderBadge',
-};
-export const youngsterJimmy: Trainer = {
-	id: 'youngster-jimmy',
-	type: 'TRAINER',
-	position: {
-		y: 7,
-		x: 3,
-		mapId: 'starter-town',
-		orientation: 2,
-	},
-	dialogue: ['Think you got what it takes, Big Dog?'],
-	dialogueAfterDefeat: [
-		'You definitely got it, Large Canine.',
-		'Maybe you could even beat Brock.',
-	],
-	sprite: '093',
-	team: [
-		{ dexId: 399, xp: 40 },
-		{ dexId: 13, xp: 40 },
-	],
-	activePokemonPerside: 1,
-	questCondition: {
-		id: 'talkToNurseJoy',
-		status: 'completed',
-	},
-	questUpdates: {
-		defeatAllTrainers: 'active',
-	},
-	rewardMoney: 300,
-	viewRange: 1,
 };
 export const brocksMinion: Trainer = {
 	id: 'brocks-minion',
@@ -110,8 +111,9 @@ export const brocksMinion2: Trainer = {
 	rewardMoney: 500,
 	viewRange: 3,
 };
+//BERRY_PATCH
 export const bugcatcherBarry: Trainer = {
-	id: 'bugcatcher-barry',
+	id: 'bugCatcher-barry',
 	type: 'TRAINER',
 	position: {
 		y: 4,
@@ -128,7 +130,7 @@ export const bugcatcherBarry: Trainer = {
 	viewRange: 1,
 };
 export const bugcatcherCisco: Trainer = {
-	id: 'bugcatcher-cisco',
+	id: 'bugCatcher-cisco',
 	type: 'TRAINER',
 	position: {
 		y: 7,
@@ -149,7 +151,7 @@ export const bugcatcherCisco: Trainer = {
 	viewRange: 1,
 };
 export const bugcatcherRalph: Trainer = {
-	id: 'bugcatcher-ralph',
+	id: 'bugCatcher-ralph',
 	type: 'TRAINER',
 	position: {
 		y: 2,
@@ -169,7 +171,7 @@ export const bugcatcherRalph: Trainer = {
 	viewRange: 3,
 };
 export const bugcatcherNash: Trainer = {
-	id: 'bugcatcher-nash',
+	id: 'bugCatcher-nash',
 	type: 'TRAINER',
 	position: {
 		y: 9,
@@ -188,4 +190,103 @@ export const bugcatcherNash: Trainer = {
 	activePokemonPerside: 1,
 	rewardMoney: 500,
 	viewRange: 2,
+};
+//FLAMING_DESERT
+export const pyromaniacJavi: Trainer = {
+	id: 'pyromaniac-javi',
+	type: 'TRAINER',
+	position: {
+		y: 6,
+		x: 6,
+		mapId: 'flaming-desert',
+		orientation: 0,
+	},
+	dialogue: ['I am experimenting with powerful fire'],
+	dialogueAfterDefeat: ['You extinguished my flame...'],
+	sprite: SpriteEnum.pyro,
+	team: [{ dexId: 513, xp: 800 }],
+	activePokemonPerside: 1,
+	rewardMoney: 1000,
+	viewRange: 3,
+};
+export const aceTrainerMelanie: Trainer = {
+	id: 'ace-trainer-melanie',
+	type: 'TRAINER',
+	position: {
+		y: 3,
+		x: 11,
+		mapId: 'flaming-desert',
+		orientation: 1,
+	},
+	dialogue: ['We train under the harshest conditions'],
+	dialogueAfterDefeat: ['Failure makes me stronger'],
+	sprite: SpriteEnum.aceFemale,
+	team: [
+		{ dexId: 133, xp: 800 },
+		{ dexId: 37, xp: 600 },
+	],
+	activePokemonPerside: 2,
+	rewardMoney: 1500,
+	viewRange: 4,
+};
+export const hikerBennet: Trainer = {
+	id: 'hiker-bennet',
+	type: 'TRAINER',
+	position: {
+		y: 6,
+		x: 20,
+		mapId: 'flaming-desert',
+		orientation: 3,
+	},
+	dialogue: ['Hiking in the desert is dangerous', 'but its also beautiful'],
+	dialogueAfterDefeat: ['Remember to stay hydrated'],
+	sprite: SpriteEnum.hiker,
+	team: [{ dexId: 28, xp: 1000 }],
+	activePokemonPerside: 1,
+	rewardMoney: 100,
+	rewardItems: { 'fresh-water': 2 },
+	viewRange: 5,
+};
+export const cowgirlAlex: Trainer = {
+	id: 'cowgirl-alex',
+	type: 'TRAINER',
+	position: {
+		y: 2,
+		x: 25,
+		mapId: 'flaming-desert',
+		orientation: 0,
+	},
+	dialogue: [
+		'My Pa and me are looking for wild Kangaskhan',
+		'Have you seen any?',
+	],
+	dialogueAfterDefeat: ['Well, we better keep looking'],
+	sprite: SpriteEnum.cowgirl,
+	team: [{ dexId: 77, xp: 800 }],
+	activePokemonPerside: 0,
+	rewardMoney: 500,
+	viewRange: 3,
+};
+export const farmerPike: Trainer = {
+	id: 'farmer-pike',
+	type: 'TRAINER',
+	position: {
+		y: 4,
+		x: 29,
+		mapId: 'flaming-desert',
+		orientation: 1,
+	},
+	dialogue: [
+		'These Kangaskhan are quite tricky to spot',
+		'For their size at least',
+	],
+	dialogueAfterDefeat: ['Holler if you spot em'],
+	sprite: SpriteEnum.farmer,
+	team: [
+		{ dexId: 128, xp: 800 },
+		{ dexId: 507, xp: 1000 },
+	],
+	activePokemonPerside: 2,
+	rewardMoney: 1000,
+	viewRange: 1,
 };

@@ -1,6 +1,8 @@
 import { CSSProperties, useMemo } from 'react';
+import { getHealthPercentage } from '../../../functions/getHealthPercentage';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import '../CircularSprite.css';
+
 export const HealthIndicator = ({
 	children,
 	pokemon,
@@ -9,9 +11,7 @@ export const HealthIndicator = ({
 	pokemon: BattlePokemon;
 }) => {
 	const percentage = useMemo(() => {
-		return Math.round(
-			((pokemon.stats.hp - pokemon.damage) / pokemon.stats.hp) * 100
-		);
+		return getHealthPercentage(pokemon);
 	}, [pokemon]);
 
 	const healthDegrees = useMemo(() => {

@@ -4,6 +4,7 @@ export const abilityCheckList: {
 	todos?: string[];
 	handled?: boolean;
 }[] = [
+	//v.0.0.3
 	{
 		name: 'stench',
 		url: 'https://pokeapi.co/api/v2/ability/1/',
@@ -50,16 +51,57 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/10/',
 		handled: true,
 	},
-	{ name: 'water-absorb', url: 'https://pokeapi.co/api/v2/ability/11/' },
-	{ name: 'oblivious', url: 'https://pokeapi.co/api/v2/ability/12/' },
-	{ name: 'cloud-nine', url: 'https://pokeapi.co/api/v2/ability/13/' },
-	{ name: 'compound-eyes', url: 'https://pokeapi.co/api/v2/ability/14/' },
-	{ name: 'insomnia', url: 'https://pokeapi.co/api/v2/ability/15/' },
-	{ name: 'color-change', url: 'https://pokeapi.co/api/v2/ability/16/' },
-	{ name: 'immunity', url: 'https://pokeapi.co/api/v2/ability/17/' },
-	{ name: 'flash-fire', url: 'https://pokeapi.co/api/v2/ability/18/' },
-	{ name: 'shield-dust', url: 'https://pokeapi.co/api/v2/ability/19/' },
-	{ name: 'own-tempo', url: 'https://pokeapi.co/api/v2/ability/20/' },
+	//v.0.0.4
+	{
+		name: 'water-absorb',
+		url: 'https://pokeapi.co/api/v2/ability/11/',
+		handled: true,
+	},
+	{
+		name: 'oblivious',
+		url: 'https://pokeapi.co/api/v2/ability/12/',
+		handled: true,
+	},
+	{
+		name: 'cloud-nine',
+		url: 'https://pokeapi.co/api/v2/ability/13/',
+		handled: true,
+	},
+	{
+		name: 'compound-eyes',
+		url: 'https://pokeapi.co/api/v2/ability/14/',
+		handled: true,
+	},
+	{
+		name: 'insomnia',
+		url: 'https://pokeapi.co/api/v2/ability/15/',
+		handled: true,
+	},
+	{
+		name: 'color-change',
+		url: 'https://pokeapi.co/api/v2/ability/16/',
+		handled: true,
+	},
+	{
+		name: 'immunity',
+		url: 'https://pokeapi.co/api/v2/ability/17/',
+		handled: true,
+	},
+	{
+		name: 'flash-fire',
+		url: 'https://pokeapi.co/api/v2/ability/18/',
+		handled: true,
+	},
+	{
+		name: 'shield-dust',
+		url: 'https://pokeapi.co/api/v2/ability/19/',
+		handled: true,
+	},
+	{
+		name: 'own-tempo',
+		url: 'https://pokeapi.co/api/v2/ability/20/',
+		handled: true,
+	},
 	{ name: 'suction-cups', url: 'https://pokeapi.co/api/v2/ability/21/' },
 	{ name: 'intimidate', url: 'https://pokeapi.co/api/v2/ability/22/' },
 	{ name: 'shadow-tag', url: 'https://pokeapi.co/api/v2/ability/23/' },

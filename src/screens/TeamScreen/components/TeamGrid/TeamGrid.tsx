@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLazyGetPokemonDataByDexIdQuery } from '../../../../api/pokeApi';
 import { CircularSprite } from '../../../../components/CircularSprite/CircularSprite';
 import { useFetch } from '../../../../hooks/useFetch';
+import { SaveGamePayload, useSaveGame } from '../../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
 import { OwnedPokemon } from '../../../../interfaces/OwnedPokemon';
 import { createBattlePokemonFromOwned } from '../../../BattleScreen/functions/createBattlePokemon';
@@ -13,12 +14,14 @@ export interface TeamGridProps {
 	pokemon: OwnedPokemon[];
 	noFocus?: boolean;
 	onGridItemClick?: (p: BattlePokemon) => void;
+	shouldSave?: boolean;
 }
 
 export const TeamGrid = ({
 	pokemon,
 	noFocus,
 	onGridItemClick,
+	shouldSave,
 }: TeamGridProps): JSX.Element => {
 	const [getPokemonByDexId] = useLazyGetPokemonDataByDexIdQuery();
 
@@ -35,9 +38,13 @@ export const TeamGrid = ({
 			);
 	}, [getPokemonByDexId, pokemon]);
 
-	const { res: team, status: playerFetchStatus } = useFetch<
-		BattlePokemon[] | undefined
-	>(fetchPlayerPokemon);
+	const {
+		res: team,
+		status: teamFetchStatus,
+		invalidate: invalidateTeam,
+	} = useFetch<BattlePokemon[] | undefined>(fetchPlayerPokemon);
+
+	const save = useSaveGame();
 
 	const [focused, setFocused] = useState<BattlePokemon | undefined>();
 
@@ -46,13 +53,11 @@ export const TeamGrid = ({
 			setFocused(team[0]);
 		}
 	}, [team]);
-	if (
-		playerFetchStatus === 'fetching' ||
-		playerFetchStatus === 'uninitialized'
-	) {
+	if (teamFetchStatus === 'fetching' || teamFetchStatus === 'uninitialized') {
 		return <FetchingScreen />;
 	}
-	if (playerFetchStatus === 'success' && team) {
+
+	if (teamFetchStatus === 'success' && team) {
 		return (
 			<div className="teamGridAndFocused">
 				<div className="teamGrid">
@@ -65,14 +70,24 @@ export const TeamGrid = ({
 							}}
 						>
 							<CircularSprite
-								noAnimation={focused?.id !== p.id}
+								noAnimation={focused?.id !== p.id || noFocus}
 								pokemon={p}
 								overlay={focused?.id === p.id && !noFocus && <div />}
 							/>
 						</div>
 					))}
 				</div>
-				{focused && !noFocus && <PokemonSummary pokemon={focused} />}
+				{focused && !noFocus && (
+					<PokemonSummary
+						pokemon={focused}
+						save={async (x: SaveGamePayload) => {
+							if (shouldSave) {
+								await save(x);
+								invalidateTeam();
+							}
+						}}
+					/>
+				)}
 			</div>
 		);
 	}

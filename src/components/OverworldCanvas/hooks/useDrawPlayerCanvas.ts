@@ -1,21 +1,17 @@
 import { useCallback } from 'react';
-import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 
-import { selectForwardFoot } from '../../../store/selectors/saveFile/selectForwardFoot';
-import { selectOrientation } from '../../../store/selectors/saveFile/selectOrientation';
+import { selectPlayerDrawingInfo } from '../../../store/selectors/saveFile/selectPlayerDrawingInfo';
 import { useAppSelector } from '../../../store/storeHooks';
 import { playerCanvas } from '../OverworldCanvas';
 import { drawCharacter } from '../functions/drawCharacter';
 import { useUpdatePosition } from './useUpdatePosition';
 
 export const useDrawPlayerCanvas = () => {
-	const saveFile = useGetCurrentSaveFile();
-	const orientation = useAppSelector(selectOrientation);
-	const forwardFoot = useAppSelector(selectForwardFoot);
-	const move = useUpdatePosition();
+	const { position, sprite } = useAppSelector(selectPlayerDrawingInfo);
+	const updatePosition = useUpdatePosition();
 
 	return useCallback(() => {
-		if (!saveFile) {
+		if (!position || !sprite) {
 			console.error('no saveFile, cant draw player');
 			return;
 		}
@@ -42,15 +38,14 @@ export const useDrawPlayerCanvas = () => {
 					img,
 					x: 0,
 					y: 0,
-					orientation: orientation ?? 0,
-					forwardFoot: forwardFoot ?? 0,
+					orientation: position.orientation ?? 0,
+					forwardFoot: position.forwardFoot ?? 0,
 					height: 1.5,
 					width: 1,
 				});
 			};
-			img.src = `npcs/NPC_${saveFile.sprite}.png`;
-
-			move();
+			img.src = `npcs/NPC_${sprite}.png`;
+			updatePosition();
 		}
-	}, [forwardFoot, move, orientation, saveFile]);
+	}, [position, sprite, updatePosition]);
 };

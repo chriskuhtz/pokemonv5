@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { TiThMenu } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
 import { useNumberOfUnclaimedQuests } from '../../hooks/useNumberOfUnclaimedQuests';
 import { RoutesEnum } from '../../router/router';
 import { selectCurrentDialogue } from '../../store/selectors/dialogue/selectCurrentDialogue';
@@ -11,6 +13,13 @@ export const MenuButton = () => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
 	const noti = useAppSelector(selectNextNotification);
 	const numberOfUnclaimed = useNumberOfUnclaimedQuests();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (currentDialogue.length === 0 && !noti && numberOfUnclaimed > 0) {
+			navigate(RoutesEnum.newFulfilledQuest);
+		}
+	}, [currentDialogue, noti, numberOfUnclaimed]);
 
 	if (currentDialogue.length === 0 && !noti) {
 		return (

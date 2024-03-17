@@ -1,11 +1,9 @@
 import { isBattleAttack } from '../interfaces/BattleAction';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
-import { PokeballType } from '../interfaces/Inventory';
+import { PokeballType } from '../interfaces/Item';
 import { calculateLevelData } from './calculateLevelData';
 import { inferLocationFromMove } from './inferLocationFromMove';
 import { isNight } from './isNight';
-
-// 'quick-ball',
 
 export const determineCatchRate = (
 	ball: PokeballType,

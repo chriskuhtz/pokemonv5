@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+import { joinInventories } from '../../../functions/joinInventories';
 import { isBattleActionWithTarget } from '../../../interfaces/BattleAction';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { isPokeball } from '../../../interfaces/Item';
 import { SaveFile } from '../../../interfaces/SaveFile';
 import { SelectableAction } from '../../../interfaces/SelectableAction';
 import { BattleSide } from '../BattleScreen';
@@ -26,13 +28,10 @@ export const useAvailableActions = (
 							fieldmon.nextAction.target !== benchmon.id)
 				)
 			) ?? [];
-		const healingTargets = playerSide.field.filter(
-			(p) =>
-				p.damage > 0 ||
-				p.primaryAilment ||
-				(p.secondaryAilments && p.secondaryAilments.length > 0)
-		);
-		const revivalTargets = playerSide.defeated;
+		const hasPokeballs = Object.entries(
+			joinInventories(saveFile.inventory, playerSide.consumedItems, true)
+		).some(([key, amount]) => isPokeball(key) && amount > 0);
+
 		return [
 			//ATTACK
 			{
@@ -61,9 +60,13 @@ export const useAvailableActions = (
 						Throw Pokeball
 					</div>
 				),
-				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove || !!trainerId,
+				disabled:
+					!!nextPlayerPokemonWithoutAction?.preparedMove ||
+					!!trainerId ||
+					!hasPokeballs,
 				availableTargets: opponentSide.field,
 			},
+			//SWITCH
 			{
 				actionType: 'SWITCH',
 				displayName: 'Switch',
@@ -75,15 +78,18 @@ export const useAvailableActions = (
 					),
 				availableTargets: switchTargets,
 			},
+			//ITEM
 			{
-				actionType: 'HEALING_ITEM',
+				actionType: 'IN_BATTLE_ITEM',
 				displayName: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>use Item</div>
 				),
-				disabled:
-					(healingTargets.length <= 0 && revivalTargets.length <= 0) ||
-					!!nextPlayerPokemonWithoutAction?.preparedMove,
-				availableTargets: [...healingTargets, ...revivalTargets],
+				disabled: !!nextPlayerPokemonWithoutAction?.preparedMove,
+				availableTargets: [
+					...playerSide.field,
+					...playerSide.bench,
+					...playerSide.defeated,
+				],
 			},
 		];
 	}, [

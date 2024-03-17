@@ -13,12 +13,55 @@ export const applyAilments = (
 	if (pokemon.primaryAilment) {
 		return pokemon;
 	}
+	if (
+		move.meta.category.name === 'damage+lower' &&
+		pokemon.ability === 'shield-dust'
+	) {
+		dispatch(
+			addNotification(
+				`${pokemon.name} prevents additional effects with shield dust`
+			)
+		);
+		return pokemon;
+	}
 	if (move.meta.ailment.name === 'paralysis' && pokemon.ability === 'limber') {
 		dispatch(addNotification(`${pokemon.name} avoided paralysis with limber`));
 		return pokemon;
 	}
-	if (Math.random() < move.meta.ailment_chance / 100) {
+	if (
+		move.meta.ailment.name === 'confusion' &&
+		pokemon.ability === 'own-tempo'
+	) {
+		dispatch(
+			addNotification(`${pokemon.name} avoided confusion with own-tempo`)
+		);
+		return pokemon;
+	}
+	if (move.meta.ailment.name === 'sleep' && pokemon.ability === 'insomnia') {
+		dispatch(addNotification(`${pokemon.name} avoided sleep with insomnia`));
+		return pokemon;
+	}
+	if (
+		(move.meta.ailment.name === 'poison' ||
+			move.meta.ailment.name === 'toxic') &&
+		pokemon.ability === 'immunity'
+	) {
+		dispatch(addNotification(`${pokemon.name} is immune to poisoning`));
+		return pokemon;
+	}
+	if (
+		move.meta.ailment.name === 'infatuation' &&
+		pokemon.ability === 'oblivious'
+	) {
+		dispatch(addNotification(`${pokemon.name} is oblivious`));
+		return pokemon;
+	}
+	if (
+		move.meta.ailment_chance === 0 ||
+		Math.random() < move.meta.ailment_chance / 100
+	) {
 		const possibleAilment = { type: move.meta.ailment.name };
+
 		if (
 			isPrimaryAilment(possibleAilment) &&
 			isAilmentApplicableToPokemon(possibleAilment, pokemon)

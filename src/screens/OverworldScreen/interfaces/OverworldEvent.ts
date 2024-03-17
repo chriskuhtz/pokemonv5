@@ -12,17 +12,21 @@ export interface EncounterEvent extends BaseEvent {
 	type: 'ENCOUNTER';
 }
 
+export interface ConditionalMessage extends QuestIdAndStatus {
+	message: string[];
+}
+
 export interface PortalEvent extends BaseEvent {
 	type: 'PORTAL';
 	to: CharacterPosition;
 	questCondition?: QuestIdAndStatus;
-	conditionFailMessage?: string[];
+	conditionalMessages?: ConditionalMessage[];
 }
 export interface RouterEvent extends BaseEvent {
 	type: 'ROUTE';
 	to: RoutesEnum | string;
 	questCondition?: QuestIdAndStatus;
-	conditionFailMessage?: string[];
+	conditionalMessages?: ConditionalMessage[];
 }
 
 export interface SpottedEvent extends BaseEvent {

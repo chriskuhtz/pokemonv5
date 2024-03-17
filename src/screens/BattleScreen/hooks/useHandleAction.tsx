@@ -2,13 +2,15 @@
 import { useCallback } from 'react';
 import { forceSwitchMoves } from '../../../constants/forceSwitchMoves';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
-import { applyHealingItemToPokemon } from '../../../functions/applyHealingItemToPokemon';
+import { applyBattleAttack } from '../../../functions/applyBattleAttack';
+import { applyItem } from '../../../functions/applyItem';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { determineCatchRate } from '../../../functions/determineCatchRate';
-import { handleBattleAttack } from '../../../functions/handleBattleAttack';
+import { getRandomDuration } from '../../../functions/getDuration';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
+import { joinInventories } from '../../../functions/joinInventories';
 import { useGetCurrentSaveFile } from '../../../hooks/xata/useCurrentSaveFile';
 import {
 	isBattleActionWithTarget,
@@ -85,6 +87,11 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
+								status: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+								lockedInMove: undefined,
 							};
 						}),
 					});
@@ -99,6 +106,11 @@ export const useHandleAction = (
 							return {
 								...p,
 								nextAction: undefined,
+								status: undefined,
+								multiHits: undefined,
+								preparedMove: undefined,
+								secondaryAilments: undefined,
+								lockedInMove: undefined,
 							};
 						}),
 					});
@@ -133,8 +145,10 @@ export const useHandleAction = (
 							.concat({
 								...actor,
 								nextAction: undefined,
-								multiHits: undefined,
 								preparedMove: undefined,
+								multiHits: undefined,
+								lockedInMove: undefined,
+								usedAbility: undefined,
 								secondaryAilments: undefined,
 							}),
 					});
@@ -180,8 +194,10 @@ export const useHandleAction = (
 							.concat({
 								...actor,
 								nextAction: undefined,
-								multiHits: undefined,
 								preparedMove: undefined,
+								multiHits: undefined,
+								lockedInMove: undefined,
+								usedAbility: undefined,
 								secondaryAilments: undefined,
 							}),
 					});
@@ -202,13 +218,6 @@ export const useHandleAction = (
 					});
 				}
 
-				if (target?.ability === 'drizzle') {
-					setEnvironment({
-						...environment,
-						weather: { type: 'rain', duration: -1 },
-					});
-					dispatch(addNotification(`${target.name}´s ability made it rain`));
-				}
 				return;
 			}
 			//flinch
@@ -243,7 +252,7 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//Healing Item
+			//ITEM
 			if (isBattleItemAction(action) && target) {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
@@ -252,13 +261,13 @@ export const useHandleAction = (
 							//apply heal to self
 							if (target.id === actor.id && p.id === target.id) {
 								return {
-									...applyHealingItemToPokemon(p, action.item),
+									...applyItem(p, action.item, action.ppRestoreMove),
 									nextAction: undefined,
 								};
 							}
 							if (target.id === p.id) {
 								return {
-									...applyHealingItemToPokemon(p, action.item),
+									...applyItem(p, action.item, action.ppRestoreMove),
 								};
 							}
 							if (actor.id === p.id) {
@@ -269,6 +278,9 @@ export const useHandleAction = (
 							}
 							return p;
 						}),
+						consumedItems: joinInventories(playerSide.consumedItems, {
+							[`${action.item}`]: 1,
+						}),
 					});
 				}
 				if (actor.side === 'OPPONENT') {
@@ -278,7 +290,11 @@ export const useHandleAction = (
 			}
 			if (isBattleItemAction(action) && reviveTarget) {
 				if (actor.side === 'PLAYER') {
-					const revived = applyHealingItemToPokemon(reviveTarget, action.item);
+					const revived = applyItem(
+						reviveTarget,
+						action.item,
+						action.ppRestoreMove
+					);
 					setPlayerSide({
 						...playerSide,
 						field: playerSide.field.map((p) => {
@@ -289,11 +305,125 @@ export const useHandleAction = (
 						}),
 						bench: playerSide.bench.concat(revived),
 						defeated: playerSide.defeated.filter((p) => p.id !== revived.id),
+						consumedItems: joinInventories(playerSide.consumedItems, {
+							[`${action.item}`]: 1,
+						}),
 					});
 					return;
 				}
 				if (actor.side === 'OPPONENT') {
 					console.error('Opponent Healing not implemented yet');
+				}
+				return;
+			}
+			//MIST
+			if (isBattleAttack(action) && action.move.name === 'mist') {
+				dispatch(addNotification(`${actor.name}'s team is protected by mist`));
+				if (actor.side === 'PLAYER') {
+					setEnvironment((environment) => ({
+						...environment,
+						playerSideMist: 5,
+					}));
+
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setEnvironment((environment) => ({
+						...environment,
+						opponentSideMist: 5,
+					}));
+
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//MIST
+			if (isBattleAttack(action) && action.move.name === 'disable' && target) {
+				const disabledMove = {
+					moveName:
+						target.moveNames[
+							Math.floor(Math.random() * target.moveNames.length)
+						],
+					duration: getRandomDuration(2, 5),
+				};
+				dispatch(
+					addNotification(
+						`${target.name}'s ${disabledMove.moveName} is disabled`
+					)
+				);
+				if (actor.side === 'PLAYER') {
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								disabledMove,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== target.id) {
+								return p;
+							}
+							return {
+								...p,
+								disabledMove,
+							};
+						}),
+					});
 				}
 				return;
 			}
@@ -369,7 +499,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
 			//catch attempt
 			if (isCatchAttempt(action) && target) {
 				const successfullyCaught =
@@ -404,6 +533,9 @@ export const useHandleAction = (
 											priority: action.priority,
 									  },
 							};
+						}),
+						consumedItems: joinInventories(playerSide.consumedItems, {
+							[`${action.ball}`]: 1,
 						}),
 					});
 				}
@@ -493,17 +625,18 @@ export const useHandleAction = (
 					});
 				}
 
-				handleBattleAttack(
+				const { updatedPlayerSide, updatedOpponentSide } = applyBattleAttack(
 					actor,
 					target,
 					action,
-					setPlayerSide,
-					setOpponentSide,
 					playerSide,
 					opponentSide,
 					environment,
 					dispatch
 				);
+				setPlayerSide(updatedPlayerSide);
+				setOpponentSide(updatedOpponentSide);
+
 				return;
 			}
 			//defeated target

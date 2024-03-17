@@ -48,8 +48,8 @@ export const StatSection = ({
 
 				value: calculateStat(
 					value,
-					ivs?.[key] ?? 0,
-					evs?.[key] ?? 0,
+					ivs?.[key as Stat] ?? 0,
+					evs?.[key as Stat] ?? 0,
 					nature,
 					50,
 					key as Stat,
@@ -66,8 +66,8 @@ export const StatSection = ({
 
 				value: calculateStat(
 					value,
-					ivs?.[key] ?? 0,
-					evs?.[key] ?? 0,
+					ivs?.[key as Stat] ?? 0,
+					evs?.[key as Stat] ?? 0,
 					nature,
 					level,
 					key as Stat

@@ -3,24 +3,21 @@ import { v4 } from 'uuid';
 import { fetchMove } from '../../../api/pokeApiFunctions/fetchMove';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { calculateStat } from '../../../functions/calculateStat';
+import { shinyChance } from '../../../functions/shinyChance';
 import { useGetFirstFourMoves } from '../../../hooks/useGetFirstFourMoves';
+import { EmptyUsedPP } from '../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MoveDto } from '../../../interfaces/Move';
 import { OwnedPokemon } from '../../../interfaces/OwnedPokemon';
 import { PokemonData, StatInfo } from '../../../interfaces/PokemonData';
-import { StatObject } from '../../../interfaces/StatObject';
+import { EmptyStatObject, StatObject } from '../../../interfaces/StatObject';
 import { OPPOID } from '../../../testing/constants/trainerIds';
 
-const modifiers: StatObject = {
-	hp: 0,
-	attack: 0,
-	defense: 0,
-	spatk: 0,
-	spdef: 0,
-	speed: 0,
-};
-
-const getStats = (stats: StatInfo[], level: number): StatObject => {
+const getStats = (
+	stats: StatInfo[],
+	level: number,
+	evs?: StatObject
+): StatObject => {
 	const baseHp = stats.find((s) => s.stat.name === 'hp')?.base_stat ?? 100;
 	const baseAttack =
 		stats.find((s) => s.stat.name === 'attack')?.base_stat ?? 100;
@@ -33,12 +30,47 @@ const getStats = (stats: StatInfo[], level: number): StatObject => {
 		stats.find((s) => s.stat.name === 'speed')?.base_stat ?? 100;
 
 	return {
-		hp: calculateStat(baseHp, 0, 0, 'hardy', level, 'hp'),
-		attack: calculateStat(baseAttack, 0, 0, 'hardy', level, 'attack'),
-		spatk: calculateStat(baseSpatk, 0, 0, 'hardy', level, 'spatk'),
-		spdef: calculateStat(baseSpDef, 0, 0, 'hardy', level, 'spdef'),
-		speed: calculateStat(baseSpeed, 0, 0, 'hardy', level, 'speed'),
-		defense: calculateStat(baseDef, 0, 0, 'hardy', level, 'defense'),
+		hp: calculateStat(baseHp, 0, evs?.['hp'] ?? 0, 'hardy', level, 'hp'),
+		attack: calculateStat(
+			baseAttack,
+			0,
+			evs?.['attack'] ?? 0,
+			'hardy',
+			level,
+			'attack'
+		),
+		spatk: calculateStat(
+			baseSpatk,
+			0,
+			evs?.['spatk'] ?? 0,
+			'hardy',
+			level,
+			'spatk'
+		),
+		spdef: calculateStat(
+			baseSpDef,
+			0,
+			evs?.['spdef'] ?? 0,
+			'hardy',
+			level,
+			'spdef'
+		),
+		speed: calculateStat(
+			baseSpeed,
+			0,
+			evs?.['speed'] ?? 0,
+			'hardy',
+			level,
+			'speed'
+		),
+		defense: calculateStat(
+			baseDef,
+			0,
+			evs?.['defense'] ?? 0,
+			'hardy',
+			level,
+			'defense'
+		),
 	};
 };
 
@@ -75,11 +107,16 @@ export const useCreateBattlePokemonFromData = () => {
 				side: 'OPPONENT',
 				base_experience: data.base_experience,
 				stats,
-				statModifiers: modifiers,
+				statModifiers: EmptyStatObject,
+				effortValues: EmptyStatObject,
 				evasiveness: 0,
 				ability: data.abilities[0].ability.name,
 				accuracyModifier: 0,
 				ball: 'poke-ball',
+				shiny: shinyChance(),
+				friendship: 70,
+				usedPowerPoints: EmptyUsedPP,
+				ppBoostedMoves: [],
 			};
 		},
 		[getFirstFourMoves]
@@ -93,7 +130,7 @@ export const createBattlePokemonFromOwned = async (
 	const xp = existing.xp;
 	const { level } = calculateLevelData(xp);
 
-	const stats = getStats(data.stats, level);
+	const stats = getStats(data.stats, level, existing.effortValues);
 
 	const moves = await Promise.all(existing.moveNames.map((m) => fetchMove(m)));
 
@@ -105,7 +142,7 @@ export const createBattlePokemonFromOwned = async (
 		side: 'PLAYER',
 		base_experience: data.base_experience,
 		stats,
-		statModifiers: modifiers,
+		statModifiers: EmptyStatObject,
 		evasiveness: 0,
 		moves: moves.filter((m) => m !== undefined) as MoveDto[],
 		accuracyModifier: 0,

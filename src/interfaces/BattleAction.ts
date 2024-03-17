@@ -1,4 +1,9 @@
-import { HealingItemType, PokeballType } from './Inventory';
+import {
+	HealingItemType,
+	PPRestoringItemType,
+	PokeballType,
+	XItemType,
+} from './Item';
 import { MoveDto } from './Move';
 
 interface BaseBattleAction {
@@ -12,7 +17,7 @@ interface BaseBattleAction {
 		| 'ITEM'
 		| 'RUNAWAY_ATTEMPT'
 		| 'DEFEATED_TARGET'
-		| 'HEALING_ITEM'
+		| 'IN_BATTLE_ITEM'
 		| 'FLINCH';
 }
 
@@ -35,8 +40,9 @@ interface BattleAttackAction extends BaseBattleAction {
 	target: string;
 }
 interface BattleItemAction extends BaseBattleAction {
-	type: 'HEALING_ITEM';
-	item: HealingItemType;
+	type: 'IN_BATTLE_ITEM';
+	item: HealingItemType | PPRestoringItemType | XItemType;
+	ppRestoreMove?: string;
 	target: string;
 }
 interface CatchAttempt extends BaseBattleAction {
@@ -67,7 +73,7 @@ export function isBattleActionWithTarget(
 			'NOT_VERY_EFFECTIVE',
 			'SUPER_EFFECTIVE',
 			'NO_EFFECT',
-			'HEALING_ITEM',
+			'IN_BATTLE_ITEM',
 		].includes(x?.type)
 	);
 }
@@ -80,7 +86,7 @@ export function isPrimaryAction(x: BattleAction | undefined): boolean {
 			'ATTACK',
 			'ITEM',
 			'RUNAWAY_ATTEMPT',
-			'HEALING_ITEM',
+			'IN_BATTLE_ITEM',
 			'FLINCH',
 		].includes(x?.type)
 	);
@@ -97,5 +103,5 @@ export function isCatchAttempt(x: BattleAction | undefined): x is CatchAttempt {
 export function isBattleItemAction(
 	x: BattleAction | undefined
 ): x is BattleItemAction {
-	return !!(x && x.type === 'HEALING_ITEM');
+	return !!(x && x.type === 'IN_BATTLE_ITEM');
 }

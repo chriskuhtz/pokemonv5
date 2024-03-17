@@ -1,9 +1,4 @@
-import {
-	FaCircleArrowDown,
-	FaCircleArrowLeft,
-	FaCircleArrowRight,
-	FaCircleArrowUp,
-} from 'react-icons/fa6';
+import { ReactNode } from 'react';
 import { OrientationEnum } from '../../../interfaces/Orientation';
 import { selectIsWalking } from '../../../store/selectors/saveFile/selectIsWalking';
 import { selectNextOrientation } from '../../../store/selectors/saveFile/selectNextOrientation';
@@ -15,125 +10,52 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 import './MovementButton.css';
 
-export const MovementButton = ({ x }: { x: OrientationEnum }): JSX.Element => {
+export const MovementButton = ({
+	orientation,
+	icon,
+}: {
+	orientation: OrientationEnum;
+	icon: ReactNode;
+}): JSX.Element => {
 	const dispatch = useAppDispatch();
 	const nextOrientation = useAppSelector(selectNextOrientation);
 	const isWalking = useAppSelector(selectIsWalking);
 
-	if (x === 1) {
-		return (
-			<FaCircleArrowLeft
-				className="movementButton"
-				key={x}
-				onPointerDown={() => {
-					if (nextOrientation !== x) {
-						dispatch(setNextOrientation(x as OrientationEnum));
-					}
-					if (!isWalking) {
-						dispatch(startWalking());
-					}
-				}}
-				onPointerOut={() => {
-					dispatch(stopWalking());
-				}}
-				onPointerLeave={() => {
-					dispatch(stopWalking());
-				}}
-				onMouseLeave={() => {
-					dispatch(stopWalking());
-				}}
-				onMouseUp={() => {
-					dispatch(stopWalking());
-				}}
-				onMouseDown={() => {
-					if (nextOrientation !== x) {
-						dispatch(setNextOrientation(x as OrientationEnum));
-					}
-					if (!isWalking) {
-						dispatch(startWalking());
-					}
-				}}
-			/>
-		);
-	}
-	if (x === 2) {
-		return (
-			<FaCircleArrowRight
-				className="movementButton"
-				key={x}
-				onPointerDown={() => {
-					if (nextOrientation !== x) {
-						dispatch(setNextOrientation(x as OrientationEnum));
-					}
-					if (!isWalking) {
-						dispatch(startWalking());
-					}
-				}}
-				onPointerLeave={() => dispatch(stopWalking())}
-				onMouseLeave={() => dispatch(stopWalking())}
-				onMouseUp={() => dispatch(stopWalking())}
-				onMouseDown={() => {
-					if (nextOrientation !== x) {
-						dispatch(setNextOrientation(x as OrientationEnum));
-					}
-					if (!isWalking) {
-						dispatch(startWalking());
-					}
-				}}
-			/>
-		);
-	}
-
-	if (x === 3) {
-		return (
-			<FaCircleArrowUp
-				className="movementButton"
-				key={x}
-				onPointerDown={() => {
-					if (nextOrientation !== x) {
-						dispatch(setNextOrientation(x as OrientationEnum));
-					}
-					if (!isWalking) {
-						dispatch(startWalking());
-					}
-				}}
-				onPointerLeave={() => dispatch(stopWalking())}
-				onMouseLeave={() => dispatch(stopWalking())}
-				onMouseUp={() => dispatch(stopWalking())}
-				onMouseDown={() => {
-					if (nextOrientation !== x) {
-						dispatch(setNextOrientation(x as OrientationEnum));
-					}
-					if (!isWalking) {
-						dispatch(startWalking());
-					}
-				}}
-			/>
-		);
-	}
 	return (
-		<FaCircleArrowDown
+		<div
 			className="movementButton"
-			key={x}
+			role="button"
+			key={orientation}
 			onPointerDown={() => {
-				if (nextOrientation !== x) {
-					dispatch(setNextOrientation(x as OrientationEnum));
+				if (nextOrientation !== orientation) {
+					dispatch(setNextOrientation(orientation as OrientationEnum));
 				}
 				if (!isWalking) {
 					dispatch(startWalking());
 				}
 			}}
-			onPointerLeave={() => dispatch(stopWalking())}
-			onMouseLeave={() => dispatch(stopWalking())}
-			onMouseUp={() => dispatch(stopWalking())}
+			onPointerOut={() => {
+				dispatch(stopWalking());
+			}}
+			onPointerLeave={() => {
+				dispatch(stopWalking());
+			}}
+			onMouseLeave={() => {
+				dispatch(stopWalking());
+			}}
+			onMouseUp={() => {
+				dispatch(stopWalking());
+			}}
 			onMouseDown={() => {
-				if (nextOrientation !== x) {
-					dispatch(setNextOrientation(x as OrientationEnum));
+				if (nextOrientation !== orientation) {
+					dispatch(setNextOrientation(orientation as OrientationEnum));
 				}
 				if (!isWalking) {
 					dispatch(startWalking());
 				}
 			}}
-		/>
+		>
+			{icon}
+		</div>
 	);
 };

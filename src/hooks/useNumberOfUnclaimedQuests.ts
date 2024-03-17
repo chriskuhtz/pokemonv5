@@ -1,13 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useMemo } from 'react';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
-import { selectSaveFile } from '../store/selectors/saveFile/selectSaveFile';
-import { useAppSelector } from '../store/storeHooks';
 import { useIsConditionFulfilled } from './useIsConditionFulfilled';
+import { useGetCurrentSaveFile } from './xata/useCurrentSaveFile';
 
 export const useNumberOfUnclaimedQuests = () => {
 	const isConditionFulfilled = useIsConditionFulfilled();
-	const saveFile = useAppSelector(selectSaveFile);
+	const saveFile = useGetCurrentSaveFile();
 
 	return useMemo<number>(() => {
 		return saveFile

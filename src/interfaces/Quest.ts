@@ -1,8 +1,9 @@
 import {
-	UniqueOccupantIds,
+	UniqueOccupantId,
 	UniqueOccupantRecord,
 } from '../constants/UniqueOccupantRecord';
 import { berryPatchEncounters } from '../constants/maps/berryPatch';
+import { flamingDesertEncounters } from '../constants/maps/flamingDesert';
 import { starterTownEncounters } from '../constants/maps/starterTown';
 import { Inventory, generateInventory } from './Inventory';
 
@@ -20,7 +21,7 @@ export interface NotRegisteredPokemonCondition {
 }
 export interface HandledOccupantCondition {
 	type: 'HANDLED_OCCUPANTS';
-	ids: UniqueOccupantIds[];
+	ids: UniqueOccupantId[];
 	conditionFailMessage?: string;
 }
 
@@ -47,6 +48,8 @@ export const questNames = [
 	'secondPokemon',
 	'findPikachu',
 	'catchAllStarterTown',
+	'catchAllBerryPatch',
+	'catchAllFlamingDesert',
 	'defeatAllTrainers',
 ] as const;
 
@@ -105,6 +108,32 @@ export const CatchAllStarterTownQuest: Quest = {
 		mode: 'ALL',
 	},
 };
+export const CatchAllFlamingDesertQuest: Quest = {
+	status: 'inactive',
+	id: 'catchAllFlamingDesert',
+	title: 'Catch all different Species in the Flaming Desert',
+	description: 'A true Pokemon Master values all different pokemon',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ 'quick-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: flamingDesertEncounters.map((s) => s.dexId),
+		mode: 'ALL',
+	},
+};
+export const CatchAllBerryPatchQuest: Quest = {
+	status: 'inactive',
+	id: 'catchAllBerryPatch',
+	title: 'Catch all different Species in Berry Patch',
+	description: 'A true Pokemon Master values all different pokemon',
+	rewardMoney: 100,
+	rewardItems: generateInventory({ 'net-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: berryPatchEncounters.map((s) => s.dexId),
+		mode: 'ALL',
+	},
+};
 export const FindPikachuQuest: Quest = {
 	status: 'inactive',
 	id: 'findPikachu',
@@ -129,7 +158,7 @@ export const DefeatAllTrainersQuest: Quest = {
 		type: 'HANDLED_OCCUPANTS',
 		ids: Object.values(UniqueOccupantRecord)
 			.filter((occupant) => occupant.type === 'TRAINER')
-			.map((o) => o.id) as UniqueOccupantIds[],
+			.map((o) => o.id) as UniqueOccupantId[],
 	},
 };
 
@@ -139,5 +168,7 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	secondPokemon: SecondPokemonQuest,
 	findPikachu: FindPikachuQuest,
 	catchAllStarterTown: CatchAllStarterTownQuest,
+	catchAllBerryPatch: CatchAllBerryPatchQuest,
+	catchAllFlamingDesert: CatchAllFlamingDesertQuest,
 	defeatAllTrainers: DefeatAllTrainersQuest,
 };

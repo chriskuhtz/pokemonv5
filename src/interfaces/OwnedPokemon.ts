@@ -1,6 +1,7 @@
 import { Ability } from '../constants/abilityCheckList';
 import { PrimaryAilment } from './Ailment';
-import { PokeballType } from './Inventory';
+import { ItemType, PokeballType } from './Item';
+import { StatObject } from './StatObject';
 
 export interface OwnedPokemon {
 	dexId: number;
@@ -13,4 +14,20 @@ export interface OwnedPokemon {
 	ability: Ability;
 	primaryAilment?: PrimaryAilment;
 	ball: PokeballType;
+	shiny?: boolean;
+	friendship: number;
+	usedPowerPoints: UsedPowerPoints;
+	heldItemName?: ItemType;
+	effortValues: StatObject;
+	ppBoostedMoves: PPBoostedMove[];
+}
+export interface PPBoostedMove {
+	name: string;
+	boost: number;
+}
+export interface UsedPowerPoints {
+	firstMove: number;
+	secondMove: number;
+	thirdMove: number;
+	fourthMove: number;
 }

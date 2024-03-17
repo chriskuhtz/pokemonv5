@@ -1,6 +1,22 @@
 import { PokemonType } from './PokemonType';
 import { Stat } from './StatObject';
 
+export type MoveCategory =
+	| 'damage'
+	| 'ailment'
+	| 'net-good-stats'
+	| 'heal'
+	| 'damage+ailment'
+	| 'swagger'
+	| 'damage+lower'
+	| 'damage+raise'
+	| 'damage+heal'
+	| 'ohko'
+	| 'whole-field-effect'
+	| 'field-effect'
+	| 'force-switch'
+	| 'unique';
+
 export interface Move {
 	pp: number;
 	id: number;
@@ -40,7 +56,7 @@ export interface MoveMeta {
 	};
 	ailment_chance: number;
 	category: {
-		name: string;
+		name: MoveCategory;
 		url: string;
 	};
 	crit_rate: number;

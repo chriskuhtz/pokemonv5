@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { lockInMoves } from '../constants/forceSwitchMoves';
 import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -6,6 +7,8 @@ import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
 import { applyCrashDamage } from './applyCrashDamage';
+import { applyDrain } from './applyDrain';
+import { applyPPChange } from './applyPPChange';
 import { applyStatMods } from './applyStatMods';
 import { calculateDamage } from './calculateDamage';
 import { determineFollowUpAction } from './determineFollowUpAction';
@@ -15,27 +18,36 @@ import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
 
-export const handleBattleAttack = (
+export const applyBattleAttack = (
 	actor: BattlePokemon,
 	target: BattlePokemon,
 	action: BattleAction,
-	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide,
 	opponentSide: BattleSide,
 	environment: BattleEnvironment,
 	dispatch: Dispatch<unknown>
-) => {
+): { updatedPlayerSide: BattleSide; updatedOpponentSide: BattleSide } => {
+	let updatedPlayerSide = { ...playerSide };
+	let updatedOpponentSide = { ...opponentSide };
 	if (!isBattleAttack(action)) {
 		console.error('this is no attack', action);
-		return;
+		return { updatedOpponentSide, updatedPlayerSide };
 	}
 
 	const { move } = action;
+	console.log(move);
 
 	let updatedActor = { ...actor };
 
 	updatedActor = determineMultiHits(updatedActor, move);
+
+	if (!updatedActor.multiHits) {
+		updatedActor = applyPPChange(
+			updatedActor,
+			1,
+			updatedActor.moveNames.findIndex((m) => m === move.name)
+		);
+	}
 
 	const passesAccuracyCheck = makeAccuracyCheck(
 		updatedActor,
@@ -44,16 +56,17 @@ export const handleBattleAttack = (
 		environment.weather
 	);
 
+	if (!passesAccuracyCheck) {
+		dispatch(addNotification(`${actor.name} missed`));
+	}
+
 	if (
-		(move.meta.category.name === 'damage+raise' ||
+		((move.meta.category.name === 'damage+raise' &&
+			move.meta.stat_chance / 100 > Math.random()) ||
 			move.target.name === 'user') &&
 		passesAccuracyCheck
 	) {
 		updatedActor = applyStatMods(updatedActor, move, dispatch);
-	}
-
-	if (!passesAccuracyCheck) {
-		dispatch(addNotification(`${actor.name} missed`));
 	}
 
 	let flinch_chance = Math.max(
@@ -94,19 +107,26 @@ export const handleBattleAttack = (
 		if (damageFactors.typeFactor < 1) {
 			dispatch(addNotification(`It is not very effective`));
 		}
+		if (move.meta.drain) {
+			updatedActor = applyDrain(
+				updatedActor,
+				attackDamage,
+				move.meta.drain,
+				dispatch
+			);
+		}
 	}
 
-	const newTargetDamage = passesAccuracyCheck
+	let updatedTarget: BattlePokemon = passesAccuracyCheck
 		? determineNewTargetDamage(target, move, attackDamage, dispatch)
-		: target.damage;
+		: target;
 
 	const newTargetAction: BattleAction | undefined = willFlinch
 		? { type: 'FLINCH' }
-		: target.nextAction;
+		: updatedTarget.nextAction;
 
-	let updatedTarget: BattlePokemon = {
-		...target,
-		damage: newTargetDamage,
+	updatedTarget = {
+		...updatedTarget,
 		nextAction: newTargetAction,
 	};
 	updatedTarget = passesAccuracyCheck
@@ -120,14 +140,16 @@ export const handleBattleAttack = (
 			'random-opponent',
 			'all-opponents',
 			'opponents-field',
-		].includes(move.target.name)
-			? applyStatMods(updatedTarget, move, dispatch)
+		].includes(move.target.name) &&
+		['net-good-stats', 'damage+lower'].includes(move.meta.category.name)
+			? applyStatMods(updatedTarget, move, dispatch, environment)
 			: updatedTarget;
 
-	const newActorAction = determineFollowUpAction(
+	updatedActor = determineFollowUpAction(
 		updatedActor,
 		updatedTarget,
-		action
+		action,
+		dispatch
 	);
 
 	updatedActor = determineNewActorAilment(
@@ -137,8 +159,18 @@ export const handleBattleAttack = (
 		dispatch
 	);
 
+	if (lockInMoves.includes(action.move.name) && !actor.lockedInMove) {
+		updatedActor = {
+			...updatedActor,
+			lockedInMove: {
+				moveName: action.move.name,
+				duration: 1,
+			},
+		};
+	}
+
 	if (actor.side === 'PLAYER') {
-		setPlayerSide({
+		updatedPlayerSide = {
 			...playerSide,
 			field: playerSide.field.map((p) => {
 				if (p.id !== actor.id) {
@@ -146,13 +178,12 @@ export const handleBattleAttack = (
 				}
 				return {
 					...updatedActor,
-					nextAction: newActorAction,
 					preparedMove: undefined,
 					location: undefined,
 				};
 			}),
-		});
-		setOpponentSide({
+		};
+		updatedOpponentSide = {
 			...opponentSide,
 			field: opponentSide.field.map((p) => {
 				if (p.id !== target.id) {
@@ -160,10 +191,10 @@ export const handleBattleAttack = (
 				}
 				return updatedTarget;
 			}),
-		});
+		};
 	}
 	if (actor.side === 'OPPONENT') {
-		setPlayerSide({
+		updatedPlayerSide = {
 			...playerSide,
 			field: playerSide.field.map((p) => {
 				if (p.id !== target.id) {
@@ -171,8 +202,8 @@ export const handleBattleAttack = (
 				}
 				return updatedTarget;
 			}),
-		});
-		setOpponentSide({
+		};
+		updatedOpponentSide = {
 			...opponentSide,
 			field: opponentSide.field.map((p) => {
 				if (p.id !== actor.id) {
@@ -180,12 +211,11 @@ export const handleBattleAttack = (
 				}
 				return {
 					...updatedActor,
-					nextAction: newActorAction,
 					preparedMove: undefined,
 					location: undefined,
 				};
 			}),
-		});
+		};
 	}
-	return;
+	return { updatedOpponentSide, updatedPlayerSide };
 };

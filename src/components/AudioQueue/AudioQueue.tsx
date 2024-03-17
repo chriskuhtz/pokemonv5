@@ -1,4 +1,4 @@
-import { selectNextAudio } from '../../store/selectors/notification/selectNextNotification';
+import { selectNextAudio } from '../../store/selectors/audio/selectNextAudio';
 import { removeFirstAudio } from '../../store/slices/audioSlice';
 import { useAppDispatch, useAppSelector } from '../../store/storeHooks';
 

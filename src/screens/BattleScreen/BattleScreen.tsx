@@ -3,11 +3,13 @@ import { CircularSprite } from '../../components/CircularSprite/CircularSprite';
 import { RouterButton } from '../../components/RouterButton/RouterButton';
 import { isBattleAttack } from '../../interfaces/BattleAction';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { Inventory } from '../../interfaces/Inventory';
 import { SaveFile } from '../../interfaces/SaveFile';
 import { RoutesEnum } from '../../router/router';
 import { ErrorMessage } from '../../ui_components/ErrorMessage/ErrorMessage';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 import './battleScreen.css';
+import { BattleInfo } from './components/BattleInfo/BattleInfo';
 import { BattleScreenController } from './components/BattleScreenController/BattleScreenController';
 import { useBattleScreen } from './hooks/useBattleScreen';
 
@@ -17,6 +19,7 @@ export interface BattleSide {
 	defeated: BattlePokemon[];
 	caught: BattlePokemon[];
 	side: 'PLAYER' | 'OPPONENT';
+	consumedItems: Inventory;
 }
 
 export type BattleMode = 'COLLECTING' | 'EXECUTING' | 'HANDLING_ENVIRONMENT';
@@ -41,7 +44,6 @@ export const BattleScreen = ({
 		setMode,
 		setPlayerSide,
 		environment,
-		setEnvironment,
 	} = useBattleScreen(saveFile);
 
 	const hasOpenSpots: boolean = !!(
@@ -68,7 +70,11 @@ export const BattleScreen = ({
 	if (playerSide && opponentSide) {
 		return (
 			<div className="battle">
-				<strong>Round: {environment.battleRounds}</strong>
+				<BattleInfo
+					environment={environment}
+					playerSide={playerSide}
+					opponentSide={opponentSide}
+				/>
 				<div className="battleField">
 					<div className="playerField">
 						{playerSide?.field.map((p) => (
@@ -119,7 +125,6 @@ export const BattleScreen = ({
 					setPlayerSide={setPlayerSide}
 					setMode={setMode}
 					environment={environment}
-					setEnvironment={setEnvironment}
 				/>
 			</div>
 		);

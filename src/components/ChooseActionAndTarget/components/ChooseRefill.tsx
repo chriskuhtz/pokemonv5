@@ -1,20 +1,14 @@
-import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattleSide } from '../../../screens/BattleScreen/BattleScreen';
-import { addNotification } from '../../../store/slices/notificationSlice';
-import { useAppDispatch } from '../../../store/storeHooks';
 import { Banner } from '../../../ui_components/Banner/Banner';
 import { Slanted } from '../../../ui_components/Slanted/Slanted';
 
 export const ChooseRefill = ({
 	playerSide,
 	setPlayerSide,
-	setEnvironment,
 }: {
 	playerSide: BattleSide;
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>;
-	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>;
 }): JSX.Element => {
-	const dispatch = useAppDispatch();
 	return (
 		<Banner
 			content={
@@ -37,15 +31,6 @@ export const ChooseRefill = ({
 										}),
 										bench: playerSide.bench.filter((p) => p.id !== c.id),
 									});
-									if (c.ability === 'drizzle') {
-										setEnvironment((environment) => ({
-											...environment,
-											weather: { type: 'rain', duration: -1 },
-										}));
-										dispatch(
-											addNotification(`${c.name}´s ability made it rain`)
-										);
-									}
 								}}
 								content={c.name}
 							/>

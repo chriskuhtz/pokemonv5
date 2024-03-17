@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkQuestCondition } from '../functions/checkQuestCondition';
+import { QuestName } from '../interfaces/Quest';
 import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectMap } from '../store/selectors/map/selectMap';
@@ -65,24 +65,23 @@ export const useOverworldEvent = () => {
 				dispatch(setDialogue(event.trainer.dialogue));
 			}
 			if (event.type === 'PORTAL' || event.type === 'ROUTE') {
-				if (checkQuestCondition(quests, event.questCondition)) {
-					//handle quests
-					if (event.type === 'ROUTE') {
+				const questStatus =
+					quests[event.questCondition?.id ?? ('' as QuestName)];
+				const { questCondition, conditionalMessages, type } = event;
+				//handle quests
+				if (!questStatus || questStatus === questCondition?.status) {
+					if (type === 'ROUTE') {
 						await saveGame({});
 						navigate(event.to);
 					}
-					if (event.type === 'PORTAL') {
+					if (type === 'PORTAL') {
 						await saveGame({ portalEvent: event });
 					}
-				}
-				if (!checkQuestCondition(quests, event.questCondition)) {
-					dispatch(
-						setDialogue(
-							event.conditionFailMessage ?? [
-								'you must complete a certain quest',
-							]
-						)
-					);
+				} else {
+					const message = conditionalMessages?.find(
+						(c) => c.id === questCondition?.id && c.status === questStatus
+					)?.message ?? ['you must complete a certain quest'];
+					dispatch(setDialogue(message));
 				}
 			}
 		},

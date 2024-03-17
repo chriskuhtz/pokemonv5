@@ -4,6 +4,11 @@
 
 	align-items: center;
 	gap: 1rem;
+	background-color: var(--main-bg-color);
+}
+.stickyHeadline {
+	position: sticky;
+	top: 0;
 }
 .headline-mainText {
 	flex-grow: 1;

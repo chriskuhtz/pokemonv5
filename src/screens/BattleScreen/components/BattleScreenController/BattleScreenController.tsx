@@ -1,5 +1,6 @@
 import { ChooseActionAndTarget } from '../../../../components/ChooseActionAndTarget/ChooseActionAndTarget';
 import { ChooseRefill } from '../../../../components/ChooseActionAndTarget/components/ChooseRefill';
+import { joinInventories } from '../../../../functions/joinInventories';
 import { useGetCurrentSaveFile } from '../../../../hooks/xata/useCurrentSaveFile';
 import { BattleEnvironment } from '../../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
@@ -23,7 +24,6 @@ export const BattleScreenController = ({
 	setMode,
 	handleAction,
 	environment,
-	setEnvironment,
 }: {
 	nextPlayerPokemonWithoutAction: BattlePokemon | undefined;
 	mode: BattleMode;
@@ -36,7 +36,6 @@ export const BattleScreenController = ({
 	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>;
 	setMode: React.Dispatch<React.SetStateAction<BattleMode>>;
 	environment: BattleEnvironment;
-	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>;
 }): JSX.Element => {
 	const dispatch = useAppDispatch();
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
@@ -53,11 +52,7 @@ export const BattleScreenController = ({
 	}
 	if (currentDialogue.length === 0 && hasOpenSpots) {
 		return (
-			<ChooseRefill
-				playerSide={playerSide}
-				setPlayerSide={setPlayerSide}
-				setEnvironment={setEnvironment}
-			/>
+			<ChooseRefill playerSide={playerSide} setPlayerSide={setPlayerSide} />
 		);
 	}
 	if (
@@ -71,7 +66,11 @@ export const BattleScreenController = ({
 				availableActions={availableActions}
 				selectAction={selectAction}
 				pokemonOnField={[...playerSide.field, ...opponentSide.field]}
-				inventory={saveFile.inventory}
+				inventory={joinInventories(
+					saveFile.inventory,
+					playerSide.consumedItems,
+					true
+				)}
 			/>
 		);
 	}

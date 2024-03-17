@@ -1,11 +1,9 @@
-.marketScreen:has(> :nth-child(2)) {
-	display: grid;
-	grid-template-columns: 2fr 1fr;
-	gap: 1rem;
-}
-
 .availableFunds {
 	margin-bottom: 1rem;
 	border-bottom: solid 1px;
 	padding-bottom: 0.5rem;
+	text-align: right;
+}
+.marketContainer {
+	height: 100dvh;
 }
