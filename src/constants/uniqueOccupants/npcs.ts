@@ -75,16 +75,16 @@ export const nightPokemonFan: Npc = {
 	id: 'night-pokemon-fan',
 	type: 'NPC',
 	position: {
-		y: 3,
-		x: 3,
-		mapId: 'flaming-desert',
-		orientation: 0,
+		y: 5,
+		x: 0,
+		mapId: 'starter-town',
+		orientation: 2,
 	},
 	dialogue: [
 		'Did you know that Pokemon prefer different times of day?',
 		'Some only show up at night',
 	],
-	sprite: SpriteEnum.child,
+	sprite: SpriteEnum.mechanic,
 	questUpdates: {
 		catchNightPokemon: 'active',
 	},

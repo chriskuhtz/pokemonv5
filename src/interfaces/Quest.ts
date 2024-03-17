@@ -110,7 +110,7 @@ export const CatchAllStarterTownQuest: Quest = {
 	rewardItems: generateInventory({ 'great-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: starterTownEncounters.map((s) => s.dexId),
+		ids: [...new Set(starterTownEncounters.map((s) => s.dexId))],
 		mode: 'ALL',
 	},
 };
@@ -123,7 +123,7 @@ export const CatchAllFlamingDesertQuest: Quest = {
 	rewardItems: generateInventory({ 'quick-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: flamingDesertEncounters.map((s) => s.dexId),
+		ids: [...new Set(flamingDesertEncounters.map((s) => s.dexId))],
 		mode: 'ALL',
 	},
 };
@@ -136,7 +136,7 @@ export const CatchAllBerryPatchQuest: Quest = {
 	rewardItems: generateInventory({ 'net-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: berryPatchEncounters.map((s) => s.dexId),
+		ids: [...new Set(berryPatchEncounters.map((s) => s.dexId))],
 		mode: 'ALL',
 	},
 };
@@ -150,12 +150,16 @@ export const CatchNightPokemon: Quest = {
 	condition: {
 		type: 'OWNED_POKEMON',
 		ids: [
-			...starterTownEncounters,
-			...berryPatchEncounters,
-			...flamingDesertEncounters,
-		]
-			.filter((e) => e.timeOfDay === 'NIGHT')
-			.map((e) => e.dexId),
+			...new Set(
+				[
+					...starterTownEncounters,
+					...berryPatchEncounters,
+					...flamingDesertEncounters,
+				]
+					.filter((e) => e.timeOfDay === 'NIGHT')
+					.map((e) => e.dexId)
+			),
+		],
 		mode: 'SOME',
 	},
 };
