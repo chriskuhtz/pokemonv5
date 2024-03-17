@@ -263,7 +263,7 @@ export const cowgirlAlex: Trainer = {
 	dialogueAfterDefeat: ['Well, we better keep looking'],
 	sprite: SpriteEnum.cowgirl,
 	team: [{ dexId: 77, xp: 800 }],
-	activePokemonPerside: 0,
+	activePokemonPerside: 1,
 	rewardMoney: 500,
 	viewRange: 3,
 };
