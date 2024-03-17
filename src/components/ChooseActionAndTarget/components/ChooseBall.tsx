@@ -1,3 +1,4 @@
+import React from 'react';
 import { typeColors } from '../../../constants/typeColors';
 import { Inventory } from '../../../interfaces/Inventory';
 import { PokeballType, isPokeball } from '../../../interfaces/Item';
@@ -31,7 +32,7 @@ export const ChooseBall = ({
 					>
 						{Object.entries(inventory).map(([key, amount]) => {
 							if (amount === 0 || !isPokeball(key)) {
-								return <></>;
+								return <React.Fragment key={key + amount}></React.Fragment>;
 							}
 							return (
 								<Pill

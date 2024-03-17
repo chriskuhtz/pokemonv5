@@ -18,23 +18,24 @@ import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
 
-export const handleBattleAttack = (
+export const applyBattleAttack = (
 	actor: BattlePokemon,
 	target: BattlePokemon,
 	action: BattleAction,
-	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
-	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	playerSide: BattleSide,
 	opponentSide: BattleSide,
 	environment: BattleEnvironment,
 	dispatch: Dispatch<unknown>
-) => {
+): { updatedPlayerSide: BattleSide; updatedOpponentSide: BattleSide } => {
+	let updatedPlayerSide = { ...playerSide };
+	let updatedOpponentSide = { ...opponentSide };
 	if (!isBattleAttack(action)) {
 		console.error('this is no attack', action);
-		return;
+		return { updatedOpponentSide, updatedPlayerSide };
 	}
 
 	const { move } = action;
+	console.log(move);
 
 	let updatedActor = { ...actor };
 
@@ -169,7 +170,7 @@ export const handleBattleAttack = (
 	}
 
 	if (actor.side === 'PLAYER') {
-		setPlayerSide({
+		updatedPlayerSide = {
 			...playerSide,
 			field: playerSide.field.map((p) => {
 				if (p.id !== actor.id) {
@@ -181,8 +182,8 @@ export const handleBattleAttack = (
 					location: undefined,
 				};
 			}),
-		});
-		setOpponentSide({
+		};
+		updatedOpponentSide = {
 			...opponentSide,
 			field: opponentSide.field.map((p) => {
 				if (p.id !== target.id) {
@@ -190,10 +191,10 @@ export const handleBattleAttack = (
 				}
 				return updatedTarget;
 			}),
-		});
+		};
 	}
 	if (actor.side === 'OPPONENT') {
-		setPlayerSide({
+		updatedPlayerSide = {
 			...playerSide,
 			field: playerSide.field.map((p) => {
 				if (p.id !== target.id) {
@@ -201,8 +202,8 @@ export const handleBattleAttack = (
 				}
 				return updatedTarget;
 			}),
-		});
-		setOpponentSide({
+		};
+		updatedOpponentSide = {
 			...opponentSide,
 			field: opponentSide.field.map((p) => {
 				if (p.id !== actor.id) {
@@ -214,7 +215,7 @@ export const handleBattleAttack = (
 					location: undefined,
 				};
 			}),
-		});
+		};
 	}
-	return;
+	return { updatedOpponentSide, updatedPlayerSide };
 };

@@ -56,7 +56,10 @@ export const applyAilments = (
 		dispatch(addNotification(`${pokemon.name} is oblivious`));
 		return pokemon;
 	}
-	if (Math.random() < move.meta.ailment_chance / 100) {
+	if (
+		move.meta.ailment_chance === 0 ||
+		Math.random() < move.meta.ailment_chance / 100
+	) {
 		const possibleAilment = { type: move.meta.ailment.name };
 
 		if (

@@ -2,12 +2,12 @@
 import { useCallback } from 'react';
 import { forceSwitchMoves } from '../../../constants/forceSwitchMoves';
 import { secondTurnMoves } from '../../../constants/secondTurnMoves';
+import { applyBattleAttack } from '../../../functions/applyBattleAttack';
 import { applyItem } from '../../../functions/applyItem';
 import { calculateGainedXp } from '../../../functions/calculateGainedXp';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { determineCatchRate } from '../../../functions/determineCatchRate';
 import { getRandomDuration } from '../../../functions/getDuration';
-import { handleBattleAttack } from '../../../functions/handleBattleAttack';
 import { handleForceSwitchMove } from '../../../functions/handleForceSwitchMove';
 import { inferLocationFromMove } from '../../../functions/inferLocationFromMove';
 import { joinInventories } from '../../../functions/joinInventories';
@@ -625,17 +625,18 @@ export const useHandleAction = (
 					});
 				}
 
-				handleBattleAttack(
+				const { updatedPlayerSide, updatedOpponentSide } = applyBattleAttack(
 					actor,
 					target,
 					action,
-					setPlayerSide,
-					setOpponentSide,
 					playerSide,
 					opponentSide,
 					environment,
 					dispatch
 				);
+				setPlayerSide(updatedPlayerSide);
+				setOpponentSide(updatedOpponentSide);
+
 				return;
 			}
 			//defeated target
