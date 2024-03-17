@@ -5,40 +5,6 @@ import { BaseTile } from '../../../store/slices/MapSlice';
 import { useAppSelector } from '../../../store/storeHooks';
 import { overworldCanvas } from '../OverworldCanvas';
 
-const drawUniformBackground = (
-	height: number,
-	width: number,
-	baseTile: BaseTile
-) => {
-	const canvas: HTMLCanvasElement | null = document.querySelector(
-		`#${overworldCanvas}`
-	);
-	// Initialize the GL context
-	if (canvas) {
-		const ctx = canvas.getContext('2d');
-
-		// Only continue if WebGL is available and working
-		if (ctx === null) {
-			alert(
-				'Unable to initialize 2d context. Your browser or machine may not support it.'
-			);
-			return;
-		}
-
-		const img = new Image();
-		const heightArray: number[] = Array.from({ length: height });
-		const widthArray: number[] = Array.from({ length: width });
-		img.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) =>
-					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size)
-				)
-			);
-		};
-		img.src = `tiles/${baseTile.id}1.png`;
-	}
-	return;
-};
 const drawCheckeredBackground = (
 	height: number,
 	width: number,
@@ -81,16 +47,21 @@ const drawCheckeredBackground = (
 				})
 			);
 		};
-		img.src = `tiles/${baseTile.id}1.png`;
-		img2.src = `tiles/${baseTile.id}2.png`;
+		img.src = `tiles/${baseTile.id}0.png`;
+		img2.src = `tiles/${baseTile.id}1.png`;
 	}
 	return;
 };
-const drawRandom3Background = (
+
+const drawRandomBackGround = async (
 	height: number,
 	width: number,
-	baseTile: BaseTile
+	baseTile: BaseTile,
+	numberOfTiles: number
 ) => {
+	const images = Array.from({ length: numberOfTiles }).map((_) => new Image());
+	const heightArray: number[] = Array.from({ length: height });
+	const widthArray: number[] = Array.from({ length: width });
 	const canvas: HTMLCanvasElement | null = document.querySelector(
 		`#${overworldCanvas}`
 	);
@@ -106,215 +77,36 @@ const drawRandom3Background = (
 			return;
 		}
 
-		const img = new Image();
-		const img2 = new Image();
-		const img3 = new Image();
-		const heightArray: number[] = Array.from({ length: height });
-		const widthArray: number[] = Array.from({ length: width });
-		img.onload = () => {
+		// list all image widths and heights _after_ the images have loaded:
+		Promise.all(
+			images.map((im) => new Promise((resolve) => (im.onload = resolve)))
+		).then(() => {
+			console.log(
+				'The images have loaded at last!\nHere are their dimensions (width,height):'
+			);
+			console.log(images.map((im) => [im.width, im.height]));
+
 			heightArray.forEach((_, y) =>
 				widthArray.forEach((_, x) => {
 					const random = Math.random();
 
-					if (random > 0.66) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.33) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
+					ctx.drawImage(
+						images[Math.floor(random * images.length)],
+						0,
+						0,
+						16,
+						16,
+						size * x,
+						size * y,
+						size,
+						size
+					);
 				})
 			);
-		};
-		img.src = `tiles/${baseTile.id}1.png`;
-		img2.src = `tiles/${baseTile.id}2.png`;
-		img3.src = `tiles/${baseTile.id}3.png`;
+		});
+		// Now, trigger the action:
+		images.forEach((im, i) => (im.src = `tiles/${baseTile.id}${i}.png`));
 	}
-	return;
-};
-const drawRandom4Background = (
-	height: number,
-	width: number,
-	baseTile: BaseTile
-) => {
-	const canvas: HTMLCanvasElement | null = document.querySelector(
-		`#${overworldCanvas}`
-	);
-	// Initialize the GL context
-	if (canvas) {
-		const ctx = canvas.getContext('2d');
-
-		// Only continue if WebGL is available and working
-		if (ctx === null) {
-			alert(
-				'Unable to initialize 2d context. Your browser or machine may not support it.'
-			);
-			return;
-		}
-
-		const img = new Image();
-		const img2 = new Image();
-		const img3 = new Image();
-		const img4 = new Image();
-		const heightArray: number[] = Array.from({ length: height });
-		const widthArray: number[] = Array.from({ length: width });
-		img.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					const random = Math.random();
-
-					if (random > 0.75) {
-						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.5) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.25) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-				})
-			);
-		};
-		img.src = `tiles/${baseTile.id}1.png`;
-		img2.src = `tiles/${baseTile.id}2.png`;
-		img3.src = `tiles/${baseTile.id}3.png`;
-		img4.src = `tiles/${baseTile.id}4.png`;
-	}
-	return;
-};
-const drawRandom5Background = (
-	height: number,
-	width: number,
-	baseTile: BaseTile
-) => {
-	const canvas: HTMLCanvasElement | null = document.querySelector(
-		`#${overworldCanvas}`
-	);
-	// Initialize the GL context
-	if (canvas) {
-		const ctx = canvas.getContext('2d');
-
-		// Only continue if WebGL is available and working
-		if (ctx === null) {
-			alert(
-				'Unable to initialize 2d context. Your browser or machine may not support it.'
-			);
-			return;
-		}
-
-		const img = new Image();
-		const img2 = new Image();
-		const img3 = new Image();
-		const img4 = new Image();
-		const img5 = new Image();
-
-		const heightArray: number[] = Array.from({ length: height });
-		const widthArray: number[] = Array.from({ length: width });
-
-		img.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					const random = Math.random();
-					if (random > 0.8) {
-						ctx.drawImage(img5, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.6) {
-						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.4) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.2) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-				})
-			);
-		};
-
-		img.src = `tiles/${baseTile.id}1.png`;
-		img2.src = `tiles/${baseTile.id}2.png`;
-		img3.src = `tiles/${baseTile.id}3.png`;
-		img4.src = `tiles/${baseTile.id}4.png`;
-		img5.src = `tiles/${baseTile.id}5.png`;
-	}
-	return;
-};
-const drawRandom6Background = (
-	height: number,
-	width: number,
-	baseTile: BaseTile
-) => {
-	const canvas: HTMLCanvasElement | null = document.querySelector(
-		`#${overworldCanvas}`
-	);
-	// Initialize the GL context
-	if (canvas) {
-		const ctx = canvas.getContext('2d');
-
-		// Only continue if WebGL is available and working
-		if (ctx === null) {
-			alert(
-				'Unable to initialize 2d context. Your browser or machine may not support it.'
-			);
-			return;
-		}
-
-		const img = new Image();
-		const img2 = new Image();
-		const img3 = new Image();
-		const img4 = new Image();
-		const img5 = new Image();
-		const img6 = new Image();
-		const heightArray: number[] = Array.from({ length: height });
-		const widthArray: number[] = Array.from({ length: width });
-
-		img.onload = () => {
-			heightArray.forEach((_, y) =>
-				widthArray.forEach((_, x) => {
-					const random = Math.random();
-					if (random > 0.9) {
-						ctx.drawImage(img6, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.72) {
-						ctx.drawImage(img5, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.54) {
-						ctx.drawImage(img4, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.36) {
-						ctx.drawImage(img3, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					if (random > 0.18) {
-						ctx.drawImage(img2, 0, 0, 16, 16, size * x, size * y, size, size);
-						return;
-					}
-					ctx.drawImage(img, 0, 0, 16, 16, size * x, size * y, size, size);
-				})
-			);
-		};
-		img.src = `tiles/${baseTile.id}1.png`;
-		img2.src = `tiles/${baseTile.id}2.png`;
-		img3.src = `tiles/${baseTile.id}3.png`;
-		img4.src = `tiles/${baseTile.id}4.png`;
-		img5.src = `tiles/${baseTile.id}5.png`;
-		img6.src = `tiles/${baseTile.id}5.png`;
-	}
-	return;
 };
 
 export const useDrawBackGroundCanvas = () => {
@@ -327,22 +119,23 @@ export const useDrawBackGroundCanvas = () => {
 			return;
 		}
 		if (baseTile.pattern === 'uniform') {
-			drawUniformBackground(height, width, baseTile);
+			void drawRandomBackGround(height, width, baseTile, 1);
 		}
 		if (baseTile.pattern === 'checkered') {
 			drawCheckeredBackground(height, width, baseTile);
 		}
 		if (baseTile.pattern === 'random3') {
-			drawRandom3Background(height, width, baseTile);
+			void drawRandomBackGround(height, width, baseTile, 3);
 		}
 		if (baseTile.pattern === 'random4') {
-			drawRandom4Background(height, width, baseTile);
+			void drawRandomBackGround(height, width, baseTile, 4);
 		}
 		if (baseTile.pattern === 'random5') {
-			drawRandom5Background(height, width, baseTile);
+			//drawRandom5Background(height, width, baseTile);
+			void drawRandomBackGround(height, width, baseTile, 5);
 		}
 		if (baseTile.pattern === 'random6') {
-			drawRandom6Background(height, width, baseTile);
+			void drawRandomBackGround(height, width, baseTile, 6);
 		}
 		setLastDrawnMapId(mapId);
 	}, [baseTile, height, lastDrawnMapId, mapId, width]);
