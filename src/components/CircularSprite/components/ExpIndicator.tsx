@@ -6,10 +6,12 @@ export const ExpIndicator = ({
 	children,
 	pokemon,
 	noAnimation,
+	attacking,
 }: {
 	children: JSX.Element;
 	pokemon: BattlePokemon;
 	noAnimation?: boolean;
+	attacking?: boolean;
 }) => {
 	const expPercentage = useMemo(() => {
 		const { progressToNextLevel } = calculateLevelData(pokemon.xp);
@@ -22,7 +24,7 @@ export const ExpIndicator = ({
 		if (pokemon.status?.name === 'BEING_CAUGHT') {
 			return 'shakingBall';
 		}
-		if (pokemon.status?.name === 'ATTACKING') {
+		if (attacking) {
 			if (pokemon.side === 'OPPONENT') {
 				return 'opponent-attacking';
 			}
@@ -33,24 +35,18 @@ export const ExpIndicator = ({
 		}
 
 		return 'jumping';
-	}, [noAnimation, pokemon.status]);
+	}, [noAnimation, pokemon.status, attacking]);
 
-	const iterations = ['opponent-attacking', 'player-attacking'].includes(
-		animationName
-	)
-		? 1
-		: 'infinite';
+	const iterations = useMemo(() => (attacking ? 1 : 'infinite'), [attacking]);
 
 	return (
 		<div
-			onAnimationEnd={() => {
-				console.log('yaya');
-			}}
 			style={
 				{
 					'--expPercentage': expPercentage,
 					'--expColor': pokemon.side === 'PLAYER' ? 'blue' : undefined,
 					'--animationName': animationName,
+
 					'--iterations': iterations,
 				} as CSSProperties
 			}

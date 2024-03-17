@@ -41,6 +41,7 @@ export const BattleScreen = ({
 		nextPlayerPokemonWithoutAction,
 		opponentFetchStatus,
 		playerFetchStatus,
+		pokemonWithActions,
 		setMode,
 		setPlayerSide,
 		environment,
@@ -80,6 +81,11 @@ export const BattleScreen = ({
 						{playerSide?.field.map((p) => (
 							<CircularSprite
 								makeSound
+								attacking={
+									mode === 'EXECUTING' &&
+									pokemonWithActions[0]?.id === p.id &&
+									isBattleAttack(p.nextAction)
+								}
 								key={p.id}
 								back
 								pokemon={p}
@@ -110,7 +116,16 @@ export const BattleScreen = ({
 					</div>
 					<div className="opponentField">
 						{opponentSide?.field.map((p) => (
-							<CircularSprite key={p.id} pokemon={p} makeSound />
+							<CircularSprite
+								key={p.id}
+								pokemon={p}
+								makeSound
+								attacking={
+									mode === 'EXECUTING' &&
+									pokemonWithActions[0]?.id === p.id &&
+									isBattleAttack(p.nextAction)
+								}
+							/>
 						))}
 					</div>
 				</div>

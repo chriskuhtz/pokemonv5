@@ -558,7 +558,13 @@ export const useHandleAction = (
 						}),
 						caught: [
 							...playerSide.caught,
-							{ ...target, ball: target.status?.ball ?? 'poke-ball' },
+							{
+								...target,
+								ball:
+									target.status?.name === 'BEING_CAUGHT'
+										? target.status.ball
+										: 'poke-ball',
+							},
 						],
 					});
 					setOpponentSide({

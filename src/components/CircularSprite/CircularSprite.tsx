@@ -4,9 +4,9 @@ import { BattlePokemon } from '../../interfaces/BattlePokemon';
 import { addAudio } from '../../store/slices/audioSlice';
 import { useAppDispatch } from '../../store/storeHooks';
 import './CircularSprite.css';
+import { ExpIndicator } from './components/ExpIndicator';
 import { HealthIndicator } from './components/HealthIndicator';
 import { TagWrapper } from './components/TagWrapper';
-import { ExpIndicator } from './components/ExpIndicator';
 
 export const CircularSprite = ({
 	pokemon,
@@ -14,12 +14,14 @@ export const CircularSprite = ({
 	back,
 	noAnimation,
 	makeSound,
+	attacking,
 }: {
 	pokemon: BattlePokemon;
 	overlay?: ReactNode;
 	back?: boolean;
 	noAnimation?: boolean;
 	makeSound?: boolean;
+	attacking?: boolean;
 }) => {
 	const dispatch = useAppDispatch();
 	useEffect(() => {
@@ -33,7 +35,11 @@ export const CircularSprite = ({
 	}, [makeSound]);
 
 	return (
-		<ExpIndicator pokemon={pokemon} noAnimation={noAnimation}>
+		<ExpIndicator
+			pokemon={pokemon}
+			noAnimation={noAnimation}
+			attacking={attacking}
+		>
 			<HealthIndicator pokemon={pokemon}>
 				<div className="content">
 					<div className="battleSprite">

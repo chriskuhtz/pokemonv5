@@ -82,7 +82,6 @@ export const useCheckAndAssembleActions = (
 					return;
 				}
 			}
-
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
 				dispatch(
 					concatDialogue([

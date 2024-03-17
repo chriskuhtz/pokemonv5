@@ -35,7 +35,6 @@ export const applyBattleAttack = (
 	}
 
 	const { move } = action;
-	console.log(move);
 
 	let updatedActor = { ...actor };
 
@@ -180,7 +179,6 @@ export const applyBattleAttack = (
 					...updatedActor,
 					preparedMove: undefined,
 					location: undefined,
-					status: { name: 'ATTACKING' },
 				};
 			}),
 		};
@@ -214,7 +212,6 @@ export const applyBattleAttack = (
 					...updatedActor,
 					preparedMove: undefined,
 					location: undefined,
-					status: { name: 'ATTACKING' },
 				};
 			}),
 		};
