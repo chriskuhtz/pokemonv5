@@ -69,8 +69,8 @@ export const selectDecorators = createSelector(
 	[selectActiveOccupants, selectMap, selectHandledOccupants],
 	(activeOccupants, map, handledOccupants) => {
 		return [
-			...map.decorators,
 			...getTrainerDecorators(activeOccupants, handledOccupants),
+			...map.decorators,
 		];
 	}
 );
