@@ -10,31 +10,26 @@ export const Changelog = () => {
 				<Collapse
 					open={open}
 					setOpen={setOpen}
-					headline={'Changelog (V.0.0.3)'}
+					headline={'Changelog'}
 					content={
 						<div style={{ display: 'flex' }}>
 							<div>
-								<h3>Working</h3>
+								<h3>V0.0.4</h3>
 								<ul>
-									<li>Overworld</li>
-									<li>Catching</li>
-									<li>Quests</li>
-									<li>Storage</li>
-									<li>Market</li>
-									<li>Standard Battle Moves</li>
-									<li>Running away</li>
-									<li>Items (currently infinite)</li>
-								</ul>
-							</div>
-							<div>
-								<h3>In Progress:</h3>
-								<ul>
-									<li>Evolving</li>
-									<li>Learning new Moves</li>
-									<li>Specialty Moves</li>
-									<li>remove Items after use</li>
-									<li>Rearranging Team</li>
-									<li>More Content, etc.</li>
+									<li>fixed all reported bugs</li>
+									<li>more items</li>
+									<li>more abilities</li>
+									<li>more moves</li>
+									<li>held items</li>
+									<li>friendship</li>
+									<li>power points</li>
+									<li>Shiny Pokemon</li>
+									<li>battle ui improvements</li>
+									<li>new Route: Flaming Desert</li>
+									<li>
+										2 new Quests:
+										(berry-patch-catch-quest,flaming-desert-catch-quest)
+									</li>
 								</ul>
 							</div>
 						</div>
