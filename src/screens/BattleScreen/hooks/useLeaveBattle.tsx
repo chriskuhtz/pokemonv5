@@ -106,7 +106,7 @@ export const useLeaveBattle = (
 			});
 
 			navigate(RoutesEnum.overworld);
-			if (trainer) {
+			if (trainer && reason === 'WIN') {
 				dispatch(setDialogue(trainer.dialogueAfterDefeat));
 			} else {
 				dispatch(setDialogue([]));
