@@ -1,17 +1,11 @@
-import { useState } from 'react';
-import { AmountHandler } from '../../ui_components/AmountHandler/AmountHandler';
+import { AbilityPill } from '../../components/AbilityPill/AbilityPill';
 
 export const TestArea = (): JSX.Element => {
-	const [amount, setAmount] = useState<number>(0);
 	return (
 		<div>
-			<AmountHandler
-				amount={amount}
-				setAmount={setAmount}
-				canIncrease
-				canReduce={false}
-				canReset
-			/>
+			<AbilityPill abilityName="static" />
+			<AbilityPill abilityName="stench" />
+			<AbilityPill abilityName="compound-eyes" />
 		</div>
 	);
 };

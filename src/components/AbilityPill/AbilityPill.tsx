@@ -13,10 +13,19 @@ export const AbilityPill = ({ abilityName }: { abilityName: Ability }) => {
 	if (data) {
 		return (
 			<Pill
-				leftSide={<strong>Ability: {data.name}</strong>}
+				leftSide={<strong>Ability:</strong>}
 				center={
-					data.flavor_text_entries.find((e) => e.language.name === 'en')
-						?.flavor_text
+					<div>
+						<p>
+							<strong> {data.name}</strong>
+						</p>
+						<p>
+							{
+								data.flavor_text_entries.find((e) => e.language.name === 'en')
+									?.flavor_text
+							}
+						</p>
+					</div>
 				}
 				rightSide={handled ? 'Implemented' : 'Not Implemented'}
 			/>
