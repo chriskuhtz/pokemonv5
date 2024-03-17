@@ -9,6 +9,9 @@ export const makeAccuracyCheck = (
 	move: MoveDto,
 	weather: BattleEnvironment['weather']
 ): boolean => {
+	if (actor.multiHits) {
+		return true;
+	}
 	if (target.location) {
 		return false;
 	}
