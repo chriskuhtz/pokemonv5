@@ -27,4 +27,5 @@ export interface BattlePokemon extends OwnedPokemon {
 	location?: BattlePokemonLocation;
 	accuracyModifier: number;
 	usedAbility?: boolean;
+	weight: number;
 }
