@@ -267,6 +267,7 @@ export const movesCheckList: {
 	{ name: 'stun-spore', url: 'https://pokeapi.co/api/v2/move/78/' },
 	{ name: 'sleep-powder', url: 'https://pokeapi.co/api/v2/move/79/' },
 	{ name: 'petal-dance', url: 'https://pokeapi.co/api/v2/move/80/' },
+	//v.0.0.7
 	{ name: 'string-shot', url: 'https://pokeapi.co/api/v2/move/81/' },
 	{ name: 'dragon-rage', url: 'https://pokeapi.co/api/v2/move/82/' },
 	{ name: 'fire-spin', url: 'https://pokeapi.co/api/v2/move/83/' },

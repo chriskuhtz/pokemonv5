@@ -102,7 +102,12 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/20/',
 		handled: true,
 	},
-	{ name: 'suction-cups', url: 'https://pokeapi.co/api/v2/ability/21/' },
+	//v.0.0.5
+	{
+		name: 'suction-cups',
+		url: 'https://pokeapi.co/api/v2/ability/21/',
+		handled: true,
+	},
 	{ name: 'intimidate', url: 'https://pokeapi.co/api/v2/ability/22/' },
 	{ name: 'shadow-tag', url: 'https://pokeapi.co/api/v2/ability/23/' },
 	{ name: 'rough-skin', url: 'https://pokeapi.co/api/v2/ability/24/' },
@@ -112,6 +117,7 @@ export const abilityCheckList: {
 	{ name: 'synchronize', url: 'https://pokeapi.co/api/v2/ability/28/' },
 	{ name: 'clear-body', url: 'https://pokeapi.co/api/v2/ability/29/' },
 	{ name: 'natural-cure', url: 'https://pokeapi.co/api/v2/ability/30/' },
+	//v0.0.6
 	{ name: 'lightning-rod', url: 'https://pokeapi.co/api/v2/ability/31/' },
 	{ name: 'serene-grace', url: 'https://pokeapi.co/api/v2/ability/32/' },
 	{ name: 'swift-swim', url: 'https://pokeapi.co/api/v2/ability/33/' },
