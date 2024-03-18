@@ -2,6 +2,7 @@ import {
 	fixedDamageMoves,
 	levelDamageMoves,
 } from '../constants/fixedDamageMoves';
+
 import { ohkoMoves } from '../constants/ohkoMoves';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -11,6 +12,7 @@ import { calculateLevelData } from './calculateLevelData';
 import { determineCritFactor } from './determineCritFactor';
 import { determineWeatherFactor } from './determineWeatherFactor';
 import { getTypeFactor } from './getTypeFactor';
+import { getVariablePower } from './getVariablePower';
 
 export const getDamageFactors = (
 	actor: BattlePokemon,
@@ -20,8 +22,12 @@ export const getDamageFactors = (
 	isConfusionHit?: boolean
 ): DamageFactors => {
 	const { level } = calculateLevelData(actor.xp);
-	const { damage_class, power, type } = move;
+	const { damage_class, power: movePower, type, name } = move;
+
+	const power =
+		name === 'low-kick' ? getVariablePower(target.weight) : movePower;
 	const moveType = type.name;
+
 	const correctAttackKey =
 		damage_class.name === 'physical' ? 'attack' : 'spatk';
 

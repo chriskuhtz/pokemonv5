@@ -236,7 +236,11 @@ export const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/66/',
 		handled: true,
 	},
-	{ name: 'low-kick', url: 'https://pokeapi.co/api/v2/move/67/' },
+	{
+		name: 'low-kick',
+		url: 'https://pokeapi.co/api/v2/move/67/',
+		handled: true,
+	},
 	{ name: 'counter', url: 'https://pokeapi.co/api/v2/move/68/' },
 	{
 		name: 'seismic-toss',
