@@ -1,4 +1,7 @@
-import { fixedDamageMoves } from '../constants/fixedDamageMoves';
+import {
+	fixedDamageMoves,
+	levelDamageMoves,
+} from '../constants/fixedDamageMoves';
 import { ohkoMoves } from '../constants/ohkoMoves';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -62,6 +65,16 @@ export const getDamageFactors = (
 		return 1;
 	};
 
+	const fixedFactor = () => {
+		if (fixedDamageMoves[move.name]) {
+			return fixedDamageMoves[move.name];
+		}
+		if (levelDamageMoves.includes(move.name)) {
+			return level;
+		}
+		return undefined;
+	};
+
 	return {
 		attackerLevel: level,
 		correctAttack,
@@ -81,6 +94,6 @@ export const getDamageFactors = (
 		zMoveFactor: 1,
 		teraShieldFactor: 1,
 		ohko: ohkoMoves.includes(move.name),
-		fixed: fixedDamageMoves[move.name],
+		fixed: fixedFactor(),
 	};
 };
