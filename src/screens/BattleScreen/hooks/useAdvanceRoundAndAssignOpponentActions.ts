@@ -8,11 +8,13 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 	opponentSide: BattleSide | undefined,
 	playerSide: BattleSide | undefined,
 	setOpponentSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
+	setPlayerSide: React.Dispatch<React.SetStateAction<BattleSide | undefined>>,
 	setEnvironment: React.Dispatch<React.SetStateAction<BattleEnvironment>>
 ) => {
 	useEffect(() => {
 		if (
 			mode === 'COLLECTING' &&
+			playerSide &&
 			opponentSide &&
 			!opponentSide.field.every((p) => p.nextAction)
 		) {
@@ -28,6 +30,7 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 							...p,
 							nextAction: { type: 'RECHARGING' },
 							recharging: false,
+							lastReceivedDamage: undefined,
 						};
 					}
 					const pokemonOnField = [...(playerSide?.field ?? [])];
@@ -58,6 +61,7 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 
 					return {
 						...p,
+						lastReceivedDamage: undefined,
 						nextAction: {
 							type: 'ATTACK',
 							target: optimalTarget,
@@ -65,6 +69,14 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 						},
 					};
 				}),
+			});
+
+			setPlayerSide({
+				...playerSide,
+				field: playerSide?.field.map((p) => ({
+					...p,
+					lastReceivedDamage: undefined,
+				})),
 			});
 
 			setEnvironment((environment) => ({

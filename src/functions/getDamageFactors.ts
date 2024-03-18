@@ -72,6 +72,24 @@ export const getDamageFactors = (
 	};
 
 	const fixedFactor = () => {
+		if (move.name === 'counter') {
+			if (
+				actor.lastReceivedDamage &&
+				actor.lastReceivedDamage.type === 'physical'
+			) {
+				return actor.lastReceivedDamage.damage * 2;
+			}
+			return 0;
+		}
+		if (move.name === 'mirror-coat') {
+			if (
+				actor.lastReceivedDamage &&
+				actor.lastReceivedDamage.type === 'special'
+			) {
+				return actor.lastReceivedDamage.damage * 2;
+			}
+			return 0;
+		}
 		if (fixedDamageMoves[move.name]) {
 			return fixedDamageMoves[move.name];
 		}
@@ -92,9 +110,13 @@ export const getDamageFactors = (
 		glaiveRush: 1,
 		criticalFactor,
 		stabFactor,
-		typeFactor: isConfusionHit
-			? 1
-			: getTypeFactor(moveType, target.primaryType, target.secondaryType),
+		typeFactor: getTypeFactor(
+			moveType,
+			move.name,
+			isConfusionHit,
+			target.primaryType,
+			target.secondaryType
+		),
 		burnFactor: actor.primaryAilment?.type === 'burn' ? 0.5 : 1,
 		otherFactor: otherFactor(),
 		zMoveFactor: 1,

@@ -42,5 +42,11 @@ export const determineNewTargetDamage = (
 		updated.secondaryType = undefined;
 	}
 
+	//save lastReceivedDamage
+	updated.lastReceivedDamage = {
+		damage: attackDamage,
+		type: move.damage_class.name,
+	};
+
 	return updated;
 };

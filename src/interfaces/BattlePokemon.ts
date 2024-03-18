@@ -1,7 +1,7 @@
 import { SecondaryAilment } from './Ailment';
 import { BattleAction } from './BattleAction';
 import { PokeballType } from './Item';
-import { MoveDto } from './Move';
+import { DamageClass, MoveDto } from './Move';
 import { OwnedPokemon } from './OwnedPokemon';
 import { PokemonType } from './PokemonType';
 import { StatObject } from './StatObject';
@@ -23,6 +23,10 @@ export interface BattlePokemon extends OwnedPokemon {
 	secondaryAilments?: SecondaryAilment[];
 	multiHits?: number;
 	recharging?: boolean;
+	lastReceivedDamage?: {
+		damage: number;
+		type: DamageClass['name'];
+	};
 	preparedMove?: { moveName: string; targetId: string };
 	lockedInMove?: { moveName: string; duration: number };
 	disabledMove?: { moveName: string; duration: number };

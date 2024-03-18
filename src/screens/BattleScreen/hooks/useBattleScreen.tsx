@@ -225,6 +225,7 @@ export const useBattleScreen = (saveFile: SaveFile) => {
 		opponentSide,
 		playerSide,
 		setOpponentSide,
+		setPlayerSide,
 		setEnvironment
 	);
 

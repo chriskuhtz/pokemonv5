@@ -224,7 +224,11 @@ export const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/62/',
 		handled: true,
 	},
-	{ name: 'hyper-beam', url: 'https://pokeapi.co/api/v2/move/63/' },
+	{
+		name: 'hyper-beam',
+		url: 'https://pokeapi.co/api/v2/move/63/',
+		handled: true,
+	},
 	{ name: 'peck', url: 'https://pokeapi.co/api/v2/move/64/', handled: true },
 	{
 		name: 'drill-peck',
@@ -241,7 +245,7 @@ export const movesCheckList: {
 		url: 'https://pokeapi.co/api/v2/move/67/',
 		handled: true,
 	},
-	{ name: 'counter', url: 'https://pokeapi.co/api/v2/move/68/' },
+	{ name: 'counter', url: 'https://pokeapi.co/api/v2/move/68/', handled: true },
 	{
 		name: 'seismic-toss',
 		url: 'https://pokeapi.co/api/v2/move/69/',
