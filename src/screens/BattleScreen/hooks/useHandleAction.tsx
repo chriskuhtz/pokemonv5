@@ -221,7 +221,7 @@ export const useHandleAction = (
 				return;
 			}
 			//flinch
-			if (action?.type === 'FLINCH') {
+			if (action?.type === 'FLINCH' || action?.type === 'RECHARGING') {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,

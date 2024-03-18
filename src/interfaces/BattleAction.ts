@@ -18,6 +18,7 @@ interface BaseBattleAction {
 		| 'RUNAWAY_ATTEMPT'
 		| 'DEFEATED_TARGET'
 		| 'IN_BATTLE_ITEM'
+		| 'RECHARGING'
 		| 'FLINCH';
 }
 

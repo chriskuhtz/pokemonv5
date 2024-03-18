@@ -106,6 +106,10 @@ export const useCheckAndAssembleActions = (
 				dispatch(concatDialogue([`${actor.name} flinched`]));
 				return;
 			}
+			if (actor.nextAction?.type === 'RECHARGING') {
+				dispatch(concatDialogue([`${actor.name} has to recharge`]));
+				return;
+			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {
 				dispatch(concatDialogue([`You attempt to run away from the Battle`]));
 				return;

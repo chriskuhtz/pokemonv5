@@ -1,4 +1,4 @@
-import { useMemo, ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { TypeIcon } from '../components/TypeIcon/TypeIcon';
 import { calculateLevelData } from '../functions/calculateLevelData';
 import { PrimaryAilment, SecondaryAilment } from '../interfaces/Ailment';
@@ -56,6 +56,9 @@ export const useTags = (pokemon: BattlePokemon) => {
 		}
 		if (pokemon.preparedMove) {
 			res.push(pokemon.preparedMove.moveName);
+		}
+		if (pokemon.recharging) {
+			res.push('recharging');
 		}
 		if (pokemon.lockedInMove) {
 			res.push(`locked into ${pokemon.lockedInMove.moveName}`);

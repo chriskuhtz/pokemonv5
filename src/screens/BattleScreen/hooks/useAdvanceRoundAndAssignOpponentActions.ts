@@ -23,6 +23,13 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 			setOpponentSide({
 				...opponentSide,
 				field: opponentSide?.field.map((p) => {
+					if (p.recharging) {
+						return {
+							...p,
+							nextAction: { type: 'RECHARGING' },
+							recharging: false,
+						};
+					}
 					const pokemonOnField = [...(playerSide?.field ?? [])];
 					const potentialTargets = pokemonOnField.filter(
 						(target) => target.id !== p.id

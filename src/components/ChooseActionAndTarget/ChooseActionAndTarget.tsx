@@ -58,6 +58,17 @@ export const ChooseActionAndTarget = ({
 		setItem(undefined);
 		setMoveToPPRestore(undefined);
 	};
+	//autoselect recharging
+	useEffect(() => {
+		if (actor.recharging) {
+			selectAction({
+				...actor,
+				nextAction: { type: 'RECHARGING' },
+				recharging: false,
+			});
+			reset();
+		}
+	}, []);
 	//select ppRestoration Action
 	useEffect(() => {
 		if (item && moveToPPRestore && pokemonIdToPPRestore) {

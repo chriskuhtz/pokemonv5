@@ -7,6 +7,7 @@ import { PokemonType } from './PokemonType';
 import { StatObject } from './StatObject';
 
 export type BattlePokemonLocation = 'UNDERWATER' | 'FLYING' | 'UNDERGROUND';
+
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
 	stats: StatObject;
@@ -21,6 +22,7 @@ export interface BattlePokemon extends OwnedPokemon {
 	evasiveness: number;
 	secondaryAilments?: SecondaryAilment[];
 	multiHits?: number;
+	recharging?: boolean;
 	preparedMove?: { moveName: string; targetId: string };
 	lockedInMove?: { moveName: string; duration: number };
 	disabledMove?: { moveName: string; duration: number };
