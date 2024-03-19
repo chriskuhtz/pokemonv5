@@ -64,8 +64,8 @@ export const EmptyInventory: Inventory = {
 	'x-sp-atk': 0,
 	'x-sp-def': 0,
 	'x-speed': 0,
-	'dire-hit': 10,
-	'guard-spec': 10,
+	'dire-hit': 0,
+	'guard-spec': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

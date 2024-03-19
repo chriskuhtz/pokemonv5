@@ -44,6 +44,7 @@ export const applyXItem = (
 	return {
 		...pokemon,
 		statModifiers: updatedStatModifiers,
+		secondaryAilments: updatedSecondaryAilments,
 		accuracyModifier: updatedAccuracy,
 	};
 };

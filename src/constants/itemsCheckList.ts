@@ -251,7 +251,11 @@ export const itemsCheckList: {
 		handled: true,
 	},
 	//v0.0.5
-	{ name: 'guard-spec', url: 'https://pokeapi.co/api/v2/item/55/' },
+	{
+		name: 'guard-spec',
+		url: 'https://pokeapi.co/api/v2/item/55/',
+		handled: true,
+	},
 	{
 		name: 'dire-hit',
 		url: 'https://pokeapi.co/api/v2/item/56/',

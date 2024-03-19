@@ -265,6 +265,58 @@ export const useHandleAction = (
 				}
 				return;
 			}
+			//MIST
+			if (
+				(isBattleAttack(action) && action.move.name === 'mist') ||
+				(isBattleItemAction(action) && action.item === 'guard-spec')
+			) {
+				dispatch(
+					addNotification(
+						`${actor.name}'s team is protected by ${
+							isBattleAttack(action) ? 'mist' : 'guard spec'
+						}`
+					)
+				);
+				if (actor.side === 'PLAYER') {
+					setEnvironment((environment) => ({
+						...environment,
+						playerSideMist: 5,
+					}));
+
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setEnvironment((environment) => ({
+						...environment,
+						opponentSideMist: 5,
+					}));
+
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
 			//ITEM
 			if (isBattleItemAction(action) && target) {
 				if (actor.side === 'PLAYER') {
@@ -329,50 +381,7 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//MIST
-			if (isBattleAttack(action) && action.move.name === 'mist') {
-				dispatch(addNotification(`${actor.name}'s team is protected by mist`));
-				if (actor.side === 'PLAYER') {
-					setEnvironment((environment) => ({
-						...environment,
-						playerSideMist: 5,
-					}));
-
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setEnvironment((environment) => ({
-						...environment,
-						opponentSideMist: 5,
-					}));
-
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
-				return;
-			}
-			//MIST
+			//DISABLE
 			if (isBattleAttack(action) && action.move.name === 'disable' && target) {
 				const disabledMove = {
 					moveName:
@@ -723,7 +732,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
 			console.error('not sure what to do, bearing around', actor);
 		}
 	}, [

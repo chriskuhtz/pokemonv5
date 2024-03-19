@@ -129,6 +129,9 @@ export const canBenefitFromItem = (
 			) {
 				return true;
 			}
+			if (itemName === 'guard-spec') {
+				return true;
+			}
 		}
 	}
 

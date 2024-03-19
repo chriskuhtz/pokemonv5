@@ -75,7 +75,7 @@ export const useAvailableActions = (
 			//SWITCH
 			{
 				actionType: 'SWITCH',
-				displayName: `Switch ${shadowTagged ? '(shadow-tag)' : undefined}`,
+				displayName: `Switch ${shadowTagged ? '(shadow-tag)' : ''}`,
 				disabled:
 					shadowTagged ||
 					switchTargets.length <= 0 ||
