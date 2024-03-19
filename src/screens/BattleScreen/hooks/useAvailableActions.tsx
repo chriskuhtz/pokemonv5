@@ -19,6 +19,12 @@ export const useAvailableActions = (
 			return [];
 		}
 
+		const shadowTagged = opponentSide.field.some(
+			(p) => p.ability === 'shadow-tag'
+		);
+		const trapped = nextPlayerPokemonWithoutAction?.secondaryAilments?.some(
+			(a) => a.type === 'trap'
+		);
 		const switchTargets =
 			playerSide?.bench.filter((benchmon) =>
 				playerSide.field.every(
@@ -69,13 +75,12 @@ export const useAvailableActions = (
 			//SWITCH
 			{
 				actionType: 'SWITCH',
-				displayName: 'Switch',
+				displayName: `Switch ${shadowTagged ? '(shadow-tag)' : undefined}`,
 				disabled:
+					shadowTagged ||
 					switchTargets.length <= 0 ||
 					!!nextPlayerPokemonWithoutAction?.preparedMove ||
-					!!nextPlayerPokemonWithoutAction?.secondaryAilments?.some(
-						(a) => a.type === 'trap'
-					),
+					!!trapped,
 				availableTargets: switchTargets,
 			},
 			//ITEM

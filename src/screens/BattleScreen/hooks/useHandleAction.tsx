@@ -476,13 +476,21 @@ export const useHandleAction = (
 			}
 			//run away attempt
 			if (action?.type === 'RUNAWAY_ATTEMPT') {
-				const canRunAway = Math.random() > 0.5;
-
+				const shadowTagged = opponentSide.field.some(
+					(p) => p.ability === 'shadow-tag'
+				);
+				const canRunAway = !shadowTagged && Math.random() > 0.5;
 				if (canRunAway) {
 					void leaveBattle('RUNAWAY');
 				} else {
 					if (actor.side === 'PLAYER') {
-						dispatch(addNotification('could not escape'));
+						dispatch(
+							addNotification(
+								`could not escape ${
+									shadowTagged ? 'due to shadow-tag' : undefined
+								}`
+							)
+						);
 						setPlayerSide({
 							...playerSide,
 							field: playerSide.field.map((p) => {
