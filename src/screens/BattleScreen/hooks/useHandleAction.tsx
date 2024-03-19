@@ -298,9 +298,7 @@ export const useHandleAction = (
 					if (actor.side === 'PLAYER') {
 						dispatch(
 							addNotification(
-								`could not escape ${
-									shadowTagged ? 'due to shadow-tag' : undefined
-								}`
+								`could not escape ${shadowTagged ? 'due to shadow-tag' : ''}`
 							)
 						);
 						setPlayerSide({

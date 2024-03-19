@@ -112,6 +112,20 @@ export const ChooseActionAndTarget = ({
 		}
 	}, [move]);
 
+	//auto select target certain items
+	useEffect(() => {
+		if (item && ['guard-spec', 'fluffy-tail', 'poke-doll'].includes(item)) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'IN_BATTLE_ITEM',
+					item,
+					target: actor.id,
+				},
+			});
+			reset();
+		}
+	}, [item]);
 	//auto select target for prepared move
 	useEffect(() => {
 		const move = actor.moves.find(

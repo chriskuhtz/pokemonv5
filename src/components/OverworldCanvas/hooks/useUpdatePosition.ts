@@ -52,14 +52,6 @@ export const useUpdatePosition = () => {
 			dispatch(updatePosition({ ...position, orientation: nextOrientation }));
 			return;
 		}
-		if (occupied) {
-			dispatch(
-				updatePosition({
-					...position,
-				})
-			);
-			return;
-		}
 
 		if (decorator?.onStep || encounterOnEveryField) {
 			const encounterThreshold = Math.random() + tresHoldModifier;
@@ -106,6 +98,14 @@ export const useUpdatePosition = () => {
 				dispatch(stopWalking());
 				return;
 			}
+		}
+		if (occupied) {
+			dispatch(
+				updatePosition({
+					...position,
+				})
+			);
+			return;
 		}
 
 		dispatch(
