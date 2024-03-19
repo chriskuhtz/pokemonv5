@@ -90,6 +90,14 @@ export const applyHealingItemToPokemon = (
 			(a) => a.type !== 'infatuation'
 		);
 	}
+	if (
+		itemName === 'yellow-flute' &&
+		copy.secondaryAilments?.some((a) => a.type === 'confusion')
+	) {
+		copy.secondaryAilments = [...(copy.secondaryAilments ?? [])].filter(
+			(a) => a.type !== 'confusion'
+		);
+	}
 
 	return copy;
 };

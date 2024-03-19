@@ -87,6 +87,12 @@ export const canBenefitFromItem = (
 		) {
 			canBenefit = true;
 		}
+		if (
+			itemName === 'yellow-flute' &&
+			secondaryAilments?.some((a) => a.type === 'confusion')
+		) {
+			canBenefit = true;
+		}
 		//USED-PP
 		if (
 			isPPRestorationItem(itemName) &&
