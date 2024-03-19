@@ -144,7 +144,7 @@ export const OakAfterSelection: Npc = {
 		'Aah, what an excellent choice',
 		'I am sure this Pokemon will become an excellent Partner',
 		'I look forward to hearing about your many adventures',
-		'You should talk to Nurse Joy outside',
+		'You should talk to Nurse Joy next door',
 		'She will provide you with some starting equipment',
 	],
 	sprite: '136',

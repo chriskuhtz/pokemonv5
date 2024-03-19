@@ -3,7 +3,7 @@ import { UniqueOccupantId } from '../../constants/UniqueOccupantRecord';
 import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
 import { flamingDesert } from '../../constants/maps/flamingDesert';
-import { oaksLab } from '../../constants/maps/oaksLab';
+import { oaksLab, pokemonCenter } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
@@ -19,7 +19,8 @@ export type BaseTileId =
 	| 'caveFloor'
 	| 'cobblestone'
 	| 'grass'
-	| 'gray';
+	| 'gray'
+	| 'blueCheckered';
 export type BaseTilePattern =
 	| 'uniform'
 	| 'checkered'
@@ -68,6 +69,7 @@ const mapsRecord: Record<string, MapState> = {
 	'brocks-gym': brocksGym,
 	'berry-patch': berryPatch,
 	'flaming-desert': flamingDesert,
+	'pokemon-center': pokemonCenter,
 };
 
 const initialState: MapState = starterTown;

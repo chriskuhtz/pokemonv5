@@ -14,6 +14,10 @@ import {
 	youngsterJimmyBlocker,
 } from './uniqueOccupants/npcs';
 import {
+	pokeCenterNurse,
+	pokeCenterNurseQuest,
+} from './uniqueOccupants/nurses';
+import {
 	berryPatchItem1,
 	flamingDesertItem1,
 	flamingDesertItem2,
@@ -87,45 +91,9 @@ export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 	'oak-before-selection': OakBeforeSelection,
 	'oak-during-selection': OakDuringSelection,
 	'oak-after-selection': OakAfterSelection,
-	'starter-town-nurse-quest': {
-		id: 'starter-town-nurse-quest',
-		type: 'NPC',
-		position: {
-			y: 5,
-			x: 8,
-			mapId: 'starter-town',
-			orientation: 0,
-		},
-		dialogue: [
-			'Welcome to the world of Pokemon',
-			'Please visit me any time your Pokemon is hurt',
-			'I will also give these potions',
-			'Use them for first aid in the field',
-		],
-		questUpdates: {
-			talkToNurseJoy: 'completed',
-			secondPokemon: 'active',
-			catchAllStarterTown: 'active',
-			catchAllBerryPatch: 'active',
-			catchAllFlamingDesert: 'active',
-		},
-		sprite: '115',
-		questCondition: { id: 'talkToNurseJoy', status: 'active' },
-	},
+	'starter-town-nurse-quest': pokeCenterNurseQuest,
 	'starter-town-merchant': starterTownMerchant,
-	'starter-town-nurse': {
-		id: 'starter-town-nurse',
-		type: 'HEALER',
-		position: {
-			y: 5,
-			x: 8,
-			mapId: 'starter-town',
-			orientation: 0,
-		},
-		sprite: '115',
-		dialogue: ['Let me heal your Pokemon'],
-		questCondition: { id: 'talkToNurseJoy', status: 'completed' },
-	},
+	'starter-town-nurse': pokeCenterNurse,
 	ballMachine: {
 		id: 'ballMachine',
 		type: 'LARGE_OBSTACLE',
