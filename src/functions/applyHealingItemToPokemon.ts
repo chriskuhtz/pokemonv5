@@ -65,6 +65,12 @@ export const applyHealingItemToPokemon = (
 		copy.primaryAilment = undefined;
 	}
 	if (
+		(itemName === 'awakening' || itemName === 'blue-flute') &&
+		copy.primaryAilment?.type === 'sleep'
+	) {
+		copy.primaryAilment = undefined;
+	}
+	if (
 		itemName === 'paralyze-heal' &&
 		copy.primaryAilment?.type === 'paralysis'
 	) {

@@ -25,6 +25,7 @@ export const healingItemTypes = [
 	'lava-cookie',
 	'berry-juice',
 	'old-gateau',
+	'blue-flute',
 ] as const;
 
 export const ppRestorationItemTypes = [

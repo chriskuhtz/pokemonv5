@@ -66,6 +66,12 @@ export const canBenefitFromItem = (
 		) {
 			canBenefit = true;
 		}
+		if (
+			(itemName === 'awakening' || itemName === 'blue-flute') &&
+			primaryAilment?.type === 'sleep'
+		) {
+			canBenefit = true;
+		}
 		if (itemName === 'paralyze-heal' && primaryAilment?.type === 'paralysis') {
 			canBenefit = true;
 		}
