@@ -5,6 +5,7 @@ import { joinInventories } from '../functions/joinInventories';
 import { trimToOwnedPokemon } from '../functions/trimToOwnedPokemon';
 import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
+import { EncounterChanceItem } from '../interfaces/Item';
 import { OwnedPokemon, UsedPowerPoints } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
 import { GymBadge, PlayerConfigObject, SaveFile } from '../interfaces/SaveFile';
@@ -30,6 +31,7 @@ export type SaveGamePayload = {
 	subtractInventory?: boolean;
 	updatedConfig?: PlayerConfigObject;
 	preservePokemonOrder?: boolean;
+	flute?: EncounterChanceItem;
 };
 export type SaveGameFunction = (x: SaveGamePayload) => Promise<void>;
 
@@ -61,6 +63,7 @@ export const useSaveGame = (): SaveGameFunction => {
 			teleportToLastHealer,
 			updatedConfig,
 			preservePokemonOrder = true,
+			flute,
 		}: SaveGamePayload) => {
 			if (!data) {
 				console.error('cant save if no current saveFile');
@@ -181,6 +184,10 @@ export const useSaveGame = (): SaveGameFunction => {
 				pokedex: updatedDex,
 				money: updatedMoney,
 				config: updatedConfig ?? data.config,
+				activeFlute:
+					flute ?? updatedPosition().mapId !== data.position.mapId
+						? undefined
+						: data.activeFlute,
 				gymBadges: newBadge
 					? { ...data.gymBadges, [`${newBadge}`]: true }
 					: data.gymBadges,

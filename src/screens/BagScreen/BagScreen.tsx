@@ -3,6 +3,7 @@ import { Headline } from '../../components/Headline/Headline';
 import { useHydratedInventory } from '../../hooks/useHydratedInventory';
 import { useSaveGame } from '../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
+import { isEncounterChanceItem } from '../../interfaces/Item';
 import { ItemData } from '../../interfaces/ItemData';
 import { RoutesEnum } from '../../router/router';
 import { addNotification } from '../../store/slices/notificationSlice';
@@ -40,6 +41,20 @@ export const BagScreen = (): JSX.Element => {
 			void saveGame({
 				visitedNurse: true,
 				inventoryChanges: { 'sacred-ash': -1 },
+			});
+			return;
+		}
+		if (isEncounterChanceItem(item.name)) {
+			dispatch(
+				addNotification(
+					`You played the ${item.name}. Wild Pokemon seem to react to it.`
+				)
+			);
+
+			void saveGame({
+				visitedNurse: true,
+				inventoryChanges: { [`${item.name}`]: -1 },
+				flute: item.name,
 			});
 			return;
 		}

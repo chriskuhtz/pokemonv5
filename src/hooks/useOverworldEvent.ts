@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { determineMapEncounters } from '../functions/determineMapEncounters';
 import { determineTimeOfDay } from '../functions/determineTimeOfDay';
 import { QuestName } from '../interfaces/Quest';
 import { RoutesEnum } from '../router/router';
@@ -14,7 +15,7 @@ import { addNotification } from '../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useHandleTrainerChallenge } from './useHandleTrainerChallenge';
 import { useSaveGame } from './useSaveGame';
-import { determineMapEncounters } from '../functions/determineMapEncounters';
+import { useGetCurrentSaveFile } from './xata/useCurrentSaveFile';
 
 export const useOverworldEvent = () => {
 	const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ export const useOverworldEvent = () => {
 	const quests = useAppSelector(selectQuests);
 	const saveGame = useSaveGame();
 	const { environment, encounters } = useAppSelector(selectMap);
-
+	const saveFile = useGetCurrentSaveFile();
 	const handleTrainerChallenge = useHandleTrainerChallenge();
 
 	return useCallback(
@@ -33,6 +34,16 @@ export const useOverworldEvent = () => {
 			if (event.type === 'ENCOUNTER') {
 				const timeOfDay = determineTimeOfDay();
 				const opponents = determineMapEncounters(encounters, timeOfDay);
+
+				const firstTeamMemberXp =
+					saveFile?.pokemon.find((p) => p.onTeam)?.xp ?? 0;
+
+				if (
+					saveFile?.activeFlute === 'black-flute' &&
+					opponents.every((o) => o.xp < firstTeamMemberXp)
+				) {
+					return;
+				}
 				dispatch(addNotification('A wild Pokemon attacks!'));
 				navigate(RoutesEnum.battle, {
 					state: {
@@ -67,6 +78,14 @@ export const useOverworldEvent = () => {
 				}
 			}
 		},
-		[dispatch, encounters, handleTrainerChallenge, navigate, quests, saveGame]
+		[
+			dispatch,
+			encounters,
+			handleTrainerChallenge,
+			navigate,
+			quests,
+			saveGame,
+			saveFile,
+		]
 	);
 };

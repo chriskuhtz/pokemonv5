@@ -38,6 +38,8 @@ export const flamingDesertMerchant: Merchant = {
 		'fresh-water': 1000,
 		'lava-cookie': 1000,
 		'moomoo-milk': 1000,
+		'blue-flute': 1000,
+		'yellow-flute': 1000,
 	},
 	dialogue: ['Nothing is more hydrating than a fresh berry juice!'],
 	sprite: '077',

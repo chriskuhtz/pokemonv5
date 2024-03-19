@@ -2,6 +2,7 @@ import { UniqueOccupantId } from '../constants/UniqueOccupantRecord';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
 import { DexEntry } from './DexEntry';
 import { Inventory } from './Inventory';
+import { EncounterChanceItem } from './Item';
 import { OwnedPokemon } from './OwnedPokemon';
 import { QuestName, QuestStatus } from './Quest';
 
@@ -25,5 +26,6 @@ export interface SaveFile {
 	quests: Record<QuestName, QuestStatus>;
 	playerId: string;
 	gymBadges: GymBadgeRecord;
+	activeFlute?: EncounterChanceItem;
 	config: PlayerConfigObject;
 }
