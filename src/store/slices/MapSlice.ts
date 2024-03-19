@@ -3,7 +3,7 @@ import { UniqueOccupantId } from '../../constants/UniqueOccupantRecord';
 import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
 import { flamingDesert } from '../../constants/maps/flamingDesert';
-import { oaksLab, pokemonCenter } from '../../constants/maps/oaksLab';
+import { oaksLab } from '../../constants/maps/oaksLab';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
@@ -13,6 +13,7 @@ import {
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import { pokemonCenter } from '../../constants/maps/pokemonCenter';
 
 export type BaseTileId =
 	| 'beach'
