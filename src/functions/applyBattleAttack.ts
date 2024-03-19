@@ -173,12 +173,15 @@ export const applyBattleAttack = (
 		dispatch
 	);
 
-	updatedActor = applyContactAbilities(
+	const { actor: contactActor, target: contactTarget } = applyContactAbilities(
 		updatedActor,
 		updatedTarget,
 		move,
-		dispatch
+		dispatch,
+		Math.random()
 	);
+	updatedActor = contactActor;
+	updatedTarget = contactTarget;
 
 	if (lockInMoves.includes(action.move.name) && !actor.lockedInMove) {
 		updatedActor = {

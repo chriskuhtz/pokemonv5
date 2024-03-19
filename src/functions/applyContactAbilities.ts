@@ -10,12 +10,14 @@ export const applyContactAbilities = (
 	actor: BattlePokemon,
 	target: BattlePokemon,
 	move: MoveDto,
-	dispatch: Dispatch<unknown>
-): BattlePokemon => {
-	if (actor.primaryAilment) {
-		return actor;
+	dispatch: Dispatch<unknown>,
+	ailmentChance: number
+): { actor: BattlePokemon; target: BattlePokemon } => {
+	if (!contactMoves.some((cmove) => cmove === move.name)) {
+		return { actor, target };
 	}
 	const updatedActor = { ...actor };
+	const updatedTarget = { ...target };
 
 	//STATIC
 	const hitByStatic =
@@ -23,8 +25,7 @@ export const applyContactAbilities = (
 		actor.primaryType !== 'electric' &&
 		actor.secondaryType !== 'electric' &&
 		!actor.primaryAilment &&
-		Math.random() < 0.33 &&
-		contactMoves.some((cmove) => cmove === move.name);
+		ailmentChance < 0.33;
 
 	if (hitByStatic) {
 		dispatch(addNotification(`${actor.name} was paralyzed by static`));
@@ -40,8 +41,7 @@ export const applyContactAbilities = (
 		actor.primaryType !== 'grass' &&
 		actor.secondaryType !== 'grass' &&
 		!actor.primaryAilment &&
-		Math.random() < 0.33 &&
-		contactMoves.some((cmove) => cmove === move.name);
+		ailmentChance < 0.33;
 
 	if (hitByEffectSpore) {
 		const possibleAilments: PrimaryAilment[] = [
@@ -59,10 +59,7 @@ export const applyContactAbilities = (
 		updatedActor.primaryAilment = chosenAilment;
 	}
 	//ROUGH SKIN
-	if (
-		target.ability === 'rough-skin' &&
-		contactMoves.some((cmove) => cmove === move.name)
-	) {
+	if (target.ability === 'rough-skin') {
 		dispatch(
 			addNotification(`${actor.name} was hurt by  ${target.name}´s rough skin`)
 		);
@@ -71,15 +68,15 @@ export const applyContactAbilities = (
 
 	if (
 		!target.primaryAilment &&
-		actor.ability === 'synchronize' &&
-		actor.primaryAilment
+		updatedActor.ability === 'synchronize' &&
+		updatedActor.primaryAilment
 	) {
 		dispatch(
 			addNotification(
 				`${actor.name}´s synchronize copied the ailment to ${target.name}`
 			)
 		);
-		target.primaryAilment = updatedActor.primaryAilment;
+		updatedTarget.primaryAilment = updatedActor.primaryAilment;
 	}
-	return updatedActor;
+	return { actor: updatedActor, target: updatedTarget };
 };
