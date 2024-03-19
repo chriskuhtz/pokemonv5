@@ -68,5 +68,18 @@ export const applyContactAbilities = (
 		);
 		updatedActor.damage += Math.round(updatedActor.stats.hp / 8);
 	}
+
+	if (
+		!target.primaryAilment &&
+		actor.ability === 'synchronize' &&
+		actor.primaryAilment
+	) {
+		dispatch(
+			addNotification(
+				`${actor.name}´s synchronize copied the ailment to ${target.name}`
+			)
+		);
+		target.primaryAilment = updatedActor.primaryAilment;
+	}
 	return updatedActor;
 };

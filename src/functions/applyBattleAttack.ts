@@ -128,13 +128,26 @@ export const applyBattleAttack = (
 		...updatedTarget,
 		nextAction: newTargetAction,
 	};
-	updatedTarget = passesAccuracyCheck
-		? applyAilments(updatedTarget, move, dispatch)
-		: updatedTarget;
 
-	updatedTarget =
+	if (passesAccuracyCheck) {
+		updatedTarget = applyAilments(updatedTarget, move, dispatch);
+		if (
+			!target.primaryAilment &&
+			updatedTarget.primaryAilment &&
+			target.ability === 'synchronize' &&
+			!updatedActor.primaryAilment
+		) {
+			dispatch(
+				addNotification(
+					`${target.name}´s synchronize copied the ailment to ${actor.name}`
+				)
+			);
+			updatedActor.primaryAilment === updatedTarget.primaryAilment;
+		}
+	}
+
+	if (
 		passesAccuracyCheck &&
-		target.ability !== 'clear-body' &&
 		[
 			'selected-pokemon',
 			'random-opponent',
@@ -142,8 +155,16 @@ export const applyBattleAttack = (
 			'opponents-field',
 		].includes(move.target.name) &&
 		['net-good-stats', 'damage+lower'].includes(move.meta.category.name)
-			? applyStatMods(updatedTarget, move, dispatch, environment)
-			: updatedTarget;
+	) {
+		if (target.ability !== 'clear-body') {
+			applyStatMods(updatedTarget, move, dispatch, environment);
+		} else
+			dispatch(
+				addNotification(
+					`${updatedTarget.name} prevents stat loss with clear-body`
+				)
+			);
+	}
 
 	updatedActor = determineFollowUpAction(
 		updatedActor,

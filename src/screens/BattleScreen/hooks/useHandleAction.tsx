@@ -119,6 +119,11 @@ export const useHandleAction = (
 			}
 			//SWITCH
 			if (action?.type === 'SWITCH' && switchTarget) {
+				if (actor.ability === 'natural-cure' && actor.primaryAilment) {
+					dispatch(
+						addNotification(`${actor.name} cured its ailment with natural cure`)
+					);
+				}
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -144,6 +149,10 @@ export const useHandleAction = (
 							.filter((p) => p.id !== switchTarget.id)
 							.concat({
 								...actor,
+								primaryAilment:
+									actor.ability === 'natural-cure'
+										? undefined
+										: actor.primaryAilment,
 								nextAction: undefined,
 								preparedMove: undefined,
 								multiHits: undefined,
@@ -199,6 +208,10 @@ export const useHandleAction = (
 								lockedInMove: undefined,
 								usedAbility: undefined,
 								secondaryAilments: undefined,
+								primaryAilment:
+									actor.ability === 'natural-cure'
+										? undefined
+										: actor.primaryAilment,
 							}),
 					});
 					setPlayerSide({
