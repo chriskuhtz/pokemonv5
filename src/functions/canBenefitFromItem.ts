@@ -81,6 +81,12 @@ export const canBenefitFromItem = (
 		if (itemName === 'ice-heal' && primaryAilment?.type === 'freeze') {
 			canBenefit = true;
 		}
+		if (
+			itemName === 'red-flute' &&
+			secondaryAilments?.some((a) => a.type === 'infatuation')
+		) {
+			canBenefit = true;
+		}
 		//USED-PP
 		if (
 			isPPRestorationItem(itemName) &&

@@ -271,8 +271,16 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/64/',
 		handled: true,
 	},
-	{ name: 'blue-flute', url: 'https://pokeapi.co/api/v2/item/65/' },
-	{ name: 'yellow-flute', url: 'https://pokeapi.co/api/v2/item/66/' },
+	{
+		name: 'blue-flute',
+		url: 'https://pokeapi.co/api/v2/item/65/',
+		handled: true,
+	},
+	{
+		name: 'yellow-flute',
+		url: 'https://pokeapi.co/api/v2/item/66/',
+		handled: true,
+	},
 	{ name: 'red-flute', url: 'https://pokeapi.co/api/v2/item/67/' },
 	{ name: 'black-flute', url: 'https://pokeapi.co/api/v2/item/68/' },
 	{ name: 'white-flute', url: 'https://pokeapi.co/api/v2/item/69/' },

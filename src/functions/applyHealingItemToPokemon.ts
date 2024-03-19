@@ -82,6 +82,14 @@ export const applyHealingItemToPokemon = (
 	if (itemName === 'ice-heal' && copy.primaryAilment?.type === 'freeze') {
 		copy.primaryAilment = undefined;
 	}
+	if (
+		itemName === 'red-flute' &&
+		copy.secondaryAilments?.some((a) => a.type === 'infatuation')
+	) {
+		copy.secondaryAilments = [...(copy.secondaryAilments ?? [])].filter(
+			(a) => a.type !== 'infatuation'
+		);
+	}
 
 	return copy;
 };
