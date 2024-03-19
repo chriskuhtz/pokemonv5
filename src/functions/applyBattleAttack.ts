@@ -6,6 +6,7 @@ import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
+import { applyContactAbilities } from './applyContactAbilities';
 import { applyCrashDamage } from './applyCrashDamage';
 import { applyDrain } from './applyDrain';
 import { applyPPChange } from './applyPPChange';
@@ -13,7 +14,6 @@ import { applyStatMods } from './applyStatMods';
 import { calculateDamage } from './calculateDamage';
 import { determineFollowUpAction } from './determineFollowUpAction';
 import { determineMultiHits } from './determineMultiHits';
-import { determineNewActorAilment } from './determineNewActorAilment';
 import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
@@ -151,7 +151,7 @@ export const applyBattleAttack = (
 		dispatch
 	);
 
-	updatedActor = determineNewActorAilment(
+	updatedActor = applyContactAbilities(
 		updatedActor,
 		updatedTarget,
 		move,
