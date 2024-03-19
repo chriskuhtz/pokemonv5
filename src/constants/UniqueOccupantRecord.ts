@@ -31,6 +31,7 @@ import {
 	brock,
 	brocksMinion,
 	brocksMinion2,
+	brocksMinion3,
 	bugcatcherBarry,
 	bugcatcherCisco,
 	bugcatcherNash,
@@ -40,6 +41,8 @@ import {
 	hikerBennet,
 	pyromaniacJavi,
 	youngsterJimmy,
+	youngsterJohnny,
+	youngsterTimmy,
 } from './uniqueOccupants/trainers';
 
 export const uniqueOccupantIds = [
@@ -53,9 +56,12 @@ export const uniqueOccupantIds = [
 	'starter-town-item-1',
 	'starter-town-item-2',
 	'youngster-jimmy',
+	'youngster-johnny',
+	'youngster-timmy',
 	'brock',
 	'brocks-minion',
 	'brocks-minion2',
+	'brocks-minion3',
 	'youngster-jimmy-blocker',
 	'oaks-assistant',
 	'oaks-assistant2',
@@ -82,10 +88,13 @@ export type UniqueOccupantId = (typeof uniqueOccupantIds)[number];
 
 export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 	'youngster-jimmy': youngsterJimmy,
+	'youngster-timmy': youngsterTimmy,
+	'youngster-johnny': youngsterJohnny,
 	'youngster-jimmy-blocker': youngsterJimmyBlocker,
 	brock,
 	'brocks-minion': brocksMinion,
 	'brocks-minion2': brocksMinion2,
+	'brocks-minion3': brocksMinion3,
 	'starter-town-item-1': starterTownItem1,
 	'starter-town-item-2': starterTownItem2,
 	'oak-before-selection': OakBeforeSelection,

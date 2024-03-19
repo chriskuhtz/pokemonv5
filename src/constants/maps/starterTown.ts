@@ -51,7 +51,6 @@ export const starterTown: MapState = {
 		{ x: 1, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 5, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
 		{ x: 0, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -65,7 +64,7 @@ export const starterTown: MapState = {
 		{ x: 0, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 3, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+
 		{ x: 5, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },

@@ -33,6 +33,8 @@ export const staticSaveData: SaveFile = {
 	},
 	handledOccupants: {
 		'youngster-jimmy': false,
+		'youngster-johnny': false,
+		'youngster-timmy': false,
 		'starter-town-item-1': false,
 		'starter-town-item-2': false,
 		ballMachine: false,
@@ -46,6 +48,7 @@ export const staticSaveData: SaveFile = {
 		brock: false,
 		'brocks-minion': false,
 		'brocks-minion2': false,
+		'brocks-minion3': false,
 		'oaks-assistant': false,
 		'oaks-assistant2': false,
 		'pikachu-fan': false,
