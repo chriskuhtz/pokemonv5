@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Headline, HeadlineProps } from '../../components/Headline/Headline';
 import { QuestListItem } from '../../components/QuestListItem/QuestListItem';
@@ -63,7 +63,7 @@ export const QuestsScreen = ({
 										const status = questEntry[1];
 
 										if (status !== 'active') {
-											return <></>;
+											return <React.Fragment key={key}></React.Fragment>;
 										}
 
 										const quest = { ...QuestRecord[key as QuestName], status };
@@ -91,7 +91,7 @@ export const QuestsScreen = ({
 										const key = questEntry[0];
 										const status = questEntry[1];
 										if (status !== 'completed') {
-											return <></>;
+											return <React.Fragment key={key}></React.Fragment>;
 										}
 										const quest = { ...QuestRecord[key as QuestName], status };
 

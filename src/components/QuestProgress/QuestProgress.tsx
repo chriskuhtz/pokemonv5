@@ -30,6 +30,7 @@ export const QuestProgress = ({ quest }: { quest: Quest }) => {
 					if (isOccupantWithSprite(occupant)) {
 						return (
 							<CharacterSprite
+								key={id}
 								orientation={'Down'}
 								style={
 									{
