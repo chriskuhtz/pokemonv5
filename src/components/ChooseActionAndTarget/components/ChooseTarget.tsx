@@ -98,7 +98,7 @@ export const ChooseTarget = ({
 										backgroundColor: 'var(--main-bg-color)',
 									}}
 									key={c.id}
-									disabled={item && !canBenefitFromItem(c, item)}
+									disabled={item && !canBenefitFromItem(true, c, item)}
 									onClick={() => {
 										selectAction({
 											...actor,

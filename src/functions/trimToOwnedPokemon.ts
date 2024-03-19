@@ -23,5 +23,6 @@ export const trimToOwnedPokemon = (
 		usedPowerPoints: battlemon.usedPowerPoints,
 		ppBoostedMoves: battlemon.ppBoostedMoves,
 		effortValues: battlemon.effortValues,
+		heldItemName: battlemon.heldItemName,
 	};
 };

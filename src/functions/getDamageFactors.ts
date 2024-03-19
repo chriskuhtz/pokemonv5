@@ -57,7 +57,7 @@ export const getDamageFactors = (
 			? 1.5
 			: 1;
 	const weatherFactor = determineWeatherFactor(moveType, environment.weather);
-	const criticalFactor = determineCritFactor(move, target);
+	const criticalFactor = determineCritFactor(move, actor, target);
 
 	const otherFactor = () => {
 		if (
@@ -113,6 +113,7 @@ export const getDamageFactors = (
 		typeFactor: getTypeFactor(
 			moveType,
 			move.name,
+			target.ability,
 			isConfusionHit,
 			target.primaryType,
 			target.secondaryType

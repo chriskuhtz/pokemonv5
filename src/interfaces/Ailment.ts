@@ -5,13 +5,14 @@ export interface PrimaryAilment {
 export function isPrimaryAilment(x: { type: string }): x is PrimaryAilment {
 	return ['paralysis', 'burn', 'freeze', 'poison', 'sleep'].includes(x.type);
 }
-export function isSecondaryAilment(x: { type: string }): x is SecondaryAilment {
-	return ['confusion', 'trap', 'infatuation'].includes(x.type);
-}
 
 export interface SecondaryAilment {
-	type: 'confusion' | 'trap' | 'infatuation';
+	type: 'confusion' | 'trap' | 'infatuation' | 'dire-hit';
 	duration: number;
+}
+
+export function isSecondaryAilment(x: { type: string }): x is SecondaryAilment {
+	return ['confusion', 'trap', 'infatuation'].includes(x.type);
 }
 
 export const PARA_CHANCE = 0.25;

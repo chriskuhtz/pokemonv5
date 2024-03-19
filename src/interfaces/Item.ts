@@ -70,7 +70,10 @@ export const xItemTypes = [
 	'x-sp-def',
 	'x-speed',
 	'x-accuracy',
+	'dire-hit',
+	'guard-spec',
 ] as const;
+
 export const itemTypes = [
 	...balltypes,
 	...healingItemTypes,

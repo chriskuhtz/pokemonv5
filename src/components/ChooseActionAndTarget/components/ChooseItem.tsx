@@ -62,7 +62,7 @@ export const ChooseItem = ({
 										minWidth: '25%',
 									}}
 									disabled={availableTargets.every(
-										(t) => !canBenefitFromItem(t, key)
+										(t) => !canBenefitFromItem(true, t, key)
 									)}
 									key={key + amount}
 									onClick={() => {

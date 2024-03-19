@@ -11,6 +11,7 @@ import { canRaiseStat } from './canRaiseStat';
 import { canRaiseStatEV } from './canRaiseStatEV';
 
 export const canBenefitFromItem = (
+	inBattle: boolean,
 	pokemon: BattlePokemon,
 	itemName: ItemType
 ): boolean => {
@@ -83,6 +84,7 @@ export const canBenefitFromItem = (
 		}
 		//EV BOOST
 		if (
+			!inBattle &&
 			isEvBoostItem(itemName) &&
 			canRaiseStatEV(pokemon, 10, EVBoostMap[itemName])
 		) {
@@ -90,31 +92,43 @@ export const canBenefitFromItem = (
 		}
 		//RARE_CANDY
 		const { level } = calculateLevelData(pokemon.xp);
-		if (itemName === 'rare-candy' && level < 100) {
+		if (!inBattle && itemName === 'rare-candy' && level < 100) {
 			return true;
 		}
 		//PP BOOST
-		if (isPPBoostItem(itemName)) {
+		if (!inBattle && isPPBoostItem(itemName)) {
 			return true;
 		}
 		//X ITEMS
-		if (itemName === 'x-attack' && canRaiseStat(pokemon, 'attack')) {
-			return true;
-		}
-		if (itemName === 'x-defense' && canRaiseStat(pokemon, 'defense')) {
-			return true;
-		}
-		if (itemName === 'x-sp-atk' && canRaiseStat(pokemon, 'spatk')) {
-			return true;
-		}
-		if (itemName === 'x-sp-def' && canRaiseStat(pokemon, 'spdef')) {
-			return true;
-		}
-		if (itemName === 'x-speed' && canRaiseStat(pokemon, 'speed')) {
-			return true;
-		}
-		if (itemName === 'x-accuracy' && canRaiseStat(pokemon, 'accuracy')) {
-			return true;
+		if (inBattle) {
+			if (itemName === 'x-attack' && canRaiseStat(pokemon, 'attack')) {
+				return true;
+			}
+			if (itemName === 'x-defense' && canRaiseStat(pokemon, 'defense')) {
+				return true;
+			}
+			if (
+				inBattle &&
+				itemName === 'x-sp-atk' &&
+				canRaiseStat(pokemon, 'spatk')
+			) {
+				return true;
+			}
+			if (itemName === 'x-sp-def' && canRaiseStat(pokemon, 'spdef')) {
+				return true;
+			}
+			if (itemName === 'x-speed' && canRaiseStat(pokemon, 'speed')) {
+				return true;
+			}
+			if (itemName === 'x-accuracy' && canRaiseStat(pokemon, 'accuracy')) {
+				return true;
+			}
+			if (
+				itemName === 'dire-hit' &&
+				!pokemon.secondaryAilments?.some((a) => a.type === 'dire-hit')
+			) {
+				return true;
+			}
 		}
 	}
 

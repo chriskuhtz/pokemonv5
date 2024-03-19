@@ -252,7 +252,11 @@ export const itemsCheckList: {
 	},
 	//v0.0.5
 	{ name: 'guard-spec', url: 'https://pokeapi.co/api/v2/item/55/' },
-	{ name: 'dire-hit', url: 'https://pokeapi.co/api/v2/item/56/' },
+	{
+		name: 'dire-hit',
+		url: 'https://pokeapi.co/api/v2/item/56/',
+		handled: true,
+	},
 	{ name: 'poke-doll', url: 'https://pokeapi.co/api/v2/item/63/' },
 	{ name: 'fluffy-tail', url: 'https://pokeapi.co/api/v2/item/64/' },
 	{ name: 'blue-flute', url: 'https://pokeapi.co/api/v2/item/65/' },
@@ -261,6 +265,7 @@ export const itemsCheckList: {
 	{ name: 'black-flute', url: 'https://pokeapi.co/api/v2/item/68/' },
 	{ name: 'white-flute', url: 'https://pokeapi.co/api/v2/item/69/' },
 	{ name: 'shoal-salt', url: 'https://pokeapi.co/api/v2/item/70/' },
+	//v0.0.6
 	{ name: 'shoal-shell', url: 'https://pokeapi.co/api/v2/item/71/' },
 	{ name: 'red-shard', url: 'https://pokeapi.co/api/v2/item/72/' },
 	{ name: 'blue-shard', url: 'https://pokeapi.co/api/v2/item/73/' },
