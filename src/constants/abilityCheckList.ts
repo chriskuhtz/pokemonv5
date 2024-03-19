@@ -108,7 +108,11 @@ export const abilityCheckList: {
 		url: 'https://pokeapi.co/api/v2/ability/21/',
 		handled: true,
 	},
-	{ name: 'intimidate', url: 'https://pokeapi.co/api/v2/ability/22/' },
+	{
+		name: 'intimidate',
+		url: 'https://pokeapi.co/api/v2/ability/22/',
+		handled: true,
+	},
 	{ name: 'shadow-tag', url: 'https://pokeapi.co/api/v2/ability/23/' },
 	{ name: 'rough-skin', url: 'https://pokeapi.co/api/v2/ability/24/' },
 	{ name: 'wonder-guard', url: 'https://pokeapi.co/api/v2/ability/25/' },
