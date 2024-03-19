@@ -31,12 +31,17 @@ export interface NumberOfTeamMembersCondition {
 	mode: 'EXACTLY' | 'UNDER' | 'OVER';
 	conditionFailMessage?: string;
 }
-
+export interface MinLevelCondition {
+	type: 'MIN_LEVEL';
+	level: number;
+	conditionFailMessage?: string;
+}
 export type Condition =
 	| OwnedPokemonCondition
 	| HandledOccupantCondition
 	| NotRegisteredPokemonCondition
-	| NumberOfTeamMembersCondition;
+	| NumberOfTeamMembersCondition
+	| MinLevelCondition;
 
 export type QuestStatus = 'inactive' | 'active' | 'completed';
 export interface Quest {
@@ -59,6 +64,7 @@ export const questNames = [
 	'catchAllFlamingDesert',
 	'defeatAllTrainers',
 	'catchNightPokemon',
+	'reachLevelFifteen',
 ] as const;
 
 export type QuestName = (typeof questNames)[number];
@@ -190,7 +196,18 @@ export const DefeatAllTrainersQuest: Quest = {
 			.map((o) => o.id) as UniqueOccupantId[],
 	},
 };
-
+export const ReachLevelFifteenQuest: Quest = {
+	status: 'inactive',
+	id: 'reachLevelFifteen',
+	title: 'Train a Pokemon to level 15',
+	description: 'Pokemon grow stronger by battling.',
+	rewardMoney: 1000,
+	rewardItems: generateInventory({ 'full-restore': 5 }),
+	condition: {
+		type: 'MIN_LEVEL',
+		level: 15,
+	},
+};
 export const QuestRecord: Record<QuestName, Quest> = {
 	pickStarter: PickStarterQuest,
 	talkToNurseJoy: TalkToNurseJoyQuest,
@@ -201,4 +218,5 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	catchAllFlamingDesert: CatchAllFlamingDesertQuest,
 	defeatAllTrainers: DefeatAllTrainersQuest,
 	catchNightPokemon: CatchNightPokemon,
+	reachLevelFifteen: ReachLevelFifteenQuest,
 };

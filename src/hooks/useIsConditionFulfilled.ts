@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { calculateLevelData } from '../functions/calculateLevelData';
 import { isOwnedPokemonConditionFulfilled } from '../functions/isOwnedPokemonQuestFulfilled';
 import { Condition } from '../interfaces/Quest';
 import { SaveFile } from '../interfaces/SaveFile';
@@ -38,6 +39,19 @@ export const isNumberOfPokemonFulfilled = (
 	return false;
 };
 
+export const isLevelConditionFulfilled = (
+	condition: Condition,
+	saveFile: SaveFile
+) => {
+	if (condition.type !== 'MIN_LEVEL') {
+		return false;
+	}
+	const { level } = condition;
+	const { pokemon } = saveFile;
+
+	return pokemon.some((p) => calculateLevelData(p.xp).level >= level);
+};
+
 export const useIsConditionFulfilled = () => {
 	const data = useGetCurrentSaveFile();
 
@@ -50,7 +64,8 @@ export const useIsConditionFulfilled = () => {
 			return (
 				isOwnedPokemonConditionFulfilled(condition, data.pokedex) ||
 				isHandledOccupantConditionFulfilled(condition, data) ||
-				isNumberOfPokemonFulfilled(condition, data)
+				isNumberOfPokemonFulfilled(condition, data) ||
+				isLevelConditionFulfilled(condition, data)
 			);
 		},
 		[data]

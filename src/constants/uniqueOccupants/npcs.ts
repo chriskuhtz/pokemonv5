@@ -70,7 +70,6 @@ export const pikachuFan: Npc = {
 		findPikachu: 'active',
 	},
 };
-
 export const nightPokemonFan: Npc = {
 	id: 'night-pokemon-fan',
 	type: 'NPC',
@@ -89,7 +88,6 @@ export const nightPokemonFan: Npc = {
 		catchNightPokemon: 'active',
 	},
 };
-
 export const OakBeforeSelection: Npc = {
 	id: 'oak-before-selection',
 	type: 'NPC',

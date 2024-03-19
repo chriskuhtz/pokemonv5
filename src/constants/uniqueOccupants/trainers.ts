@@ -47,6 +47,9 @@ export const youngsterJohnny: Trainer = {
 	activePokemonPerside: 1,
 	rewardMoney: 300,
 	viewRange: 1,
+	questUpdates: {
+		reachLevelFifteen: 'active',
+	},
 };
 export const youngsterTimmy: Trainer = {
 	id: 'youngster-timmy',

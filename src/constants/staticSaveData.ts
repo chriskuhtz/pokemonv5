@@ -30,6 +30,7 @@ export const staticSaveData: SaveFile = {
 		catchAllFlamingDesert: 'inactive',
 		defeatAllTrainers: 'inactive',
 		catchNightPokemon: 'inactive',
+		reachLevelFifteen: 'inactive',
 	},
 	handledOccupants: {
 		'youngster-jimmy': false,
