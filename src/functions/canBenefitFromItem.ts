@@ -133,6 +133,10 @@ export const canBenefitFromItem = (
 				return true;
 			}
 		}
+		//ESCAPE ITEMS
+		if (inBattle && ['poke-doll', 'fluffy-tail'].includes(itemName)) {
+			return true;
+		}
 	}
 
 	return canBenefit;

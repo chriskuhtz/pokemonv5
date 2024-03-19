@@ -74,6 +74,8 @@ export const xItemTypes = [
 	'guard-spec',
 ] as const;
 
+export const runawayItemTypes = ['poke-doll', 'fluffy-tail'] as const;
+
 export const itemTypes = [
 	...balltypes,
 	...healingItemTypes,
@@ -81,6 +83,7 @@ export const itemTypes = [
 	...ppBoostItemTypes,
 	...evBoostItemTypes,
 	...xItemTypes,
+	...runawayItemTypes,
 	'repel',
 	'sacred-ash',
 	'rare-candy',
@@ -95,6 +98,7 @@ export type PPRestoringItemType = (typeof ppRestorationItemTypes)[number];
 export type PPBoostItemType = (typeof ppBoostItemTypes)[number];
 export type EvBoostItemType = (typeof evBoostItemTypes)[number];
 export type XItemType = (typeof xItemTypes)[number];
+export type RunawayItem = (typeof runawayItemTypes)[number];
 
 export function isPokeball(x: string | undefined): x is PokeballType {
 	return (balltypes as unknown as string[]).includes(x ?? '');
@@ -126,6 +130,9 @@ export function isPPBoostItem(x: string | undefined): x is PPBoostItemType {
 }
 export function isXItem(x: string | undefined): x is XItemType {
 	return (xItemTypes as unknown as string[]).includes(x ?? '');
+}
+export function isRunawayItem(x: string | undefined): x is RunawayItem {
+	return (runawayItemTypes as unknown as string[]).includes(x ?? '');
 }
 export function isItem(x: string | undefined): x is ItemType {
 	return (itemTypes as unknown as string[]).includes(x ?? '');

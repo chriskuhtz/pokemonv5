@@ -20,6 +20,7 @@ import {
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { isRunawayItem } from '../../../interfaces/Item';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -265,6 +266,59 @@ export const useHandleAction = (
 				}
 				return;
 			}
+			//run away attempt
+			if (
+				action?.type === 'RUNAWAY_ATTEMPT' ||
+				(isBattleItemAction(action) && isRunawayItem(action.item))
+			) {
+				const shadowTagged = opponentSide.field.some(
+					(p) => p.ability === 'shadow-tag'
+				);
+
+				const canRunAway = () => {
+					if (isBattleItemAction(action)) {
+						return true;
+					}
+					if (shadowTagged) {
+						return false;
+					}
+					return Math.random() > 0.5;
+				};
+				if (canRunAway()) {
+					setPlayerSide({
+						...playerSide,
+						consumedItems: isBattleItemAction(action)
+							? joinInventories(playerSide.consumedItems, {
+									[`${action.item}`]: 1,
+							  })
+							: playerSide.consumedItems,
+					});
+					void leaveBattle('RUNAWAY');
+				} else {
+					if (actor.side === 'PLAYER') {
+						dispatch(
+							addNotification(
+								`could not escape ${
+									shadowTagged ? 'due to shadow-tag' : undefined
+								}`
+							)
+						);
+						setPlayerSide({
+							...playerSide,
+							field: playerSide.field.map((p) => {
+								if (p.id !== actor.id) {
+									return p;
+								}
+								return {
+									...p,
+									nextAction: undefined,
+								};
+							}),
+						});
+					}
+				}
+				return;
+			}
 			//MIST
 			if (
 				(isBattleAttack(action) && action.move.name === 'mist') ||
@@ -294,6 +348,11 @@ export const useHandleAction = (
 								nextAction: undefined,
 							};
 						}),
+						consumedItems: isBattleItemAction(action)
+							? joinInventories(playerSide.consumedItems, {
+									[`${action.item}`]: 1,
+							  })
+							: playerSide.consumedItems,
 					});
 				}
 				if (actor.side === 'OPPONENT') {
@@ -496,39 +555,7 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//run away attempt
-			if (action?.type === 'RUNAWAY_ATTEMPT') {
-				const shadowTagged = opponentSide.field.some(
-					(p) => p.ability === 'shadow-tag'
-				);
-				const canRunAway = !shadowTagged && Math.random() > 0.5;
-				if (canRunAway) {
-					void leaveBattle('RUNAWAY');
-				} else {
-					if (actor.side === 'PLAYER') {
-						dispatch(
-							addNotification(
-								`could not escape ${
-									shadowTagged ? 'due to shadow-tag' : undefined
-								}`
-							)
-						);
-						setPlayerSide({
-							...playerSide,
-							field: playerSide.field.map((p) => {
-								if (p.id !== actor.id) {
-									return p;
-								}
-								return {
-									...p,
-									nextAction: undefined,
-								};
-							}),
-						});
-					}
-				}
-				return;
-			}
+
 			//catch attempt
 			if (isCatchAttempt(action) && target) {
 				const successfullyCaught =

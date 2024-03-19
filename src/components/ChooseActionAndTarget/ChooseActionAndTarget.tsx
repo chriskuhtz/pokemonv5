@@ -9,6 +9,7 @@ import {
 	HealingItemType,
 	PPRestoringItemType,
 	PokeballType,
+	RunawayItem,
 	XItemType,
 	isXItem,
 } from '../../interfaces/Item';
@@ -39,7 +40,7 @@ export const ChooseActionAndTarget = ({
 	const [move, setMove] = useState<MoveDto | undefined>();
 	const [ball, setBall] = useState<PokeballType | undefined>();
 	const [item, setItem] = useState<
-		HealingItemType | PPRestoringItemType | XItemType | undefined
+		HealingItemType | PPRestoringItemType | XItemType | RunawayItem | undefined
 	>();
 	const [pokemonIdToPPRestore, setPokemonIdToPPRestore] = useState<
 		string | undefined

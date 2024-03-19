@@ -11,6 +11,7 @@ import {
 	HealingItemType,
 	PPRestoringItemType,
 	PokeballType,
+	RunawayItem,
 	XItemType,
 } from '../../../interfaces/Item';
 import { MoveDto } from '../../../interfaces/Move';
@@ -28,7 +29,7 @@ export const ChooseTarget = ({
 	actionName: BattleAction['type'];
 	move?: MoveDto;
 	ball?: PokeballType;
-	item?: HealingItemType | PPRestoringItemType | XItemType;
+	item?: HealingItemType | PPRestoringItemType | XItemType | RunawayItem;
 	selectAction: (updatedActor: BattlePokemon) => void;
 	availableTargets: BattlePokemon[];
 	actor: BattlePokemon;
