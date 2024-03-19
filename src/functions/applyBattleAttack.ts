@@ -134,6 +134,7 @@ export const applyBattleAttack = (
 
 	updatedTarget =
 		passesAccuracyCheck &&
+		target.ability !== 'clear-body' &&
 		[
 			'selected-pokemon',
 			'random-opponent',

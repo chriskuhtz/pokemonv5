@@ -139,7 +139,11 @@ export const abilityCheckList: {
 		handled: true,
 	},
 	{ name: 'synchronize', url: 'https://pokeapi.co/api/v2/ability/28/' },
-	{ name: 'clear-body', url: 'https://pokeapi.co/api/v2/ability/29/' },
+	{
+		name: 'clear-body',
+		url: 'https://pokeapi.co/api/v2/ability/29/',
+		handled: true,
+	},
 	{ name: 'natural-cure', url: 'https://pokeapi.co/api/v2/ability/30/' },
 	//v0.0.6
 	{ name: 'lightning-rod', url: 'https://pokeapi.co/api/v2/ability/31/' },

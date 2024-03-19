@@ -4,6 +4,7 @@ import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
 import { addNotification } from '../store/slices/notificationSlice';
 import { isAilmentApplicableToPokemon } from './isAilmentApplicabletoPokemon';
+import { randomIndex } from './randomIndex';
 
 export const applyAilments = (
 	pokemon: BattlePokemon,
@@ -90,7 +91,7 @@ export const applyAilments = (
 			const maxTurns = move.meta.max_turns ?? 5;
 			const duration = Math.min(
 				maxTurns,
-				minTurns + Math.round(Math.random() * (maxTurns - minTurns))
+				minTurns + randomIndex(maxTurns - minTurns)
 			);
 			return {
 				...pokemon,

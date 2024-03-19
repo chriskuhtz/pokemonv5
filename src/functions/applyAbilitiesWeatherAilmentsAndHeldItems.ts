@@ -51,13 +51,21 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 		};
 		updatedOpponents = {
 			...updatedOpponents,
-			field: updatedOpponents.field.map((p) => ({
-				...p,
-				statModifiers: {
-					...p.statModifiers,
-					attack: Math.max(p.statModifiers.attack - 1, -6),
-				},
-			})),
+			field: updatedOpponents.field.map((p) => {
+				if (p.ability === 'clear-body') {
+					dispatch(
+						addNotification(`${p.name} prevents stat loss with clear-body`)
+					);
+					return p;
+				}
+				return {
+					...p,
+					statModifiers: {
+						...p.statModifiers,
+						attack: Math.max(p.statModifiers.attack - 1, -6),
+					},
+				};
+			}),
 		};
 	}
 	//SPEED BOOST
