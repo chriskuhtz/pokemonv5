@@ -103,11 +103,18 @@ export const InteractionButton = () => {
 						handleTrainerChallenge(focusedOccupant);
 					}
 				}
+				if (focusedOccupant.type === 'NPC' && focusedOccupant.onDialogueEnd) {
+					handleEvent(focusedOccupant.onDialogueEnd);
+				}
 
-				await saveGame({
-					questUpdates: focusedOccupant.questUpdates,
-					visitedNurse: focusedOccupant.type === 'HEALER',
-				});
+				const shouldSave =
+					focusedOccupant.questUpdates || focusedOccupant.type === 'HEALER';
+				if (shouldSave) {
+					await saveGame({
+						questUpdates: focusedOccupant.questUpdates,
+						visitedNurse: focusedOccupant.type === 'HEALER',
+					});
+				}
 			}
 			dispatch(continueDialogue());
 		}

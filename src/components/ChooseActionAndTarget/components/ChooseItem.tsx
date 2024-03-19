@@ -6,9 +6,11 @@ import { Inventory } from '../../../interfaces/Inventory';
 import {
 	HealingItemType,
 	PPRestoringItemType,
+	RunawayItem,
 	XItemType,
 	isHealingItem,
 	isPPRestorationItem,
+	isRunawayItem,
 	isXItem,
 } from '../../../interfaces/Item';
 import { Modal } from '../../../ui_components/Modal/Modal';
@@ -23,7 +25,12 @@ export const ChooseItem = ({
 }: {
 	open: boolean;
 	setItem: (
-		x: HealingItemType | PPRestoringItemType | XItemType | undefined
+		x:
+			| HealingItemType
+			| PPRestoringItemType
+			| XItemType
+			| RunawayItem
+			| undefined
 	) => void;
 	inventory: Inventory;
 	resetActor: () => void;
@@ -48,7 +55,8 @@ export const ChooseItem = ({
 								amount === 0 ||
 								(!isHealingItem(key) &&
 									!isPPRestorationItem(key) &&
-									!isXItem(key))
+									!isXItem(key) &&
+									!isRunawayItem(key))
 							) {
 								return <React.Fragment key={key}></React.Fragment>;
 							}
@@ -62,7 +70,7 @@ export const ChooseItem = ({
 										minWidth: '25%',
 									}}
 									disabled={availableTargets.every(
-										(t) => !canBenefitFromItem(t, key)
+										(t) => !canBenefitFromItem(true, t, key)
 									)}
 									key={key + amount}
 									onClick={() => {

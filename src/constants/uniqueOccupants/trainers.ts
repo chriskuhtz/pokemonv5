@@ -31,6 +31,43 @@ export const youngsterJimmy: Trainer = {
 	rewardMoney: 300,
 	viewRange: 1,
 };
+export const youngsterJohnny: Trainer = {
+	id: 'youngster-johnny',
+	type: 'TRAINER',
+	position: {
+		y: 10,
+		x: 5,
+		mapId: 'starter-town',
+		orientation: 1,
+	},
+	dialogue: ['Pokemon are awesome'],
+	dialogueAfterDefeat: ['You are awesome too'],
+	sprite: '093',
+	team: [{ dexId: 263, xp: 200 }],
+	activePokemonPerside: 1,
+	rewardMoney: 300,
+	viewRange: 1,
+	questUpdates: {
+		reachLevelFifteen: 'active',
+	},
+};
+export const youngsterTimmy: Trainer = {
+	id: 'youngster-timmy',
+	type: 'TRAINER',
+	position: {
+		y: 12,
+		x: 3,
+		mapId: 'starter-town',
+		orientation: 2,
+	},
+	dialogue: ['My Spearow will show you who´s the boss'],
+	dialogueAfterDefeat: ['That worked well ...'],
+	sprite: '093',
+	team: [{ dexId: 21, xp: 200 }],
+	activePokemonPerside: 1,
+	rewardMoney: 300,
+	viewRange: 1,
+};
 //BROCKS_GYM
 export const brock: Trainer = {
 	id: 'brock',
@@ -60,7 +97,7 @@ export const brock: Trainer = {
 	team: [
 		{
 			dexId: 95,
-			xp: 4000,
+			xp: 5000,
 			customMoves: ['earthquake', 'dragon-dance', 'earthquake', 'dragon-dance'],
 		},
 	],
@@ -105,6 +142,32 @@ export const brocksMinion2: Trainer = {
 			dexId: 744,
 			xp: 1000,
 			customMoves: ['accelerock'],
+		},
+	],
+	activePokemonPerside: 1,
+	rewardMoney: 500,
+	viewRange: 3,
+};
+export const brocksMinion3: Trainer = {
+	id: 'brocks-minion3',
+	type: 'TRAINER',
+	position: {
+		y: 4,
+		x: 5,
+		mapId: 'brocks-gym',
+		orientation: 1,
+	},
+	dialogue: ['You are lightyears away from challenging brock!'],
+	dialogueAfterDefeat: ['What is a lightyear, big dog?'],
+	sprite: SpriteEnum.youngster2,
+	team: [
+		{
+			dexId: 408,
+			xp: 700,
+		},
+		{
+			dexId: 932,
+			xp: 700,
 		},
 	],
 	activePokemonPerside: 1,

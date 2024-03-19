@@ -117,6 +117,7 @@ export const useCreateBattlePokemonFromData = () => {
 				friendship: 70,
 				usedPowerPoints: EmptyUsedPP,
 				ppBoostedMoves: [],
+				weight: data.weight,
 			};
 		},
 		[getFirstFourMoves]
@@ -146,5 +147,6 @@ export const createBattlePokemonFromOwned = async (
 		evasiveness: 0,
 		moves: moves.filter((m) => m !== undefined) as MoveDto[],
 		accuracyModifier: 0,
+		weight: data.weight,
 	};
 };

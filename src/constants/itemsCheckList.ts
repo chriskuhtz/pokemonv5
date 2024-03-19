@@ -251,15 +251,53 @@ export const itemsCheckList: {
 		handled: true,
 	},
 	//v0.0.5
-	{ name: 'guard-spec', url: 'https://pokeapi.co/api/v2/item/55/' },
-	{ name: 'dire-hit', url: 'https://pokeapi.co/api/v2/item/56/' },
-	{ name: 'poke-doll', url: 'https://pokeapi.co/api/v2/item/63/' },
-	{ name: 'fluffy-tail', url: 'https://pokeapi.co/api/v2/item/64/' },
-	{ name: 'blue-flute', url: 'https://pokeapi.co/api/v2/item/65/' },
-	{ name: 'yellow-flute', url: 'https://pokeapi.co/api/v2/item/66/' },
-	{ name: 'red-flute', url: 'https://pokeapi.co/api/v2/item/67/' },
-	{ name: 'black-flute', url: 'https://pokeapi.co/api/v2/item/68/' },
-	{ name: 'white-flute', url: 'https://pokeapi.co/api/v2/item/69/' },
+	{
+		name: 'guard-spec',
+		url: 'https://pokeapi.co/api/v2/item/55/',
+		handled: true,
+	},
+	{
+		name: 'dire-hit',
+		url: 'https://pokeapi.co/api/v2/item/56/',
+		handled: true,
+	},
+	{
+		name: 'poke-doll',
+		url: 'https://pokeapi.co/api/v2/item/63/',
+		handled: true,
+	},
+	{
+		name: 'fluffy-tail',
+		url: 'https://pokeapi.co/api/v2/item/64/',
+		handled: true,
+	},
+	{
+		name: 'blue-flute',
+		url: 'https://pokeapi.co/api/v2/item/65/',
+		handled: true,
+	},
+	{
+		name: 'yellow-flute',
+		url: 'https://pokeapi.co/api/v2/item/66/',
+		handled: true,
+	},
+	{
+		name: 'red-flute',
+		url: 'https://pokeapi.co/api/v2/item/67/',
+		handled: true,
+	},
+	{
+		name: 'black-flute',
+		url: 'https://pokeapi.co/api/v2/item/68/',
+		handled: true,
+	},
+	{
+		name: 'white-flute',
+		url: 'https://pokeapi.co/api/v2/item/69/',
+		handled: true,
+	},
+
+	//v0.0.6
 	{ name: 'shoal-salt', url: 'https://pokeapi.co/api/v2/item/70/' },
 	{ name: 'shoal-shell', url: 'https://pokeapi.co/api/v2/item/71/' },
 	{ name: 'red-shard', url: 'https://pokeapi.co/api/v2/item/72/' },

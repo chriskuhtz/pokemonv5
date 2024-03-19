@@ -65,6 +65,12 @@ export const applyHealingItemToPokemon = (
 		copy.primaryAilment = undefined;
 	}
 	if (
+		(itemName === 'awakening' || itemName === 'blue-flute') &&
+		copy.primaryAilment?.type === 'sleep'
+	) {
+		copy.primaryAilment = undefined;
+	}
+	if (
 		itemName === 'paralyze-heal' &&
 		copy.primaryAilment?.type === 'paralysis'
 	) {
@@ -75,6 +81,22 @@ export const applyHealingItemToPokemon = (
 	}
 	if (itemName === 'ice-heal' && copy.primaryAilment?.type === 'freeze') {
 		copy.primaryAilment = undefined;
+	}
+	if (
+		itemName === 'red-flute' &&
+		copy.secondaryAilments?.some((a) => a.type === 'infatuation')
+	) {
+		copy.secondaryAilments = [...(copy.secondaryAilments ?? [])].filter(
+			(a) => a.type !== 'infatuation'
+		);
+	}
+	if (
+		itemName === 'yellow-flute' &&
+		copy.secondaryAilments?.some((a) => a.type === 'confusion')
+	) {
+		copy.secondaryAilments = [...(copy.secondaryAilments ?? [])].filter(
+			(a) => a.type !== 'confusion'
+		);
 	}
 
 	return copy;

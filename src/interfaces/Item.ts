@@ -25,6 +25,9 @@ export const healingItemTypes = [
 	'lava-cookie',
 	'berry-juice',
 	'old-gateau',
+	'blue-flute',
+	'red-flute',
+	'yellow-flute',
 ] as const;
 
 export const ppRestorationItemTypes = [
@@ -70,7 +73,14 @@ export const xItemTypes = [
 	'x-sp-def',
 	'x-speed',
 	'x-accuracy',
+	'dire-hit',
+	'guard-spec',
 ] as const;
+
+export const runawayItemTypes = ['poke-doll', 'fluffy-tail'] as const;
+
+export const encounterChanceItems = ['white-flute', 'black-flute'] as const;
+
 export const itemTypes = [
 	...balltypes,
 	...healingItemTypes,
@@ -78,6 +88,8 @@ export const itemTypes = [
 	...ppBoostItemTypes,
 	...evBoostItemTypes,
 	...xItemTypes,
+	...runawayItemTypes,
+	...encounterChanceItems,
 	'repel',
 	'sacred-ash',
 	'rare-candy',
@@ -92,6 +104,8 @@ export type PPRestoringItemType = (typeof ppRestorationItemTypes)[number];
 export type PPBoostItemType = (typeof ppBoostItemTypes)[number];
 export type EvBoostItemType = (typeof evBoostItemTypes)[number];
 export type XItemType = (typeof xItemTypes)[number];
+export type RunawayItem = (typeof runawayItemTypes)[number];
+export type EncounterChanceItem = (typeof encounterChanceItems)[number];
 
 export function isPokeball(x: string | undefined): x is PokeballType {
 	return (balltypes as unknown as string[]).includes(x ?? '');
@@ -123,6 +137,14 @@ export function isPPBoostItem(x: string | undefined): x is PPBoostItemType {
 }
 export function isXItem(x: string | undefined): x is XItemType {
 	return (xItemTypes as unknown as string[]).includes(x ?? '');
+}
+export function isRunawayItem(x: string | undefined): x is RunawayItem {
+	return (runawayItemTypes as unknown as string[]).includes(x ?? '');
+}
+export function isEncounterChanceItem(
+	x: string | undefined
+): x is EncounterChanceItem {
+	return (encounterChanceItems as unknown as string[]).includes(x ?? '');
 }
 export function isItem(x: string | undefined): x is ItemType {
 	return (itemTypes as unknown as string[]).includes(x ?? '');

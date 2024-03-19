@@ -1,12 +1,13 @@
 import { SecondaryAilment } from './Ailment';
 import { BattleAction } from './BattleAction';
 import { PokeballType } from './Item';
-import { MoveDto } from './Move';
+import { DamageClass, MoveDto } from './Move';
 import { OwnedPokemon } from './OwnedPokemon';
 import { PokemonType } from './PokemonType';
 import { StatObject } from './StatObject';
 
 export type BattlePokemonLocation = 'UNDERWATER' | 'FLYING' | 'UNDERGROUND';
+
 export interface BattlePokemon extends OwnedPokemon {
 	name: string;
 	stats: StatObject;
@@ -21,10 +22,16 @@ export interface BattlePokemon extends OwnedPokemon {
 	evasiveness: number;
 	secondaryAilments?: SecondaryAilment[];
 	multiHits?: number;
+	recharging?: boolean;
+	lastReceivedDamage?: {
+		damage: number;
+		type: DamageClass['name'];
+	};
 	preparedMove?: { moveName: string; targetId: string };
 	lockedInMove?: { moveName: string; duration: number };
 	disabledMove?: { moveName: string; duration: number };
 	location?: BattlePokemonLocation;
 	accuracyModifier: number;
 	usedAbility?: boolean;
+	weight: number;
 }

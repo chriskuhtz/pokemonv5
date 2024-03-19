@@ -92,7 +92,7 @@ export const ItemUsageModal = ({
 				dispatch(addNotification('cant be used outside of battle yet'));
 				return false;
 			}
-			if (canBenefitFromItem(t, item.name)) {
+			if (canBenefitFromItem(false, t, item.name)) {
 				return true;
 			}
 		});

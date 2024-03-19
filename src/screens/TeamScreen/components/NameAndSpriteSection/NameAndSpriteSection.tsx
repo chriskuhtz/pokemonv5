@@ -1,3 +1,4 @@
+import { PokemonDbLink } from '../../../../components/PokemonDbLink/PokemonDbLink';
 import { TypeIcon } from '../../../../components/TypeIcon/TypeIcon';
 import { PokemonType } from '../../../../interfaces/PokemonType';
 import './NameAndSpriteSection.css';
@@ -35,7 +36,11 @@ export const NameAndSpriteSection = ({
 					</div>
 				</h1>
 				{owner && <h3>Trainer: {owner}</h3>}
+
 				<h3>Level: {level}</h3>
+				<h3>
+					<PokemonDbLink dexId={dexId} />
+				</h3>
 			</div>
 			<img
 				className="sprite"

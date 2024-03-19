@@ -20,6 +20,7 @@ import {
 } from '../../../interfaces/BattleAction';
 import { BattleEnvironment } from '../../../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
+import { isRunawayItem } from '../../../interfaces/Item';
 import { continueDialogue } from '../../../store/slices/dialogueSlice';
 import { addNotification } from '../../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../../store/storeHooks';
@@ -119,6 +120,11 @@ export const useHandleAction = (
 			}
 			//SWITCH
 			if (action?.type === 'SWITCH' && switchTarget) {
+				if (actor.ability === 'natural-cure' && actor.primaryAilment) {
+					dispatch(
+						addNotification(`${actor.name} cured its ailment with natural cure`)
+					);
+				}
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -144,6 +150,10 @@ export const useHandleAction = (
 							.filter((p) => p.id !== switchTarget.id)
 							.concat({
 								...actor,
+								primaryAilment:
+									actor.ability === 'natural-cure'
+										? undefined
+										: actor.primaryAilment,
 								nextAction: undefined,
 								preparedMove: undefined,
 								multiHits: undefined,
@@ -199,6 +209,10 @@ export const useHandleAction = (
 								lockedInMove: undefined,
 								usedAbility: undefined,
 								secondaryAilments: undefined,
+								primaryAilment:
+									actor.ability === 'natural-cure'
+										? undefined
+										: actor.primaryAilment,
 							}),
 					});
 					setPlayerSide({
@@ -221,7 +235,7 @@ export const useHandleAction = (
 				return;
 			}
 			//flinch
-			if (action?.type === 'FLINCH') {
+			if (action?.type === 'FLINCH' || action?.type === 'RECHARGING') {
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,
@@ -237,6 +251,114 @@ export const useHandleAction = (
 					});
 				}
 				if (actor.side === 'OPPONENT') {
+					setOpponentSide({
+						...opponentSide,
+						field: opponentSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+					});
+				}
+				return;
+			}
+			//run away attempt
+			if (
+				action?.type === 'RUNAWAY_ATTEMPT' ||
+				(isBattleItemAction(action) && isRunawayItem(action.item))
+			) {
+				const shadowTagged = opponentSide.field.some(
+					(p) => p.ability === 'shadow-tag'
+				);
+
+				const canRunAway = () => {
+					if (isBattleItemAction(action)) {
+						return true;
+					}
+					if (shadowTagged) {
+						return false;
+					}
+					return Math.random() > 0.5;
+				};
+				if (canRunAway()) {
+					setPlayerSide({
+						...playerSide,
+						consumedItems: isBattleItemAction(action)
+							? joinInventories(playerSide.consumedItems, {
+									[`${action.item}`]: 1,
+							  })
+							: playerSide.consumedItems,
+					});
+					void leaveBattle('RUNAWAY');
+				} else {
+					if (actor.side === 'PLAYER') {
+						dispatch(
+							addNotification(
+								`could not escape ${shadowTagged ? 'due to shadow-tag' : ''}`
+							)
+						);
+						setPlayerSide({
+							...playerSide,
+							field: playerSide.field.map((p) => {
+								if (p.id !== actor.id) {
+									return p;
+								}
+								return {
+									...p,
+									nextAction: undefined,
+								};
+							}),
+						});
+					}
+				}
+				return;
+			}
+			//MIST
+			if (
+				(isBattleAttack(action) && action.move.name === 'mist') ||
+				(isBattleItemAction(action) && action.item === 'guard-spec')
+			) {
+				dispatch(
+					addNotification(
+						`${actor.name}'s team is protected by ${
+							isBattleAttack(action) ? 'mist' : 'guard spec'
+						}`
+					)
+				);
+				if (actor.side === 'PLAYER') {
+					setEnvironment((environment) => ({
+						...environment,
+						playerSideMist: 5,
+					}));
+
+					setPlayerSide({
+						...playerSide,
+						field: playerSide.field.map((p) => {
+							if (p.id !== actor.id) {
+								return p;
+							}
+							return {
+								...p,
+								nextAction: undefined,
+							};
+						}),
+						consumedItems: isBattleItemAction(action)
+							? joinInventories(playerSide.consumedItems, {
+									[`${action.item}`]: 1,
+							  })
+							: playerSide.consumedItems,
+					});
+				}
+				if (actor.side === 'OPPONENT') {
+					setEnvironment((environment) => ({
+						...environment,
+						opponentSideMist: 5,
+					}));
+
 					setOpponentSide({
 						...opponentSide,
 						field: opponentSide.field.map((p) => {
@@ -316,50 +438,7 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//MIST
-			if (isBattleAttack(action) && action.move.name === 'mist') {
-				dispatch(addNotification(`${actor.name}'s team is protected by mist`));
-				if (actor.side === 'PLAYER') {
-					setEnvironment((environment) => ({
-						...environment,
-						playerSideMist: 5,
-					}));
-
-					setPlayerSide({
-						...playerSide,
-						field: playerSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
-				if (actor.side === 'OPPONENT') {
-					setEnvironment((environment) => ({
-						...environment,
-						opponentSideMist: 5,
-					}));
-
-					setOpponentSide({
-						...opponentSide,
-						field: opponentSide.field.map((p) => {
-							if (p.id !== actor.id) {
-								return p;
-							}
-							return {
-								...p,
-								nextAction: undefined,
-							};
-						}),
-					});
-				}
-				return;
-			}
-			//MIST
+			//DISABLE
 			if (isBattleAttack(action) && action.move.name === 'disable' && target) {
 				const disabledMove = {
 					moveName:
@@ -474,31 +553,7 @@ export const useHandleAction = (
 				}
 				return;
 			}
-			//run away attempt
-			if (action?.type === 'RUNAWAY_ATTEMPT') {
-				const canRunAway = Math.random() > 0.5;
 
-				if (canRunAway) {
-					void leaveBattle('RUNAWAY');
-				} else {
-					if (actor.side === 'PLAYER') {
-						dispatch(addNotification('could not escape'));
-						setPlayerSide({
-							...playerSide,
-							field: playerSide.field.map((p) => {
-								if (p.id !== actor.id) {
-									return p;
-								}
-								return {
-									...p,
-									nextAction: undefined,
-								};
-							}),
-						});
-					}
-				}
-				return;
-			}
 			//catch attempt
 			if (isCatchAttempt(action) && target) {
 				const successfullyCaught =
@@ -558,7 +613,13 @@ export const useHandleAction = (
 						}),
 						caught: [
 							...playerSide.caught,
-							{ ...target, ball: target.status?.ball ?? 'poke-ball' },
+							{
+								...target,
+								ball:
+									target.status?.name === 'BEING_CAUGHT'
+										? target.status.ball
+										: 'poke-ball',
+							},
 						],
 					});
 					setOpponentSide({
@@ -696,7 +757,6 @@ export const useHandleAction = (
 				}
 				return;
 			}
-
 			console.error('not sure what to do, bearing around', actor);
 		}
 	}, [

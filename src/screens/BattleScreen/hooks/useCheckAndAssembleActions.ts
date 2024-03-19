@@ -82,7 +82,6 @@ export const useCheckAndAssembleActions = (
 					return;
 				}
 			}
-
 			if (actor.nextAction?.type === 'SWITCH' && switchTarget) {
 				dispatch(
 					concatDialogue([
@@ -105,6 +104,10 @@ export const useCheckAndAssembleActions = (
 			}
 			if (actor.nextAction?.type === 'FLINCH') {
 				dispatch(concatDialogue([`${actor.name} flinched`]));
+				return;
+			}
+			if (actor.nextAction?.type === 'RECHARGING') {
+				dispatch(concatDialogue([`${actor.name} has to recharge`]));
 				return;
 			}
 			if (actor.nextAction?.type === 'RUNAWAY_ATTEMPT') {

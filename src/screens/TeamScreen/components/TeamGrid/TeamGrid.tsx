@@ -10,6 +10,9 @@ import { ErrorScreen } from '../../../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../../../FetchingScreen/FetchingScreen';
 import { PokemonSummary } from '../PokemonSummary/PokemonSummary';
 import './TeamGrid.css';
+
+import { Draggable } from 'react-drag-reorder';
+
 export interface TeamGridProps {
 	pokemon: OwnedPokemon[];
 	noFocus?: boolean;
@@ -57,25 +60,50 @@ export const TeamGrid = ({
 		return <FetchingScreen />;
 	}
 
+	const handleDrag = () => {
+		setTimeout(() => {
+			if (!team) {
+				return;
+			}
+			const newOrder = document.getElementsByClassName(
+				'draggableCircularSprite'
+			);
+
+			const reorderedTeam = Array.from(newOrder)
+				.map(({ id }) => team.find((t) => t.id === id))
+				.filter((x): x is BattlePokemon => {
+					return x !== undefined;
+				});
+			save({
+				pokemonUpdates: reorderedTeam,
+				preservePokemonOrder: false,
+			});
+		}, 100);
+	};
 	if (teamFetchStatus === 'success' && team) {
 		return (
 			<div className="teamGridAndFocused">
 				<div className="teamGrid">
-					{team.map((p) => (
-						<div
-							key={p.id}
-							onClick={() => {
-								onGridItemClick && onGridItemClick(p);
-								setFocused(p);
-							}}
-						>
-							<CircularSprite
-								noAnimation={focused?.id !== p.id || noFocus}
-								pokemon={p}
-								overlay={focused?.id === p.id && !noFocus && <div />}
-							/>
-						</div>
-					))}
+					<Draggable onPosChange={handleDrag}>
+						{team.map((p) => (
+							<div
+								id={p.id}
+								key={p.id}
+								className="draggableCircularSprite"
+								onClick={() => {
+									onGridItemClick && onGridItemClick(p);
+									setFocused(p);
+								}}
+								style={{ display: 'flex', justifyContent: 'center' }}
+							>
+								<CircularSprite
+									noAnimation={focused?.id !== p.id || noFocus}
+									pokemon={p}
+									overlay={focused?.id === p.id && !noFocus && <div />}
+								/>
+							</div>
+						))}
+					</Draggable>
 				</div>
 				{focused && !noFocus && (
 					<PokemonSummary

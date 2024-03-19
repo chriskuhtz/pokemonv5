@@ -10,6 +10,16 @@ export const oaksLabToStarterTown: Decorator = {
 		to: { mapId: 'starter-town', x: 5, y: 4, orientation: 0 },
 	},
 };
+//FORM POKEMON CENTER
+export const pokeCenterToStarterTown: Decorator = {
+	sprite: 'doormat',
+	x: 2,
+	y: 4,
+	onStep: {
+		type: 'PORTAL',
+		to: { mapId: 'starter-town', x: 1, y: 4, orientation: 0 },
+	},
+};
 //FROM STARTER TOWN
 export const starterTownToOaksLab: Decorator = {
 	x: 5,
@@ -18,6 +28,15 @@ export const starterTownToOaksLab: Decorator = {
 	onStep: {
 		type: 'PORTAL',
 		to: { orientation: 3, mapId: 'oaks-lab', y: 4, x: 2 },
+	},
+};
+export const starterTownToPokeCenter: Decorator = {
+	x: 1,
+	y: 3,
+	sprite: '',
+	onStep: {
+		type: 'PORTAL',
+		to: { orientation: 3, mapId: 'pokemon-center', y: 4, x: 2 },
 	},
 };
 export const starterTownToBerryPatch: Decorator = {

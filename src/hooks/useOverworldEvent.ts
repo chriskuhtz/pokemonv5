@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { determineMapEncounters } from '../functions/determineMapEncounters';
+import { determineTimeOfDay } from '../functions/determineTimeOfDay';
 import { QuestName } from '../interfaces/Quest';
 import { RoutesEnum } from '../router/router';
 import { OverworldEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { selectMap } from '../store/selectors/map/selectMap';
 import { selectQuests } from '../store/selectors/saveFile/selectQuests';
-import { MapEncounter } from '../store/slices/MapSlice';
 import {
 	setDialogue,
 	setFocusedOccupantId,
@@ -14,6 +15,7 @@ import { addNotification } from '../store/slices/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/storeHooks';
 import { useHandleTrainerChallenge } from './useHandleTrainerChallenge';
 import { useSaveGame } from './useSaveGame';
+import { useGetCurrentSaveFile } from './xata/useCurrentSaveFile';
 
 export const useOverworldEvent = () => {
 	const dispatch = useAppDispatch();
@@ -21,7 +23,7 @@ export const useOverworldEvent = () => {
 	const quests = useAppSelector(selectQuests);
 	const saveGame = useSaveGame();
 	const { environment, encounters } = useAppSelector(selectMap);
-
+	const saveFile = useGetCurrentSaveFile();
 	const handleTrainerChallenge = useHandleTrainerChallenge();
 
 	return useCallback(
@@ -30,26 +32,17 @@ export const useOverworldEvent = () => {
 				return;
 			}
 			if (event.type === 'ENCOUNTER') {
-				const assembledEncounters: MapEncounter[] = [];
-				encounters.forEach((p) => {
-					let i = 0;
-					while (i < (p.rarity ?? 1)) {
-						assembledEncounters.push({ ...p, rarity: 1 });
-						i += 1;
-					}
-				});
+				const timeOfDay = determineTimeOfDay();
+				const opponents = determineMapEncounters(encounters, timeOfDay);
 
-				const opponents = [
-					assembledEncounters[
-						Math.round(Math.random() * assembledEncounters.length)
-					],
-				];
-				if (Math.random() > 0.8) {
-					opponents.push(
-						assembledEncounters[
-							Math.round(Math.random() * assembledEncounters.length)
-						]
-					);
+				const firstTeamMemberXp =
+					saveFile?.pokemon.find((p) => p.onTeam)?.xp ?? 0;
+
+				if (
+					saveFile?.activeFlute === 'black-flute' &&
+					opponents.every((o) => o.xp < firstTeamMemberXp)
+				) {
+					return;
 				}
 				dispatch(addNotification('A wild Pokemon attacks!'));
 				navigate(RoutesEnum.battle, {
@@ -85,6 +78,14 @@ export const useOverworldEvent = () => {
 				}
 			}
 		},
-		[dispatch, encounters, handleTrainerChallenge, navigate, quests, saveGame]
+		[
+			dispatch,
+			encounters,
+			handleTrainerChallenge,
+			navigate,
+			quests,
+			saveGame,
+			saveFile,
+		]
 	);
 };

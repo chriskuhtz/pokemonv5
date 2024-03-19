@@ -25,11 +25,23 @@ export interface HandledOccupantCondition {
 	conditionFailMessage?: string;
 }
 
+export interface NumberOfTeamMembersCondition {
+	type: 'NUMBER_OF_TEAMMEMBERS';
+	numberOfMembers: number;
+	mode: 'EXACTLY' | 'UNDER' | 'OVER';
+	conditionFailMessage?: string;
+}
+export interface MinLevelCondition {
+	type: 'MIN_LEVEL';
+	level: number;
+	conditionFailMessage?: string;
+}
 export type Condition =
 	| OwnedPokemonCondition
 	| HandledOccupantCondition
 	| NotRegisteredPokemonCondition
-	| HandledOccupantCondition;
+	| NumberOfTeamMembersCondition
+	| MinLevelCondition;
 
 export type QuestStatus = 'inactive' | 'active' | 'completed';
 export interface Quest {
@@ -51,6 +63,8 @@ export const questNames = [
 	'catchAllBerryPatch',
 	'catchAllFlamingDesert',
 	'defeatAllTrainers',
+	'catchNightPokemon',
+	'reachLevelFifteen',
 ] as const;
 
 export type QuestName = (typeof questNames)[number];
@@ -63,9 +77,9 @@ export const PickStarterQuest: Quest = {
 	rewardMoney: 1000,
 	rewardItems: generateInventory({ 'poke-ball': 5 }),
 	condition: {
-		type: 'OWNED_POKEMON',
-		ids: [1, 4, 7],
-		mode: 'SOME',
+		type: 'NUMBER_OF_TEAMMEMBERS',
+		numberOfMembers: 0,
+		mode: 'OVER',
 	},
 };
 export const TalkToNurseJoyQuest: Quest = {
@@ -88,11 +102,9 @@ export const SecondPokemonQuest: Quest = {
 	rewardMoney: 100,
 	rewardItems: generateInventory({ 'poke-ball': 5 }),
 	condition: {
-		type: 'OWNED_POKEMON',
-		ids: [...starterTownEncounters, ...berryPatchEncounters].map(
-			(s) => s.dexId
-		),
-		mode: 'SOME',
+		type: 'NUMBER_OF_TEAMMEMBERS',
+		mode: 'OVER',
+		numberOfMembers: 1,
 	},
 };
 export const CatchAllStarterTownQuest: Quest = {
@@ -104,7 +116,7 @@ export const CatchAllStarterTownQuest: Quest = {
 	rewardItems: generateInventory({ 'great-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: starterTownEncounters.map((s) => s.dexId),
+		ids: [...new Set(starterTownEncounters.map((s) => s.dexId))],
 		mode: 'ALL',
 	},
 };
@@ -117,7 +129,7 @@ export const CatchAllFlamingDesertQuest: Quest = {
 	rewardItems: generateInventory({ 'quick-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: flamingDesertEncounters.map((s) => s.dexId),
+		ids: [...new Set(flamingDesertEncounters.map((s) => s.dexId))],
 		mode: 'ALL',
 	},
 };
@@ -130,8 +142,31 @@ export const CatchAllBerryPatchQuest: Quest = {
 	rewardItems: generateInventory({ 'net-ball': 10 }),
 	condition: {
 		type: 'OWNED_POKEMON',
-		ids: berryPatchEncounters.map((s) => s.dexId),
+		ids: [...new Set(berryPatchEncounters.map((s) => s.dexId))],
 		mode: 'ALL',
+	},
+};
+export const CatchNightPokemon: Quest = {
+	status: 'inactive',
+	id: 'catchNightPokemon',
+	title: 'Catch a nocturnal Pokemon',
+	description: 'Some Pokemon hide during the day',
+	rewardMoney: 1000,
+	rewardItems: generateInventory({ 'dusk-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: [
+			...new Set(
+				[
+					...starterTownEncounters,
+					...berryPatchEncounters,
+					...flamingDesertEncounters,
+				]
+					.filter((e) => e.timeOfDay === 'NIGHT')
+					.map((e) => e.dexId)
+			),
+		],
+		mode: 'SOME',
 	},
 };
 export const FindPikachuQuest: Quest = {
@@ -153,7 +188,7 @@ export const DefeatAllTrainersQuest: Quest = {
 	title: 'Defeat all Trainers',
 	description: 'Its the only way to prove you are the best.',
 	rewardMoney: 10000,
-	rewardItems: generateInventory({ potion: 5 }),
+	rewardItems: generateInventory({ 'master-ball': 1, 'rare-candy': 20 }),
 	condition: {
 		type: 'HANDLED_OCCUPANTS',
 		ids: Object.values(UniqueOccupantRecord)
@@ -161,7 +196,18 @@ export const DefeatAllTrainersQuest: Quest = {
 			.map((o) => o.id) as UniqueOccupantId[],
 	},
 };
-
+export const ReachLevelFifteenQuest: Quest = {
+	status: 'inactive',
+	id: 'reachLevelFifteen',
+	title: 'Train a Pokemon to level 15',
+	description: 'Pokemon grow stronger by battling.',
+	rewardMoney: 1000,
+	rewardItems: generateInventory({ 'full-restore': 5 }),
+	condition: {
+		type: 'MIN_LEVEL',
+		level: 15,
+	},
+};
 export const QuestRecord: Record<QuestName, Quest> = {
 	pickStarter: PickStarterQuest,
 	talkToNurseJoy: TalkToNurseJoyQuest,
@@ -171,4 +217,6 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	catchAllBerryPatch: CatchAllBerryPatchQuest,
 	catchAllFlamingDesert: CatchAllFlamingDesertQuest,
 	defeatAllTrainers: DefeatAllTrainersQuest,
+	catchNightPokemon: CatchNightPokemon,
+	reachLevelFifteen: ReachLevelFifteenQuest,
 };

@@ -8,7 +8,7 @@ export const AudioQueue = (): JSX.Element => {
 
 	return (
 		<audio
-			key={audio ?? 'fallback'}
+			key={audio ?? Math.random()}
 			autoPlay={true}
 			onEndedCapture={() => dispatch(removeFirstAudio())}
 			onEnded={() => dispatch(removeFirstAudio())}

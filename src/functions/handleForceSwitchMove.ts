@@ -22,13 +22,24 @@ export const handleForceSwitchMove = (
 		return;
 	}
 	if (!environment.trainerId) {
-		leaveBattle('FORCE_SWITCH');
+		if (target.ability !== 'suction-cups') {
+			leaveBattle('FORCE_SWITCH');
+		}
+
 		return;
 	}
 	const targetSide = target.side === 'OPPONENT' ? opponentSide : playerSide;
 
-	if (targetSide.bench.length === 0) {
-		dispatch(addNotification(`${action.move.name} failed`));
+	if (targetSide.bench.length === 0 || target.ability === 'suction-cups') {
+		dispatch(
+			addNotification(
+				`${action.move.name} failed ${
+					target.ability === 'suction-cups'
+						? `due to ${target.name}´s ability`
+						: undefined
+				}`
+			)
+		);
 		if (actor.side === 'PLAYER') {
 			setPlayerSide({
 				...playerSide,

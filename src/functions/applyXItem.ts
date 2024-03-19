@@ -13,6 +13,7 @@ export const applyXItem = (
 	itemName: XItemType
 ): BattlePokemon => {
 	const updatedStatModifiers = { ...pokemon.statModifiers };
+	const updatedSecondaryAilments = [...(pokemon.secondaryAilments ?? [])];
 	let updatedAccuracy = pokemon.accuracyModifier;
 
 	if (itemName === 'x-attack' && canRaiseStat(pokemon, 'attack')) {
@@ -33,10 +34,17 @@ export const applyXItem = (
 	if (itemName === 'x-accuracy' && canRaiseStat(pokemon, 'accuracy')) {
 		updatedAccuracy += 1;
 	}
+	if (
+		itemName === 'dire-hit' &&
+		!pokemon.secondaryAilments?.some((a) => a.type === 'dire-hit')
+	) {
+		updatedSecondaryAilments.push({ type: 'dire-hit', duration: 5 });
+	}
 
 	return {
 		...pokemon,
 		statModifiers: updatedStatModifiers,
+		secondaryAilments: updatedSecondaryAilments,
 		accuracyModifier: updatedAccuracy,
 	};
 };

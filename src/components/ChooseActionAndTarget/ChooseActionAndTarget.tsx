@@ -9,6 +9,7 @@ import {
 	HealingItemType,
 	PPRestoringItemType,
 	PokeballType,
+	RunawayItem,
 	XItemType,
 	isXItem,
 } from '../../interfaces/Item';
@@ -39,7 +40,7 @@ export const ChooseActionAndTarget = ({
 	const [move, setMove] = useState<MoveDto | undefined>();
 	const [ball, setBall] = useState<PokeballType | undefined>();
 	const [item, setItem] = useState<
-		HealingItemType | PPRestoringItemType | XItemType | undefined
+		HealingItemType | PPRestoringItemType | XItemType | RunawayItem | undefined
 	>();
 	const [pokemonIdToPPRestore, setPokemonIdToPPRestore] = useState<
 		string | undefined
@@ -58,6 +59,17 @@ export const ChooseActionAndTarget = ({
 		setItem(undefined);
 		setMoveToPPRestore(undefined);
 	};
+	//autoselect recharging
+	useEffect(() => {
+		if (actor.recharging) {
+			selectAction({
+				...actor,
+				nextAction: { type: 'RECHARGING' },
+				recharging: false,
+			});
+			reset();
+		}
+	}, []);
 	//select ppRestoration Action
 	useEffect(() => {
 		if (item && moveToPPRestore && pokemonIdToPPRestore) {
@@ -100,6 +112,20 @@ export const ChooseActionAndTarget = ({
 		}
 	}, [move]);
 
+	//auto select target certain items
+	useEffect(() => {
+		if (item && ['guard-spec', 'fluffy-tail', 'poke-doll'].includes(item)) {
+			selectAction({
+				...actor,
+				nextAction: {
+					type: 'IN_BATTLE_ITEM',
+					item,
+					target: actor.id,
+				},
+			});
+			reset();
+		}
+	}, [item]);
 	//auto select target for prepared move
 	useEffect(() => {
 		const move = actor.moves.find(

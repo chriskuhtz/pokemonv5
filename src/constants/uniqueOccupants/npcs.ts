@@ -70,3 +70,84 @@ export const pikachuFan: Npc = {
 		findPikachu: 'active',
 	},
 };
+export const nightPokemonFan: Npc = {
+	id: 'night-pokemon-fan',
+	type: 'NPC',
+	position: {
+		y: 5,
+		x: 0,
+		mapId: 'starter-town',
+		orientation: 2,
+	},
+	dialogue: [
+		'Did you know that Pokemon prefer different times of day?',
+		'Some only show up at night',
+	],
+	sprite: SpriteEnum.mechanic,
+	questUpdates: {
+		catchNightPokemon: 'active',
+	},
+};
+export const OakBeforeSelection: Npc = {
+	id: 'oak-before-selection',
+	type: 'NPC',
+	position: {
+		y: 2,
+		x: 2,
+		mapId: 'oaks-lab',
+		orientation: 0,
+	},
+	dialogue: [
+		'Hello',
+		"It's nice to meet you.",
+		'Congratulations on obtaining your Pokemon Trainer License.',
+		'It is my privilege and responsibility to give you your first Pokemon.',
+		'For your first Pokemon Partner, you can choose one from the Machine next to me.',
+		'But first, there are some things for you to decide.',
+	],
+	sprite: '136',
+	questUpdates: {
+		talkToNurseJoy: 'active',
+		pickStarter: 'active',
+	},
+	onDialogueEnd: { type: 'ROUTE', to: '/playerConfig' },
+	questCondition: { id: 'pickStarter', status: 'inactive' },
+};
+export const OakDuringSelection: Npc = {
+	id: 'oak-during-selection',
+	type: 'NPC',
+	position: {
+		y: 2,
+		x: 2,
+		mapId: 'oaks-lab',
+		orientation: 0,
+	},
+	dialogue: [
+		'Choosing the right Pokemon Partner is important',
+		'Consider your choices carefully',
+	],
+	sprite: '136',
+	questCondition: { id: 'pickStarter', status: 'active' },
+};
+export const OakAfterSelection: Npc = {
+	id: 'oak-after-selection',
+	type: 'NPC',
+	position: {
+		y: 2,
+		x: 2,
+		mapId: 'oaks-lab',
+		orientation: 0,
+	},
+	dialogue: [
+		'Aah, what an excellent choice',
+		'I am sure this Pokemon will become an excellent Partner',
+		'I look forward to hearing about your many adventures',
+		'You should talk to Nurse Joy next door',
+		'She will provide you with some starting equipment',
+	],
+	sprite: '136',
+	questCondition: {
+		id: 'pickStarter',
+		status: 'completed',
+	},
+};

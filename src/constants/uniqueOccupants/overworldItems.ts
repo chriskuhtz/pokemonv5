@@ -6,6 +6,7 @@ export const starterTownItem1: OverworldItem = {
 	id: 'starter-town-item-1',
 	type: 'ITEM',
 	inventory: generateInventory({ 'nest-ball': 3 }),
+	sprite: 'pokeball',
 	position: {
 		y: 7,
 		x: 0,
@@ -17,6 +18,7 @@ export const starterTownItem2: OverworldItem = {
 	id: 'starter-town-item-2',
 	type: 'ITEM',
 	inventory: generateInventory({ 'super-potion': 2 }),
+	sprite: 'pokeball',
 	position: {
 		y: 24,
 		x: 9,
@@ -29,6 +31,7 @@ export const berryPatchItem1: OverworldItem = {
 	id: 'berry-patch-item-1',
 	type: 'ITEM',
 	inventory: generateInventory({ 'net-ball': 5 }),
+	sprite: 'pokeball',
 	position: {
 		y: 0,
 		x: 11,
@@ -41,6 +44,7 @@ export const flamingDesertItem1: OverworldItem = {
 	id: 'flaming-desert-item-1',
 	type: 'ITEM',
 	inventory: generateInventory({ 'full-heal': 1 }),
+	sprite: 'pokeball',
 	position: {
 		y: 7,
 		x: 26,
@@ -52,6 +56,7 @@ export const flamingDesertItem2: OverworldItem = {
 	id: 'flaming-desert-item-2',
 	type: 'ITEM',
 	inventory: generateInventory({ 'rare-candy': 1 }),
+	sprite: 'pokeball',
 	position: {
 		y: 0,
 		x: 12,
@@ -63,6 +68,7 @@ export const flamingDesertItem3: OverworldItem = {
 	id: 'flaming-desert-item-3',
 	type: 'ITEM',
 	inventory: generateInventory({ 'x-defense': 2 }),
+	sprite: 'pokeball',
 	position: {
 		y: 10,
 		x: 7,
@@ -74,6 +80,7 @@ export const flamingDesertItem4: OverworldItem = {
 	id: 'flaming-desert-item-4',
 	type: 'ITEM',
 	inventory: generateInventory({ 'pp-max': 1 }),
+	sprite: 'pokeball',
 	position: {
 		y: 3,
 		x: 0,

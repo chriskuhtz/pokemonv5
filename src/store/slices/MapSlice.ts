@@ -13,13 +13,15 @@ import {
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
+import { pokemonCenter } from '../../constants/maps/pokemonCenter';
 
 export type BaseTileId =
 	| 'beach'
 	| 'caveFloor'
 	| 'cobblestone'
 	| 'grass'
-	| 'gray';
+	| 'gray'
+	| 'blueCheckered';
 export type BaseTilePattern =
 	| 'uniform'
 	| 'checkered'
@@ -32,11 +34,13 @@ export interface BaseTile {
 	id: BaseTileId;
 	pattern: BaseTilePattern;
 }
+export type TimeOfDay = 'MORNING' | 'DAY' | 'EVENING' | 'NIGHT';
 export interface MapEncounter {
 	dexId: number;
 	xp: number;
 	rarity?: number;
 	customMoves?: string[];
+	timeOfDay?: TimeOfDay;
 }
 
 export type MapEnvironment =
@@ -66,6 +70,7 @@ const mapsRecord: Record<string, MapState> = {
 	'brocks-gym': brocksGym,
 	'berry-patch': berryPatch,
 	'flaming-desert': flamingDesert,
+	'pokemon-center': pokemonCenter,
 };
 
 const initialState: MapState = starterTown;

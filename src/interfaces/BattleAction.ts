@@ -2,6 +2,7 @@ import {
 	HealingItemType,
 	PPRestoringItemType,
 	PokeballType,
+	RunawayItem,
 	XItemType,
 } from './Item';
 import { MoveDto } from './Move';
@@ -18,6 +19,7 @@ interface BaseBattleAction {
 		| 'RUNAWAY_ATTEMPT'
 		| 'DEFEATED_TARGET'
 		| 'IN_BATTLE_ITEM'
+		| 'RECHARGING'
 		| 'FLINCH';
 }
 
@@ -41,7 +43,7 @@ interface BattleAttackAction extends BaseBattleAction {
 }
 interface BattleItemAction extends BaseBattleAction {
 	type: 'IN_BATTLE_ITEM';
-	item: HealingItemType | PPRestoringItemType | XItemType;
+	item: HealingItemType | PPRestoringItemType | XItemType | RunawayItem;
 	ppRestoreMove?: string;
 	target: string;
 }

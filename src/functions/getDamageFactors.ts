@@ -1,4 +1,8 @@
-import { fixedDamageMoves } from '../constants/fixedDamageMoves';
+import {
+	fixedDamageMoves,
+	levelDamageMoves,
+} from '../constants/fixedDamageMoves';
+
 import { ohkoMoves } from '../constants/ohkoMoves';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
@@ -8,6 +12,7 @@ import { calculateLevelData } from './calculateLevelData';
 import { determineCritFactor } from './determineCritFactor';
 import { determineWeatherFactor } from './determineWeatherFactor';
 import { getTypeFactor } from './getTypeFactor';
+import { getVariablePower } from './getVariablePower';
 
 export const getDamageFactors = (
 	actor: BattlePokemon,
@@ -17,8 +22,12 @@ export const getDamageFactors = (
 	isConfusionHit?: boolean
 ): DamageFactors => {
 	const { level } = calculateLevelData(actor.xp);
-	const { damage_class, power, type } = move;
+	const { damage_class, power: movePower, type, name } = move;
+
+	const power =
+		name === 'low-kick' ? getVariablePower(target.weight) : movePower;
 	const moveType = type.name;
+
 	const correctAttackKey =
 		damage_class.name === 'physical' ? 'attack' : 'spatk';
 
@@ -48,7 +57,7 @@ export const getDamageFactors = (
 			? 1.5
 			: 1;
 	const weatherFactor = determineWeatherFactor(moveType, environment.weather);
-	const criticalFactor = determineCritFactor(move, target);
+	const criticalFactor = determineCritFactor(move, actor, target);
 
 	const otherFactor = () => {
 		if (
@@ -62,6 +71,34 @@ export const getDamageFactors = (
 		return 1;
 	};
 
+	const fixedFactor = () => {
+		if (move.name === 'counter') {
+			if (
+				actor.lastReceivedDamage &&
+				actor.lastReceivedDamage.type === 'physical'
+			) {
+				return actor.lastReceivedDamage.damage * 2;
+			}
+			return 0;
+		}
+		if (move.name === 'mirror-coat') {
+			if (
+				actor.lastReceivedDamage &&
+				actor.lastReceivedDamage.type === 'special'
+			) {
+				return actor.lastReceivedDamage.damage * 2;
+			}
+			return 0;
+		}
+		if (fixedDamageMoves[move.name]) {
+			return fixedDamageMoves[move.name];
+		}
+		if (levelDamageMoves.includes(move.name)) {
+			return level;
+		}
+		return undefined;
+	};
+
 	return {
 		attackerLevel: level,
 		correctAttack,
@@ -73,14 +110,19 @@ export const getDamageFactors = (
 		glaiveRush: 1,
 		criticalFactor,
 		stabFactor,
-		typeFactor: isConfusionHit
-			? 1
-			: getTypeFactor(moveType, target.primaryType, target.secondaryType),
+		typeFactor: getTypeFactor(
+			moveType,
+			move.name,
+			target.ability,
+			isConfusionHit,
+			target.primaryType,
+			target.secondaryType
+		),
 		burnFactor: actor.primaryAilment?.type === 'burn' ? 0.5 : 1,
 		otherFactor: otherFactor(),
 		zMoveFactor: 1,
 		teraShieldFactor: 1,
 		ohko: ohkoMoves.includes(move.name),
-		fixed: fixedDamageMoves[move.name],
+		fixed: fixedFactor(),
 	};
 };

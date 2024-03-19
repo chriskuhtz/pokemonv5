@@ -5,6 +5,7 @@ import { DexEntry } from '../../interfaces/DexEntry';
 import { ErrorPill } from '../../ui_components/ErrorPill/ErrorPill';
 import { FetchingPill } from '../../ui_components/FetchingPill/FetchingPill';
 import { Pill } from '../../ui_components/Pill/Pill';
+import { PokemonDbLink } from '../PokemonDbLink/PokemonDbLink';
 
 export const PokedexListItem = ({ dexEntry }: { dexEntry: DexEntry }) => {
 	const { data, isFetching } = useGetPokemonDataByDexIdQuery(dexEntry.dexId);
@@ -23,7 +24,14 @@ export const PokedexListItem = ({ dexEntry }: { dexEntry: DexEntry }) => {
 						src={getPokemonSpriteUrl(dexEntry.dexId)}
 					/>
 				}
-				center={data?.name}
+				center={
+					<div>
+						<p>
+							<strong>{data?.name}</strong>
+						</p>
+						<PokemonDbLink dexId={dexEntry.dexId} />
+					</div>
+				}
 				rightSide={dexEntry.status}
 			/>
 		);

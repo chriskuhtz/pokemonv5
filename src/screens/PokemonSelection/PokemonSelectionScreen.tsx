@@ -16,6 +16,9 @@ import { useAppDispatch } from '../../store/storeHooks';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { FetchingScreen } from '../FetchingScreen/FetchingScreen';
 
+export const getRandomPokemonId = () => {
+	return 1 + Math.floor(Math.random() * 1024);
+};
 export const PokemonSelectionScreen = ({
 	choices,
 	headline,
@@ -32,9 +35,13 @@ export const PokemonSelectionScreen = ({
 	const getFirstFourMoves = useGetFirstFourMoves();
 	const [loading, setLoading] = useState<boolean>(false);
 
-	if (loading) {
+	if (loading || !data) {
 		return <FetchingScreen />;
 	}
+
+	const configgedChoices = data.config.randomStarters
+		? [getRandomPokemonId(), getRandomPokemonId(), getRandomPokemonId()]
+		: choices;
 
 	if (data) {
 		return (
@@ -49,7 +56,7 @@ export const PokemonSelectionScreen = ({
 						gap: '2rem',
 					}}
 				>
-					{choices.map((c) => (
+					{configgedChoices.map((c) => (
 						<PokemonCardWithImage
 							dexId={c}
 							key={c}
@@ -79,7 +86,7 @@ export const PokemonSelectionScreen = ({
 											ppBoostedMoves: [],
 										},
 									],
-									dexUpdates: choices.map((choice) => {
+									dexUpdates: configgedChoices.map((choice) => {
 										return {
 											dexId: choice,
 											status: choice === c ? 'owned' : 'seen',

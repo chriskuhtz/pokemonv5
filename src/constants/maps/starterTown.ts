@@ -6,21 +6,26 @@ import {
 	starterTownToBrockRight,
 	starterTownToFlamingDesert,
 	starterTownToOaksLab,
+	starterTownToPokeCenter,
 } from './portals';
 export const starterTownEncounters: MapEncounter[] = [
-	{ xp: 60, dexId: 19, rarity: 2 },
+	{ xp: 60, dexId: 16, rarity: 5 },
 	{ xp: 60, dexId: 17, rarity: 1, customMoves: ['steel-wing'] },
+	{ xp: 60, dexId: 19, rarity: 2 },
 	{ xp: 60, dexId: 25, rarity: 1 },
-	{ xp: 60, dexId: 216, rarity: 2 },
-	{ xp: 60, dexId: 261, rarity: 2 },
-	{ xp: 60, dexId: 278, rarity: 2 },
 	{
 		xp: 60,
 		dexId: 66,
 		rarity: 2,
 		customMoves: ['bulk-up', 'karate-chop', 'mach-punch', 'cross-chop'],
 	},
-	{ xp: 60, dexId: 16, rarity: 5 },
+	{ xp: 60, dexId: 216, rarity: 2 },
+	{ xp: 60, dexId: 278, rarity: 2 },
+	{ xp: 60, dexId: 548, rarity: 2, timeOfDay: 'MORNING' },
+	{ xp: 60, dexId: 261, rarity: 2, timeOfDay: 'EVENING' },
+	{ xp: 60, dexId: 163, rarity: 2, timeOfDay: 'EVENING' },
+	{ xp: 60, dexId: 163, rarity: 2, timeOfDay: 'NIGHT' },
+	{ xp: 100, dexId: 198, rarity: 2, timeOfDay: 'NIGHT' },
 ];
 
 const mapId = 'starter-town';
@@ -32,6 +37,7 @@ export const starterTown: MapState = {
 	baseTile: { id: 'grass', pattern: 'random5' },
 	decorators: [
 		starterTownToOaksLab,
+		starterTownToPokeCenter,
 		starterTownToBrockLeft,
 		starterTownToBrockRight,
 		starterTownToBerryPatch,
@@ -45,7 +51,6 @@ export const starterTown: MapState = {
 		{ x: 1, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 3, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 5, y: 10, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 
 		{ x: 0, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 11, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -59,7 +64,7 @@ export const starterTown: MapState = {
 		{ x: 0, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 1, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 2, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
-		{ x: 3, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
+
 		{ x: 5, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 6, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
 		{ x: 7, y: 12, sprite: 'tallGrass', onStep: { type: 'ENCOUNTER' } },
@@ -107,18 +112,21 @@ export const starterTown: MapState = {
 		)
 	),
 	obstacles: [
+		//HOUSES
 		{
-			type: 'OBSTACLE',
-			id: 'berryPatchSign',
-			sprite: 'smallSign',
-			dialogue: ['Berry Patch ->'],
+			type: 'LARGE_OBSTACLE',
+			id: 'poke-center',
+			sprite: 'houses/pokemonCenter',
 			position: {
-				x: 6,
-				y: 10,
+				x: 0,
+				y: 3,
 				orientation: 0,
 				mapId: 'starter-town',
 				forwardFoot: 0,
 			},
+			height: 3,
+			width: 3,
+			clearanceBehind: 1,
 		},
 		{
 			type: 'LARGE_OBSTACLE',
@@ -150,6 +158,7 @@ export const starterTown: MapState = {
 			width: 6,
 			clearanceBehind: 2,
 		},
+		//OTHER OBSTACLES
 		{
 			type: 'OBSTACLE',
 			id: 'greenRock0/8',
@@ -157,6 +166,19 @@ export const starterTown: MapState = {
 			position: {
 				x: 0,
 				y: 8,
+				orientation: 0,
+				mapId: 'starter-town',
+				forwardFoot: 0,
+			},
+		},
+		{
+			type: 'OBSTACLE',
+			id: 'berryPatchSign',
+			sprite: 'smallSign',
+			dialogue: ['Berry Patch ->'],
+			position: {
+				x: 6,
+				y: 10,
 				orientation: 0,
 				mapId: 'starter-town',
 				forwardFoot: 0,

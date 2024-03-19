@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { getPokemonSpriteUrl } from '../../functions/getPokemonSpriteUrl';
 import { BattlePokemon } from '../../interfaces/BattlePokemon';
+import { addAudio } from '../../store/slices/audioSlice';
+import { useAppDispatch } from '../../store/storeHooks';
 import './CircularSprite.css';
 import { ExpIndicator } from './components/ExpIndicator';
 import { HealthIndicator } from './components/HealthIndicator';
@@ -11,14 +13,33 @@ export const CircularSprite = ({
 	overlay,
 	back,
 	noAnimation,
+	makeSound,
+	attacking,
 }: {
 	pokemon: BattlePokemon;
 	overlay?: ReactNode;
 	back?: boolean;
 	noAnimation?: boolean;
+	makeSound?: boolean;
+	attacking?: boolean;
 }) => {
+	const dispatch = useAppDispatch();
+	useEffect(() => {
+		if (makeSound) {
+			dispatch(
+				addAudio(
+					`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.dexId}.ogg`
+				)
+			);
+		}
+	}, [makeSound]);
+
 	return (
-		<ExpIndicator pokemon={pokemon} noAnimation={noAnimation}>
+		<ExpIndicator
+			pokemon={pokemon}
+			noAnimation={noAnimation}
+			attacking={attacking}
+		>
 			<HealthIndicator pokemon={pokemon}>
 				<div className="content">
 					<div className="battleSprite">

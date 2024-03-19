@@ -16,8 +16,17 @@ import { useAppDispatch, useAppSelector } from '../../../store/storeHooks';
 
 export const useUpdatePosition = () => {
 	const saveFile = useGetCurrentSaveFile();
-	const stinky = useMemo(() => {
-		return saveFile?.pokemon.filter((p) => p.onTeam)[0]?.ability === 'stench';
+
+	const tresHoldModifier = useMemo(() => {
+		let mod = 0;
+
+		if (saveFile?.pokemon.filter((p) => p.onTeam)[0]?.ability === 'stench') {
+			mod += 0.5;
+		}
+		if (saveFile?.activeFlute === 'white-flute') {
+			mod -= 0.5;
+		}
+		return mod;
 	}, [saveFile]);
 	const position = useSelector(selectPosition);
 	const dispatch = useAppDispatch();
@@ -45,7 +54,7 @@ export const useUpdatePosition = () => {
 		}
 
 		if (decorator?.onStep || encounterOnEveryField) {
-			const encounterThreshold = Math.random() + (stinky ? 0.5 : 0);
+			const encounterThreshold = Math.random() + tresHoldModifier;
 			if (
 				decorator?.onStep?.type === 'PORTAL' ||
 				decorator?.onStep?.type === 'SPOTTED'
@@ -69,6 +78,7 @@ export const useUpdatePosition = () => {
 				setEncounterChance(encounterChance + 0.05);
 			}
 			if (encounterChance > encounterThreshold && encounterOnEveryField) {
+				setEncounterChance(0);
 				handleEvent({ type: 'ENCOUNTER' });
 				dispatch(stopWalking());
 				return;
@@ -89,7 +99,6 @@ export const useUpdatePosition = () => {
 				return;
 			}
 		}
-
 		if (occupied) {
 			dispatch(
 				updatePosition({

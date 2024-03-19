@@ -214,16 +214,49 @@ export const movesCheckList: {
 	},
 	{ name: 'psybeam', url: 'https://pokeapi.co/api/v2/move/60/', handled: true },
 	//v0.0.5
-	{ name: 'bubble-beam', url: 'https://pokeapi.co/api/v2/move/61/' },
-	{ name: 'aurora-beam', url: 'https://pokeapi.co/api/v2/move/62/' },
-	{ name: 'hyper-beam', url: 'https://pokeapi.co/api/v2/move/63/' },
-	{ name: 'peck', url: 'https://pokeapi.co/api/v2/move/64/' },
-	{ name: 'drill-peck', url: 'https://pokeapi.co/api/v2/move/65/' },
-	{ name: 'submission', url: 'https://pokeapi.co/api/v2/move/66/' },
-	{ name: 'low-kick', url: 'https://pokeapi.co/api/v2/move/67/' },
-	{ name: 'counter', url: 'https://pokeapi.co/api/v2/move/68/' },
-	{ name: 'seismic-toss', url: 'https://pokeapi.co/api/v2/move/69/' },
-	{ name: 'strength', url: 'https://pokeapi.co/api/v2/move/70/' },
+	{
+		name: 'bubble-beam',
+		url: 'https://pokeapi.co/api/v2/move/61/',
+		handled: true,
+	},
+	{
+		name: 'aurora-beam',
+		url: 'https://pokeapi.co/api/v2/move/62/',
+		handled: true,
+	},
+	{
+		name: 'hyper-beam',
+		url: 'https://pokeapi.co/api/v2/move/63/',
+		handled: true,
+	},
+	{ name: 'peck', url: 'https://pokeapi.co/api/v2/move/64/', handled: true },
+	{
+		name: 'drill-peck',
+		url: 'https://pokeapi.co/api/v2/move/65/',
+		handled: true,
+	},
+	{
+		name: 'submission',
+		url: 'https://pokeapi.co/api/v2/move/66/',
+		handled: true,
+	},
+	{
+		name: 'low-kick',
+		url: 'https://pokeapi.co/api/v2/move/67/',
+		handled: true,
+	},
+	{ name: 'counter', url: 'https://pokeapi.co/api/v2/move/68/', handled: true },
+	{
+		name: 'seismic-toss',
+		url: 'https://pokeapi.co/api/v2/move/69/',
+		handled: true,
+	},
+	{
+		name: 'strength',
+		url: 'https://pokeapi.co/api/v2/move/70/',
+		handled: true,
+	},
+	//v.0.0.6
 	{ name: 'absorb', url: 'https://pokeapi.co/api/v2/move/71/' },
 	{ name: 'mega-drain', url: 'https://pokeapi.co/api/v2/move/72/' },
 	{ name: 'leech-seed', url: 'https://pokeapi.co/api/v2/move/73/' },
@@ -234,6 +267,7 @@ export const movesCheckList: {
 	{ name: 'stun-spore', url: 'https://pokeapi.co/api/v2/move/78/' },
 	{ name: 'sleep-powder', url: 'https://pokeapi.co/api/v2/move/79/' },
 	{ name: 'petal-dance', url: 'https://pokeapi.co/api/v2/move/80/' },
+	//v.0.0.7
 	{ name: 'string-shot', url: 'https://pokeapi.co/api/v2/move/81/' },
 	{ name: 'dragon-rage', url: 'https://pokeapi.co/api/v2/move/82/' },
 	{ name: 'fire-spin', url: 'https://pokeapi.co/api/v2/move/83/' },

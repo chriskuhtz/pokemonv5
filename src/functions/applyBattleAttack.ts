@@ -6,6 +6,7 @@ import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { BattleSide } from '../screens/BattleScreen/BattleScreen';
 import { addNotification } from '../store/slices/notificationSlice';
 import { applyAilments } from './applyAilments';
+import { applyContactAbilities } from './applyContactAbilities';
 import { applyCrashDamage } from './applyCrashDamage';
 import { applyDrain } from './applyDrain';
 import { applyPPChange } from './applyPPChange';
@@ -13,7 +14,6 @@ import { applyStatMods } from './applyStatMods';
 import { calculateDamage } from './calculateDamage';
 import { determineFollowUpAction } from './determineFollowUpAction';
 import { determineMultiHits } from './determineMultiHits';
-import { determineNewActorAilment } from './determineNewActorAilment';
 import { determineNewTargetDamage } from './determineNewTargetDamage';
 import { getDamageFactors } from './getDamageFactors';
 import { makeAccuracyCheck } from './makeAccuracyCheck';
@@ -35,7 +35,6 @@ export const applyBattleAttack = (
 	}
 
 	const { move } = action;
-	console.log(move);
 
 	let updatedActor = { ...actor };
 
@@ -129,11 +128,25 @@ export const applyBattleAttack = (
 		...updatedTarget,
 		nextAction: newTargetAction,
 	};
-	updatedTarget = passesAccuracyCheck
-		? applyAilments(updatedTarget, move, dispatch)
-		: updatedTarget;
 
-	updatedTarget =
+	if (passesAccuracyCheck) {
+		updatedTarget = applyAilments(updatedTarget, move, dispatch);
+		if (
+			!target.primaryAilment &&
+			updatedTarget.primaryAilment &&
+			target.ability === 'synchronize' &&
+			!updatedActor.primaryAilment
+		) {
+			dispatch(
+				addNotification(
+					`${target.name}´s synchronize copied the ailment to ${actor.name}`
+				)
+			);
+			updatedActor.primaryAilment === updatedTarget.primaryAilment;
+		}
+	}
+
+	if (
 		passesAccuracyCheck &&
 		[
 			'selected-pokemon',
@@ -142,8 +155,16 @@ export const applyBattleAttack = (
 			'opponents-field',
 		].includes(move.target.name) &&
 		['net-good-stats', 'damage+lower'].includes(move.meta.category.name)
-			? applyStatMods(updatedTarget, move, dispatch, environment)
-			: updatedTarget;
+	) {
+		if (target.ability !== 'clear-body') {
+			applyStatMods(updatedTarget, move, dispatch, environment);
+		} else
+			dispatch(
+				addNotification(
+					`${updatedTarget.name} prevents stat loss with clear-body`
+				)
+			);
+	}
 
 	updatedActor = determineFollowUpAction(
 		updatedActor,
@@ -152,12 +173,15 @@ export const applyBattleAttack = (
 		dispatch
 	);
 
-	updatedActor = determineNewActorAilment(
+	const { actor: contactActor, target: contactTarget } = applyContactAbilities(
 		updatedActor,
 		updatedTarget,
 		move,
-		dispatch
+		dispatch,
+		Math.random()
 	);
+	updatedActor = contactActor;
+	updatedTarget = contactTarget;
 
 	if (lockInMoves.includes(action.move.name) && !actor.lockedInMove) {
 		updatedActor = {

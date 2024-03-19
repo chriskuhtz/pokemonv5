@@ -36,6 +36,38 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 	}
 	let shouldSkip = false;
 	let updatedActor = { ...actor };
+	let updatedOpponents =
+		actor.side === 'OPPONENT' ? { ...playerSide } : { ...opponentSide };
+	//INTIMIDATE
+	if (actor.ability === 'intimidate' && !actor.usedAbility) {
+		dispatch(
+			addNotification(
+				`${actor.name} lowered the opponents attack with intimidate`
+			)
+		);
+		updatedActor = {
+			...updatedActor,
+			usedAbility: true,
+		};
+		updatedOpponents = {
+			...updatedOpponents,
+			field: updatedOpponents.field.map((p) => {
+				if (p.ability === 'clear-body') {
+					dispatch(
+						addNotification(`${p.name} prevents stat loss with clear-body`)
+					);
+					return p;
+				}
+				return {
+					...p,
+					statModifiers: {
+						...p.statModifiers,
+						attack: Math.max(p.statModifiers.attack - 1, -6),
+					},
+				};
+			}),
+		};
+	}
 	//SPEED BOOST
 	if (actor.ability === 'speed-boost' && canRaiseStat(actor, 'speed')) {
 		dispatch(
@@ -261,6 +293,7 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 				} else return updatedActor;
 			}),
 		});
+		setOpponentSide(updatedOpponents);
 	}
 	if (actor.side === 'OPPONENT') {
 		setOpponentSide({
@@ -271,6 +304,7 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 				} else return updatedActor;
 			}),
 		});
+		setPlayerSide(updatedOpponents);
 	}
 	return shouldSkip;
 };

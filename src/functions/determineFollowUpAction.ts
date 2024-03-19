@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { BattleAction } from '../interfaces/BattleAction';
+import { BattleAction, isBattleAttack } from '../interfaces/BattleAction';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { addNotification } from '../store/slices/notificationSlice';
 import { getRandomDuration } from './getDuration';
@@ -57,5 +57,10 @@ export const determineFollowUpAction = (
 			],
 		};
 	}
-	return { ...updated, nextAction: undefined };
+
+	return {
+		...updated,
+		nextAction: undefined,
+		recharging: isBattleAttack(action) && action.move.name === 'hyper-beam',
+	};
 };

@@ -2,11 +2,13 @@ import { useCallback } from 'react';
 import { UniqueOccupantId } from '../constants/UniqueOccupantRecord';
 import { addEntriesToDex } from '../functions/addEntriesToDex';
 import { joinInventories } from '../functions/joinInventories';
+import { trimToOwnedPokemon } from '../functions/trimToOwnedPokemon';
 import { DexEntry } from '../interfaces/DexEntry';
 import { Inventory } from '../interfaces/Inventory';
+import { EncounterChanceItem } from '../interfaces/Item';
 import { OwnedPokemon, UsedPowerPoints } from '../interfaces/OwnedPokemon';
 import { QuestName, QuestRecord } from '../interfaces/Quest';
-import { GymBadge, SaveFile } from '../interfaces/SaveFile';
+import { GymBadge, PlayerConfigObject, SaveFile } from '../interfaces/SaveFile';
 import { PortalEvent } from '../screens/OverworldScreen/interfaces/OverworldEvent';
 import { addNotification } from '../store/slices/notificationSlice';
 import { CharacterPosition } from '../store/slices/saveFileSlice';
@@ -27,6 +29,9 @@ export type SaveGamePayload = {
 	newBadge?: GymBadge;
 	teleportToLastHealer?: boolean;
 	subtractInventory?: boolean;
+	updatedConfig?: PlayerConfigObject;
+	preservePokemonOrder?: boolean;
+	flute?: EncounterChanceItem;
 };
 export type SaveGameFunction = (x: SaveGamePayload) => Promise<void>;
 
@@ -56,6 +61,9 @@ export const useSaveGame = (): SaveGameFunction => {
 			fundsUpdate,
 			newBadge,
 			teleportToLastHealer,
+			updatedConfig,
+			preservePokemonOrder = true,
+			flute,
 		}: SaveGamePayload) => {
 			if (!data) {
 				console.error('cant save if no current saveFile');
@@ -81,11 +89,10 @@ export const useSaveGame = (): SaveGameFunction => {
 				return data.position;
 			};
 
-			//if there are updates, filter out all mons whose ids are included in the updates, then concat updates
-
 			let existingAndUpdates = [...data.pokemon];
 
-			if (pokemonUpdates) {
+			//if there are updates, filter out all mons whose ids are included in the updates, then concat updates
+			if (pokemonUpdates && preservePokemonOrder) {
 				existingAndUpdates = existingAndUpdates
 					.map((p) => {
 						const update = pokemonUpdates.find((update) => update.id === p.id);
@@ -100,8 +107,20 @@ export const useSaveGame = (): SaveGameFunction => {
 						)
 					);
 
-				console.log(pokemonUpdates, existingAndUpdates);
+				console.log('preserve order', pokemonUpdates, existingAndUpdates);
 			}
+			//updates first, then filtered existing w/o updates
+			if (pokemonUpdates && !preservePokemonOrder) {
+				existingAndUpdates = [
+					...pokemonUpdates,
+					...existingAndUpdates.filter(
+						(e) => !pokemonUpdates.some((p) => p.id === e.id)
+					),
+				];
+
+				console.log('dont preserve order', pokemonUpdates, existingAndUpdates);
+			}
+			existingAndUpdates.map(trimToOwnedPokemon);
 
 			if (visitedNurse) {
 				existingAndUpdates = existingAndUpdates.map((p) => {
@@ -164,6 +183,11 @@ export const useSaveGame = (): SaveGameFunction => {
 				pokemon: existingAndUpdates,
 				pokedex: updatedDex,
 				money: updatedMoney,
+				config: updatedConfig ?? data.config,
+				activeFlute:
+					flute ?? updatedPosition().mapId !== data.position.mapId
+						? undefined
+						: data.activeFlute,
 				gymBadges: newBadge
 					? { ...data.gymBadges, [`${newBadge}`]: true }
 					: data.gymBadges,

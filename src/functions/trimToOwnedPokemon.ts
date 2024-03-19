@@ -13,12 +13,16 @@ export const trimToOwnedPokemon = (
 		ownerId: battlemon.ownerId,
 		moveNames: battlemon.moveNames,
 		ability: battlemon.ability,
-		primaryAilment: battlemon.primaryAilment,
+		primaryAilment:
+			battlemon.ability === 'natural-cure'
+				? undefined
+				: battlemon.primaryAilment,
 		ball: battlemon.ball,
 		shiny: battlemon.shiny,
 		friendship: battlemon.friendship,
 		usedPowerPoints: battlemon.usedPowerPoints,
 		ppBoostedMoves: battlemon.ppBoostedMoves,
 		effortValues: battlemon.effortValues,
+		heldItemName: battlemon.heldItemName,
 	};
 };

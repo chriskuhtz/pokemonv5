@@ -35,6 +35,7 @@ export interface Npc extends BaseOccupant {
 	sprite: string;
 	movement?: Movement;
 	type: 'NPC';
+	onDialogueEnd?: OverworldEvent;
 }
 export interface Trainer extends BaseOccupant {
 	dialogue: string[];
@@ -67,6 +68,7 @@ export interface OverworldItem extends BaseOccupant {
 	inventory: Inventory;
 	id: UniqueOccupantId;
 	type: 'ITEM';
+	sprite: 'pokeball';
 }
 export interface QuestCheck extends BaseOccupant {
 	type: 'QUEST_CHECK';
