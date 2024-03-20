@@ -60,6 +60,13 @@ export const CircularSprite = ({
 									? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pokemon.status.ball}.png`
 									: getPokemonSpriteUrl(pokemon.dexId, back, !!pokemon.shiny)
 							}
+							onError={(e) => {
+								e.currentTarget.src = getPokemonSpriteUrl(
+									pokemon.dexId,
+									false,
+									!!pokemon.shiny
+								);
+							}}
 						/>
 					</div>
 					<TagWrapper pokemon={pokemon} />
