@@ -440,18 +440,27 @@ export const useHandleAction = (
 			}
 			//DISABLE
 			if (isBattleAttack(action) && action.move.name === 'disable' && target) {
-				const disabledMove = {
-					moveName:
-						target.moveNames[
-							Math.floor(Math.random() * target.moveNames.length)
-						],
-					duration: getRandomDuration(2, 5),
-				};
-				dispatch(
-					addNotification(
-						`${target.name}'s ${disabledMove.moveName} is disabled`
-					)
-				);
+				const disabledMove = target.disabledMove
+					? target.disabledMove
+					: {
+							moveName:
+								target.moveNames[
+									Math.floor(Math.random() * target.moveNames.length)
+								],
+							duration: getRandomDuration(2, 5),
+					  };
+				if (disabledMove.moveName !== target.disabledMove?.moveName) {
+					dispatch(
+						addNotification(
+							`${target.name}'s ${disabledMove.moveName} is disabled`
+						)
+					);
+				} else {
+					dispatch(
+						addNotification(`${target.name}'s already has one disabled move`)
+					);
+				}
+
 				if (actor.side === 'PLAYER') {
 					setPlayerSide({
 						...playerSide,

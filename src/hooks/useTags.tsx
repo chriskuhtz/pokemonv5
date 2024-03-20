@@ -63,6 +63,9 @@ export const useTags = (pokemon: BattlePokemon) => {
 		if (pokemon.lockedInMove) {
 			res.push(`locked into ${pokemon.lockedInMove.moveName}`);
 		}
+		if (pokemon.disabledMove) {
+			res.push(`${pokemon.disabledMove.moveName} disabled`);
+		}
 		if (pokemon.location) {
 			res.push(pokemon.location);
 		}

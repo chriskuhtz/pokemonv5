@@ -9,7 +9,7 @@ import {
 	UNFREEZE_CHANCE,
 	WAKEUP_CHANCE,
 } from '../interfaces/Ailment';
-import { isPrimaryAction } from '../interfaces/BattleAction';
+import { isBattleAttack, isPrimaryAction } from '../interfaces/BattleAction';
 import { BattleEnvironment } from '../interfaces/BattleEnvironment';
 import { BattlePokemon } from '../interfaces/BattlePokemon';
 import { MoveDto } from '../interfaces/Move';
@@ -248,7 +248,12 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 				...updatedActor,
 				disabledMove: undefined,
 			};
-		} else {
+		}
+		if (
+			reducedDuration &&
+			isBattleAttack(updatedActor.nextAction) &&
+			updatedActor.nextAction.move.name === updatedActor.disabledMove?.moveName
+		) {
 			dispatch(
 				addNotification(
 					`${actor.name}'s ${updatedActor.disabledMove} is disabled`
