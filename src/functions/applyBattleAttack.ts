@@ -92,7 +92,11 @@ export const applyBattleAttack = (
 
 	const attackDamage = calculateDamage(damageFactors);
 
-	if (damageFactors.typeFactor === 0 && passesAccuracyCheck) {
+	if (
+		damageFactors.typeFactor === 0 &&
+		passesAccuracyCheck &&
+		(move.power ?? 0) > 0
+	) {
 		dispatch(addNotification(`It has no effect on ${target.name}`));
 	}
 	if (attackDamage > 0 && passesAccuracyCheck) {

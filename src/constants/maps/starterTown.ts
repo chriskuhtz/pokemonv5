@@ -9,7 +9,7 @@ import {
 	starterTownToPokeCenter,
 } from './portals';
 export const starterTownEncounters: MapEncounter[] = [
-	{ xp: 60, dexId: 16, rarity: 5 },
+	{ xp: 60, dexId: 16, rarity: 1 },
 	{ xp: 60, dexId: 17, rarity: 1, customMoves: ['steel-wing'] },
 	{ xp: 60, dexId: 19, rarity: 2 },
 	{ xp: 200, dexId: 20, rarity: 1 },
