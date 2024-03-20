@@ -274,6 +274,7 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 		updatedActor = consumeHeldItem(updatedActor, dispatch);
 	}
 
+	//filter out ailments with duration 0
 	updatedActor = {
 		...updatedActor,
 		secondaryAilments: updatedActor.secondaryAilments

@@ -76,6 +76,7 @@ export const useAdvanceRoundAndAssignOpponentActions = (
 				field: playerSide?.field.map((p) => ({
 					...p,
 					lastReceivedDamage: undefined,
+					multiHits: undefined,
 				})),
 			});
 
