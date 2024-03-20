@@ -61,12 +61,18 @@ export const youngsterTimmy: Trainer = {
 		orientation: 2,
 	},
 	dialogue: ['My Spearow will show you who´s the boss'],
-	dialogueAfterDefeat: ['That worked well ...'],
+	dialogueAfterDefeat: [
+		'There are lots of Pokemon around here',
+		'Can you catch them all?',
+	],
 	sprite: '093',
 	team: [{ dexId: 21, xp: 200 }],
 	activePokemonPerside: 1,
 	rewardMoney: 300,
 	viewRange: 1,
+	questUpdates: {
+		catchAllStarterTown: 'active',
+	},
 };
 //BROCKS_GYM
 export const brock: Trainer = {
@@ -191,6 +197,9 @@ export const bugcatcherBarry: Trainer = {
 	activePokemonPerside: 1,
 	rewardMoney: 500,
 	viewRange: 1,
+	questUpdates: {
+		catchAllBerryPatch: 'active',
+	},
 };
 export const bugcatcherCisco: Trainer = {
 	id: 'bugCatcher-cisco',
@@ -271,6 +280,9 @@ export const pyromaniacJavi: Trainer = {
 	activePokemonPerside: 1,
 	rewardMoney: 1000,
 	viewRange: 3,
+	questUpdates: {
+		catchAllFlamingDesert: 'active',
+	},
 };
 export const aceTrainerMelanie: Trainer = {
 	id: 'ace-trainer-melanie',

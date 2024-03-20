@@ -49,6 +49,9 @@ export const oaksAssistant2: Npc = {
 		'You should learn more about the local Pokemon before continuing further',
 	],
 	sprite: SpriteEnum.scientistMale,
+	questUpdates: {
+		secondPokemon: 'active',
+	},
 	questCondition: {
 		id: 'catchAllStarterTown',
 		status: 'active',
