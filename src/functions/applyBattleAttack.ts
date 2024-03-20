@@ -157,7 +157,7 @@ export const applyBattleAttack = (
 		['net-good-stats', 'damage+lower'].includes(move.meta.category.name)
 	) {
 		if (target.ability !== 'clear-body') {
-			applyStatMods(updatedTarget, move, dispatch, environment);
+			updatedTarget = applyStatMods(updatedTarget, move, dispatch, environment);
 		} else
 			dispatch(
 				addNotification(
