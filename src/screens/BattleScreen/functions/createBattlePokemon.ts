@@ -105,7 +105,7 @@ export const useCreateBattlePokemonFromData = () => {
 				xp: baseXp,
 				id: v4(),
 				side: 'OPPONENT',
-				base_experience: data.base_experience,
+				base_experience: data.base_experience ?? 200,
 				stats,
 				statModifiers: EmptyStatObject,
 				effortValues: EmptyStatObject,
