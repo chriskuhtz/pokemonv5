@@ -194,18 +194,23 @@ export const applyBattleAttack = (
 	}
 
 	if (actor.side === 'PLAYER') {
+		const updatedField = playerSide.field.map((p) => {
+			if (p.id !== actor.id) {
+				return p;
+			}
+			return {
+				...updatedActor,
+				preparedMove: undefined,
+				location: undefined,
+			};
+		});
+
 		updatedPlayerSide = {
 			...playerSide,
-			field: playerSide.field.map((p) => {
-				if (p.id !== actor.id) {
-					return p;
-				}
-				return {
-					...updatedActor,
-					preparedMove: undefined,
-					location: undefined,
-				};
-			}),
+			field: updatedField.filter((p) => p.damage < p.stats.hp),
+			defeated: playerSide.defeated.concat(
+				updatedField.filter((p) => p.damage >= p.stats.hp)
+			),
 		};
 		updatedOpponentSide = {
 			...opponentSide,
@@ -218,6 +223,16 @@ export const applyBattleAttack = (
 		};
 	}
 	if (actor.side === 'OPPONENT') {
+		const updatedField = opponentSide.field.map((p) => {
+			if (p.id !== actor.id) {
+				return p;
+			}
+			return {
+				...updatedActor,
+				preparedMove: undefined,
+				location: undefined,
+			};
+		});
 		updatedPlayerSide = {
 			...playerSide,
 			field: playerSide.field.map((p) => {
@@ -229,16 +244,10 @@ export const applyBattleAttack = (
 		};
 		updatedOpponentSide = {
 			...opponentSide,
-			field: opponentSide.field.map((p) => {
-				if (p.id !== actor.id) {
-					return p;
-				}
-				return {
-					...updatedActor,
-					preparedMove: undefined,
-					location: undefined,
-				};
-			}),
+			field: updatedField.filter((p) => p.damage < p.stats.hp),
+			defeated: opponentSide.defeated.concat(
+				updatedField.filter((p) => p.damage >= p.stats.hp)
+			),
 		};
 	}
 	return { updatedOpponentSide, updatedPlayerSide };

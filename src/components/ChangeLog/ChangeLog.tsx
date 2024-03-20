@@ -44,7 +44,7 @@ export const Changelog = () => {
 										<li>more moves</li>
 										<li>held items</li>
 										<li>time based pokemon encounters</li>
-										<li>rearrange team by dragging</li>
+										<li>rearrange team by dragging (only on pc :( )</li>
 										<li>basic attack animation</li>
 										<li>randomised starters (optional)</li>
 										<li>better ailment tags</li>
