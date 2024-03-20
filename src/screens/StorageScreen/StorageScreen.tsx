@@ -14,6 +14,9 @@ export const StorageScreen = (): JSX.Element => {
 
 	const [ownedPokemon, setOwnedPokemon] = useState<OwnedPokemon[]>([]);
 
+	const [levelFilter, setLevelFilter] = useState<number>(1);
+	const [sortBy, setSortBy] = useState<'level' | 'dexId'>('dexId');
+
 	useEffect(() => {
 		if (data) {
 			setOwnedPokemon(data.pokemon);
@@ -26,6 +29,17 @@ export const StorageScreen = (): JSX.Element => {
 	const storedPokemon = useMemo(() => {
 		return ownedPokemon.filter((p) => !p.onTeam);
 	}, [ownedPokemon]);
+
+	const filteredAndSortedStoredPokemon = useMemo(() => {
+		return storedPokemon
+			.filter((p) => calculateLevelData(p.xp).level >= levelFilter)
+			.sort((a, b) => {
+				if (sortBy === 'dexId') {
+					return a.dexId - b.dexId;
+				}
+				return b.xp - a.xp;
+			});
+	}, [levelFilter, storedPokemon, sortBy]);
 
 	const addToTeam = useCallback(
 		(pokemon: OwnedPokemon) => {
@@ -78,9 +92,37 @@ export const StorageScreen = (): JSX.Element => {
 							/>
 						))}
 					</div>
-					<h2>Storage:</h2>{' '}
+					<h2>Storage:</h2>
+					<div style={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
+						<input
+							id="levelFilter"
+							max="100"
+							type="number"
+							min="1"
+							step={1}
+							value={levelFilter}
+							onChange={(e) => setLevelFilter(e.target.valueAsNumber)}
+						/>
+						<strong>Filter by Min Level: {levelFilter} </strong>
+						<input
+							type={'checkbox'}
+							checked={sortBy === 'dexId'}
+							onChange={() => {
+								setSortBy('dexId');
+							}}
+						/>
+						<strong>Sort By Dex Id </strong>
+						<input
+							type={'checkbox'}
+							checked={sortBy === 'level'}
+							onChange={() => {
+								setSortBy('level');
+							}}
+						/>
+						<strong>Sort By Level </strong>
+					</div>
 					<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-						{storedPokemon.map((p) => (
+						{filteredAndSortedStoredPokemon.map((p) => (
 							<IconWithTag
 								key={p.id}
 								src={getPokemonSpriteUrl(p.dexId)}
