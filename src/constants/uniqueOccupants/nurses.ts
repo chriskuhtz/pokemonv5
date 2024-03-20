@@ -14,7 +14,7 @@ export const pokeCenterNurse: Healer = {
 	},
 	sprite: '115',
 	dialogue: ['Let me heal your Pokemon'],
-	questCondition: { id: 'talkToNurseJoy', status: 'completed' },
+	questCondition: { id: 'talkToNurseJoy', status: 'active', negate: true },
 };
 
 export const pokeCenterNurseQuest: Npc = {

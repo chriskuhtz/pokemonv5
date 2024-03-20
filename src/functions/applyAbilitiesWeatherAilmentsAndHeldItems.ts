@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import {
 	BURN_DAMAGE_FACTOR,
 	CONFUSION_HURT_CHANCE,
+	LEECH_DAMAGE_FACTOR,
 	PARA_CHANCE,
 	POISON_DAMAGE_FACTOR,
 	SANDSTORM_DAMAGE_FACTOR,
@@ -207,6 +208,27 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 			damage:
 				updatedActor.damage +
 				Math.round(updatedActor.stats.hp * TRAP_DAMAGE_FACTOR),
+		};
+	}
+	//LEECH-SEED
+	if (updatedActor.secondaryAilments?.some((a) => a.type === 'leech-seed')) {
+		dispatch(addNotification(`${actor.name} is sapped by leech seed`));
+		dispatch(addNotification(`Its Opponents regained some health`));
+
+		const leechDamage = Math.round(updatedActor.stats.hp * LEECH_DAMAGE_FACTOR);
+
+		updatedActor = {
+			...updatedActor,
+			damage: updatedActor.damage + leechDamage,
+		};
+		updatedOpponents = {
+			...updatedOpponents,
+			field: updatedOpponents.field.map((p) => ({
+				...p,
+				damage: Math.round(
+					p.damage - leechDamage / updatedOpponents.field.length
+				),
+			})),
 		};
 	}
 	//CONFUSION

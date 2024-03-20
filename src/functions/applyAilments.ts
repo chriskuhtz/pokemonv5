@@ -89,10 +89,16 @@ export const applyAilments = (
 			);
 			const minTurns = move.meta.min_turns ?? 1;
 			const maxTurns = move.meta.max_turns ?? 5;
-			const duration = Math.min(
+			let duration = Math.min(
 				maxTurns,
 				minTurns + randomIndex(maxTurns - minTurns)
 			);
+			if (
+				possibleAilment.type === 'leech-seed' ||
+				possibleAilment.type === 'infatuation'
+			) {
+				duration = -1;
+			}
 			return {
 				...pokemon,
 				secondaryAilments: [

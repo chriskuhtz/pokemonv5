@@ -257,16 +257,48 @@ export const movesCheckList: {
 		handled: true,
 	},
 	//v.0.0.6
-	{ name: 'absorb', url: 'https://pokeapi.co/api/v2/move/71/' },
-	{ name: 'mega-drain', url: 'https://pokeapi.co/api/v2/move/72/' },
-	{ name: 'leech-seed', url: 'https://pokeapi.co/api/v2/move/73/' },
-	{ name: 'growth', url: 'https://pokeapi.co/api/v2/move/74/' },
-	{ name: 'razor-leaf', url: 'https://pokeapi.co/api/v2/move/75/' },
-	{ name: 'solar-beam', url: 'https://pokeapi.co/api/v2/move/76/' },
-	{ name: 'poison-powder', url: 'https://pokeapi.co/api/v2/move/77/' },
-	{ name: 'stun-spore', url: 'https://pokeapi.co/api/v2/move/78/' },
-	{ name: 'sleep-powder', url: 'https://pokeapi.co/api/v2/move/79/' },
-	{ name: 'petal-dance', url: 'https://pokeapi.co/api/v2/move/80/' },
+	{ name: 'absorb', url: 'https://pokeapi.co/api/v2/move/71/', handled: true },
+	{
+		name: 'mega-drain',
+		url: 'https://pokeapi.co/api/v2/move/72/',
+		handled: true,
+	},
+	{
+		name: 'leech-seed',
+		url: 'https://pokeapi.co/api/v2/move/73/',
+		handled: true,
+	},
+	{ name: 'growth', url: 'https://pokeapi.co/api/v2/move/74/', handled: true },
+	{
+		name: 'razor-leaf',
+		url: 'https://pokeapi.co/api/v2/move/75/',
+		handled: true,
+	},
+	{
+		name: 'solar-beam',
+		url: 'https://pokeapi.co/api/v2/move/76/',
+		handled: true,
+	},
+	{
+		name: 'poison-powder',
+		url: 'https://pokeapi.co/api/v2/move/77/',
+		handled: true,
+	},
+	{
+		name: 'stun-spore',
+		url: 'https://pokeapi.co/api/v2/move/78/',
+		handled: true,
+	},
+	{
+		name: 'sleep-powder',
+		url: 'https://pokeapi.co/api/v2/move/79/',
+		handled: true,
+	},
+	{
+		name: 'petal-dance',
+		url: 'https://pokeapi.co/api/v2/move/80/',
+		handled: true,
+	},
 	//v.0.0.7
 	{ name: 'string-shot', url: 'https://pokeapi.co/api/v2/move/81/' },
 	{ name: 'dragon-rage', url: 'https://pokeapi.co/api/v2/move/82/' },

@@ -7,12 +7,12 @@ export function isPrimaryAilment(x: { type: string }): x is PrimaryAilment {
 }
 
 export interface SecondaryAilment {
-	type: 'confusion' | 'trap' | 'infatuation' | 'dire-hit';
+	type: 'confusion' | 'trap' | 'infatuation' | 'dire-hit' | 'leech-seed';
 	duration: number;
 }
 
 export function isSecondaryAilment(x: { type: string }): x is SecondaryAilment {
-	return ['confusion', 'trap', 'infatuation'].includes(x.type);
+	return ['confusion', 'trap', 'infatuation', 'leech-seed'].includes(x.type);
 }
 
 export const PARA_CHANCE = 0.25;
@@ -26,3 +26,4 @@ export const WAKEUP_CHANCE = 0.2;
 export const CONFUSION_HURT_CHANCE = 0.33;
 export const CONFUSION_POWER = 40;
 export const TRAP_DAMAGE_FACTOR = 1 / 8;
+export const LEECH_DAMAGE_FACTOR = 1 / 8;
