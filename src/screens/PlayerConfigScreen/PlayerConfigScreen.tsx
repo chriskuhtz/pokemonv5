@@ -34,8 +34,8 @@ export const PlayerConfigScreen = ({}: {}): JSX.Element => {
 							<strong>Random Starter Pokemon</strong>
 						</p>
 						<p>
-							Do you want 3 random Pokemon or the classic Charmander, Bulbasaur
-							and Squirtle?
+							Do you want 3 random Pokemon instead of the classic Charmander,
+							Bulbasaur and Squirtle?
 						</p>
 					</div>
 				}
