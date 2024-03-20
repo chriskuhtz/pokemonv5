@@ -34,7 +34,9 @@ export const pokeCenterNurseQuest: Npc = {
 	],
 	questUpdates: {
 		talkToNurseJoy: 'completed',
+		secondPokemon: 'active',
 	},
+
 	sprite: '115',
 	questCondition: { id: 'talkToNurseJoy', status: 'active' },
 };
