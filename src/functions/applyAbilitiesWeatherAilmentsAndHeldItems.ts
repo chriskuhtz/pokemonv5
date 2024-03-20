@@ -148,6 +148,7 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 	}
 	//PARA
 	if (
+		isBattleAttack(updatedActor.nextAction) &&
 		updatedActor.primaryAilment?.type === 'paralysis' &&
 		Math.random() < PARA_CHANCE
 	) {
@@ -159,7 +160,10 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 		};
 	}
 	//FREEZE
-	if (updatedActor.primaryAilment?.type === 'freeze') {
+	if (
+		isBattleAttack(updatedActor.nextAction) &&
+		updatedActor.primaryAilment?.type === 'freeze'
+	) {
 		if (Math.random() >= UNFREEZE_CHANCE) {
 			dispatch(addNotification(`${actor.name} frozen solid`));
 			shouldSkip = true;
@@ -176,7 +180,10 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 		}
 	}
 	//SLEEP
-	if (updatedActor.primaryAilment?.type === 'sleep') {
+	if (
+		isBattleAttack(updatedActor.nextAction) &&
+		updatedActor.primaryAilment?.type === 'sleep'
+	) {
 		if (Math.random() >= WAKEUP_CHANCE) {
 			dispatch(addNotification(`${actor.name} is fast asleep`));
 			shouldSkip = true;
@@ -204,6 +211,7 @@ export const applyAbilitiesWeatherAilmentsAndHeldItems = (
 	}
 	//CONFUSION
 	if (
+		isBattleAttack(updatedActor.nextAction) &&
 		!shouldSkip &&
 		updatedActor.secondaryAilments?.some((a) => a.type === 'confusion')
 	) {
