@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import './CardWithImage.css';
 
 export const CardWithImage = ({
@@ -7,7 +8,7 @@ export const CardWithImage = ({
 	onClick,
 }: {
 	url: string;
-	subtitle?: string;
+	subtitle?: ReactNode;
 	title: string;
 	onClick: () => void;
 }) => {

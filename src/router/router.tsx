@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { OccupantsList } from '../components/OccupantsList/OccupantsList';
 import { BagScreen } from '../screens/BagScreen/BagScreen';
 import { BattleScreenWrapper } from '../screens/BattleScreen/components/BattleScreenWrapper/BattleScreenWrapper';
 import { LoginScreen } from '../screens/LoginScreen/LoginScreen';
@@ -32,6 +33,7 @@ export enum RoutesEnum {
 	newFulfilledQuest = '/newFulfilledQuest',
 	login = '/login',
 	playerConfig = '/playerConfig',
+	occupantsList = '/occupantsList',
 }
 
 export const router = createBrowserRouter([
@@ -94,5 +96,12 @@ export const router = createBrowserRouter([
 		),
 	},
 	{ path: RoutesEnum.playerConfig, element: <PlayerConfigScreen /> },
-	{ path: RoutesEnum.test, element: <TestArea /> },
+	{
+		path: RoutesEnum.test,
+		element: import.meta.env.MODE === 'development' ? <TestArea /> : <></>,
+	},
+	{
+		path: RoutesEnum.occupantsList,
+		element: import.meta.env.MODE === 'development' ? <OccupantsList /> : <></>,
+	},
 ]);
