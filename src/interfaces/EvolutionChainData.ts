@@ -31,7 +31,7 @@ export interface EvolutionDetails {
 	time_of_day: string | null;
 	trade_species: string | null;
 	trigger: {
-		name: 'level-up';
+		name: EvolutionTrigger;
 		url: 'https://pokeapi.co/api/v2/evolution-trigger/1/';
 	};
 	turn_upside_down: false;

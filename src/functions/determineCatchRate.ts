@@ -61,7 +61,6 @@ export const determineCatchRate = (
 	//lower health, better chance
 	const healthPercentage =
 		1 - (target.stats.hp - target.damage) / target.stats.hp;
-	console.log('healthPercentage', healthPercentage);
 	const healthfactor = 1 + healthPercentage;
 
 	//lower level, better chance
@@ -69,6 +68,5 @@ export const determineCatchRate = (
 
 	const catchRate = ballfactor + healthfactor * levelFactor * ballfactor;
 
-	console.log('healthFactor', healthfactor, 'catchRate', catchRate);
 	return catchRate;
 };

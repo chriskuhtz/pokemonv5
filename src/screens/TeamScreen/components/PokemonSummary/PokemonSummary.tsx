@@ -39,11 +39,8 @@ export const PokemonSummary = ({
 	if (data) {
 		return (
 			<div className="focused">
-				{data && (
-					<EvolutionPill
-						data={data}
-						level={calculateLevelData(pokemon.xp).level}
-					/>
+				{data && save && (
+					<EvolutionPill pokemon={pokemon} data={data} saveGame={save} />
 				)}
 				<NameAndSpriteSection
 					primaryType={pokemon.primaryType}
