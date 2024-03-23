@@ -7,17 +7,20 @@ import { CharacterPosition } from '../../../../store/slices/saveFileSlice';
 import { Movement } from '../Movement';
 import { OverworldEvent } from '../OverworldEvent';
 
-export type OccupantType =
-	| 'NPC'
-	| 'ITEM'
-	| 'MERCHANT'
-	| 'HEALER'
-	| 'QUEST_CHECK'
-	| 'OBSTACLE'
-	| 'INVISIBLE_BLOCKER'
-	| 'LARGE_OBSTACLE'
-	| 'HOUSE'
-	| 'TRAINER';
+export const occupantTypes = [
+	'NPC',
+	'ITEM',
+	'MERCHANT',
+	'HEALER',
+	'QUEST_CHECK',
+	'OBSTACLE',
+	'INVISIBLE_BLOCKER',
+	'LARGE_OBSTACLE',
+	'HOUSE',
+	'TRAINER',
+] as const;
+
+export type OccupantType = (typeof occupantTypes)[number];
 
 export interface BaseOccupant {
 	id: string;

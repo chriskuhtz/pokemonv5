@@ -4,6 +4,7 @@ import { berryPatch } from '../../constants/maps/berryPatch';
 import { brocksGym } from '../../constants/maps/brocksGym';
 import { flamingDesert } from '../../constants/maps/flamingDesert';
 import { oaksLab } from '../../constants/maps/oaksLab';
+import { pokemonCenter } from '../../constants/maps/pokemonCenter';
 import { starterTown } from '../../constants/maps/starterTown';
 import { getOppositeDirection } from '../../functions/getOppositeDirection';
 import { OrientationEnum } from '../../interfaces/Orientation';
@@ -13,7 +14,6 @@ import {
 	Obstacle,
 	Occupant,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
-import { pokemonCenter } from '../../constants/maps/pokemonCenter';
 
 export type BaseTileId =
 	| 'beach'
@@ -64,7 +64,18 @@ export interface MapState {
 	encounterOnEveryField?: boolean;
 }
 
-const mapsRecord: Record<string, MapState> = {
+export const mapIds = [
+	'starter-town',
+	'oaks-lab',
+	'brocks-gym',
+	'berry-patch',
+	'flaming-desert',
+	'pokemon-center',
+] as const;
+
+export type MapId = (typeof mapIds)[number];
+
+const mapsRecord: Record<MapId, MapState> = {
 	'starter-town': starterTown,
 	'oaks-lab': oaksLab,
 	'brocks-gym': brocksGym,
@@ -80,7 +91,7 @@ export const mapSlice = createSlice({
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
-		setMapById: (state, action: PayloadAction<string>) => {
+		setMapById: (state, action: PayloadAction<MapId>) => {
 			if (state.mapId === action.payload) {
 				return;
 			}
