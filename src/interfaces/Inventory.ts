@@ -73,6 +73,12 @@ export const EmptyInventory: Inventory = {
 	'yellow-flute': 0,
 	'white-flute': 0,
 	'black-flute': 0,
+	'sun-stone': 0,
+	'thunder-stone': 0,
+	'fire-stone': 0,
+	'water-stone': 0,
+	'leaf-stone': 0,
+	'moon-stone': 0,
 };
 export const generateInventory = (wanted: Partial<Inventory>): Inventory => {
 	return joinInventories(EmptyInventory, wanted);

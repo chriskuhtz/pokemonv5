@@ -28,21 +28,37 @@ export const EvolutionPill = ({
 		evo?.species.name ?? skipToken
 	);
 
-	if (canEvolve && evoData) {
+	if (canEvolve && evoData && evo) {
+		const { item } = evo.evolution_details[0];
 		return (
 			<Pill
 				onClick={() => {
 					saveGame({
 						pokemonUpdates: [{ ...pokemon, dexId: evoData.id }],
+						inventoryChanges: item ? { [`${item.name}`]: -1 } : undefined,
 					});
 					dispatch(
-						addNotification(` ${data.name} evolved into ${evoData.name}`)
+						addNotification(
+							` ${data.name} evolved into ${evoData.name} ${
+								item ? `with the ${item.name}` : ''
+							}`
+						)
 					);
 				}}
 				style={{ backgroundColor: 'green', padding: '2rem' }}
+				leftSide={
+					item ? (
+						<img
+							height={40}
+							width={40}
+							src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${item.name}.png`}
+						/>
+					) : undefined
+				}
 				center={
 					<strong>
-						Evolve {data.name} into {evoData.name}
+						Evolve {data.name} into {evoData.name}{' '}
+						{item ? `using a ${item.name}` : ''}
 					</strong>
 				}
 				rightSide={
