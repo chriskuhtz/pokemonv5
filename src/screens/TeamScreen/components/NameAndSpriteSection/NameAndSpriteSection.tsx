@@ -12,6 +12,7 @@ export const NameAndSpriteSection = ({
 	primaryType,
 	secondaryType,
 	shiny,
+	friendship,
 }: {
 	dexId: number;
 	name: string;
@@ -21,6 +22,7 @@ export const NameAndSpriteSection = ({
 	primaryType: PokemonType;
 	secondaryType?: PokemonType;
 	shiny?: boolean;
+	friendship: number;
 }): JSX.Element => {
 	return (
 		<div className="nameAndSpriteSection">
@@ -41,6 +43,7 @@ export const NameAndSpriteSection = ({
 				<h3>
 					<PokemonDbLink dexId={dexId} />
 				</h3>
+				<h3>Friendship: {friendship}/255</h3>
 			</div>
 			<img
 				className="sprite"

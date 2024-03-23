@@ -9,6 +9,7 @@ export const berryPatchEncounters: MapEncounter[] = [
 	{ xp: 100, dexId: 415, rarity: 2 },
 	{ xp: 100, dexId: 11, rarity: 2 },
 	{ xp: 100, dexId: 14, rarity: 2 },
+	{ xp: 100, dexId: 446, rarity: 1 },
 	{
 		xp: 100,
 		dexId: 43,

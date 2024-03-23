@@ -12,6 +12,9 @@ export const useCanPokemonEvolve = (
 	data: PokemonData
 ) => {
 	const saveFile = useGetCurrentSaveFile();
+	const { friendship, xp } = pokemon;
+	const { level } = calculateLevelData(xp);
+
 	return useMemo(() => {
 		if (!saveFile?.inventory) {
 			return false;
@@ -19,12 +22,20 @@ export const useCanPokemonEvolve = (
 		if (!evo) {
 			return false;
 		}
-		const { trigger, min_level, item } = evo.evolution_details[0];
-		if (
-			trigger.name === 'level-up' &&
-			calculateLevelData(pokemon.xp).level >= (min_level ?? 0)
-		) {
-			return true;
+		const { trigger, min_level, item, held_item, min_happiness } =
+			evo.evolution_details[0];
+
+		if (trigger.name === 'level-up' && level >= (min_level ?? 0)) {
+			if (held_item) {
+				return false;
+			}
+			if (friendship > Number(min_happiness)) {
+				return true;
+			}
+			if (!held_item && !min_happiness) {
+				return true;
+			}
+			return false;
 		}
 
 		if (

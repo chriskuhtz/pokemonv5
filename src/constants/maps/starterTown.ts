@@ -24,6 +24,7 @@ export const starterTownEncounters: MapEncounter[] = [
 	{ xp: 60, dexId: 278, rarity: 2 },
 	{ xp: 60, dexId: 396, rarity: 2 },
 	{ xp: 60, dexId: 261, rarity: 2 },
+	{ xp: 60, dexId: 172, rarity: 1, customMoves: ['thunderbolt', 'tail-glow'] },
 ];
 
 const mapId = 'starter-town';

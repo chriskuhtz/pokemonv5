@@ -49,6 +49,7 @@ export const PokemonSummary = ({
 					name={pokemon.name}
 					level={calculateLevelData(pokemon.xp).level}
 					shiny={pokemon.shiny}
+					friendship={pokemon.friendship}
 				/>
 				<div
 					style={{ display: 'flex', gap: '0.5rem', flexDirection: 'column' }}
