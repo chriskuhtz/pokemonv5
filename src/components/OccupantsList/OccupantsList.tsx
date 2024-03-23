@@ -6,6 +6,7 @@ import {
 	occupantTypes,
 } from '../../screens/OverworldScreen/interfaces/Occupants/Occupant';
 import { MapId, mapIds } from '../../store/slices/MapSlice';
+import { FilterButtons } from '../../ui_components/FilterButtons/FilterButtons';
 import { CharacterSprite } from '../CharacterSprite/CharacterSprite';
 
 export const OccupantsList = ({}: {}): JSX.Element => {
@@ -14,36 +15,18 @@ export const OccupantsList = ({}: {}): JSX.Element => {
 
 	return (
 		<div className="container">
-			<div style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
-				<strong>Filter By Map:</strong>
-				{mapIds.map((m) => (
-					<button
-						style={mapFilter === m ? { backgroundColor: 'green' } : {}}
-						onClick={() => {
-							if (mapFilter !== m) {
-								setMapFilter(m);
-							} else setMapFilter(undefined);
-						}}
-					>
-						{m}
-					</button>
-				))}
-			</div>
-			<div style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
-				<strong>Filter By Occupanttype:</strong>
-				{occupantTypes.map((m) => (
-					<button
-						style={typeFilter === m ? { backgroundColor: 'green' } : {}}
-						onClick={() => {
-							if (typeFilter !== m) {
-								setTypeFilter(m);
-							} else setTypeFilter(undefined);
-						}}
-					>
-						{m}
-					</button>
-				))}
-			</div>
+			<FilterButtons
+				title={'Filter By Map'}
+				options={mapIds as unknown as string[]}
+				selected={mapFilter}
+				setSelected={(x) => setMapFilter(x as MapId | undefined)}
+			/>
+			<FilterButtons
+				title={'Filter By Occupanttype'}
+				options={occupantTypes as unknown as string[]}
+				selected={typeFilter}
+				setSelected={(x) => setTypeFilter(x as OccupantType | undefined)}
+			/>
 			<div
 				style={{
 					display: 'grid',

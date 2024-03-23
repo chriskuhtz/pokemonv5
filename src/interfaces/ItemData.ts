@@ -30,4 +30,7 @@ export interface ItemData {
 		default: string;
 	};
 	attributes: ItemAttribute[];
+	category: {
+		name: string;
+	};
 }

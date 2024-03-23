@@ -30,6 +30,7 @@ export const MarketScreen = (): JSX.Element => {
 			setCartOpen(false);
 		}
 	}, [itemsInCart]);
+
 	return (
 		<div className="container marketContainer">
 			<Headline
