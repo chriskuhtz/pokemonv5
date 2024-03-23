@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { Headline } from '../../components/Headline/Headline';
 import { PokemonCardWithImage } from '../../components/PokemonCardWithImage/PokemonCardWithImage';
 import { shinyChance } from '../../functions/shinyChance';
-import { useGetFirstFourMoves } from '../../hooks/useGetFirstFourMoves';
+import { useGetInitialMoves } from '../../hooks/useGetInitialMoves';
 import { EmptyUsedPP, useSaveGame } from '../../hooks/useSaveGame';
 import { useGetCurrentSaveFile } from '../../hooks/xata/useCurrentSaveFile';
 import { PokemonData } from '../../interfaces/PokemonData';
@@ -32,7 +32,7 @@ export const PokemonSelectionScreen = ({
 	const dispatch = useAppDispatch();
 	const save = useSaveGame();
 	const navigate = useNavigate();
-	const getFirstFourMoves = useGetFirstFourMoves();
+	const getFirstFourMoves = useGetInitialMoves();
 	const [loading, setLoading] = useState<boolean>(false);
 
 	if (loading || !data) {
@@ -74,7 +74,7 @@ export const PokemonSelectionScreen = ({
 											damage: 0,
 											ownerId: data.playerId,
 											moveNames: (
-												await getFirstFourMoves(c, 'level-up')
+												await getFirstFourMoves(c, 125)
 											).map((move) => move.name),
 											ability: pokemon.abilities[0].ability.name,
 											ball: 'luxury-ball',

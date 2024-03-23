@@ -15,6 +15,7 @@ import { MoveSection } from '../MoveSection/MoveSection';
 import { NameAndSpriteSection } from '../NameAndSpriteSection/NameAndSpriteSection';
 import { StatSection } from '../StatSection/StatSection';
 import './PokemonSummary.css';
+import { MoveConfigurationSection } from '../../../../components/MoveConfigurationSection/MoveConfigurationSection';
 
 export const PokemonSummary = ({
 	pokemon,
@@ -40,7 +41,12 @@ export const PokemonSummary = ({
 		return (
 			<div className="focused">
 				{data && save && (
-					<EvolutionPill pokemon={pokemon} data={data} saveGame={save} />
+					<EvolutionPill
+						key={pokemon.id}
+						pokemon={pokemon}
+						data={data}
+						saveGame={save}
+					/>
 				)}
 				<NameAndSpriteSection
 					primaryType={pokemon.primaryType}
@@ -57,6 +63,14 @@ export const PokemonSummary = ({
 					<AbilityPill abilityName={pokemon.ability} />
 					<HeldItemPill pokemon={pokemon} save={save} />
 					<CaughtBallPill ball={pokemon.ball} />
+					{save && (
+						<MoveConfigurationSection
+							key={pokemon.id}
+							pokemon={pokemon}
+							data={data}
+							save={save}
+						/>
+					)}
 				</div>
 				<div className="movesAndStats">
 					<MoveSection moves={pokemon.moves} />

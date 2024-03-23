@@ -4,7 +4,7 @@ import { fetchMove } from '../../../api/pokeApiFunctions/fetchMove';
 import { calculateLevelData } from '../../../functions/calculateLevelData';
 import { calculateStat } from '../../../functions/calculateStat';
 import { shinyChance } from '../../../functions/shinyChance';
-import { useGetFirstFourMoves } from '../../../hooks/useGetFirstFourMoves';
+import { useGetInitialMoves } from '../../../hooks/useGetInitialMoves';
 import { EmptyUsedPP } from '../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../interfaces/BattlePokemon';
 import { MoveDto } from '../../../interfaces/Move';
@@ -75,7 +75,7 @@ const getStats = (
 };
 
 export const useCreateBattlePokemonFromData = () => {
-	const getFirstFourMoves = useGetFirstFourMoves();
+	const getFirstFourMoves = useGetInitialMoves();
 	return useCallback(
 		async (
 			data: PokemonData,
@@ -89,7 +89,7 @@ export const useCreateBattlePokemonFromData = () => {
 
 			const firstFourMoves = await getFirstFourMoves(
 				data.id,
-				'level-up',
+				baseXp,
 				customMoves
 			);
 

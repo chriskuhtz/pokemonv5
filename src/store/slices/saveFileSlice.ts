@@ -1,16 +1,17 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+import { iterateOver } from '../../functions/iterateOver';
 import { ForwardFootEnum } from '../../interfaces/ForwardFoot';
 import { OrientationEnum } from '../../interfaces/Orientation';
 import { SaveFile } from '../../interfaces/SaveFile';
-import { iterateOver } from '../../functions/iterateOver';
+import { MapId } from './MapSlice';
 
 export interface CharacterPosition {
 	orientation: OrientationEnum;
 	forwardFoot?: ForwardFootEnum;
 	x: number;
 	y: number;
-	mapId: string;
+	mapId: MapId;
 }
 export interface SaveFileSlice {
 	saveFile?: SaveFile;

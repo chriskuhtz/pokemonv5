@@ -37,12 +37,13 @@ export const NameAndSpriteSection = ({
 						)}
 					</div>
 				</h1>
-				{owner && <h3>Trainer: {owner}</h3>}
-
-				<h3>Level: {level}</h3>
 				<h3>
 					<PokemonDbLink dexId={dexId} />
 				</h3>
+				{owner && <h3>Trainer: {owner}</h3>}
+
+				<h3>Level: {level}</h3>
+
 				<h3>Friendship: {friendship}/255</h3>
 			</div>
 			<img

@@ -31,6 +31,7 @@ export const staticSaveData: SaveFile = {
 		defeatAllTrainers: 'inactive',
 		catchNightPokemon: 'inactive',
 		reachLevelFifteen: 'inactive',
+		evolvePikachu: 'inactive',
 	},
 	handledOccupants: {
 		'youngster-jimmy': false,
@@ -69,6 +70,7 @@ export const staticSaveData: SaveFile = {
 		'hiker-bennet': false,
 		'pyromaniac-javi': false,
 		'night-pokemon-fan': false,
+		'raichu-fan': false,
 	},
 	pokedex: [],
 	pokemon: [],
