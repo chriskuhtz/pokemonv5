@@ -65,6 +65,7 @@ export const questNames = [
 	'defeatAllTrainers',
 	'catchNightPokemon',
 	'reachLevelFifteen',
+	'evolvePikachu',
 ] as const;
 
 export type QuestName = (typeof questNames)[number];
@@ -175,10 +176,23 @@ export const FindPikachuQuest: Quest = {
 	title: 'Find a Pikachu',
 	description: 'A young trainer asked you to find a pikachu',
 	rewardMoney: 100,
-	rewardItems: generateInventory({ 'ultra-ball': 5 }),
+	rewardItems: generateInventory({ 'thunder-stone': 1 }),
 	condition: {
 		type: 'OWNED_POKEMON',
 		ids: [25],
+		mode: 'SOME',
+	},
+};
+export const EvolvePikachuQuest: Quest = {
+	status: 'inactive',
+	id: 'evolvePikachu',
+	title: 'Evolve a Pikachu with a Thunder Stone',
+	description: 'Some Pokemon evolve using stones',
+	rewardMoney: 1000,
+	rewardItems: generateInventory({ 'rare-candy': 5, 'great-ball': 10 }),
+	condition: {
+		type: 'OWNED_POKEMON',
+		ids: [26],
 		mode: 'SOME',
 	},
 };
@@ -219,4 +233,5 @@ export const QuestRecord: Record<QuestName, Quest> = {
 	defeatAllTrainers: DefeatAllTrainersQuest,
 	catchNightPokemon: CatchNightPokemon,
 	reachLevelFifteen: ReachLevelFifteenQuest,
+	evolvePikachu: EvolvePikachuQuest,
 };

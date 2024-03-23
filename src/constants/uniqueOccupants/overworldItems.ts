@@ -30,7 +30,7 @@ export const starterTownItem2: OverworldItem = {
 export const berryPatchItem1: OverworldItem = {
 	id: 'berry-patch-item-1',
 	type: 'ITEM',
-	inventory: generateInventory({ 'net-ball': 5 }),
+	inventory: generateInventory({ 'net-ball': 5, 'sun-stone': 1 }),
 	sprite: 'pokeball',
 	position: {
 		y: 0,

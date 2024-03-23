@@ -11,6 +11,7 @@ import {
 	oaksAssistant,
 	oaksAssistant2,
 	pikachuFan,
+	raichuFan,
 	youngsterJimmyBlocker,
 } from './uniqueOccupants/npcs';
 import {
@@ -82,6 +83,7 @@ export const uniqueOccupantIds = [
 	'flaming-desert-item-3',
 	'flaming-desert-item-4',
 	'night-pokemon-fan',
+	'raichu-fan',
 ] as const;
 //every occupant that can be handled should be unique
 export type UniqueOccupantId = (typeof uniqueOccupantIds)[number];
@@ -156,4 +158,5 @@ export const UniqueOccupantRecord: Record<UniqueOccupantId, Occupant> = {
 	'flaming-desert-item-3': flamingDesertItem3,
 	'flaming-desert-item-4': flamingDesertItem4,
 	'night-pokemon-fan': nightPokemonFan,
+	'raichu-fan': raichuFan,
 };

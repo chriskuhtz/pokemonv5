@@ -66,8 +66,38 @@ export const pikachuFan: Npc = {
 	},
 	dialogue: ['Do you have a Pikachu?', 'Its the bees knees'],
 	sprite: SpriteEnum.child,
+	questCondition: {
+		id: 'findPikachu',
+		status: 'completed',
+		negate: true,
+	},
+
 	questUpdates: {
 		findPikachu: 'active',
+	},
+};
+export const raichuFan: Npc = {
+	id: 'raichu-fan',
+	type: 'NPC',
+	position: {
+		y: 17,
+		x: 0,
+		mapId: 'starter-town',
+		orientation: 2,
+	},
+	dialogue: [
+		'Did you know that Pikachu can evolve?',
+		'It needs a thunder stone to do it',
+		'did ya know that',
+		'did ya???',
+	],
+	sprite: SpriteEnum.child,
+	questCondition: {
+		id: 'findPikachu',
+		status: 'completed',
+	},
+	questUpdates: {
+		evolvePikachu: 'active',
 	},
 };
 export const nightPokemonFan: Npc = {
