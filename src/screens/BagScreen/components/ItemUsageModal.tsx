@@ -55,6 +55,7 @@ export const ItemUsageModal = ({
 	const applyItemToPokemon = useCallback(
 		async (pokemon: BattlePokemon, item: ItemData, moveName?: string) => {
 			let pokemonUpdates: OwnedPokemon[] | undefined = [];
+			let keepItem = false;
 			dispatch(addNotification(`${pokemon.name} was given the ${item.name}`));
 
 			pokemonUpdates = team.map((p) => {
@@ -64,6 +65,7 @@ export const ItemUsageModal = ({
 			});
 
 			if (item.name === 'rare-candy') {
+				keepItem = true;
 				const { xpAtNextLevel, level } = calculateLevelData(pokemon.xp);
 				pokemonUpdates = team.map((p) => {
 					if (p.id === pokemon.id) {
@@ -81,7 +83,9 @@ export const ItemUsageModal = ({
 			});
 			invalidate();
 			setSelectedPokemon(undefined);
-			setItemToUse(undefined);
+			if (!keepItem) {
+				setItemToUse(undefined);
+			}
 		},
 		[save, setItemToUse, team, invalidate]
 	);

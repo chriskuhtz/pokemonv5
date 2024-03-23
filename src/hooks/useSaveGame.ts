@@ -120,7 +120,7 @@ export const useSaveGame = (): SaveGameFunction => {
 
 				console.log('dont preserve order', pokemonUpdates, existingAndUpdates);
 			}
-			existingAndUpdates.map(trimToOwnedPokemon);
+			existingAndUpdates = existingAndUpdates.map(trimToOwnedPokemon);
 
 			if (visitedNurse) {
 				existingAndUpdates = existingAndUpdates.map((p) => {
