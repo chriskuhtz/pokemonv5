@@ -28,7 +28,7 @@ export const HydratedInventory = ({
 		[hydratedInventory, filter]
 	);
 	return (
-		<>
+		<div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 			<FilterButtons
 				title="Filter"
 				options={categories}
@@ -45,6 +45,6 @@ export const HydratedInventory = ({
 					/>
 				))}
 			</div>
-		</>
+		</div>
 	);
 };
