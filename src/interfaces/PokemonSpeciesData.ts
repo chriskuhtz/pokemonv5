@@ -12,4 +12,7 @@ export interface PokemonSpeciesData {
 			};
 		}
 	];
+	evolution_chain: {
+		url: string;
+	};
 }

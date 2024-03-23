@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useGetPokemonDataByDexIdQuery } from '../../../../api/pokeApi';
 import { AbilityPill } from '../../../../components/AbilityPill/AbilityPill';
+import { EvolutionPill } from '../../../../components/EvolutionPill/EvolutionPill';
 import { calculateLevelData } from '../../../../functions/calculateLevelData';
 import { SaveGameFunction } from '../../../../hooks/useSaveGame';
 import { BattlePokemon } from '../../../../interfaces/BattlePokemon';
@@ -38,6 +39,12 @@ export const PokemonSummary = ({
 	if (data) {
 		return (
 			<div className="focused">
+				{data && (
+					<EvolutionPill
+						data={data}
+						level={calculateLevelData(pokemon.xp).level}
+					/>
+				)}
 				<NameAndSpriteSection
 					primaryType={pokemon.primaryType}
 					secondaryType={pokemon.secondaryType}
