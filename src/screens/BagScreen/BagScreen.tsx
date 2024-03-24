@@ -9,6 +9,7 @@ import { RoutesEnum } from '../../router/router';
 import { addNotification } from '../../store/slices/notificationSlice';
 import { useAppDispatch } from '../../store/storeHooks';
 import { FetchingPill } from '../../ui_components/FetchingPill/FetchingPill';
+import { FilterButtons } from '../../ui_components/FilterButtons/FilterButtons';
 import { Pill } from '../../ui_components/Pill/Pill';
 import { ErrorScreen } from '../ErrorScreen/ErrorScreen';
 import { ItemUsageModal } from './components/ItemUsageModal';
@@ -30,6 +31,20 @@ export const BagScreen = (): JSX.Element => {
 	}, [saveFile]);
 
 	const { hydratedInventory, status } = useHydratedInventory(inventory);
+
+	const [filter, setFilter] = useState<string | undefined>();
+
+	const categories = useMemo(() => {
+		return [...new Set((hydratedInventory ?? []).map((i) => i.category.name))];
+	}, [hydratedInventory]);
+
+	const filteredInventory = useMemo(
+		() =>
+			(hydratedInventory ?? []).filter((h) =>
+				filter ? h.category.name === filter : true
+			),
+		[hydratedInventory, filter]
+	);
 
 	const handleItemClick = useCallback((item: ItemData) => {
 		if (item.name === 'sacred-ash') {
@@ -93,27 +108,36 @@ export const BagScreen = (): JSX.Element => {
 			(status === 'success' && hydratedInventory?.length === 0) ? (
 				<Pill center={'You dont have any items in your inventory'} />
 			) : (
-				hydratedInventory?.map((item) => {
-					if (!inventory[item.name]) {
-						return <React.Fragment key={item.name} />;
-					}
-					return (
-						<Pill
-							withHoverEffect
-							leftSide={
-								<img
-									height={40}
-									width={40}
-									src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${item.name}.png`}
-								/>
-							}
-							key={item.name}
-							center={item.name}
-							rightSide={inventory[item.name]}
-							onClick={() => handleItemClick(item)}
-						/>
-					);
-				})
+				<div>
+					<FilterButtons
+						style={{ marginBottom: '1rem' }}
+						title="Filter"
+						options={categories}
+						selected={filter}
+						setSelected={setFilter}
+					/>
+					{filteredInventory?.map((item) => {
+						if (!inventory[item.name]) {
+							return <React.Fragment key={item.name} />;
+						}
+						return (
+							<Pill
+								withHoverEffect
+								leftSide={
+									<img
+										height={40}
+										width={40}
+										src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${item.name}.png`}
+									/>
+								}
+								key={item.name}
+								center={item.name}
+								rightSide={inventory[item.name]}
+								onClick={() => handleItemClick(item)}
+							/>
+						);
+					})}
+				</div>
 			)}
 		</div>
 	);

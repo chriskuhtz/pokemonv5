@@ -8,6 +8,7 @@ import { selectNextNotification } from '../../store/selectors/notification/selec
 import { useAppSelector } from '../../store/storeHooks';
 import { Tag } from '../../ui_components/Tag/Tag';
 import { RouterButton } from '../RouterButton/RouterButton';
+import { TimeOfDayIcon } from '../TimeOfDayIcon/TimeOfDayIcon';
 
 export const MenuButton = () => {
 	const currentDialogue = useAppSelector(selectCurrentDialogue);
@@ -23,17 +24,22 @@ export const MenuButton = () => {
 
 	if (currentDialogue.length === 0 && !noti) {
 		return (
-			<div className="leftCorner">
-				<Tag
-					color="orange"
-					tag={numberOfUnclaimed > 0 ? numberOfUnclaimed : undefined}
-				>
-					<RouterButton
-						to={RoutesEnum.menu}
-						text={<TiThMenu style={{ height: '30px', width: '30px' }} />}
-					/>
-				</Tag>
-			</div>
+			<>
+				<div className="leftCorner">
+					<Tag
+						color="orange"
+						tag={numberOfUnclaimed > 0 ? numberOfUnclaimed : undefined}
+					>
+						<RouterButton
+							to={RoutesEnum.menu}
+							text={<TiThMenu style={{ height: '30px', width: '30px' }} />}
+						/>
+					</Tag>
+				</div>
+				<div className="rightCorner">
+					<TimeOfDayIcon style={{ height: '40px', width: '40px' }} />
+				</div>
+			</>
 		);
 	}
 	return <></>;

@@ -1,17 +1,22 @@
+import { CSSProperties } from 'react';
+
 export const FilterButtons = ({
 	title,
 	options,
 	selected,
 	setSelected,
+	style,
 }: {
 	title: string;
 	options: string[];
 	selected: string | undefined;
 	setSelected: (x: string | undefined) => void;
+	style?: CSSProperties;
 }): JSX.Element => {
 	return (
 		<div
 			style={{
+				...style,
 				display: 'flex',
 				gap: '.5rem',
 				alignItems: 'center',

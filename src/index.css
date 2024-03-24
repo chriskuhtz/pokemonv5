@@ -79,6 +79,13 @@ p {
 	z-index: 9000;
 }
 
+.rightCorner {
+	position: absolute;
+	top: 2rem;
+	right: 1rem;
+	z-index: 9000;
+}
+
 .hoverEffect:hover {
 	font-weight: bolder;
 	border-width: 2px;
