@@ -328,6 +328,23 @@ export const itemsCheckList: {
 		url: 'https://pokeapi.co/api/v2/item/85/',
 		handled: true,
 	},
+
+	{
+		name: 'shiny-stone',
+		url: 'https://pokeapi.co/api/v2/item/107/',
+		handled: true,
+	},
+	{
+		name: 'dusk-stone',
+		url: 'https://pokeapi.co/api/v2/item/108/',
+		handled: true,
+	},
+	{
+		name: 'dawn-stone',
+		url: 'https://pokeapi.co/api/v2/item/109/',
+		handled: true,
+	},
+
 	{ name: 'super-repel', url: 'https://pokeapi.co/api/v2/item/76/' },
 	{ name: 'max-repel', url: 'https://pokeapi.co/api/v2/item/77/' },
 	{ name: 'escape-rope', url: 'https://pokeapi.co/api/v2/item/78/' },
@@ -360,9 +377,6 @@ export const itemsCheckList: {
 	{ name: 'armor-fossil', url: 'https://pokeapi.co/api/v2/item/104/' },
 	{ name: 'skull-fossil', url: 'https://pokeapi.co/api/v2/item/105/' },
 	{ name: 'rare-bone', url: 'https://pokeapi.co/api/v2/item/106/' },
-	{ name: 'shiny-stone', url: 'https://pokeapi.co/api/v2/item/107/' },
-	{ name: 'dusk-stone', url: 'https://pokeapi.co/api/v2/item/108/' },
-	{ name: 'dawn-stone', url: 'https://pokeapi.co/api/v2/item/109/' },
 	{ name: 'oval-stone', url: 'https://pokeapi.co/api/v2/item/110/' },
 	{ name: 'odd-keystone', url: 'https://pokeapi.co/api/v2/item/111/' },
 	{ name: 'adamant-orb', url: 'https://pokeapi.co/api/v2/item/112/' },

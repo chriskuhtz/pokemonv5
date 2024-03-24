@@ -88,6 +88,9 @@ export const evoStones = [
 	'water-stone',
 	'leaf-stone',
 	'moon-stone',
+	'dawn-stone',
+	'dusk-stone',
+	'shiny-stone',
 ] as const;
 
 export const itemTypes = [
