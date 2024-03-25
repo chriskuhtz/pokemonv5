@@ -15,6 +15,7 @@ import { QuestsScreen } from '../screens/QuestsScreen/QuestsScreen';
 import { StorageScreen } from '../screens/StorageScreen/StorageScreen';
 import { TeamScreen } from '../screens/TeamScreen/TeamScreen';
 import { TestArea } from '../screens/TestArea/TestArea';
+import { SellOrBuyScreen } from '../screens/SellOrBuyScreen/SellOrBuyScreen';
 
 export enum RoutesEnum {
 	overworld = '/overworld',
@@ -28,6 +29,8 @@ export enum RoutesEnum {
 	bag = '/bag',
 	quests = '/quests',
 	market = '/market',
+	sell = '/sell',
+	sellOrBuy = '/sellOrBuy',
 	starterSelection = '/starterSelection',
 	test = '/test',
 	newFulfilledQuest = '/newFulfilledQuest',
@@ -81,6 +84,7 @@ export const router = createBrowserRouter([
 		),
 	},
 	{ path: RoutesEnum.market, element: <MarketScreen /> },
+	{ path: RoutesEnum.sell, element: <MarketScreen /> },
 	{
 		path: RoutesEnum.newGame,
 		element:
@@ -96,6 +100,7 @@ export const router = createBrowserRouter([
 		),
 	},
 	{ path: RoutesEnum.playerConfig, element: <PlayerConfigScreen /> },
+	{ path: RoutesEnum.sellOrBuy, element: <SellOrBuyScreen /> },
 	{
 		path: RoutesEnum.test,
 		element: import.meta.env.MODE === 'development' ? <TestArea /> : <></>,

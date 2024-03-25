@@ -14,7 +14,11 @@ export const useMarketScreen = () => {
 	const data = useGetCurrentSaveFile();
 	const save = useSaveGame();
 	const { state } = useLocation();
-	const inventory = state as Partial<Inventory>;
+
+	const { inventory, mode } = state as {
+		inventory: Partial<Inventory>;
+		mode: 'BUY' | 'SELL';
+	};
 	const { hydratedInventory } = useHydratedInventory(inventory);
 
 	const [cart, setCart] = useState<Inventory>(generateInventory({}));
@@ -36,10 +40,19 @@ export const useMarketScreen = () => {
 			return;
 		}
 
-		await save({ fundsUpdate: -totalCost, inventoryChanges: cart });
+		const fundsUpdate = mode === 'BUY' ? -totalCost : totalCost;
+		const inventoryChanges =
+			mode === 'BUY'
+				? cart
+				: Object.fromEntries(
+						Object.entries(cart).map(([key, value]) => {
+							return [key, value * -1];
+						})
+				  );
+		await save({ fundsUpdate, inventoryChanges });
 		dispatch(
 			addNotification(
-				`you bought: ${Object.entries(cart)
+				`you ${mode === 'BUY' ? 'bought' : 'sold'}: ${Object.entries(cart)
 					.map(([name, amount]) => {
 						if (amount === 0) {
 							return;
@@ -50,7 +63,7 @@ export const useMarketScreen = () => {
 			)
 		);
 		setCart(generateInventory({}));
-	}, [cart, data, save, totalCost]);
+	}, [cart, data, save, totalCost, mode]);
 
 	return {
 		changeCartAmount,
@@ -59,5 +72,6 @@ export const useMarketScreen = () => {
 		hydratedInventory,
 		cart,
 		data,
+		mode,
 	};
 };

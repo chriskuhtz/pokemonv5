@@ -17,6 +17,7 @@ export const MarketScreen = (): JSX.Element => {
 		cart,
 		data,
 		changeCartAmount,
+		mode,
 	} = useMarketScreen();
 
 	const [cartOpen, setCartOpen] = useState<boolean>(false);
@@ -35,7 +36,7 @@ export const MarketScreen = (): JSX.Element => {
 		<div className="container marketContainer">
 			<Headline
 				sticky
-				text={'Market'}
+				text={mode === 'BUY' ? 'Market' : 'What do you want to sell?'}
 				routerButtonProps={{ to: RoutesEnum.overworld, text: 'Overworld' }}
 				rightElement={
 					itemsInCart > 0 && (
@@ -64,6 +65,7 @@ export const MarketScreen = (): JSX.Element => {
 								totalCost={totalCost}
 								money={data.money}
 								purchase={purchase}
+								mode={mode}
 							/>
 						}
 					/>

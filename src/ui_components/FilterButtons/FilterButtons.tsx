@@ -35,6 +35,7 @@ export const FilterButtons = ({
 				{' '}
 				{options.map((option) => (
 					<button
+						key={option}
 						style={option === selected ? { backgroundColor: 'green' } : {}}
 						onClick={() => {
 							if (option !== selected) {

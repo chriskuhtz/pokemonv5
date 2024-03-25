@@ -93,7 +93,7 @@ export const InteractionButton = () => {
 		if (currentDialogue.length > 0) {
 			if (currentDialogue.length === 1 && focusedOccupant) {
 				if (focusedOccupant.type === 'MERCHANT') {
-					navigate(RoutesEnum.market, { state: focusedOccupant.inventory });
+					navigate(RoutesEnum.sellOrBuy, { state: focusedOccupant.inventory });
 				}
 				if (focusedOccupant.type === 'TRAINER') {
 					const handled = handledOccupants

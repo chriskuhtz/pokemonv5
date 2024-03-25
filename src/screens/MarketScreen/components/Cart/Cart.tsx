@@ -9,12 +9,14 @@ export const Cart = ({
 	totalCost,
 	money,
 	purchase,
+	mode,
 }: {
 	cart: Inventory;
 	changeCartAmount: (x: ItemType, amount: number) => void;
 	totalCost: number;
 	money: number;
 	purchase: () => void;
+	mode: 'BUY' | 'SELL';
 }): React.JSX.Element => {
 	if (Object.values(cart).every((value) => value === 0)) {
 		return <></>;
@@ -49,7 +51,7 @@ export const Cart = ({
 				<Pill
 					disabled={totalCost > money}
 					className="buyButton"
-					center={'Buy'}
+					center={mode}
 					onClick={purchase}
 				/>
 			</div>
